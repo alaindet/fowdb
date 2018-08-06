@@ -37,6 +37,7 @@ class Search
             "format",
             "cardtype",
             "backside",
+            "divinity",
             "setcode",
             "attributes",
             "attrmulti", // Legacy
@@ -281,7 +282,7 @@ class Search
 
         // SEARCH BAR =========================================================
 
-        if (isset($this->f['q']) AND !empty($this->f['q'])) {
+        if (isset($this->f['q']) && !empty($this->f['q'])) {
             
             // Copy HTML-escaped query in a separate variable to process it
             $q = $this->f['q'];
@@ -601,10 +602,16 @@ class Search
             )).")";
         }
 
+        // FILTER --- BACKSIDE ------------------------------------------------
+        if (isset($this->f['divinity'])) {
+            $_sql_f[] = "(divinity = "
+                      . implode(" OR divinity = ", $this->f['divinity'])
+                      . ")";
+        }
+
 
         // FILTER --- FREE COST -----------------------------------------------
         if (isset($this->f['freecost'])) {
-
             $_sql_f[] = "(freecost = "
                       . implode(" OR freecost = ", $this->f['freecost'])
                       . ")";
@@ -612,7 +619,6 @@ class Search
 
         // FILTER --- TOTAL COST ----------------------------------------------
         if (isset($this->f['totalcost'])) {
-
             $_sql_f[] = "(totalcost = "
                       . implode(" OR totalcost = ", $this->f['totalcost'])
                       . ")";
@@ -620,7 +626,6 @@ class Search
 
         // FILTER --- FREE COST AS X ------------------------------------------
         if (isset($this->f['xcost'])) {
-
             $_sql_f[] = "freecost < 0";
         }
 
@@ -647,7 +652,6 @@ class Search
 
         // FILTER --- RARITY --------------------------------------------------
         if (isset($this->f['rarity'])) {
-            
             $_sql_f[] = "(rarity = \""
                       . implode("\" OR rarity = \"", $this->f['rarity'])
                       . "\")";
@@ -672,17 +676,15 @@ class Search
 
         // FILTER --- LIMIT and OFFSET ----------------------------------------
         if (isset($this->f['page'])) {
-
             $p = (int) $this->f['page'];
-
             $this->sqlPartials['offset'] = ($p - 1) * APP_RESULTS_LIMIT;
         }
 
         // SORTING ============================================================
         if (
-            isset($this->f['sort'])
-            AND in_array($this->f['sort'], array_keys(\App\Helpers::get('sortfields')))
-            AND $this->f['sort'] != "default"
+            isset($this->f['sort']) &&
+            in_array($this->f['sort'], array_keys(\App\Helpers::get('sortfields'))) &&
+            $this->f['sort'] != "default"
         ) {
             // Get sorting direction
             $sortDir = (isset($this->f['sortdir']) AND $this->f['sortdir'] == 'desc') ? 'DESC' : 'ASC';

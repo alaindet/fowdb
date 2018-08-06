@@ -27,6 +27,7 @@ $result = $db->get(
 		cards.cardcode,
 		cards.attribute,
 		cards.cardtype,
+		cards.divinity,
 		cards.rarity,
 		cards.attributecost,
 		cards.freecost,
@@ -44,7 +45,9 @@ $result = $db->get(
 		cards INNER JOIN sets ON cards.setnum = sets.id
 	WHERE cardcode = :code
 	LIMIT 3",
-	[":code" => htmlspecialchars($_GET['code'], ENT_QUOTES, 'UTF-8')]
+	[
+		":code" => htmlspecialchars($_GET['code'], ENT_QUOTES, 'UTF-8')
+	]
 );
 
 // Check if there were results
@@ -238,6 +241,7 @@ if (!empty($result)) {
 			'attribute' => $attribute,
 			'cardtype' => $row['cardtype'] . $reminder,
 			$race_trait_label => $race_trait_value,
+			'divinity' => $row['divinity'],
 			'cardtext' => \App\FoWDB::renderText($row['cardtext']),
 			'atk_def' => $row['atk'] . ' / ' . $row['def'],
 			'set' => $set,
@@ -251,53 +255,93 @@ if (!empty($result)) {
 			'rulings' => $rulings,
 		);
 	
-		// Remove unwanted properties for some card types ---------------------
+		// Remove optional properties for some card types ---------------------
 
-		// Remove banned from cards that are not banned
-		if (empty($card['banned'])) { unset($card['banned']); }
+		$optionals = [
+			'banned',
+			'divinity',
+			'flavortext'
+		];
 
-		// Remove flavor text from cards that don't have it
-		if ($row['flavortext'] == "") { unset($card['flavortext']); }
-
-		// Remove cost and total cost
-		if (in_array($row['cardtype'],[
-			'Ruler',
-			'J-Ruler',
-			'Magic Stone',
-			'Special Magic Stone',
-			'Special Magic Stone/True Magic Stone'
-		])) {
-			unset($card['cost']);
-			unset($card['totalcost']);
+		foreach ($optionals as &$optional) {
+			if (empty($card[$optional])) {
+				unset($card[$optional]);
+			}
 		}
 
-		// Remove ATK and DEF
-		if (in_array($row['cardtype'],[
-			'Ruler',
-			'Addition',
-			'Addition:Resonator',
-			'Addition:J/Resonator',
-			'Addition:Ruler/J-Ruler',
-			'Addition:Field',
-			'Chant',
-			'Spell:Chant',
-			'Spell:Chant-Instant',
-			'Spell:Chant-Standby',
-			'Regalia',
-			'Magic Stone',
-			'Special Magic Stone',
-			'Special Magic Stone/True Magic Stone'
-		])) {
-			unset($card['atk_def']);
-		}
+		// To be removed
+		$remove = [
+			'Ruler' => [
+				'cost',
+				'totalcost',
+				'atk_def'
+			],
+			'J-Ruler' => [
+				'cost',
+				'totalcost'
+			],
+			'Resonator' => [],
+			'Chant' => [
+				'atk_def'
+			],
+			'Chant/Rune' => [
+				'atk_def'
+			],
+			'Addition' => [
+				'atk_def'
+			],
+			'Regalia' => [
+				'atk_def'
+			],
+			'Rune' => [
+				'atk_def'
+			],
+			'Magic Stone' => [
+				'cost',
+				'totalcost',
+				'atk_def',
+				'attribute'
+			],
+			'Special Magic Stone' => [
+				'cost',
+				'totalcost',
+				'atk_def',
+				'attribute'
+			],
+			'Special Magic Stone/True Magic Stone' => [
+				'cost',
+				'totalcost',
+				'atk_def',
+				'attribute'
+			],
+			'Spell:Chant' => [
+				'atk_def'
+			],
+			'Spell:Chant-Instant' => [
+				'atk_def'
+			],
+			'Spell:Chant-Standby' => [
+				'atk_def'
+			],
+			'Addition:Field' => [
+				'atk_def'
+			],
+			'Addition:J/Resonator' => [
+				'atk_def'
+			],
+			'Addition:Resonator' => [
+				'atk_def'
+			],
+			'Addition:Ruler/J-Ruler' => [
+				'atk_def'
+			],
+		];
 
-		// Remove attribute
-		if (in_array($row['cardtype'],[
-			'Magic Stone',
-			'Special Magic Stone',
-			'Special Magic Stone/True Magic Stone'
-		])) {
-			unset($card['attribute']);
+		// Remove unused properties
+		foreach ($remove as $type => &$properties) {
+			foreach ($properties as &$property) {
+				unset($card[$property]);
+			}
 		}
 
 		// Add generated card to cards array

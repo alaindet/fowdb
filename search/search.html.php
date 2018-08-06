@@ -1,22 +1,22 @@
 <?php
-global $filters; // Passed filters
-global $thereWereResults; // Flags if there were results;
+	global $filters; // Passed filters
+	global $thereWereResults; // Flags if there were results;
 
-foreach ([
-    "formats",
-    "clusters",
-    "attributes",
-    "costs",
-    "types",
-    "backsides",
-    "rarities",
-    "cardfeatures",
-    "sortfields",
-] as $helper) {
-    $$helper = \App\Helpers::get($helper);
-}
+	$helpers = [
+		"formats",
+		"clusters",
+		"attributes",
+		"costs",
+		"types",
+		"backsides",
+		"rarities",
+		"cardfeatures",
+		"sortfields"
+	];
 
-$hideFilters = $thereWereResults ? " hidden" : "";
+	foreach ($helpers as &$helper) {
+		$$helper = \App\Helpers::get($helper);
+	}
 ?>
 <form method="GET" action="/" class="form" id="form_search">
 	<input type="hidden" name="do" value="search">
@@ -127,13 +127,14 @@ $hideFilters = $thereWereResults ? " hidden" : "";
   <?php endif; ?>
 	
 	<!-- Filters panel ====================================================== -->
-  <div class="col-xs-12<?=$hideFilters?>" id="hide-filters">
+  <div id="hide-filters" class="col-xs-12<?=$thereWereResults?' hidden':''?>">
   	<div class="panel panel-default">
   		
       <!-- Filters Header -->
   		<div class="panel-heading">
   			<h4>
-          <i class="fa fa-filter"></i>&nbsp;Filters
+          <i class="fa fa-filter"></i>
+					Filters
   				<button type="button" class="btn btn-link btn-xs form-reset">Reset</button>
   			</h4>
   		</div>
@@ -307,17 +308,18 @@ $hideFilters = $thereWereResults ? " hidden" : "";
   						<!-- Controls -->
   						<div class="col-xs-12 filter-controls">
   							<div class="btg-group" data-toggle="buttons">
-  								<?php foreach ($types as &$type):
-                    // Sticky values
-  									(isset($filters['cardtype']) AND in_array($type, $filters['cardtype']))
-                      ? list($active, $checked) = [' active', ' checked=true']
-  										: list($active, $checked) = ['', ''];
+  								<?php foreach ($types as &$value):
+										// Sticky values
+										$filter =& $filters['cardtype'];
+  									(isset($filter) && in_array($value, $filter))
+                      ? [$active, $checked] = [' active', ' checked=true']
+  										: [$active, $checked] = ['', ''];
   								?>
   									<label class="btn btn-default btn-sm separate<?=$active?>">
-  										<input type="checkbox" name="cardtype[]" value="<?=$type?>"<?=$checked?>>
-  										<span class="pointer"><?=$type?></span>
+  										<input type="checkbox" name="cardtype[]" value="<?=$value?>"<?=$checked?>>
+  										<span class="pointer"><?=$value?></span>
   									</label>
-                    <?=$type=="Special Magic Stone"?"<div class='fdb-separator-v-05'></div>":""?>
+                    <?=$value==="Special Magic Stone"?"<div class='fdb-separator-v-05'></div>":""?>
   								<?php endforeach; ?>
   							</div>
   						</div>
@@ -358,6 +360,29 @@ $hideFilters = $thereWereResults ? " hidden" : "";
                 </div>
               </div><!-- /Controls -->
             </div><!-- /Backside -->
+
+						<!-- DIVINITY ================================================= -->
+  					<div class="row filter">
+							<!-- Label -->
+							<div class="col-xs-12 filter-header">Divinity</div>
+							<!-- Control -->
+  						<div class="col-xs-12 filter-controls">
+  							<div class="btn-group" data-toggle="buttons">
+  								<?php foreach ([1,2,3,4,5,6,7,8,9] as $value):
+										// Sticky values
+										$filter =& $filters['divinity'];
+  									(isset($filter) && in_array($value, $filter))
+                      ? [$active, $checked] = [' active', ' checked=true']
+                      : [$active, $checked] = ['', ''];
+  								?>
+  									<label class="btn btn-default<?=$active?>">
+  										<input type="checkbox" name="divinity[]" value="<?=$value?>"<?=$checked?>>
+  										<?=$value?>
+  									</label>
+  								<?php endforeach; ?>
+  							</div>
+  						</div><!-- /Controls -->
+  					</div><!-- /Divinity -->
 
   				</div><!-- /Left panel -->
   				
