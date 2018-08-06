@@ -1,0 +1,58 @@
+{
+    "sets": [
+        {
+            "code": "sdv1",
+            "name": "Starter Deck Valhalla - Light",
+            "count": 23
+        },
+        {
+            "code": "sdv2",
+            "name": "Starter Deck Valhalla - 2",
+            "count": 23
+        },
+        {
+            "code": "sdv3",
+            "name": "Starter Deck Valhalla - 3",
+            "count": 23
+        },
+        {
+            "code": "sdv4",
+            "name": "Starter Deck Valhalla - 4",
+            "count": 23
+        },
+        {
+            "code": "sdv5",
+            "name": "Starter Deck Valhalla - 5",
+            "count": 23
+        },
+        {
+            "code": "ndr",
+            "name": "New Dawn Rises",
+            "count": 110
+        }
+    ],
+    "codes": [
+        "sdv1",
+        "sdv2",
+        "sdv3",
+        "sdv4",
+        "sdv5",
+        "ndr"
+    ],
+    "names": [
+        "Starter Deck Valhalla - Light",
+        "Starter Deck Valhalla - 2",
+        "Starter Deck Valhalla - 3",
+        "Starter Deck Valhalla - 4",
+        "Starter Deck Valhalla - 5",
+        "New Dawn Rises"
+    ],
+    "counts": [
+        23,
+        23,
+        23,
+        23,
+        23,
+        110
+    ]
+}

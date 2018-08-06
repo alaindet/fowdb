@@ -1,0 +1,12 @@
+{
+    "default": "Choose",
+    "setnum": "Set",
+    "cardnum": "Number",
+    "subtype_race": "Race/Trait",
+    "attribute": "Attribute",
+    "totalcost": "Total Cost",
+    "rarity": "Rarity",
+    "cardtype": "Type",
+    "atk": "ATK",
+    "def": "DEF"
+}

@@ -1,0 +1,61 @@
+{
+    "default": "wandr",
+    "list": {
+        "nwfrt": {
+            "name": "New Frontiers",
+            "clusters": [
+                5,
+                4
+            ]
+        },
+        "wandr": {
+            "name": "Wanderer",
+            "clusters": [
+                2,
+                3,
+                4,
+                5
+            ]
+        },
+        "orign": {
+            "name": "Origin",
+            "clusters": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ]
+        },
+        "c-rei": {
+            "name": "Reiya Cluster",
+            "clusters": [
+                5
+            ]
+        },
+        "c-lap": {
+            "name": "Lapis Cluster",
+            "clusters": [
+                4
+            ]
+        },
+        "c-ali": {
+            "name": "Alice Cluster",
+            "clusters": [
+                3
+            ]
+        },
+        "c-gri": {
+            "name": "Grimm Cluster",
+            "clusters": [
+                2
+            ]
+        },
+        "c-val": {
+            "name": "Valhalla Cluster",
+            "clusters": [
+                1
+            ]
+        }
+    }
+}
