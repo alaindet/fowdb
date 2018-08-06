@@ -21,7 +21,8 @@
 			'/?p=admin/rulings' => 'Rulings',
 			// '/?p=admin/requests' => 'Ruling Requests',
 			// '/?p=admin/ban' => 'Banlist',
-			// '/?p=admin/image' => 'Imaging Tools'
+      // '/?p=admin/image' => 'Imaging Tools'
+      '/?p=admin/trim-image' => 'Trim image'
 		]
 	];
 ?>

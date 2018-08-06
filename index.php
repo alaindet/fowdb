@@ -83,6 +83,10 @@ if (isset($_GET['p'])) {
             ]);
             exit();
 
+        case 'admin/trim-image':
+            \App\Page::build('Admin - Trim image', 'admin/image-trim/index.php');
+            return;
+
         case 'card':
             include 'cardpage/ogpinfo.sql.php'; // Get info for OGP
             \App\Page::build($page_title, 'cardpage/cardpage.php', ['js'=>['cardpage']]);
