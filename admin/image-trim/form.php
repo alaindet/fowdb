@@ -4,7 +4,7 @@
 
 <div class="well well-lg">
 	<form
-    action="/laravel/public/image-tools/trim"
+    action="/?p=admin/trim-image"
     method="post"
     enctype="multipart/form-data"
   >

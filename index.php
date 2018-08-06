@@ -84,7 +84,15 @@ if (isset($_GET['p'])) {
             exit();
 
         case 'admin/trim-image':
-            \App\Page::build('Admin - Trim image', 'admin/image-trim/index.php');
+            switch ($_SERVER['REQUEST_METHOD']) {
+                case 'POST':
+                    require __DIR__ . '/admin/image-trim/process.php';
+                    break;
+                case 'GET':
+                default:
+                    \App\Page::build('Admin - Trim image', 'admin/image-trim/form.php');
+                    break;
+            }
             return;
 
         case 'card':
