@@ -3,5 +3,6 @@
 /_images
 /node_modules
 /package-lock.json
+/laravel
 *.min.js
 *.min.css
