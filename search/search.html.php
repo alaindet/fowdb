@@ -372,8 +372,8 @@
 										// Sticky values
 										$filter =& $filters['divinity'];
   									(isset($filter) && in_array($value, $filter))
-                      ? [$active, $checked] = [' active', ' checked=true']
-                      : [$active, $checked] = ['', ''];
+                      ? list($active, $checked) = [' active', ' checked=true']
+                      : list($active, $checked) = ['', ''];
   								?>
   									<label class="btn btn-default<?=$active?>">
   										<input type="checkbox" name="divinity[]" value="<?=$value?>"<?=$checked?>>
