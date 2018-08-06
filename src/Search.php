@@ -540,12 +540,29 @@ class Search
                 ]);
             }
 
+            // Game-specific: Chant/Rune are chants as well
+            else if (in_array("Chant/Rune", $this->f['cardtype'])) {
+                $cardtypes = \App\FoWDB_Array::union($this->f['cardtype'], [
+                    "Chant",
+                    "Rune"
+                ]);
+            }
+
+            // Game-specific: Rune are Chant/Rune as well
+            else if (in_array("Rune", $this->f['cardtype'])) {
+                $cardtypes = \App\FoWDB_Array::union($this->f['cardtype'], [
+                    "Chant/Rune",
+                    "Rune"
+                ]);
+            }
+
             // Game-specific: Chant will add also Spell:Chant-* old types to search results
             else if (in_array("Chant", $this->f['cardtype'])) {
                 $cardtypes = \App\FoWDB_Array::union($this->f['cardtype'], [
                     "Spell:Chant",
                     "Spell:Chant-Instant",
-                    "Spell:Chant-Standby"
+                    "Spell:Chant-Standby",
+                    "Chant/Rune"
                 ]);
             }
 
