@@ -45,6 +45,7 @@ else {
 		'num'          => '',
 		'attr'         => '',
 		'type'         => '',
+		'divinity'     => '',
 		'rarity'       => '',
 		'attrcost'     => '',
 		'freecost'     => '',

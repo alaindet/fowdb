@@ -154,6 +154,14 @@ if (isset($_POST['action'])) {
 			}
 		}
 
+		// Divinity
+		if (isset($_POST['divinity'])) {
+			$divinity = (int) $_POST['divinity'];
+			$divinity = $divinity === -1 ? null : $divinity;
+		} else {
+			$divinity = null;
+		}
+
 		// Update the database
 		$db->update("cards", [
 			'id' => $_POST['id'],
@@ -166,6 +174,7 @@ if (isset($_POST['action'])) {
 			'cardcode' => $code,
 			'attribute' => $attribute,
 			'cardtype' => $_POST['type'],
+			'divinity' => $divinity,
 			'rarity' => $rarity,
 			'attributecost' => ($attrcost == null) ? null : $attrcost,
 			'freecost' => $freecost,
@@ -322,6 +331,14 @@ if (isset($_POST['action'])) {
 			}
 		}
 
+		// Divinity
+		if (isset($_POST['divinity'])) {
+			$divinity = (int) $_POST['divinity'];
+			$divinity = $divinity === -1 ? null : $divinity;
+		} else {
+			$divinity = null;
+		}
+
 		// Insert into the database
 		$db->insert("cards", [
 			'narp' => $_POST['narp'],
@@ -333,6 +350,7 @@ if (isset($_POST['action'])) {
 			'cardcode' => $code,
 			'attribute' => $attribute,
 			'cardtype' => $_POST['type'],
+			'divinity' => $divinity,
 			'rarity' => $rarity,
 			'attributecost' => ($attrcost == null) ? null : $attrcost,
 			'freecost' => $freecost,

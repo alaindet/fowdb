@@ -308,6 +308,19 @@
 						</div>
 					</div>
 
+          <!-- Divinity =================================================== -->
+					<div class="form-group form-section">
+						<label for="divinity" class="col-sm-2">Divinity</label>
+						<div class="col-sm-10">
+							<input
+                type="text"
+                name="divinity"
+                value="<?=$card['divinity']?>"
+                placeholder="Divinity (-1 to delete existing value)..."
+                class="form-control"
+              >
+						</div>
+					</div>
 
 					<!-- ATK/DEF ==================================================== -->
 					<div class="form-group form-section">

@@ -93,6 +93,7 @@ $sql = "SELECT
 			cardcode,
 			attribute,
 			cardtype,
+			divinity,
 			totalcost,
 			cardname,
 			SUBSTRING(cardtext, 1, 75) as cardtext,
