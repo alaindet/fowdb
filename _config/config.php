@@ -12,7 +12,7 @@ foreach ([
     "APP_DB_HOST" => "127.0.0.1",
     "APP_DB_NAME" => "my_fowdb",
     "APP_DB_USER" => "fowdb",
-    "APP_DB_PASSWORD" => "",
+    "APP_DB_PASSWORD" => "fowdb",
     // Default JSON_* flags for json_encode() function
     // *_NUMERIC_CHECK preserves integers as int, not strings
     // *_UNESCAPED_SLASHES prevents escaping slashes into strings

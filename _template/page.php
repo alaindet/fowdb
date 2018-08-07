@@ -1,3 +1,6 @@
+<?php
+	$timestamp = ""
+?>
 <!DOCTYPE html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
 <head>
@@ -31,9 +34,9 @@
 	<?php require APP_ROOT . '/_includes/footer.php'; ?>
 
 	<!-- JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" defer></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" defer></script>
 
-	<?php if (isset($options['jqueryui'])): ?>
+	<?php if (isset($options['jqueryui'])): // jQuery UI ?>
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.min.css" defer>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" defer></script>
 	<?php endif; ?>
@@ -43,16 +46,17 @@
       <script src='https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.10.0/js/lightbox.min.js' defer></script>
 	<?php endif; ?>
 
+  <!-- Bootstrap -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" defer></script>
-	<script src="_js/common.min.js?20180612" defer></script>
+
+  <!-- Common script -->
+  <script src="_js/common.min.js?20180612" defer></script>
 
 	<!-- Optional scripts -->
-	<?php
-		if (isset($options['js'])) {
-			foreach ($options['js'] as &$link) {
-				echo '<script src="_js/'.$link.'.min.js?20180718" defer></script>';
-			}
-		}
-	?>
+	<?php if (isset($options['js'])): ?>
+		<?php foreach ($options['js'] as &$link): ?>
+			<script src="<?="_js/{$link}.min.js?{$timestamp}"?>" defer></script>
+		<?php endforeach; ?>
+	<?php endif; ?>
 </body>
 </html>

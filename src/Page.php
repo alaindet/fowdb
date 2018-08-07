@@ -2,6 +2,9 @@
 
 namespace App;
 
+use App\Database;
+use App\TinyHtmlMinifier\TinyMinify;
+
 /**
  * This function generates a page
  *
@@ -18,40 +21,46 @@ namespace App;
  */
 class Page {
 
-	static function build ($title = null, $path = null, $options = null, $vars = null) {
+	static function build ($title = null, $path = null, $options = null, $vars = null)
+	{
+		if (isset($title)) {
+			$page_title = $title;
+		}
+
+		$scriptPath = APP_ROOT . "/" . $path;;
+
+		$pdo = Database::getInstance(true);
 		
-		$pdo = \App\Database::getInstance(true);
-
-		if (isset($title)) { $page_title = $title; }
-		
-		/*
-		 * Check if a valid path have been passed,
-		 * and use it or throw an exception
-		 */
-		if (isset($path) AND file_exists(APP_ROOT."/".$path)) {
-
-			// Get content path
-			$contentPath = APP_ROOT."/".$path;
-
+		if (isset($path) && file_exists($scriptPath))
+		{
 			// EXPLANATION
 			// Starting and stopping buffering needs to be done in order to
 			// let the script add notifications and/or redirect the user
 
 			// Start output buffering
 			ob_start();
-			// Re-define template variables to make them reusable inside the template
+
+			// Bind variables to templates
 			if (!empty($vars)) {
-			    for($i = 0, $keys = array_keys($vars), $len = count($keys); $i < $len; $i++) {
+				$keys = array_keys($vars);
+			    for ($i = 0, $len = count($keys); $i < $len; $i++) {
 			        $name = $keys[$i];
 			        $$name =& $vars[$name];
 			    }
 			}
-			// Generate content into buffer (lets script add notifications)
-			include $contentPath;
-			// Get generated page content so far, erase buffered, stop buffering
-			$pageContent = ob_get_clean();
-			// Include page template and print content into it
+			
+			// Execute the script and generate some content into the buffer
+			require $scriptPath;
+
+			// Read page content into a variable and clean it all
+			$pageContent = ob_get_contents();
+			ob_clean();
+
+			// Build the entire template using previous content
 			require APP_ROOT . '/_template/page.php';
+
+			// Get content from buffer, close buffer, minify content
+			echo TinyMinify::html(ob_get_clean());
 		}
 		else {
 			throw new \Exception("No path provided or file doesn't exist at provided path.");
