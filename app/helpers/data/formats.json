@@ -14,7 +14,8 @@
                 2,
                 3,
                 4,
-                5
+                5,
+                6
             ]
         },
         "orign": {
@@ -24,7 +25,14 @@
                 2,
                 3,
                 4,
-                5
+                5,
+                6
+            ]
+        },
+        "c-nva": {
+            "name": "New Valhalla Cluster",
+            "clusters": [
+                6
             ]
         },
         "c-rei": {

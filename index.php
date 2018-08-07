@@ -28,14 +28,20 @@ if (isset($_GET['p'])) {
             \App\Page::build('Admin Menu', 'admin/index.php');
             exit();
 
-        // case 'admin/ban':
-        //  \App\Page::build('Admin - Banlists', 'admin/ban/index.php');
-        //  exit();
-
-        case 'manage-cards':
         case 'admin/cards':
+        case 'manage-cards':
             \App\Page::build('Admin - Cards', 'admin/manage-cards/index.php');
             exit();
+
+        case 'admin/database':
+            if (admin_level() === 0) {
+                echo "You're not authorized";
+                return;
+            }
+            $hash = 'cJ3MRhFC8zNuuv4Eo6pNGCx7HfbznvOAdEZT9Ylt7AG';
+            $url = APP_URL . '/admin/database/' . $hash . '/index.php';
+            header("Location: {$url}");
+            return;
             
         case 'admin/cr':
             \App\Page::build('Admin - Comprehensive Rules', 'admin/cr/index.php');

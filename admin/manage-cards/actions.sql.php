@@ -162,8 +162,7 @@ if (isset($_POST['action'])) {
 			$divinity = null;
 		}
 
-		// Update the database
-		$db->update("cards", [
+		$data = [
 			'id' => $_POST['id'],
 			'backside' => $backside,
 			'narp' => $_POST['narp'],
@@ -187,16 +186,26 @@ if (isset($_POST['action'])) {
 			'flavortext' => $_POST['flavortext'],
 			'image_path' => $imagepath,
 			'thumb_path' => $thumbpath
-		], "id = :id", [":id" => $_POST['id']]);
+		];
+
+		// Update the database
+		$db->update("cards", $data, "id = :id", [":id" => $_POST['id']]);
 
 		
 		// Generate card link with card name
-		$card_link = "<strong><a href='/?p=card&code="
-				   . str_replace(' ', '+', $code)
-				   . "' target=_blank>".$_POST['name']."</a></strong>";
+		$cardLink = implode("\n", [
+			'<strong>',
+				'<a ',
+					'href="/?p=card&code=',str_replace(' ', '+', $code),'" ',
+					'target=_blank',
+				'>',
+					$_POST['name'],
+				'</a>',
+			'</strong>'
+		]);
 
 		// Notify the user
-		\App\FoWDB::notify("Card {$card_link} successfully edited.", 'info');
+		\App\FoWDB::notify("Card {$cardLink} successfully edited.", 'info');
 
 		// REDIRECT TO CARD LIST
 		header("Location: /?p=admin/cards&menu_action=list");
@@ -213,7 +222,7 @@ if (isset($_POST['action'])) {
 			$setcode = $_POST['set'];
 
 			// SUFFIX AND BACKSIDE --------------------------------------------
-			$backside = 0; // Initialize backside
+			$backside = 0;
 			
 			// J-ruler (backside = 1)
 			if (!isset($_POST['backside']) && $_POST['type'] == 'J-Ruler') {
@@ -252,7 +261,7 @@ if (isset($_POST['action'])) {
 
 			// Define set number and block
 			$setnum = (int) $db_set['setnum'];
-			$block  = (int) $db_set['block'];
+			$block = (int) $db_set['block'];
 
 			// Assemble paths
 			$imagepath = "_images/cards/{$block}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
@@ -339,8 +348,7 @@ if (isset($_POST['action'])) {
 			$divinity = null;
 		}
 
-		// Insert into the database
-		$db->insert("cards", [
+		$data = [
 			'narp' => $_POST['narp'],
 			'backside' => $backside,
 			'block' => $block,
@@ -363,19 +371,10 @@ if (isset($_POST['action'])) {
 			'flavortext' => $_POST['flavortext'],
 			'image_path' => $imagepath,
 			'thumb_path' => $thumbpath
-		]);
+		];
 
-		// // Store card images
-		// $_imagepath = \App\FoWDB::processImage(
-		// 	$_FILES['cardimage'], APP_ROOT."/".$imagepath, 'hq',
-		// 	true // Watermark
-		// );
-
-		// $_thumbpath = \App\FoWDB::processImage(
-		// 	$_FILES['cardimage'], APP_ROOT."/".$thumbpath, 'lq',
-		// 	true // Watermark
-		// );
-		
+		// Insert into the database
+		$db->insert("cards", $data);
 		
 		// Create image
 		(new \Intervention\Image\ImageManager())
@@ -392,12 +391,19 @@ if (isset($_POST['action'])) {
 	        ->save(APP_ROOT."/".$thumbpath, 80);
 
 		// Generate card link with card name
-		$card_link = "<strong><a href='/?p=card&code="
-				   . str_replace(' ', '+', $code)
-				   . "' target=_blank>".$_POST['name']."</a></strong>";
+		$cardLink = implode("\n", [
+			'<strong>',
+				'<a ',
+					'href="/?p=card&code=',str_replace(' ', '+', $code),'" ',
+					'target=_blank',
+				'>',
+					$_POST['name'],
+				'</a>',
+			'</strong>'
+		]);
 
 		// Notify the user
-		\App\FoWDB::notify("New card {$card_link} successfully added.", 'success');
+		\App\FoWDB::notify("New card {$cardLink} successfully added.", 'success');
 
 		// Redirect user to Create new card
 		header("Location: /?p=admin/cards&form_action=create");

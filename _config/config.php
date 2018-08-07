@@ -7,6 +7,7 @@ session_start();
 foreach ([
     "APP_NAME" => "FoWDB - Force of Will Database",
     "APP_DOMAIN" => "http://fowdb.altervista.org/",
+    "APP_URL" => "http://fowdb.altervista.org", // Alias
     "APP_ROOT" => dirname(__DIR__),
     "APP_DB_HOST" => "127.0.0.1",
     "APP_DB_NAME" => "my_fowdb",
@@ -33,21 +34,3 @@ include APP_ROOT.'/_config/helpers.php'; // Helper functions
 if (! isset($_SESSION['token'])) {
     $_SESSION['token'] = sha1(uniqid(mt_rand(), true));
 }
-
-// AUTOLOADER -----------------------------------------------------------------
-// function __autoload($classname)
-// {
-//     include APP_ROOT.'/_includes/classes/class.'.strtolower($classname).'.php';
-// }
-
-// EXCEPTIONS -----------------------------------------------------------------
-// set_exception_handler(function ($e)
-// {
-//     // // Get error page
-//     // $errorPage = file_get_contents(APP_ROOT . "/_template/errorPage.html");
-//     // // Display error page
-//     // echo str_replace("<!--#errorMessage#-->", $e->getMessage(), $errorPage);
-    
-//     // DEV
-//     echo "ERROR: (DEV)\n",$e->getMessage();
-// });

@@ -270,7 +270,7 @@ if (!empty($result)) {
 		}
 
 		// To be removed
-		$remove = [
+		$removable = [
 			'Ruler' => [
 				'cost',
 				'totalcost',
@@ -337,15 +337,17 @@ if (!empty($result)) {
 			],
 		];
 
-		// Remove unused properties
-		foreach ($remove as $type => &$properties) {
-			foreach ($properties as &$property) {
-				unset($card[$property]);
+		// Filter some props from the final card array of info
+		$finalCard = [];
+		$removables = $removable[$card['cardtype']];
+		foreach ($card as $key => &$value) {
+			if (!in_array($key, $removables)) {
+				$finalCard[$key] = $value;
 			}
 		}
 
 		// Add generated card to cards array
-		$cards[] = $card;
+		$cards[] = $finalCard;
 	}
 }
 

@@ -5,6 +5,7 @@
 ?>
 	<div class="row cardpage">
 
+    <!-- Card name -->
 		<div class="col-xs-12">
 			<div class="page-header" style="margin-top:0">
 				<h2><?=$card['cardname']?></h2>
@@ -37,27 +38,41 @@
 			</div>
 		<?php endif; ?>
 
-		<!-- IMAGE -->
+		<!-- Card image -->
 		<div class="col-xs-12 col-sm-5 box" style="text-align:center;">
 			<img src="<?=$card['image_path']?>" alt="<?=$card['cardname']?>" class="cardpage-img">
 		</div>
 		
-		<!-- CARD INFO -->
+		<!-- Card info -->
 		<div class="col-xs-12 col-sm-7 box card-props">
 			<?php
-				$excludeProps = ['id', 'backside', 'narp', 'image_path', 'thumb_path', 'rulings'];
+				$excludeProps = [
+          'id',
+          'backside',
+          'narp',
+          'image_path',
+          'thumb_path',
+          'rulings'
+        ];
 			?>
 			<?php foreach ($card as $prop => &$value): ?>
-				<?php if (!in_array($prop, $excludeProps) && (!empty($value) || $value == 0) ): ?>
+				<?php if (
+          !in_array($prop, $excludeProps) &&
+          (!empty($value) || $value === 0)
+        ): ?>
 					<div class="row card-prop">
-						<div class="col-xs-3 col-sm-3 prop-label"><?=$cardFeatures[$prop]?></div>
-						<div class="col-xs-9 col-sm-9 prop-value"><?=$value?></div>
+						<div class="col-xs-3 col-sm-3 prop-label">
+              <?=$cardFeatures[$prop]?>
+            </div>
+						<div class="col-xs-9 col-sm-9 prop-value">
+              <?=$value?>
+            </div>
 					</div>
 				<?php endif; ?>
 			<?php endforeach; ?>
 		</div>
 
-		<?php require __DIR__."/cr-update.html.php"; // CR Update ?>
+		<?php require __DIR__ . "/cr-update.html.php"; // CR Update ?>
 
 		<?php if ($card['narp']['flag'] > 0): // NARPs ?>
 			<div class="col-xs-12">
@@ -75,7 +90,6 @@
 		<?php endif; ?>
 
 		<?php if (!empty($card['rulings'])): // Rulings ?>
-			<!-- Rulings -->
 			<div class="col-xs-12 f-rulings">
 				<h3>Rulings&nbsp;<small>(<?=count($card['rulings'])?>)</small></h3>
 				<div class="list-group f-rulings-list">

@@ -2,6 +2,8 @@
 
 namespace App;
 
+use PDO;
+
 class Database
 {
     private static $instance = null; // Instance of this class
@@ -14,15 +16,15 @@ class Database
     private function __construct()
     {
         // Create PDO connection using pre-defined constants
-        $this->pdo = new \PDO(
+        $this->pdo = new PDO(
             'mysql:host='.APP_DB_HOST.';dbname='.APP_DB_NAME.';charset=utf8',
             APP_DB_USER,
             APP_DB_PASSWORD
         );
 
         // Db config: Throw exceptions on errors, fetch assoc array as default
-        $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        $this->pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     }
 
     /**
@@ -33,8 +35,9 @@ class Database
      */
     public static function getInstance($returnPDO = false)
     {
-        if (!isset(self::$instance)) {
-            self::$instance = new Database();
+        if (null === self::$instance) {
+            $className = __CLASS__;
+            self::$instance = new $className();
         }
 
         return $returnPDO ? self::$instance->pdo : self::$instance;
@@ -70,24 +73,46 @@ class Database
 
         // No values to bind
         if (!isset($values)) {
-            $this->query = $this->pdo->query($sql); // Create PDOStatement
-            $this->results = $this->query->fetchAll(); // Fetch results
-            if (empty($this->results)) { return false; } // ERROR: No results!
-            return $first ? $this->results[0] : $this->results; // Return results
+
+            // Create PDOStatement object
+            $this->query = $this->pdo->query($sql);
         }
 
         // Values to bind!
         else {
-            $this->query = $this->pdo->prepare($sql); // Prepare SQL statement
-            // Bind values (http://php.net/manual/en/pdostatement.bindvalue.php#80285)
+
+            // Prepare SQL statement
+            $this->query = $this->pdo->prepare($sql);
+
+            // Bind values
+            // http://php.net/manual/en/pdostatement.bindvalue.php#80285
             foreach ($values as $placeholder => &$value) {
-                $this->query->bindValue($placeholder, $value, $this->getParamFlag($value));
+                $this->query->bindValue(
+                    $placeholder,
+                    $value,
+                    $this->getParameterFlag($value)
+                );
             }
-            if (!$this->query->execute()) { return false; } // ERROR: Cannot execute
-            $this->results = $this->query->fetchAll(); // Fetch results
-            if (empty($this->results)) {return false;} // ERROR: No results
-            return $first ? $this->results[0] : $this->results; // Return results
+
+            // ERROR: Can't execute!
+            if (!$this->query->execute()) {
+                return false;
+            }
         }
+
+        // Fetch results from the database
+        $this->results = $this->query->fetchAll();
+
+        // ERROR: No results!
+        if (empty($this->results)) {
+            return false;
+        }
+
+        // Return results
+        return $first ? $this->results[0] : $this->results;
+
+        // Return results
+        return $first ? $this->results[0] : $this->results;
     }
 
     /**
@@ -98,19 +123,11 @@ class Database
      * @param mixed any value to be bind
      * @return int Count of rows from db
      */
-    public function getCount($table, $filter = null, $values = null)
+    public function getCount($table, $filter = "TRUE", $values = null)
     {
-        // Get filter, default is 1 (no filter)
-        $filter = isset($filter) ? $filter : "1";
-
-        // Get count from database
-        $count = $this->get(
-            "SELECT COUNT(*) as count FROM {$table} WHERE {$filter}",
-            $values,
-            true
-        );
-
-        return (int) $count['count'];
+        $query = "SELECT COUNT(id) as count FROM {$table} WHERE {$filter}";
+        $data = $this->get($query, $values);
+        return (int) $data[0]['count'];
     }
 
     /**
@@ -124,7 +141,7 @@ class Database
     public function insert($table, $values = null, $updateOnDuplicate = false)
     {
         // ERROR: Invalid input
-        if (!is_string($table) OR !is_array($values)) {
+        if (!is_string($table) || !is_array($values)) {
             return false;
         }
 
@@ -132,13 +149,15 @@ class Database
         $fields = array_keys($values);
 
         // Assemble sql statement (put placeholders like :field)
-        $sql = "INSERT INTO `{$table}` (".implode(", ", $fields).") VALUES (:".implode(", :", $fields).")";
+        $fields = implode(", ", $fields);
+        $placeholders = ":" . implode(", :", $fields);
+        $sql = "INSERT INTO {$table} ({$fields}) VALUES ({$placeholders})";
 
         // Add SQL to update entry on duplicate, if user requested
         if ($updateOnDuplicate) {
             $updateSql = [];
             foreach ($fields as &$field) {
-                $updateSql[] = "`{$field}`=VALUES(`{$field}`)";
+                $updateSql[] = "{$field}=VALUES({$field})";
             }
             $sql .= " ON DUPLICATE KEY UPDATE " . implode(", ", $updateSql);
         }
@@ -151,10 +170,14 @@ class Database
         // Bind values (http://php.net/manual/en/pdostatement.bindvalue.php#80285)
         foreach($values as $field => &$value) {
             $placeholder = ":".$field;
-            $this->query->bindValue($placeholder, $value, $this->getParamFlag($value));
+            $this->query->bindValue(
+                $placeholder,
+                $value,
+                $this->getParameterFlag($value)
+            );
         }
 
-        return $this->query->execute() ? (int)$this->pdo->lastInsertId() : false;
+        return $this->query->execute() ? (int) $this->pdo->lastInsertId() : false;
     }
 
     /**
@@ -177,8 +200,12 @@ class Database
         $this->query = $this->pdo->prepare("DELETE FROM `{$table}` WHERE {$condition}");
 
         // Bind values (http://php.net/manual/en/pdostatement.bindvalue.php#80285)
-        foreach($values as $param => &$value) {
-            $this->query->bindValue($param, $value, $this->getParamFlag($value));
+        foreach($values as $parameter => &$value) {
+            $this->query->bindValue(
+                $parameter,
+                $value,
+                $this->getParameterFlag($value)
+            );
         }
 
         return $this->query->execute();
@@ -201,7 +228,12 @@ class Database
      * @param array $conditionValues assoc array of values to be bind to conditions
      * @return mixed # of updated rows as int or false on error
      */
-    public function update($table, $values = null, $condition = null, $conditionValues = null)
+    public function update(
+        $table,
+        $values = null,
+        $condition = null,
+        $conditionValues = null
+    )
     {
         // ERROR: Invalid input
         if (!is_string($table) OR !is_array($values)) {
@@ -213,7 +245,9 @@ class Database
 
         // Generate placeholders for SET values
         $temp = [];
-        foreach ($values as $field => &$value) { $temp[] = "{$field} = :{$field}"; }
+        foreach ($values as $field => &$value) {
+            $temp[] = "{$field} = :{$field}";
+        }
         $placeholders = implode(", ", $temp);
 
         // Build SQL
@@ -223,14 +257,23 @@ class Database
         $this->query = $this->pdo->prepare($sql);
 
         // Bind values into SET clause (http://php.net/manual/en/pdostatement.bindvalue.php#80285)
-        foreach($values as $param => &$value) {
-            $this->query->bindValue(":".$param, $value, $this->getParamFlag($value));
+        foreach($values as $parameter => &$value) {
+            $placeholder = ":".$parameter;
+            $this->query->bindValue(
+                $placeholder,
+                $value,
+                $this->getParameterFlag($value)
+            );
         }
 
         // Check if condition needs binding
         if (isset($conditionValues)) {
-            foreach($conditionValues as $param => &$value) {
-                $this->query->bindValue($param, $value, $this->getParamFlag($value));
+            foreach ($conditionValues as $parameter => &$value) {
+                $this->query->bindValue(
+                    $parameter,
+                    $value,
+                    $this->getParameterFlag($value)
+                );
             }
         }
 
@@ -254,7 +297,7 @@ class Database
      * @param any $x variable to be tested
      * @return int PDO::PARAM_* proper value
      */
-    private function getParamFlag($x)
+    private function getParameterFlag($x)
     {
         switch(gettype($x)) {
             case 'boolean': return \PDO::PARAM_BOOL; // Boolean

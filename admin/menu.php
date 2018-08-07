@@ -12,17 +12,18 @@
 	// Define links
 	$links = [
 		'master' => [
-			'/?p=admin/hash' => 'Hash a string',
-			'/?p=admin/helpers' => 'Helpers',
+			'admin/database' => 'Database',
+			'admin/hash' => 'Hash a string',
+			'admin/helpers' => 'Helpers',
 		],
 		'judge' => [
-			'/?p=admin/cards' => 'Cards',
-			'/?p=admin/cr' => 'Comprehensive Rules',
-			'/?p=admin/rulings' => 'Rulings',
-			// '/?p=admin/requests' => 'Ruling Requests',
-			// '/?p=admin/ban' => 'Banlist',
-      // '/?p=admin/image' => 'Imaging Tools'
-      '/?p=admin/trim-image' => 'Trim image'
+			'admin/cards' => 'Cards',
+			'admin/cr' => 'Comprehensive Rules',
+			'admin/rulings' => 'Rulings',
+			// 'admin/requests' => 'Ruling Requests',
+			// 'admin/ban' => 'Banlist',
+      // 'admin/image' => 'Imaging Tools'
+      'admin/trim-image' => 'Trim image'
 		]
 	];
 ?>
@@ -50,10 +51,9 @@
 			<!-- Admin Menu -->
 			<div class="col-xs-12 col-sm-4">
 				<ul class="list-unstyled">
-					<?php foreach ($links['master'] as $link => $label): ?>
-						<!-- <?=$label?> -->
+					<?php foreach ($links['master'] as $link => &$label): ?>
 						<li>
-							<a href="<?=$link?>">
+							<a href="/?p=<?=$link?>">
 								<button type="button" class="btn btn-default btn-lg">
 									<?=$label?>
 								</button>
@@ -68,10 +68,9 @@
 		<!-- Judge menu -->
 		<div class="col-xs-12 col-sm-4">
 			<ul class="list-unstyled">
-				<?php foreach ($links['judge'] as $link => $label): ?>
-					<!-- <?=$label?> -->
+				<?php foreach ($links['judge'] as $link => &$label): ?>
 					<li>
-						<a href="<?=$link?>">
+						<a href="/?p=<?=$link?>">
 							<button type="button" class="btn btn-default btn-lg">
 								<?=$label?>
 							</button>
@@ -81,5 +80,6 @@
 				<?php endforeach; ?>
 			</ul>
 		</div>
+    
 	</div>
 <?php endif; ?>
