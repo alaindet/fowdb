@@ -1,11 +1,15 @@
-# Everywhere
+# To be removed
+/_images/
+/node_modules/
+/vendor/
+
+# Directories
+/.dev
+/images
+/src/node_modules/
+/src/vendor/
+
+# Files
 *.min.js
 *.min.css
 .env
-
-# Legacy
-**/node_modules
-**/vendor
-**/.dev
-**/_images
-**/images
