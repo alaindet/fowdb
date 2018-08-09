@@ -4,8 +4,8 @@
 /vendor/
 
 # Directories
-/.dev
-/images
+/.dev/
+/images/
 /src/node_modules/
 /src/vendor/
 
