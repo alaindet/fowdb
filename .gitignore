@@ -1,8 +1,11 @@
-/.dev
-/vendor
-/_images
-/node_modules
-/package-lock.json
-/laravel
+# Everywhere
 *.min.js
 *.min.css
+.env
+
+# Legacy
+**/node_modules
+**/vendor
+**/.dev
+**/_images
+**/images
