@@ -4,6 +4,7 @@
 /vendor/
 
 # Directories
+/.backup/
 /.dev/
 /images/
 /src/node_modules/
