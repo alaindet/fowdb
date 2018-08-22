@@ -494,7 +494,7 @@ class Search
             // REGEXP
             // It's better than LIKE because it excludes "Four Sacred Beasts" cards
             // when searching for "Beast", but it can search for "Human/Beast" cards!
-            $_sql_f[] = "subtype_race REGEXP \"^{$race}$|^{$race}\/|\/{$race}\/|\/{$race}$\"";
+            $_sql_f[] = "subtype_race REGEXP \"(^|\/){$race}(\/|$)\"";
         }
 
 
