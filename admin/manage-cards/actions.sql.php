@@ -275,6 +275,21 @@ if (isset($_POST['action'])) {
 			$thumbpath = "_images/thumb/missing.jpg";
 		}
 
+		// Check for existing card
+		$sql = "SELECT id FROM cards WHERE setcode = :setcode AND cardnum = :num LIMIT 1";
+		$existingCard = $db->get($sql, [
+			':setcode' => $setcode,
+			':num' => $_POST['cardnum']
+		]);
+
+		// ERROR: This number already exists for this set
+		if (!empty($existingCard)) {
+			$message = "Sorry, card number <strong>{$_POST['cardnum']}</strong> already exists for set <strong>{$setcode}</strong>.";
+			\App\FoWDB::notify($message, 'danger');
+			header("Location: /?p=admin/cards&form_action=create");
+			exit();
+		}
+
 		// Rarity
 		$rarity = $_POST['rarity'] !== 'no' ? strtolower($_POST['rarity']) : null;
 		$codeRarity = isset($rarity) ? strtoupper($rarity) : '';
@@ -379,18 +394,6 @@ if (isset($_POST['action'])) {
 			'thumb_path' => $thumbpath
 		]);
 
-		// // Store card images
-		// $_imagepath = \App\FoWDB::processImage(
-		// 	$_FILES['cardimage'], APP_ROOT."/".$imagepath, 'hq',
-		// 	true // Watermark
-		// );
-
-		// $_thumbpath = \App\FoWDB::processImage(
-		// 	$_FILES['cardimage'], APP_ROOT."/".$thumbpath, 'lq',
-		// 	true // Watermark
-		// );
-		
-		
 		// Create image
 		(new \Intervention\Image\ImageManager())
 	        ->make($_FILES['cardimage']['tmp_name'])

@@ -103,11 +103,12 @@ $links = [
 
 	<?php if (isset($_SESSION['notif'])): // Notification
 		$notification = $_SESSION['notif'];
-		if (isset($_SESSION['notify-type'])) {
-			$type = "alert-".$_SESSION['notify-type'];
+		if (isset($_SESSION['notif-type'])) {
+			$type = "alert-".$_SESSION['notif-type'];
 			unset($_SESSION['notif-type']);
+		} else {
+			$type = "alert-info";
 		}
-		$type = "alert-info";
 		unset($_SESSION['notif']);
 	?>
 		<div class="notification">

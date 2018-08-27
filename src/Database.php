@@ -105,11 +105,8 @@ class Database
 
         // ERROR: No results!
         if (empty($this->results)) {
-            return false;
+            return [];
         }
-
-        // Return results
-        return $first ? $this->results[0] : $this->results;
 
         // Return results
         return $first ? $this->results[0] : $this->results;
