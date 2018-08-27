@@ -345,6 +345,21 @@
 					</div>
 
 
+          <!-- Code ======================================================= -->
+					<div class="form-group form-section">
+						<label for="code" class="col-sm-2">Code</label>
+						<div class="col-sm-10">
+							<input
+                type="text"
+                name="code"
+                value="<?=$card['code']?>"
+                placeholder="Code (Leave empty for automatic code).."
+                class="form-control"
+              >
+						</div>
+					</div>
+          
+
 					<!-- Name ======================================================= -->
 					<div class="form-group form-section">
 						<label for="name" class="col-sm-2">Name</label>

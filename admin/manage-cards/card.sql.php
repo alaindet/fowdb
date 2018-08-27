@@ -53,6 +53,7 @@ else {
 		'atk'          => '',
 		'def'          => '',
 		'name'         => '',
+		'code' 		   => '',
 		'subtype_race' => '',
 		'text'         => '',
 		'flavortext'   => '',

@@ -92,10 +92,17 @@ if (isset($_POST['action'])) {
 		$rarity = $_POST['rarity'] !== 'no' ? strtolower($_POST['rarity']) : null;
 		$codeRarity = isset($rarity) ? strtoupper($rarity) : '';
 
-		// Code (If setcode and cardnum and rarity not set the code is 0-000 C)
-		$code = strtoupper($_POST['set'])
-				. '-' . str_pad($_POST['cardnum'], 3, '0', STR_PAD_LEFT)
-				. ' ' . $codeRarity;
+		// Card code
+		if (isset($_POST['code']) && !empty($_POST['code'])) {
+			$code = $_POST['code'];
+		}
+
+		// Auto-generated if empty
+		else {
+			$codeSet = strtoupper($_POST['set']);
+			$codeNum = str_pad($_POST['cardnum'], 3, '0', STR_PAD_LEFT);
+			$code = "{$codeSet}-{$codeNum} {$codeRarity}";
+		}
 
 		// Attribute ----------------------------------------------------------
 		if (
@@ -162,7 +169,8 @@ if (isset($_POST['action'])) {
 			$divinity = null;
 		}
 
-		$data = [
+		// Update the database
+		$db->update("cards", [
 			'id' => $_POST['id'],
 			'backside' => $backside,
 			'narp' => $_POST['narp'],
@@ -186,26 +194,16 @@ if (isset($_POST['action'])) {
 			'flavortext' => $_POST['flavortext'],
 			'image_path' => $imagepath,
 			'thumb_path' => $thumbpath
-		];
-
-		// Update the database
-		$db->update("cards", $data, "id = :id", [":id" => $_POST['id']]);
+		], "id = :id", [":id" => $_POST['id']]);
 
 		
 		// Generate card link with card name
-		$cardLink = implode("\n", [
-			'<strong>',
-				'<a ',
-					'href="/?p=card&code=',str_replace(' ', '+', $code),'" ',
-					'target=_blank',
-				'>',
-					$_POST['name'],
-				'</a>',
-			'</strong>'
-		]);
+		$card_link = "<strong><a href='/?p=card&code="
+				   . str_replace(' ', '+', $code)
+				   . "' target=_blank>".$_POST['name']."</a></strong>";
 
 		// Notify the user
-		\App\FoWDB::notify("Card {$cardLink} successfully edited.", 'info');
+		\App\FoWDB::notify("Card {$card_link} successfully edited.", 'info');
 
 		// REDIRECT TO CARD LIST
 		header("Location: /?p=admin/cards&menu_action=list");
@@ -222,7 +220,7 @@ if (isset($_POST['action'])) {
 			$setcode = $_POST['set'];
 
 			// SUFFIX AND BACKSIDE --------------------------------------------
-			$backside = 0;
+			$backside = 0; // Initialize backside
 			
 			// J-ruler (backside = 1)
 			if (!isset($_POST['backside']) && $_POST['type'] == 'J-Ruler') {
@@ -261,7 +259,7 @@ if (isset($_POST['action'])) {
 
 			// Define set number and block
 			$setnum = (int) $db_set['setnum'];
-			$block = (int) $db_set['block'];
+			$block  = (int) $db_set['block'];
 
 			// Assemble paths
 			$imagepath = "_images/cards/{$block}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
@@ -281,10 +279,17 @@ if (isset($_POST['action'])) {
 		$rarity = $_POST['rarity'] !== 'no' ? strtolower($_POST['rarity']) : null;
 		$codeRarity = isset($rarity) ? strtoupper($rarity) : '';
 
-		// Code (If setcode and cardnum and rarity not set the code is 0-000)
-		$code = strtoupper($_POST['set'])
-				. '-' . str_pad($_POST['cardnum'], 3, '0', STR_PAD_LEFT)
-				. ' ' . $codeRarity;
+		// Card code
+		if (isset($_POST['code']) && !empty($_POST['code'])) {
+			$code = $_POST['code'];
+		}
+
+		// Auto-generated if empty
+		else {
+			$codeSet = strtoupper($_POST['set']);
+			$codeNum = str_pad($_POST['cardnum'], 3, '0', STR_PAD_LEFT);
+			$code = "{$codeSet}-{$codeNum} {$codeRarity}";
+		}
 
 		// ATTRIBUTE ----------------------------------------------------------
 		if (
@@ -348,7 +353,8 @@ if (isset($_POST['action'])) {
 			$divinity = null;
 		}
 
-		$data = [
+		// Insert into the database
+		$db->insert("cards", [
 			'narp' => $_POST['narp'],
 			'backside' => $backside,
 			'block' => $block,
@@ -371,10 +377,19 @@ if (isset($_POST['action'])) {
 			'flavortext' => $_POST['flavortext'],
 			'image_path' => $imagepath,
 			'thumb_path' => $thumbpath
-		];
+		]);
 
-		// Insert into the database
-		$db->insert("cards", $data);
+		// // Store card images
+		// $_imagepath = \App\FoWDB::processImage(
+		// 	$_FILES['cardimage'], APP_ROOT."/".$imagepath, 'hq',
+		// 	true // Watermark
+		// );
+
+		// $_thumbpath = \App\FoWDB::processImage(
+		// 	$_FILES['cardimage'], APP_ROOT."/".$thumbpath, 'lq',
+		// 	true // Watermark
+		// );
+		
 		
 		// Create image
 		(new \Intervention\Image\ImageManager())
@@ -391,19 +406,12 @@ if (isset($_POST['action'])) {
 	        ->save(APP_ROOT."/".$thumbpath, 80);
 
 		// Generate card link with card name
-		$cardLink = implode("\n", [
-			'<strong>',
-				'<a ',
-					'href="/?p=card&code=',str_replace(' ', '+', $code),'" ',
-					'target=_blank',
-				'>',
-					$_POST['name'],
-				'</a>',
-			'</strong>'
-		]);
+		$card_link = "<strong><a href='/?p=card&code="
+				   . str_replace(' ', '+', $code)
+				   . "' target=_blank>".$_POST['name']."</a></strong>";
 
 		// Notify the user
-		\App\FoWDB::notify("New card {$cardLink} successfully added.", 'success');
+		\App\FoWDB::notify("New card {$card_link} successfully added.", 'success');
 
 		// Redirect user to Create new card
 		header("Location: /?p=admin/cards&form_action=create");

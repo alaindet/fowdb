@@ -149,9 +149,9 @@ class Database
         $fields = array_keys($values);
 
         // Assemble sql statement (put placeholders like :field)
-        $fields = implode(", ", $fields);
+        $_fields = implode(", ", $fields);
         $placeholders = ":" . implode(", :", $fields);
-        $sql = "INSERT INTO {$table} ({$fields}) VALUES ({$placeholders})";
+        $sql = "INSERT INTO {$table} ({$_fields}) VALUES ({$placeholders})";
 
         // Add SQL to update entry on duplicate, if user requested
         if ($updateOnDuplicate) {
