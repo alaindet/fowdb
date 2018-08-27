@@ -276,7 +276,12 @@ if (isset($_POST['action'])) {
 		}
 
 		// Check for existing card
-		$sql = "SELECT id FROM cards WHERE setcode = :setcode AND cardnum = :num LIMIT 1";
+		$sql = "SELECT id
+		FROM cards
+		WHERE setcode = :setcode
+		AND cardnum = :num
+		AND NOT(cardtype=\"Ruler\")
+		LIMIT 1";
 		$existingCard = $db->get($sql, [
 			':setcode' => $setcode,
 			':num' => $_POST['cardnum']
@@ -284,7 +289,8 @@ if (isset($_POST['action'])) {
 
 		// ERROR: This number already exists for this set
 		if (!empty($existingCard)) {
-			$message = "Sorry, card number <strong>{$_POST['cardnum']}</strong> already exists for set <strong>{$setcode}</strong>.";
+			$message = "Sorry, card number <strong>{$_POST['cardnum']}</strong>"
+			         . " already exists for set <strong>{$setcode}</strong>.";
 			\App\FoWDB::notify($message, 'danger');
 			header("Location: /?p=admin/cards&form_action=create");
 			exit();

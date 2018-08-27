@@ -352,7 +352,7 @@
 							<input
                 type="text"
                 name="code"
-                value="<?=$card['code']?>"
+                value="<?=$card['cardcode']?>"
                 placeholder="Code (Leave empty for automatic code).."
                 class="form-control"
               >
