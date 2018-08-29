@@ -2,7 +2,9 @@
 
 // ERROR: No card code provided
 if (!isset($_GET['code'])) {
-	throw new \Exception("No card code provided. Please provide one and try again.");
+	\App\FoWDB::notify('No card code provided.', 'warning');
+	header('Location: /');
+	return;
 }
 
 // Datanase connection

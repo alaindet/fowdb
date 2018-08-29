@@ -1,7 +1,7 @@
 <?php
-	$cardFeatures = \App\Helpers::get('cardfeatures');
-	$counter = 0; // Ruling counter
-	foreach ($cards as &$card):
+  $counter = 0; // Ruling counter
+  \App\CardView::display($cards); // Add 'display' element on every card
+  foreach ($cards as &$card):
 ?>
 	<div class="row cardpage">
 
@@ -45,30 +45,20 @@
 		
 		<!-- Card info -->
 		<div class="col-xs-12 col-sm-7 box card-props">
-			<?php
-				$excludeProps = [
-          'id',
-          'backside',
-          'narp',
-          'image_path',
-          'thumb_path',
-          'rulings'
-        ];
-			?>
-			<?php foreach ($card as $prop => &$value): ?>
-				<?php if (
-          !in_array($prop, $excludeProps) &&
-          (!empty($value) || $value === 0)
-        ): ?>
-					<div class="row card-prop">
-						<div class="col-xs-3 col-sm-3 prop-label">
-              <?=$cardFeatures[$prop]?>
-            </div>
-						<div class="col-xs-9 col-sm-9 prop-value">
-              <?=$value?>
-            </div>
-					</div>
-				<?php endif; ?>
+			<?php foreach ($card['display'] as $prop): ?>
+        <div class="row card-prop">
+
+          <!-- Property label -->
+          <div class="col-xs-3 col-sm-3 prop-label">
+            <?=$prop['label']?>
+          </div>
+
+          <!-- Property value -->
+          <div class="col-xs-9 col-sm-9 prop-value">
+            <?=$prop['value']?>
+          </div>
+
+        </div>
 			<?php endforeach; ?>
 		</div>
 

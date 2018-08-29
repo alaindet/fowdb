@@ -3,14 +3,6 @@
 $attributes = \App\Helpers::get("attributes");
 $spoilers = \App\Helpers::get("spoiler.codes");
 
-// ERROR: No card code passed
-if (!isset($_GET['code'])) {
-	throw new \Exception(
-		"No card code provided. Please provide a card code and try again."
-	);
-	exit();
-}
-
 // Database connection
 $db = \App\Database::getInstance();
 
@@ -38,6 +30,7 @@ $result = $db->get(
 		cards.subtype_race,
 		cards.cardtext,
 		cards.flavortext,
+		cards.artist_name,
 		cards.image_path,
 		cards.thumb_path,
 		sets.name as setname
@@ -149,7 +142,18 @@ if (!empty($result)) {
 		}
 		
 		// SET ----------------------------------------------------------------
-		$set = "<a href='/?do=search&setcode={$row['setcode']}'>".strtoupper($row['setcode'])." - ".$row['setname']."</a>";
+		$set = "<a href='/?do=search&setcode={$row['setcode']}'>"
+			. strtoupper($row['setcode'])." - ".$row['setname']
+			. "</a>";
+
+		// ARTIST NAME --------------------------------------------------------
+		if (isset($row['artist_name'])) {
+			$artist = "<a href='/?do=search&artist={$row['artist_name']}'>"
+					. $row['artist_name']
+					."</a>";
+		} else {
+			$artist = null;
+		}
 		
 		// FORMAT AND BANNED --------------------------------------------------
 		
@@ -250,6 +254,7 @@ if (!empty($result)) {
 			'format' => $format,
 			'banned' => $banned,
 			'flavortext' => "<span class='flavortext'>" . $row['flavortext'] . "</span>",
+			'artist_name' => $artist,
 			'image_path' => $row['image_path'],
 			'thumb_path' => $row['thumb_path'],
 			'rulings' => $rulings,
@@ -351,8 +356,15 @@ if (!empty($result)) {
 	}
 }
 
-// If no card corresponds to the passed code
-else { throw new \Exception("No card found with code <strong>{$_GET['code']}</strong>"); }
+// ERROR: Card code does not exist!
+else {
+	\App\FoWDB::notify(
+		"No card found with code <strong>{$_GET['code']}</strong>",
+		'warning'
+	);
+	header('Location: /');
+	return;
+}
 
 
 /**
