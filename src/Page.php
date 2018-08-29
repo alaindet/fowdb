@@ -17,11 +17,17 @@ use App\TinyHtmlMinifier\TinyMinify;
  * @param string $path Path where to get page content
  * @param array $options Array of options to be loaded (CSS, custom JS, JS libraries...)
  * @param array $vars Assoc array of template variables, where key is the name and value is the value 
- * @return mixed True if page was created, Exception if not
+ * @return void
  */
 class Page {
 
-	static function build ($title = null, $path = null, $options = null, $vars = null)
+	static function build (
+		$title = null,
+		$path = null,
+		$options = null,
+		$vars = null,
+		$minimize = true
+	): void
 	{
 		if (isset($title)) {
 			$page_title = $title;
@@ -52,23 +58,26 @@ class Page {
 			// Execute the script and generate some content into the buffer
 			require $scriptPath;
 
-			// Read page content into a variable and clean it all
-			$pageContent = ob_get_contents();
-			ob_clean();
+			if ($minimize) {
+				// Read page content into a variable and clean it all
+				$pageContent = ob_get_contents();
+				ob_clean();
 
-			// Build the entire template using previous content
-			require APP_ROOT . '/_template/page.php';
+				// Build the entire template using previous content
+				require APP_ROOT . '/_template/page.php';
 
-			// Get content from buffer, close buffer, minify content
-			echo TinyMinify::html(ob_get_clean());
+				// Get content from buffer, close buffer, minify content
+				echo TinyMinify::html(ob_get_clean());
+			}
+		
+			// Do not minimize (preserves <pre></pre> tags)
+			else {
+				$pageContent = ob_get_clean();
+				require APP_ROOT . '/_template/page.php';
+			}
 		}
 		else {
 			throw new \Exception("No path provided or file doesn't exist at provided path.");
 		}
-		
-		/*
-		 * Everything went fine
-		 */
-		return true;
 	}
 }
