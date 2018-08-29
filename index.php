@@ -19,10 +19,6 @@ if (! isset($_GET['p'])) {
 if (isset($_GET['p'])) {
         
     switch($_GET['p']) {
-
-        // case 'nojs-search':
-        //  require 'search/nojs.php';
-        //  exit();
             
         case 'admin':
             \App\Page::build('Admin Menu', 'admin/index.php');
@@ -61,24 +57,18 @@ if (isset($_GET['p'])) {
             exit();
 
         case 'admin/helpers':
-            \App\Page::build('Admin - Helpers', 'admin/helpers/index.php');
+            \App\Page::build(
+                $title = 'Admin - Helpers',
+                $path = 'admin/helpers/index.php',
+                $options = null,
+                $vars = null,
+                $minize = false
+            );
             exit();
-
-        // case 'admin/image':
-        //  \App\Page::build('Admin - Upload image', 'admin/upload-image/index.php');
-        //  exit();
 
         case 'admin/php':
             if (admin_level() == 1) { phpinfo(); }
             exit();
-
-        // case 'manage-requests': // Legacy
-        // case 'admin/requests':
-        //  \App\Page::build('Admin - Manage Requests', 'admin/manage-requests/index.php', [
-        //      'js' => ['admin/requests'],
-        //      'lightbox' => 1
-        //  ]);
-        //  exit();
 
         case 'manage-rulings': // Legacy
         case 'admin/rulings':
@@ -103,16 +93,12 @@ if (isset($_GET['p'])) {
 
         case 'card':
             include 'cardpage/ogpinfo.sql.php'; // Get info for OGP
-            \App\Page::build($page_title, 'cardpage/cardpage.php', ['js'=>['cardpage']]);
+            \App\Page::build(
+                $page_title,
+                'cardpage/cardpage.php',
+                ['js'=>['cardpage']]
+            );
             exit();
-
-        // case 'request-ruling': // Legacy
-        // case 'card/request':
-        //  \App\Page::build('Request ruling', 'request-ruling/index.php' ,[
-        //      'lightbox' => 1,
-        //      'js' => ['request-ruling']
-        //  ]);
-        //  exit();
 
         case 'resources/ban':
             \App\Page::build('Banlist', 'resources/ban/index.php');
