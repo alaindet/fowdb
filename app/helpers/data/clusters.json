@@ -3,10 +3,10 @@
         "name": "New Valhalla Cluster",
         "sets": {
             "ndr": "New Dawn Rises",
-            "sdv5": "Starter Deck Valhalla - 5",
-            "sdv4": "Starter Deck Valhalla - 4",
-            "sdv3": "Starter Deck Valhalla - 3",
-            "sdv2": "Starter Deck Valhalla - 2",
+            "sdv5": "Starter Deck Valhalla - Darkness",
+            "sdv4": "Starter Deck Valhalla - Wind",
+            "sdv3": "Starter Deck Valhalla - Water",
+            "sdv2": "Starter Deck Valhalla - Fire",
             "sdv1": "Starter Deck Valhalla - Light"
         }
     },

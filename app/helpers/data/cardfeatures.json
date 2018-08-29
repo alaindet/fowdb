@@ -19,6 +19,7 @@
     "rarity": "Rarity",
     "format": "Format",
     "flavortext": "Flavor Text",
+    "artist_name": "Artist Name",
     "image_path": "Image path",
     "thumb_path": "Thumb path",
     "banned": "Banned in"

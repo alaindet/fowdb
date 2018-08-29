@@ -5,12 +5,19 @@
             "name": "New Frontiers",
             "clusters": [
                 5,
+                4,
+                5,
                 4
             ]
         },
         "wandr": {
             "name": "Wanderer",
             "clusters": [
+                2,
+                3,
+                4,
+                5,
+                6,
                 2,
                 3,
                 4,
@@ -26,42 +33,54 @@
                 3,
                 4,
                 5,
+                6,
+                1,
+                2,
+                3,
+                4,
+                5,
                 6
             ]
         },
         "c-nva": {
             "name": "New Valhalla Cluster",
             "clusters": [
+                6,
                 6
             ]
         },
         "c-rei": {
             "name": "Reiya Cluster",
             "clusters": [
+                5,
                 5
             ]
         },
         "c-lap": {
             "name": "Lapis Cluster",
             "clusters": [
+                4,
                 4
             ]
         },
         "c-ali": {
             "name": "Alice Cluster",
             "clusters": [
+                3,
                 3
             ]
         },
         "c-gri": {
             "name": "Grimm Cluster",
             "clusters": [
+                2,
                 2
             ]
         },
         "c-val": {
             "name": "Valhalla Cluster",
             "clusters": [
+                1,
                 1
             ]
         }
