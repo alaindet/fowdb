@@ -1,4 +1,8 @@
 <?php
+
+  // Get card info from database
+	require 'admin/manage-cards/card.sql.php';
+
 	// Import helpers
 	$clusters = \App\Helpers::get("clusters");
 	$attributes = \App\Helpers::get("attributes");
@@ -6,11 +10,9 @@
 	$backsides = \App\Helpers::get("backsides");
 	$rarities = \App\Helpers::get("rarities");
 
-	// Get card info from database
-	require 'admin/manage-cards/card.sql.php';
-
 	// Check if action was passed
-	if (isset($action)):
+  if (isset($action)):
+
 ?>
 	<!-- Header -->
 	<div class="page-header">
@@ -352,7 +354,7 @@
 							<input
                 type="text"
                 name="code"
-                value="<?=$card['cardcode']?>"
+                value="<?=$card['code']?>"
                 placeholder="Code (Leave empty for automatic code).."
                 class="form-control"
               >
@@ -398,6 +400,20 @@
 							<textarea name="flavortext" class="form-control" rows="3" placeholder="Flavor text.."><?php
 								echo $card['flavortext'];
 							?></textarea>
+						</div>
+					</div>
+
+          <!-- Artist name ================================================ -->
+					<div class="form-group form-section">
+						<label for="artist_name" class="col-sm-2">Artist Name</label>
+						<div class="col-sm-10">
+							<input
+                type="text"
+                name="artist_name"
+                value="<?=$card['artist_name']?>"
+                placeholder="Artist name (optional).."
+                class="form-control"
+              >
 						</div>
 					</div>
 

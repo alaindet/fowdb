@@ -18,6 +18,7 @@ if (isset($_REQUEST['id'])) {
 		$card['type'] = $card['cardtype'];
 		$card['attrcost'] = $card['attributecost'];
 		$card['name'] = $card['cardname'];
+		$card['code'] = $card['cardcode'];
 		$card['text'] = $card['cardtext'];
 		$card['imagepath'] = $card['image_path'];
 		$card['thumbpath'] = $card['thumb_path'];
@@ -27,6 +28,7 @@ if (isset($_REQUEST['id'])) {
 		unset($card['cardtype']);
 		unset($card['attributecost']);
 		unset($card['cardname']);
+		unset($card['cardcode']);
 		unset($card['cardtext']);
 		unset($card['image_path']);
 		unset($card['thumb_path']);
@@ -57,6 +59,7 @@ else {
 		'subtype_race' => '',
 		'text'         => '',
 		'flavortext'   => '',
+		'artist_name'  => '',
 		'imagepath'    => '',
 		'thumbpath'    => ''
 	];

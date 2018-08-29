@@ -190,8 +190,9 @@ if (isset($_POST['action'])) {
 			'def' => isset($_POST['def']) ? (int) $_POST['def'] : 0,
 			'cardname' => $_POST['name'],
 			'subtype_race' => $_POST['race'],
-			'cardtext' => $_POST['text'],
-			'flavortext' => $_POST['flavortext'],
+			'cardtext' => $_POST['text'] ?? null,
+			'flavortext' => $_POST['flavortext'] ?? null,
+			'artist_name' => $_POST['artist_name'] ?? null,
 			'image_path' => $imagepath,
 			'thumb_path' => $thumbpath
 		], "id = :id", [":id" => $_POST['id']]);
@@ -394,8 +395,9 @@ if (isset($_POST['action'])) {
 			'def' => isset($_POST['def']) ? (int) $_POST['def'] : 0,
 			'cardname' => $_POST['name'],
 			'subtype_race' => $_POST['race'],
-			'cardtext' => $_POST['text'],
-			'flavortext' => $_POST['flavortext'],
+			'cardtext' => $_POST['text'] ?? null,
+			'flavortext' => $_POST['flavortext'] ?? null,
+			'artist_name' => $_POST['artist_name'] ?? null,
 			'image_path' => $imagepath,
 			'thumb_path' => $thumbpath
 		]);
