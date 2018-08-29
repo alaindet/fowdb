@@ -318,10 +318,14 @@ class Search
                 $q_fields = array();
 
                 // Check if inputs "infields" array has any unallowed element!
-                if (empty(array_diff(
-                    $this->f['infields'],
-                    ['cardname','cardcode','cardtext','subtype_race', 'flavortext']
-                ))) {
+                if (empty(array_diff($this->f['infields'], [
+                    'cardname',
+                    'cardcode',
+                    'cardtext',
+                    'subtype_race',
+                    'flavortext',
+                    'artist_name',
+                ]))) {
 
                     // Initialize empty fields
                     foreach ($this->f['infields'] as &$val) {
