@@ -169,6 +169,30 @@ if (isset($_POST['action'])) {
 			$divinity = null;
 		}
 
+		// Replace the image?
+		if (isset($_FILES['cardimage'])) {
+
+			// HD quality
+			(new \Intervention\Image\ImageManager())
+				->make($_FILES['cardimage']['tmp_name'])
+				->resize(480, 670)
+				->insert(APP_ROOT."/_images/watermark/watermark480.png")
+				->save(APP_ROOT."/".$imagepath, 80);
+
+			// LD quality
+			(new \Intervention\Image\ImageManager())
+				->make($_FILES['cardimage']['tmp_name'])
+				->resize(280, 391)
+				->insert(APP_ROOT."/_images/watermark/watermark280.png")
+				->save(APP_ROOT."/".$thumbpath, 80);
+
+			// Update timestamp on database
+			$timestamp = date('Ymd-Gis');
+			$queryString = '?' . $timestamp;
+			$imagepath .= $queryString;
+			$thumbpath .= $queryString;
+		}
+
 		// Update the database
 		$db->update("cards", [
 			'id' => $_POST['id'],
@@ -196,7 +220,6 @@ if (isset($_POST['action'])) {
 			'image_path' => $imagepath,
 			'thumb_path' => $thumbpath
 		], "id = :id", [":id" => $_POST['id']]);
-
 		
 		// Generate card link with card name
 		$card_link = "<strong><a href='/?p=card&code="

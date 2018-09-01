@@ -79,11 +79,14 @@
 				<div class="form-group form-section">
 					<label for="cardimage" class="col-sm-2">Image</label>
 					<div class="col-sm-10">
-						<?php if ($action == 'create'): ?>
-							<input type="file" name="cardimage">
-						<?php else: ?>
-							<img src="<?=$card['thumbpath']?>">
-						<?php endif; ?>
+						<?php if ($action === 'create'): ?>
+              <input type="file" name="cardimage">
+            <?php elseif ($action === 'edit'): ?>
+              <img src="<?=$card['thumbpath']?>">
+              <input type="file" name="cardimage">
+            <?php elseif ($action === 'delete'): ?>
+              <img src="<?=$card['thumbpath']?>">
+            <?php endif; ?>
 					</div>
 				</div>
 
