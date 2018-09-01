@@ -53,6 +53,8 @@ if (isset($_GET['v'])) {
     \App\Page::build(
         "Comprehensive Rules " . $_GET['v'],
         $cr['path'],
-        ['js' => ['cr-index']]
+        ['js' => ['cr-index']],
+        $vars = null,
+        $minimize = false
     );
 }
