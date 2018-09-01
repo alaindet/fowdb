@@ -259,17 +259,15 @@ class Helpers
         // Assuming database connection was passed
         $db_results = $db->get(
             "SELECT
-                formats.code as fcode,
-                formats.name as fname,
-                formats.isdefault as fdefault,
-                clusters.id as cid
-            FROM
-                formats
-                INNER JOIN formats_clusters
-                    ON formats.id = formats_clusters.formats_id
-                INNER JOIN clusters
-                    ON formats_clusters.clusters_id = clusters.id
-            ORDER BY formats.ismulticluster DESC, formats.id DESC"
+                f.code fcode,
+                f.name fname,
+                f.isdefault fdefault,
+                c.id cid
+            FROM formats f
+            INNER JOIN formats_clusters fc ON f.id=fc.formats_id
+            INNER JOIN clusters c ON fc.clusters_id=c.id
+            GROUP BY fcode,cid
+            ORDER BY f.ismulticluster desc, f.id desc"
         );
 
         // Initialize processing
