@@ -54,16 +54,14 @@ if (!empty($result)) {
 	// Only one loop for most of cards, two loops for Ruler/J-Ruler couples
 	foreach ($result as &$row) {
 		
-		// REMINDER -----------------------------------------------------------
+		// REMINDER FOR SHIFT CARDS -------------------------------------------
 		
-		switch ($row['backside']) {
-			case 2:
-				$reminder = ' (Shift)';
-				break;
-			default:
-				$reminder = '';
-				break;
-		}
+		$reminder = ($row['backside'] == 2) ? ' (Shift)' : '';
+		$type = "<a href=\"/?do=search&cardtype[]={$row['cardtype']}\">"
+			  . $row['cardtype']
+			  . "</a>"
+			  . $reminder;
+		
 
 		// COST ---------------------------------------------------------------
 
@@ -148,7 +146,7 @@ if (!empty($result)) {
 
 		// ARTIST NAME --------------------------------------------------------
 		if (isset($row['artist_name'])) {
-			$artist = "<a href='/?do=search&artist={$row['artist_name']}'>"
+			$artist = "<a href='/?do=search&q={$row['artist_name']}&infields[]=artist_name'>"
 					. $row['artist_name']
 					."</a>";
 		} else {
@@ -243,7 +241,7 @@ if (!empty($result)) {
 			'cost' => $cost,
 			'totalcost' => $row['totalcost'],
 			'attribute' => $attribute,
-			'cardtype' => $row['cardtype'] . $reminder,
+			'cardtype' => $type,
 			$race_trait_label => $race_trait_value,
 			'divinity' => $row['divinity'],
 			'cardtext' => \App\FoWDB::renderText($row['cardtext']),
@@ -285,7 +283,12 @@ if (!empty($result)) {
 				'cost',
 				'totalcost'
 			],
-			'Resonator' => [],
+			'Resonator' => [
+				//
+			],
+			'Master Rune' => [
+				'atk_def'
+			],
 			'Chant' => [
 				'atk_def'
 			],
@@ -344,7 +347,7 @@ if (!empty($result)) {
 
 		// Filter some props from the final card array of info
 		$finalCard = [];
-		$removables = $removable[$card['cardtype']];
+		$removables = $removable[$row['cardtype']];
 		foreach ($card as $key => &$value) {
 			if (!in_array($key, $removables)) {
 				$finalCard[$key] = $value;
