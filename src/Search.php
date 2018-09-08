@@ -547,15 +547,15 @@ class Search
                 );
             }
 
-            // Game-specific: Chant/Rune are chants as well
-            if (in_array("Chant/Rune", $this->f['cardtype'])) {
-                $this->f['cardtype'] = \App\FoWDB_Array::union(
-                    $this->f['cardtype'], [
-                        "Chant",
-                        "Rune"
-                    ]
-                );
-            }
+            // // Game-specific: Chant/Rune are chants as well
+            // if (in_array("Chant/Rune", $this->f['cardtype'])) {
+            //     $this->f['cardtype'] = \App\FoWDB_Array::union(
+            //         $this->f['cardtype'], [
+            //             "Chant",
+            //             "Rune"
+            //         ]
+            //     );
+            // }
 
             // Game-specific: Rune are Chant/Rune as well
             if (in_array("Rune", $this->f['cardtype'])) {

@@ -170,7 +170,7 @@ if (isset($_POST['action'])) {
 		}
 
 		// Replace the image?
-		if (isset($_FILES['cardimage'])) {
+		if (is_uploaded_file($_FILES['cardimage']['tmp_name'])) {
 
 			// HD quality
 			(new \Intervention\Image\ImageManager())
