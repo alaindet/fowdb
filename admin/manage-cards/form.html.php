@@ -392,7 +392,7 @@
 								rows="8"
 								placeholder="Text.."
 								style="font-family: monospace;font-size:1.3em;"
-							><?=$card['text']?></textarea>
+							><?=htmlspecialchars($card['text'])?></textarea>
 						</div>
 					</div>
 

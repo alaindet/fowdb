@@ -316,7 +316,7 @@ class FoWDB {
 	 * @param string $txt The string to be rendered
 	 * @return string $txt The rendered string
 	 */
-	public static function renderText ($txt) {
+	public static function renderText($txt) {
 
 		// Import attributes helper Ex.: w => Light
 		$attributes = \App\Helpers::get('attributes');
