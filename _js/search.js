@@ -128,7 +128,10 @@ $(document).ready(function() {
         var t = $("#setcode :selected"),
             a = t.first();
 
-        $("#setcode").attr("multiple") ? 1 == t.length && "0" == a.val() && a.prop("disabled", !0) : "0" == a.val() && a.prop("disabled", !0), $("input[name='race']").val() || $("input[name='race']").prop("disabled", !0);
+        $("#setcode").attr("multiple") ? 1 == t.length && "0" == a.val() && a.prop("disabled", !0) : "0" == a.val() && a.prop("disabled", !0)
+        
+        $("input[name='race']").val() || $("input[name='race']").prop("disabled", !0);
+        $("input[name='artist']").val() || $("input[name='artist']").prop("disabled", !0);
 
         if ("default" == $("#sort").val()) {
             $("#sort").prop("disabled", !0);

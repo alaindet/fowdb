@@ -1,5 +1,5 @@
 <?php
-	$timestamp = ""
+	$timestamp = "20180930";
 ?>
 <!DOCTYPE html>
 <html lang="en" prefix="og: http://ogp.me/ns#">

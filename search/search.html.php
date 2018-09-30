@@ -186,7 +186,6 @@
                       "cardtext" => "Texts",
                       "subtype_race" => "Races",
 											"flavortext" => "Flavor",
-											"artist_name" => "Artist",
                     ] as $field => $label):
                       // Sticky values
                       (isset($filters['infields']) AND in_array($field, $filters['infields']))
@@ -555,14 +554,30 @@
   					
   					<!-- RACE/TRAIT =============================================== -->
   					<div class="row filter">
-  						
-              <!-- Label -->
   						<div class="col-xs-12 filter-header">Race/Trait</div>
-  						
-              <!-- Controls -->
   						<div class="col-xs-12 filter-controls">
-  							<?php $racetrait = isset($filters['race']) ? $filters['race'] : ''; ?>
-  							<input type="text" class="form-control input-sm" name="race" placeholder="Race or Trait.." value="<?=$racetrait?>">
+  							<input
+									type="text"
+									class="form-control input-sm"
+									name="race"
+									placeholder="Race or Trait (exact)..."
+									value="<?=$filters['race'] ?? ''?>"
+								>
+  						</div>
+  					</div>
+
+
+						<!-- ARTIST =================================================== -->
+  					<div class="row filter">
+  						<div class="col-xs-12 filter-header">Artist / Illustrator</div>
+  						<div class="col-xs-12 filter-controls">
+  							<input
+									type="text"
+									class="form-control input-sm"
+									name="artist"
+									placeholder="Artist name (exact)..."
+									value="<?=$filters['artist'] ?? ''?>"
+								>
   						</div>
   					</div>
   					

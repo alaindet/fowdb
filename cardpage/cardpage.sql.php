@@ -146,7 +146,7 @@ if (!empty($result)) {
 
 		// ARTIST NAME --------------------------------------------------------
 		if (isset($row['artist_name'])) {
-			$artist = "<a href='/?do=search&q={$row['artist_name']}&infields[]=artist_name'>"
+			$artist = "<a href='/?do=search&artist={$row['artist_name']}'>"
 					. $row['artist_name']
 					."</a>";
 		} else {

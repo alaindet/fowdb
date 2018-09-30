@@ -53,6 +53,7 @@ class Search
             "atk",
             "def-operator",
             "def",
+            "artist",
             "page" // Pagination-related
         ];
 
@@ -324,7 +325,6 @@ class Search
                     'cardtext',
                     'subtype_race',
                     'flavortext',
-                    'artist_name',
                 ]))) {
 
                     // Initialize empty fields
@@ -547,16 +547,6 @@ class Search
                 );
             }
 
-            // // Game-specific: Chant/Rune are chants as well
-            // if (in_array("Chant/Rune", $this->f['cardtype'])) {
-            //     $this->f['cardtype'] = \App\FoWDB_Array::union(
-            //         $this->f['cardtype'], [
-            //             "Chant",
-            //             "Rune"
-            //         ]
-            //     );
-            // }
-
             // Game-specific: Rune are Chant/Rune as well
             if (in_array("Rune", $this->f['cardtype'])) {
                 $this->f['cardtype'] = \App\FoWDB_Array::union(
@@ -683,11 +673,19 @@ class Search
             $_sql_f[] = "NOT(cardtype = \"Magic Stone\")";
         }
 
+
+        // FILTER --- ARTIST NAME ---------------------------------------------
+        if (isset($this->f['artist'])) {
+            $_sql_f[] = "artist_name = \"{$this->f['artist']}\"";
+        }
+
+
         // FILTER --- LIMIT and OFFSET ----------------------------------------
         if (isset($this->f['page'])) {
             $p = (int) $this->f['page'];
             $this->sqlPartials['offset'] = ($p - 1) * APP_RESULTS_LIMIT;
         }
+
 
         // SORTING ============================================================
         if (
