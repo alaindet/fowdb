@@ -1,7 +1,7 @@
 <?php
 
 // Init the app
-require $_SERVER['DOCUMENT_ROOT'] . '/_config/config.php';
+require dirname(__DIR__) . '/_config/config.php';
 
 // Load helpers
 require __DIR__ . "/helpers.php";
