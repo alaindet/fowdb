@@ -6,6 +6,7 @@
 # Directories
 /.backup/
 /.dev/
+/dev/
 /images/
 /src/node_modules/
 /src/vendor/
