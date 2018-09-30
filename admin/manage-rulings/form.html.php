@@ -100,17 +100,19 @@
 				<?php if ($action == 'edit'): ?>
 					<!-- FLAG: Update date -->
 					<div class="form-group">
-						<div class="col-sm-offset-2 col-sm-10">
-							<div class="checkbox">
-								<label>
-									<h4>
-										<input type="hidden" name="date" value="<?=$ruling['created']?>" />
-										<input type="checkbox" name="update_date" value="yes" />
-										<span class="label fdb-label-black">Update date</span>
-									</h4>
-								</label>
-								If just correcting typos don't update the date
-							</div>
+            <label for="date" class="col-sm-2 control-label">
+              Date
+              <br>
+              <small>YYYY-MM-DD</small>
+            </label>
+						<div class="col-sm-10">
+              <input
+                type="text"
+                class="form-control"
+                name="date"
+                placeholder="Date (Ex.: YYYY-MM-DD).."
+                value="<?=$ruling['created']?>"
+              />
 						</div>
 					</div>
 				<?php endif; ?>

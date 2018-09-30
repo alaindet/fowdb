@@ -34,19 +34,25 @@ if (isset($_POST['action'])) {
 
 		// Try to update the ruling
 		// public function update($table = null, $values = null, $condition = null, $conditionValues = null)
-		if (! $db->update("rulings",
+		if ($db->update(
+			"rulings",
 			[
-				"created" => isset($_POST['update_date']) ? date("Y-m-d-") : $_POST['date'],
+				"created" => $_POST['date'] ?? date('Y-m-d'),
 				"is_edited" => true,
 				"is_errata" => isset($_POST['is_errata']) ? 1 : 0,
 				"ruling" => $_POST['ruling']
-			], "id = :id", [":id" => $_POST['id']]
+			],
+			"id = :id", [":id" => $_POST['id']]
 		)) {
-			// ERROR
-			\App\FoWDB::notify("Could not edit the ruling for {$card_link}.", "warning");
+			\App\FoWDB::notify(
+				"Ruling for {$card_link} successfully edited.",
+				"info"
+			);
 		} else {
-			// SUCCESS
-			\App\FoWDB::notify("Ruling for {$card_link} successfully edited.", "info");
+			\App\FoWDB::notify(
+				"Could not edit the ruling for {$card_link}.",
+				"warning"
+			);
 		}
 	}
 	
