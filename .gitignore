@@ -1,7 +1,7 @@
 # To be removed
 /_images/
-/node_modules/
-/vendor/
+node_modules/
+vendor/
 
 # Directories
 /.backup/
