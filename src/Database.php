@@ -226,10 +226,10 @@ class Database
      * @return mixed # of updated rows as int or false on error
      */
     public function update(
-        $table,
-        $values = null,
-        $condition = null,
-        $conditionValues = null
+        string $table,
+        array $values = null,
+        string $condition = null,
+        array $conditionValues = null
     )
     {
         // ERROR: Invalid input

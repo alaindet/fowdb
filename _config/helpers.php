@@ -29,3 +29,13 @@ function admin_level()
 
 	return (int) $admin['user_groups_id'];
 }
+
+function database()
+{
+	return \App\Database::getInstance();
+}
+
+function cached(string $request)
+{
+	return \App\Helpers::get($request);
+}
