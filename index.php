@@ -27,10 +27,15 @@ if (isset($_GET['p'])) {
             \App\Page::build('FoWDB Craton', 'admin/_artists/select-card.php');
             return;
         case 'temp/admin/artists/card':
-            \App\Page::build('FoWDB Craton', 'admin/_artists/card.php', null, null, false);
+            \App\Page::build(
+                $title = 'FoWDB Craton',
+                $path = 'admin/_artists/card.php',
+                $options = [
+                    'js' => ['_artists'],
+                    'jqueryui' => 1    
+                ]
+            );
             return;
-
-        
             
         case 'admin':
             \App\Page::build('Admin Menu', 'admin/index.php');

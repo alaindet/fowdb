@@ -1,16 +1,5 @@
 <div class="page-header"><h1><?=$title?></h1></div>
 
-<?php // RULING REQUEST INBOX ---------------------------------------------------
-	if (isset($_GET['req'])) {
-		
-		$id = (int) $_GET['req'];
-
-		$req = Requests::get_single($id);
-
-		echo "<div class='well'><h2>Ruling Request</h2><ul class=''><li>{$req['timestamp']}</li><li>{$req['votes']} votes</li></ul><p>{$req['request']}</p></div>";
-	}
-?>
-
 <?php if (isset($action) OR $_POST['action'] == 'review'): ?>
 	<div class="row">
 		<div class="col-xs-12 col-sm-9">

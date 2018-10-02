@@ -58,6 +58,7 @@ if (!isset($_SESSION['artist-tool'])) {
             <input
               type="text"
               name="artist"
+              id="the-autocomplete"
               class="form-control input-lg"
               autofocus
               value="<?=$card['artist_name'] ?? ''?>"
