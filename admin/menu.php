@@ -12,6 +12,7 @@
 	// Define links
 	$links = [
 		'master' => [
+			'temp/admin/artists/select-set' => '(TEMPORARY) Artists Tool',
 			'admin/database' => 'Database',
 			'admin/hash' => 'Hash a string',
 			'admin/helpers' => 'Helpers',

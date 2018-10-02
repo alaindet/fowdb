@@ -19,6 +19,18 @@ if (! isset($_GET['p'])) {
 if (isset($_GET['p'])) {
         
     switch($_GET['p']) {
+
+        case 'temp/admin/artists/select-set':
+            \App\Page::build('FoWDB Craton', 'admin/_artists/select-set.php');
+            return;
+        case 'temp/admin/artists/select-card':
+            \App\Page::build('FoWDB Craton', 'admin/_artists/select-card.php');
+            return;
+        case 'temp/admin/artists/card':
+            \App\Page::build('FoWDB Craton', 'admin/_artists/card.php', null, null, false);
+            return;
+
+        
             
         case 'admin':
             \App\Page::build('Admin Menu', 'admin/index.php');
