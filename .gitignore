@@ -6,10 +6,9 @@ vendor/
 # Directories
 /.backup/
 /.dev/
-/dev/
 /images/
-/src/node_modules/
-/src/vendor/
+/src/resources/assets/node_modules
+/src/vendor
 
 # Files
 *.min.js
