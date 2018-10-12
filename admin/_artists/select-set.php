@@ -2,14 +2,14 @@
 
 // ERROR: Unauthorized
 if (admin_level() === 0) {
-	\App\FoWDB::notify('You are noth authorized.', 'danger');
+	notify('You are noth authorized.', 'danger');
 	header('Location: /');
 	return;
 }
 
 // Set selected!
 if (isset($_GET['set'])) {
-    \App\Redirect::to(
+    redirect(
         'temp/admin/artists/select-card',
         ['set' => $_GET['set']]
     );

@@ -46,7 +46,7 @@
 			<!-- Errata -->
 			<tr>
 				<td><kbd>&ndash;errata&ndash;Text&ndash;/errata&ndash;</kbd></td>
-				<td><?=\App\FoWDB::renderText("-errata-Text-/errata-")?></td>
+				<td><?=render("-errata-Text-/errata-")?></td>
 				<td>
 					Highlights errata text in blue in card text. Mind absence of any white space near -ERRATA-. Note: errata'd cards should also have a separate errata ruling as well. Read Conventions table on admin/rulings page as a reference.
 				</td>
@@ -55,42 +55,42 @@
 			<!-- Rest -->
 			<tr>
 				<td><kbd>{rest}</kbd></td>
-				<td><?=\App\FoWDB::renderText("{rest}")?></td>
+				<td><?=render("{rest}")?></td>
 				<td>Rest symbol</td>
 			</tr>
 			
 			<!-- Attribute symbols -->
 			<tr>
 				<td><kbd>{w}, {r}</kbd></td>
-				<td><?=\App\FoWDB::renderText("{w}, {r}")?></td>
+				<td><?=render("{w}, {r}")?></td>
 				<td>Attribute symbols (w&rarr;Light, r&rarr;Fire, u&rarr;Water, g&rarr;Wind, b&rarr;Dark, v&rarr;Void, m&rarr;Moon, t&rarr;Will of Time)</td>
 			</tr>
 			
 			<!-- Free will symbols -->
 			<tr>
 				<td><kbd>{0}, {1}, {x}</kbd></td>
-				<td><?=\App\FoWDB::renderText("{0}, {1}, {x}")?></td>
+				<td><?=render("{0}, {1}, {x}")?></td>
 				<td>Free will symbols</td>
 			</tr>
 			
 			<!-- Symbol skills -->
 			<tr>
 				<td><kbd>[_Target&nbsp;Attack_]</kbd></td>
-				<td><?=\App\FoWDB::renderText("[_Target&nbsp;Attack_]")?></td>
+				<td><?=render("[_Target&nbsp;Attack_]")?></td>
 				<td>Abilities (new)</td>
 			</tr>
 			
 			<!-- Ability labels -->
 			<tr>
 				<td><kbd>[Activate]</kbd></td>
-				<td><?=\App\FoWDB::renderText("[Activate]")?></td>
+				<td><?=render("[Activate]")?></td>
 				<td>Abilities (legacy)</td>
 			</tr>
 			
 			<!-- < and > -->
 			<tr>
 				<td><kbd>&amp;lt;Tea-Party&amp;gt;</kbd></td>
-				<td><?=\App\FoWDB::renderText("&lt;Tea-Party&gt;")?></td>
+				<td><?=render("&lt;Tea-Party&gt;")?></td>
 				<td>Less (&lt;) and more than (&gt;) signs must be entered like <kbd>&amp;lt;</kbd> and <kbd>&amp;gt;</kbd></td>
 			</tr>
 		</tbody><!-- /Table body -->

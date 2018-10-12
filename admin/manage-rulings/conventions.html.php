@@ -32,7 +32,7 @@
 			<!-- Fat arrow -->
 			<tr>
 				<td><kbd>=&gt;</kbd></td>
-				<td><?=\App\FoWDB::renderText("=>")?></td>
+				<td><?=render("=>")?></td>
 				<td>Right arrow (Used in automatic abilities, from Vingolf 2 onward)</td>
 			</tr>
 
@@ -78,35 +78,35 @@
 			<!-- Rest -->
 			<tr>
 				<td><kbd>{rest}</kbd></td>
-				<td><?=\App\FoWDB::renderText("{rest}")?></td>
+				<td><?=render("{rest}")?></td>
 				<td>Rest symbol</td>
 			</tr>
 			
 			<!-- Attribute symbols -->
 			<tr>
 				<td><kbd>{w}, {r}</kbd></td>
-				<td><?=\App\FoWDB::renderText("{w}, {r}")?></td>
+				<td><?=render("{w}, {r}")?></td>
 				<td>Attribute symbols (w&rarr;Light, r&rarr;Fire, u&rarr;Water, g&rarr;Wind, b&rarr;Dark, v&rarr;Void, m&rarr;Moon, t&rarr;Will of Time)</td>
 			</tr>
 			
 			<!-- Free will symbols -->
 			<tr>
 				<td><kbd>{0}, {1}, {x}</kbd></td>
-				<td><?=\App\FoWDB::renderText("{0}, {1}, {x}")?></td>
+				<td><?=render("{0}, {1}, {x}")?></td>
 				<td>Free will symbols</td>
 			</tr>
 			
 			<!-- New tags -->
 			<tr>
 				<td><kbd>[_Precision_]</kbd></td>
-				<td><?=\App\FoWDB::renderText("[_Precision_]")?></td>
+				<td><?=render("[_Precision_]")?></td>
 				<td>New ability tag</td>
 			</tr>
 			
 			<!-- Old tags -->
 			<tr>
 				<td><kbd>[Activate]</kbd></td>
-				<td><?=\App\FoWDB::renderText("[Activate]")?></td>
+				<td><?=render("[Activate]")?></td>
 				<td>Old ability tags</td>
 			</tr>
 			
@@ -115,7 +115,7 @@
 				<td>
 					<kbd>&amp;lt;Tea-Party&amp;gt;</kbd>
 				</td>
-				<td><?=\App\FoWDB::renderText("&lt;Tea-Party&gt;")?></td>
+				<td><?=render("&lt;Tea-Party&gt;")?></td>
 				<td>Less (&lt;) and more than (&gt;) signs must be entered like <kbd>&amp;lt;</kbd> and <kbd>&amp;gt;</kbd></td>
 			</tr>
 			

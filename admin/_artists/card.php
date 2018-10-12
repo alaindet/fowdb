@@ -2,8 +2,8 @@
 
 // ERROR: Unauthorized
 if (admin_level() === 0) {
-  \App\FoWDB::notify('You are noth authorized.', 'danger');
-  \App\Redirect::to('/');
+  notify('You are noth authorized.', 'danger');
+  redirect('/');
 	return;
 }
 

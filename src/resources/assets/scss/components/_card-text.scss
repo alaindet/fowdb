@@ -1,0 +1,88 @@
+// Icons ----------------------------------------------------------------------
+
+// Free cost
+.fdb-icon-free {
+  width: 15px;
+  height: 15px;
+  letter-spacing: -2px;
+  font-weight: 700;
+  display: inline-block;
+  padding-right: .2rem;
+  font-style: italic;
+  text-align: center;
+  border-radius: 50%;
+  border: 2px solid #bbb;
+  font-size: .66rem;
+  line-height: 15px;
+  text-align: center;
+  background: #fff;
+  box-shadow: inset 0px 0px 3px 3px #ddd;
+}
+
+// Will and rest symbols
+.fdb-icon-w,
+.fdb-icon-r,
+.fdb-icon-u,
+.fdb-icon-g,
+.fdb-icon-b,
+.fdb-icon-m,
+.fdb-icon-v,
+.fdb-icon-t,
+.fdb-icon-rest {
+  background: url(../_images/icons/sprites.png?20180430) no-repeat!important;
+  width: 15px!important;
+  height: 15px!important;
+  margin-left: 1px!important;
+  margin-right: 1px!important;
+  min-height: 15px;
+  min-width: 15px
+}
+.fdb-icon-w { background-position: 0 0!important; }
+.fdb-icon-r { background-position: -17px 0!important; }
+.fdb-icon-u { background-position: -33px 0!important; }
+.fdb-icon-g { background-position: -50px 0!important; }
+.fdb-icon-b { background-position: -66px 0!important; }
+.fdb-icon-v { background-position: -82px 0!important; }
+.fdb-icon-m { background-position: -98px 0!important; }
+.fdb-icon-t { background-position: -132px 0!important; }
+.fdb-icon-rest {
+  background-position: -114px 0!important;
+  width: 18px!important;
+  height: 18px!important;
+}
+
+// Abilities
+.mark_abilities,
+.mark_break,
+.mark_skills,
+.mark_spoiler {
+  display: inline-block;
+  padding: .1em .3em;
+  line-height: .95em;
+  border-radius: .3em;
+  box-shadow: 1px 1px 3px #989898
+}
+.mark_abilities {
+  background: #000;
+  color: #fff;
+}
+.mark_skills {
+  border: 1px solid #000
+}
+.mark_break {
+  background: red;
+  color: #fff;
+}
+.mark_breaktext {
+  color: red;
+  display: inline;
+}
+.mark_spoiler {
+  background: #ff6c39;
+  color: #fff;
+  box-shadow: 2px 2px 2px grey
+}
+.mark_errata {
+  color: #00f;
+  display: inline;
+}

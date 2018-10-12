@@ -32,12 +32,12 @@ if ($_POST['token'] == $_SESSION['token'] AND isset($_POST['action'])) {
 			$_SESSION['admin'] = $admin['hash'];
 			
 			// Notify the user
-			\App\FoWDB::notify("You logged in as admin", "success");
+			notify("You logged in as admin", "success");
 		}
 
 	// Log out the user
 	} else if ($_POST['action'] == 'admin_logout') {
 		unset($_SESSION['admin']);
-		\App\FoWDB::notify("You logged out as admin", "danger");
+		notify("You logged out as admin", "danger");
 	}
 }

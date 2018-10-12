@@ -9,7 +9,7 @@ if (admin_level() == 1):
     if (isset($_POST['review'])) {
 
         // Log current helpers.json
-        echo \App\Debugger::log(\App\Helpers::getAll(), "/app/helpers/helpers.json");
+        echo logHtml(\App\Helpers::getAll(), "/app/helpers/helpers.json");
     }
 
     // Check if feat is passed
@@ -24,11 +24,11 @@ if (admin_level() == 1):
             // Re-generate all dynamic helpers and assemble all helpers
             $saved = \App\Helpers::generateAll() & \App\Helpers::assembleAll();
             // Notify
-            if ($saved) { \App\FoWDB::notify("All helpers JSON data regenerated."); }
-            else { \App\FoWDB::notify("Could not generate and assemble all helpers."); }
+            if ($saved) { notify("All helpers JSON data regenerated."); }
+            else { notify("Could not generate and assemble all helpers."); }
             
             // Log generated file
-            echo \App\Debugger::log(\App\Helpers::getAll(), $feat);
+            echo logHtml(\App\Helpers::getAll(), $feat);
 
         // Re-generate specific
         } else if (in_array($feat, $dynamics)) {
@@ -37,11 +37,11 @@ if (admin_level() == 1):
             $saved = \App\Helpers::generate($feat) & \App\Helpers::assembleAll();
 
             // Notify
-            if ($saved) { \App\FoWDB::notify($feat.".json regenerated."); }
-            else { \App\FoWDB::notify("Could not generate and assemble helper for {$feat}."); }
+            if ($saved) { notify($feat.".json regenerated."); }
+            else { notify("Could not generate and assemble helper for {$feat}."); }
 
             // Log generated file
-            echo \App\Debugger::log(\App\Helpers::get($feat), $feat);
+            echo logHtml(\App\Helpers::get($feat), $feat);
         }
     }
 ?>

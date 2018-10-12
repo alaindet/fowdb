@@ -1,7 +1,7 @@
 <?php
 
 // Instantiate a new Search object
-$s = new \App\Search();
+$s = new \App\Services\Card\Search();
 
 // Get filters from GET parameters
 $f = $s->getFilters($_GET);
@@ -14,8 +14,8 @@ $s->addTable("sets", ["cards.setnum", "sets.id"]);
 $s->addField("isspoiler", "is_spoiler");
 
 // // TEST
-// echo \App\Debugger::log($_GET, "get");
-// echo \App\Debugger::log($s->getSQL(), "sql");
+// echo logHtml($_GET, "get");
+// echo logHtml($s->getSQL(), "sql");
 
 // If there's some result, write info into $cards[] array
 if ($cards = $s->getCards()) {
@@ -24,12 +24,10 @@ if ($cards = $s->getCards()) {
 // ERROR: Cards not found!
 else {
 	$cards = array();
-	\App\FoWDB::notify("No results. Please try changing your searching criteria.", 'danger');
+	notify("No results. Please try changing your searching criteria.", 'danger');
 	$thereWereResults = false;
 }
 
 // Alias the filters
 $filters =& $s->f;
-
-// View results
-\App\Page::build('Search', 'search/search.php', ['js' => ['search']]);
+return view('Search', 'search/search.php', ['js' => ['search']]);

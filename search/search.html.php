@@ -10,7 +10,6 @@
 		"types",
 		"backsides",
 		"rarities",
-		"cardfeatures",
 		"sortfields"
 	];
 

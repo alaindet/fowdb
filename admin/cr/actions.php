@@ -2,14 +2,14 @@
 
 // ERROR: No action requested
 if (!isset($_POST['admin-cr-action'], $_POST['token'])) {
-    \App\FoWDB::notify("No action requested.", "warning");
-    \App\Redirect::to("admin/cr");
+    notify("No action requested.", "warning");
+    redirect("admin/cr");
 }
 
 // ERROR: Invalid token
 if ($_POST['token'] != $_SESSION['token']) {
-    \App\FoWDB::notify("Invalid token.", "danger");
-    \App\Redirect::to("admin/cr");
+    notify("Invalid token.", "danger");
+    redirect("admin/cr");
 }
 
 // Choose action

@@ -1,0 +1,20 @@
+// Breakpoints
+$breakpoint-xs: 767px;
+$breakpoint-sm: 991px;
+$breakpoint-md: 1199px;
+$breakpoint-lg: 1919px;
+
+// Base spacer
+$spacer: $font-size;
+
+// Derived spacers
+$spacer-000: 0;
+$spacer-010: $spacer * 0.10;
+$spacer-025: $spacer * 0.25;
+$spacer-033: $spacer * 0.33;
+$spacer-050: $spacer * 0.50;
+$spacer-066: $spacer * 0.66;
+$spacer-075: $spacer * 0.75;
+$spacer-100: $spacer * 1.00;
+$spacer-150: $spacer * 1.50;
+$spacer-200: $spacer * 2.00;

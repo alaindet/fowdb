@@ -13,7 +13,7 @@ if (! isset($_GET['v'])) {
     $crs = $db->get("SELECT * FROM comprehensive_rules ORDER BY date_validity DESC");
     
     // Show CRs
-    \App\Page::build(
+    view(
         "Comprehensive Rules",
         "resources/cr/all.php",
         null,
@@ -36,8 +36,8 @@ if (isset($_GET['v'])) {
     );
 
     if (empty($cr) OR empty($cr['path'])) {
-        \App\FoWDB::notify("CR not found on database!", "warning");
-        \App\Redirect::to("resources/cr");
+        notify("CR not found on database!", "warning");
+        redirect("resources/cr");
     }
 
     // Assemble filename
@@ -45,12 +45,12 @@ if (isset($_GET['v'])) {
     
     // ERROR: File does not exist!
     if (! file_exists($filename)) {
-        \App\FoWDB::notify("CR not found on disk!", "warning");
-        \App\Redirect::to("resources/cr");
+        notify("CR not found on disk!", "warning");
+        redirect("resources/cr");
     }
     
     // Show single CR
-    \App\Page::build(
+    view(
         "Comprehensive Rules " . $_GET['v'],
         $cr['path'],
         ['js' => ['cr-index']],

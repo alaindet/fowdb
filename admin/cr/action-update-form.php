@@ -7,7 +7,7 @@ $cr = $db->get(
     true
 );
 
-\App\Page::build(
+view(
     'Admin - CR update',
     '/admin/cr/form-update.html.php',
     null, // No options

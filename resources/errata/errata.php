@@ -11,8 +11,8 @@ $errata = $db->get(
 
 // ERROR: Missing errata
 if (empty($errata)) {
-	\App\FoWDB::notify("There are currently no errata");
-	\App\Redirect::to("/");
+	notify("There are currently no errata");
+	redirect("/");
 }
 ?>
 <!-- Header -->
@@ -26,7 +26,7 @@ if (empty($errata)) {
 			    	<em><?=$item['last_edit']?></em>
 			    	<a href="/?p=card&code=<?=$item['code']?>"><?=$item['name']?> (<?=$item['code']?>)</a>
 			    </h4>
-			    <p class="list-group-item-text"><?=\App\FoWDB::renderText($item['ruling'])?></p>
+			    <p class="list-group-item-text"><?=render($item['ruling'])?></p>
 			  </div>
 			<?php endforeach; ?>
 		</div>

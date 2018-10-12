@@ -4,7 +4,7 @@ require dirname(dirname(__DIR__)) . '/_config/config.php';
 
 // ERROR: Unauthorized
 if (admin_level() === 0) {
-	\App\FoWDB::notify('You are noth authorized.', 'danger');
+	notify('You are noth authorized.', 'danger');
 	header('Location: /');
 	return;
 }
@@ -25,7 +25,7 @@ if (isset($_POST['action'])) {
 		unlink($_SERVER['DOCUMENT_ROOT']."/".$_POST['thumbpath']);
 		
 		// Notify the user
-		\App\FoWDB::notify("Card \"{$_REQUEST['name']}\" successfully deleted.", 'danger');
+		notify("Card \"{$_REQUEST['name']}\" successfully deleted.", 'danger');
 
 		// REDIRECT TO CARD LIST
 		header("Location: /?p=admin/cards&menu_action=list");
@@ -234,7 +234,7 @@ if (isset($_POST['action'])) {
 				   . "' target=_blank>".$_POST['name']."</a></strong>";
 
 		// Notify the user
-		\App\FoWDB::notify("Card {$card_link} successfully edited.", 'info');
+		notify("Card {$card_link} successfully edited.", 'info');
 
 		// REDIRECT TO CARD LIST
 		header("Location: /?p=admin/cards&menu_action=list");
@@ -322,7 +322,7 @@ if (isset($_POST['action'])) {
 		if (!empty($existingCard)) {
 			$message = "Sorry, card number <strong>{$_POST['cardnum']}</strong>"
 			         . " already exists for set <strong>{$setcode}</strong>.";
-			\App\FoWDB::notify($message, 'danger');
+			notify($message, 'danger');
 			header("Location: /?p=admin/cards&form_action=create");
 			exit();
 		}
@@ -452,7 +452,7 @@ if (isset($_POST['action'])) {
 				   . "' target=_blank>".$_POST['name']."</a></strong>";
 
 		// Notify the user
-		\App\FoWDB::notify("New card {$card_link} successfully added.", 'success');
+		notify("New card {$card_link} successfully added.", 'success');
 
 		// Redirect user to Create new card
 		header("Location: /?p=admin/cards&form_action=create");

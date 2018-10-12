@@ -2,26 +2,26 @@
 
 // ERROR: Missing inputs
 if (!isset($_FILES['crfile'], $_POST['version'], $_POST['validity'])) {
-    \App\FoWDB::notify("Inputs are missing.", "danger");
-    \App\Redirect::to("admin/cr");
+    notify("Inputs are missing.", "danger");
+    redirect("admin/cr");
 }
 
 // ERROR: Version doesn't contain digits or periods
 if (!preg_match("/^[0-9]+\./", $_POST['version'])) {
-    \App\FoWDB::notify("Version must contain (and start with) digits and must have one period (Ex.: <strong>6.3a</strong>).", "danger");
-    \App\Redirect::to("admin/cr");
+    notify("Version must contain (and start with) digits and must have one period (Ex.: <strong>6.3a</strong>).", "danger");
+    redirect("admin/cr");
 }
 
 // ERROR: Legality day must be YYYY-MM-DD
 if (!preg_match("/^20[0-9]{2}-[01][0-9]-[0123][0-9]$/", $_POST['validity'])) {
-    \App\FoWDB::notify("Legality date must be a valid YYYY-MM-DD date (Ex.: 2017-03-19)", "danger");
-    \App\Redirect::to("admin/cr");
+    notify("Legality date must be a valid YYYY-MM-DD date (Ex.: 2017-03-19)", "danger");
+    redirect("admin/cr");
 }
 
 // ERROR: Invalid file type
 if ($_FILES['crfile']['type'] != "text/plain") {
-    \App\FoWDB::notify("Invalid file type, a simple .txt file is needed", "danger");
-    \App\Redirect::to("admin/cr");
+    notify("Invalid file type, a simple .txt file is needed", "danger");
+    redirect("admin/cr");
 }
 
 // Assemble file name
@@ -31,8 +31,8 @@ $filenameHtml = APP_ROOT . "{$partialPath}.html";
 
 // ERROR: Cannot save txt file
 if (!move_uploaded_file($_FILES['crfile']['tmp_name'], $filenameTxt)) {
-    \App\FoWDB::notify("We couldn't save the original TXT file for this CR into filesystem.", "danger");
-    \App\Redirect::to("admin/cr");
+    notify("We couldn't save the original TXT file for this CR into filesystem.", "danger");
+    redirect("admin/cr");
 }
 
 // Convert txt to html
@@ -41,8 +41,8 @@ $cr->convertToHtml();
 
 // ERROR: Cannot save converted HTML file
 if (!$cr->save($filenameHtml)) {
-    \App\FoWDB::notify("We couldn't save the converted HTML file for this CR into filesystem.", "danger");
-    \App\Redirect::to("admin/cr");
+    notify("We couldn't save the converted HTML file for this CR into filesystem.", "danger");
+    redirect("admin/cr");
 }
 
 // Update the database
@@ -64,10 +64,10 @@ if (!$db->insert("comprehensive_rules", [
     "version" => $_POST['version'],
     "path" => "{$partialPath}.html"
 ])) {
-    \App\FoWDB::notify("We couldn't save the converted HTML file for this CR into filesystem.", "danger");
-    \App\Redirect::to("admin/cr");
+    notify("We couldn't save the converted HTML file for this CR into filesystem.", "danger");
+    redirect("admin/cr");
 }
 
 // Success
-\App\FoWDB::notify("You successfully created a new CR on FoWDB!", "success");
-\App\Redirect::to("admin/cr");
+notify("You successfully created a new CR on FoWDB!", "success");
+redirect("admin/cr");

@@ -11,22 +11,22 @@
         "wandr": {
             "name": "Wanderer",
             "clusters": [
-                2,
                 3,
                 4,
                 5,
-                6
+                6,
+                2
             ]
         },
         "orign": {
             "name": "Origin",
             "clusters": [
-                6,
                 1,
                 2,
                 3,
                 4,
-                5
+                5,
+                6
             ]
         },
         "c-nva": {

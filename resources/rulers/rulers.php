@@ -33,7 +33,7 @@ $rulers = $db->get(
 if (empty($rulers)) {
 
     // Add notification
-    \App\FoWDB::notify("No rulers for this set. Please select another set from the menu.", "warning");
+    notify("No rulers for this set. Please select another set from the menu.", "warning");
 
 // There were rulers for this set
 } else {
@@ -42,7 +42,7 @@ if (empty($rulers)) {
     foreach ($rulers as $key => &$r) {
 
         // Render text
-        $rulers[$key]["cardtext"] = \App\FoWDB::renderText($r['cardtext']);
+        $rulers[$key]["cardtext"] = render($r['cardtext']);
 
         // Count rulers
         if ($r['cardtype'] == 'Ruler') {

@@ -1,6 +1,5 @@
 <?php
   $counter = 0; // Ruling counter
-  \App\CardView::display($cards); // Add 'display' element on every card
   foreach ($cards as &$card):
 ?>
 	<div class="row cardpage">
@@ -8,39 +7,53 @@
     <!-- Card name -->
 		<div class="col-xs-12">
 			<div class="page-header" style="margin-top:0">
-				<h2><?=$card['cardname']?></h2>
+				<h2><?=$card['name']?></h2>
 			</div>
 		</div>
 
-		<?php if (admin_level() > 0): // Admin buttons ?>
+		<?php // Admin buttons ----------------------------------------------------
+			if (admin_level() > 0):
+				$id =& $card['id'];
+				$do = 'form_action';
+				$edit = url('admin/cards', [$do => 'edit', 'id' => $id]);
+				$delete = url('admin/cards', [$do => 'delete', 'id' => $id]);
+				$addRuling = url('admin/rulings', [$do => 'create', 'card_id' => $id]);
+		?>
 			<div class="col-xs-12">
-				<!-- Edit -->
-				<a href="/index.php?p=admin/cards&form_action=edit&id=<?=$card['id']?>">
+				
+				<a href="<?=$edit?>">
 					<button type="button" class="btn btn-warning btn-sm cardpage-btn">
 						<span class="glyphicon glyphicon-edit"></span>
 						Edit card
 					</button>
 				</a>
-				<!-- Delete -->
-				<a href="/index.php?p=admin/cards&form_action=delete&id=<?=$card['id']?>">
+
+				<a href="<?=$delete?>">
 					<button type="button" class="btn btn-danger btn-sm cardpage-btn">
 						<span class="glyphicon glyphicon-remove"></span>
 						Delete card
 					</button>
 				</a>
-				<!-- Add -->
-				<a href="/index.php?p=admin/rulings&form_action=create&card_id=<?=$card['id']?>">
+				
+				<a href="<?=$addRuling?>">
 					<button type="button" class="btn btn-default btn-sm cardpage-btn">
 						<span class="glyphicon glyphicon-plus"></span>
 						Add ruling
 					</button>
 				</a>
+
 			</div>
-		<?php endif; ?>
+		<?php // End admin buttons ------------------------------------------------
+			endif;
+		?>
 
 		<!-- Card image -->
 		<div class="col-xs-12 col-sm-5 box" style="text-align:center;">
-			<img src="<?=$card['image_path']?>" alt="<?=$card['cardname']?>" class="cardpage-img">
+			<img
+				src="<?=$card['image_path']?>"
+				alt="<?=$card['name']?>"
+				class="cardpage-img"
+			/>
 		</div>
 		
 		<!-- Card info -->
@@ -62,26 +75,43 @@
 			<?php endforeach; ?>
 		</div>
 
-		<?php require __DIR__ . "/cr-update.html.php"; // CR Update ?>
-
-		<?php if ($card['narp']['flag'] > 0): // NARPs ?>
+		<?php // Narp -------------------------------------------------------------
+			if ($card['narp']['flag'] > 0):
+		?>
 			<div class="col-xs-12">
-				<?php foreach ($card['narp']['cards'] as $label => &$list): ?>
-					<h3><?=$label?>&nbsp;<small>(<?=count($list)?>)</small></h3>
+				<?php foreach ($card['narp']['cards'] as $print => $cardCodes): ?>
+
+					<h3>
+						<?=$print?>
+						<small>(<?=count($cardCodes)?>)</small>
+					</h3>
+
 					<ul class="list-group">
-						<?php foreach ($list as &$code):
-							$link = "/?p=card&code=".str_replace(" ", "+", $code);
-						?>
-					  	<li class="list-group-item"><a href="<?=$link?>"><?=$code?></a></li>
+						<?php foreach ($cardCodes as &$code): ?>
+					  	<li class="list-group-item">
+								<a href="<?='/?p=card&code='.str_replace(' ','+',$code)?>">
+									<?=$code?>
+								</a>
+							</li>
 					  <?php endforeach; ?>
 					</ul>
+
 				<?php endforeach; ?>
 			</div>
-		<?php endif; ?>
+		<?php // End Narp ---------------------------------------------------------
+			endif;
+		?>
 
-		<?php if (!empty($card['rulings'])): // Rulings ?>
+		<?php // Rulings ----------------------------------------------------------
+			if (!empty($card['rulings'])):
+		?>
 			<div class="col-xs-12 f-rulings">
-				<h3>Rulings&nbsp;<small>(<?=count($card['rulings'])?>)</small></h3>
+
+				<h3>
+					Rulings
+					<small>(<?=count($card['rulings'])?>)</small>
+				</h3>
+
 				<div class="list-group f-rulings-list">
 					<?php foreach ($card['rulings'] as $item): $counter++; ?>
 					  <div class="list-group-item f-rulings-item">
@@ -91,22 +121,52 @@
 					    	<?php endif; ?>
 					    	<div class="f-rulings-date"><?=$item['created']?></div>
 					    	<div class="f-rulings-buttons">
-					    		<a href="#ruling<?=$counter?>" name="ruling<?=$counter?>" class="btn btn-sm btn-link">Share</a>
-					    		<?php if (admin_level() > 0):
-					    			$code       = str_replace(" ", "+", $card['cardcode']);
-					    			$linkEdit   = "/?p=admin/rulings&form_action=edit&id={$item['id']}&code={$code}";
-					    			$linkDelete = "/?p=admin/rulings&form_action=delete&id={$item['id']}&code={$code}";
-					    		?>
-						    		<a href="<?=$linkEdit?>" class="btn btn-sm btn-warning">Edit</a>
-						    		<a href="<?=$linkDelete?>" class="btn btn-sm btn-danger">Delete</a>
+					    		
+									<a
+										href="#ruling<?=$counter?>"
+										name="ruling<?=$counter?>"
+										class="btn btn-sm btn-link"
+									>Share</a>
+
+					    		<?php if (admin_level() > 0): ?>
+						    		
+										<!-- Edit -->
+										<a
+											href="<?=url('admin/rulings', [
+												'form_action' => 'edit',
+												'id' => $item['id'],
+												'code' => str_replace(' ', '+', $card['code'])
+											])?>"
+											class="btn btn-sm btn-warning"
+                    >
+                      Edit
+                    </a>
+
+										<!-- Delete -->
+						    		<a
+											href="<?=url('admin/rulings', [
+												'form_action' => 'delete',
+												'id' => $item['id'],
+												'code' => str_replace(' ', '+', $card['code'])
+											])?>"
+											class="btn btn-sm btn-danger"
+                    >
+                      Delete
+                    </a>
+
 					    		<?php endif; ?>
+
 					    	</div>
 					    </h4>
 					    <p class="list-group-item-text"><?=$item['ruling']?></p>
 					   </div>
+
 					<?php endforeach; ?>
 				</div>
 			</div>
-		<?php endif; ?>
+		<?php // End rulings ------------------------------------------------------
+			endif;
+		?>
+
 	</div>
 <?php endforeach; ?>

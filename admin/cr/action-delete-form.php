@@ -7,7 +7,7 @@ $cr = $db->get(
     true
 );
 
-\App\Page::build(
+view(
     'Admin - CR delete',
     '/admin/cr/form-delete.html.php',
     null, // No options

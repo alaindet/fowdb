@@ -5,8 +5,8 @@ require dirname(dirname(__DIR__)) . '/_config/config.php';
 
 // ERROR: Unauthorized
 if (admin_level() === 0) {
-    \App\FoWDB::notify('You are noth authorized.', 'danger');
-    \App\Redirect::to('/');
+    notify('You are noth authorized.', 'danger');
+    redirect('/');
     return;
 }
 
@@ -26,7 +26,7 @@ $nextIndex = $currentIndex + 1;
 
 // Next card is in this set!
 if (isset($nums[$nextIndex])) {
-    \App\Redirect::to(
+    redirect(
         'temp/admin/artists/card',
         ['id' => $session['list'][$nums[$nextIndex]]]
     );
@@ -41,8 +41,8 @@ $set = database()->get(
 );
 
 // Get back to the set selection page
-\App\FoWDB::notify(
+notify(
     "You reached the end of the set <strong>{$set['name']} ({$set['code']})</strong>. Select a new one",
     'info'
 );
-\App\Redirect::to('temp/admin/artists/select-set');
+redirect('temp/admin/artists/select-set');

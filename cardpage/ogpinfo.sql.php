@@ -2,7 +2,7 @@
 
 // ERROR: No card code provided
 if (!isset($_GET['code'])) {
-	\App\FoWDB::notify('No card code provided.', 'warning');
+	notify('No card code provided.', 'warning');
 	header('Location: /');
 	return;
 }

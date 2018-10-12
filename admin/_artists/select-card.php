@@ -2,7 +2,7 @@
 
 // ERROR: Unauthorized
 if (admin_level() === 0) {
-	\App\FoWDB::notify('You are noth authorized.', 'danger');
+	notify('You are noth authorized.', 'danger');
 	header('Location: /');
 	return;
 }

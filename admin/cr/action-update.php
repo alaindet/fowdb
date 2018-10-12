@@ -2,25 +2,25 @@
 
 // Token and action already validated in /admin/cr/actions.php
 
-// echo \App\Debugger::log($_POST, "POST");
-// echo \App\Debugger::log($_FILES, "FILES");
+// echo logHtml($_POST, "POST");
+// echo logHtml($_FILES, "FILES");
 
 // ERROR: Missing inputs
 if (! isset($_POST['id'], $_POST['version'], $_POST['old-version'], $_POST['validity'])) {
-    \App\FoWDB::notify("Missing inputs.", "danger");
-    \App\Redirect::to("admin/cr");
+    notify("Missing inputs.", "danger");
+    redirect("admin/cr");
 }
 
 // ERROR: Version doesn't contain digits!
 if (! preg_match("/^[0-9]+/", $_POST['version'])) {
-    \App\FoWDB::notify("Version must contain (and start with) digits (Ex.: <strong>6.3a</strong>).", "danger");
-    \App\Redirect::to("admin/cr");
+    notify("Version must contain (and start with) digits (Ex.: <strong>6.3a</strong>).", "danger");
+    redirect("admin/cr");
 }
 
 // ERROR: Legality day must be YYYY-MM-DD
 if (! preg_match("/^20[0-9]{2}-[01][0-9]-[0123][0-9]$/", $_POST['validity'])) {
-    \App\FoWDB::notify("Legality date must be a valid YYYY-MM-DD date (Ex.: 2017-03-19)", "danger");
-    \App\Redirect::to("admin/cr");
+    notify("Legality date must be a valid YYYY-MM-DD date (Ex.: 2017-03-19)", "danger");
+    redirect("admin/cr");
 }
 
 // A new file was uploaded!
@@ -28,8 +28,8 @@ if ($_FILES['crfile']['error'] == 0) {
 
     // ERROR: Wrong/missing file uploaded
     if ($_FILES['crfile']['type'] != "text/plain") {
-        \App\FoWDB::notify("File not uploaded or not the right format (must be .txt)", "danger");
-        \App\Redirect::to("admin/cr");
+        notify("File not uploaded or not the right format (must be .txt)", "danger");
+        redirect("admin/cr");
     }
 
     // Assemble filenames
@@ -47,8 +47,8 @@ if ($_FILES['crfile']['error'] == 0) {
 
     // ERROR: Cannot save txt file
     if (! move_uploaded_file($_FILES['crfile']['tmp_name'], $newCrTxt)) {
-        \App\FoWDB::notify("We couldn't save the new TXT file for this CR into filesystem.", "danger");
-        \App\Redirect::to("admin/cr");
+        notify("We couldn't save the new TXT file for this CR into filesystem.", "danger");
+        redirect("admin/cr");
     }
 
     // Convert txt to html
@@ -57,8 +57,8 @@ if ($_FILES['crfile']['error'] == 0) {
 
     // ERROR: Cannot save converted HTML file
     if (! $cr->save($newCrHtml)) {
-        \App\FoWDB::notify("We couldn't save the converted HTML file for this CR into filesystem.", "danger");
-        \App\Redirect::to("admin/cr");
+        notify("We couldn't save the converted HTML file for this CR into filesystem.", "danger");
+        redirect("admin/cr");
     }
 
     // Delete old files
@@ -101,10 +101,10 @@ if (! $db->update("comprehensive_rules",
         "path" => "/app/assets/cr/{$_POST['version']}.html"
     ], "id = :id", [":id" => (int) $_POST['id']]
 )) {
-    \App\FoWDB::notify("We couldn't update the CR info on the database.", "danger");
-    \App\Redirect::to("admin/cr");
+    notify("We couldn't update the CR info on the database.", "danger");
+    redirect("admin/cr");
 }
 
 // Success
-\App\FoWDB::notify("CR successfully updated on the database", "success");
-\App\Redirect::to("admin/cr");
+notify("CR successfully updated on the database", "success");
+redirect("admin/cr");

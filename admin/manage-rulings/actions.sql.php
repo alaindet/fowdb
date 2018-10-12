@@ -19,10 +19,10 @@ if (isset($_POST['action'])) {
 		// Try deleting the ruling
 		if (! $db->delete("rulings", "id = :id", [":id" => $_POST['id']])) {
 			// ERROR
-			\App\FoWDB::notify("Could not delete ruling for {$card_link}.", "warning");
+			notify("Could not delete ruling for {$card_link}.", "warning");
 		} else {
 			// SUCCESS
-			\App\FoWDB::notify("Ruling for {$card_link} successfully deleted.", "info");
+			notify("Ruling for {$card_link} successfully deleted.", "info");
 		}
 	}
 	
@@ -44,12 +44,12 @@ if (isset($_POST['action'])) {
 			],
 			"id = :id", [":id" => $_POST['id']]
 		)) {
-			\App\FoWDB::notify(
+			notify(
 				"Ruling for {$card_link} successfully edited.",
 				"info"
 			);
 		} else {
-			\App\FoWDB::notify(
+			notify(
 				"Could not edit the ruling for {$card_link}.",
 				"warning"
 			);
@@ -74,10 +74,10 @@ if (isset($_POST['action'])) {
 			true // Update on duplicate
 		)) {
 			// ERROR
-			\App\FoWDB::notify("Could not create a new ruling for {$card_link}.", "warning");
+			notify("Could not create a new ruling for {$card_link}.", "warning");
 		} else {
 			// SUCCESS
-			\App\FoWDB::notify("New ruling for {$card_link} successfully added.", "info");
+			notify("New ruling for {$card_link} successfully added.", "info");
 		}
 
 		// FROM RULING REQUEST
@@ -89,15 +89,15 @@ if (isset($_POST['action'])) {
 				// Try to delete ruling request
 				if (! $db->delete("ruling_requests", "id = :id", [":id" => $_POST['req_id']])) {
 					// ERROR
-					\App\FoWDB::notify("Ruling created, ruling request COULD NOT BE deleted", "danger");
+					notify("Ruling created, ruling request COULD NOT BE deleted", "danger");
 				} else {
 					// SUCCESS
-					\App\FoWDB::notify("Ruling created, ruling request deleted");
+					notify("Ruling created, ruling request deleted");
 				}
 			}
 
 			// SUCCESS
-			\App\FoWDB::notify("Ruling created, ruling request NOT deleted");
+			notify("Ruling created, ruling request NOT deleted");
 
 			// Redirect user to requests manager
 			header("Location: /?p=admin/requests");

@@ -1,0 +1,19 @@
+{
+  "name": "fowdb-craton-assets",
+  "version": "1.0.0",
+  "description": "Building tools for FoWDB",
+  "main": "index.js",
+  "scripts": {
+    "build-css": "node-sass --output-style=compressed scss/app.scss ../../../css/app.min.css",
+    "watch-build-css": "node-sass --output-style=compressed scss/app.scss ../../../css/app.min.css --watch"
+  },
+  "author": {
+    "name": "Alain D'Ettorre",
+    "email": "alain.det@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "node-sass": "^4.9.2",
+    "uglify-js": "^3.4.8"
+  }
+}

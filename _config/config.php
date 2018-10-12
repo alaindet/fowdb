@@ -1,9 +1,9 @@
 <?php
 
-// SESSION --------------------------------------------------------------------
+// Session --------------------------------------------------------------------
 session_start();
 
-// CONSTANTS ------------------------------------------------------------------
+// Constants ------------------------------------------------------------------
 foreach ([
     "APP_NAME" => "FoWDB - Force of Will Database",
     "APP_DOMAIN" => "http://fowdb.altervista.org/",
@@ -13,24 +13,22 @@ foreach ([
     "APP_DB_NAME" => "my_fowdb",
     "APP_DB_USER" => "fowdb",
     "APP_DB_PASSWORD" => "UVS4JTpzFPJ8ed3Z",
-    // Default JSON_* flags for json_encode() function
-    // *_NUMERIC_CHECK preserves integers as int, not strings
-    // *_UNESCAPED_SLASHES prevents escaping slashes into strings
-    // *_PRETTY_PRINT preserves white space for readability of output file
-    "APP_JSON_ENCODE" => JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES,
     "APP_RESULTS_LIMIT" => 25
 ] as $key => $value) {
     define($key, $value);
 }
 
 // Autoloader
-require_once dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__) . '/src/vendor/autoload.php';
 
-// LEGACY ---------------------------------------------------------------------
-$thereWereResults = false; // Search flag
-include APP_ROOT.'/_config/helpers.php'; // Helper functions
+// Functions
+require __DIR__ . '/functions/helpers.php';
+require __DIR__ . '/functions/auth.php';
 
-// ANTI-CSRF TOKEN ------------------------------------------------------------
+// Legacy ---------------------------------------------------------------------
+$thereWereResults = false;
+
+// Anti-CSRF token ------------------------------------------------------------
 if (! isset($_SESSION['token'])) {
     $_SESSION['token'] = sha1(uniqid(mt_rand(), true));
 }

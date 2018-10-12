@@ -37,5 +37,5 @@ foreach ($spoilers['sets'] as &$set) {
 }
 
 if (empty($cards)) {
-	\App\FoWDB::notify('No spoiler cards found.', 'danger');
+	notify('No spoiler cards found.', 'danger');
 }
