@@ -95,7 +95,7 @@ foreach ($cardsDb as &$card) {
 	$set = collapse(
 		"<a href='/?do=search&setcode={$card['setcode']}'>",
 			strtoupper($card['setcode']), ' - ',
-			cached("clusters.{$card['block']}.sets.{$card['setcode']}"),
+			cached("clusters.{$card['clusters_id']}.sets.{$card['setcode']}"),
 		"</a>"
 	);
 
@@ -126,7 +126,7 @@ foreach ($cardsDb as &$card) {
 		
 		// This card's formats
 		// Ex.: (assoc) [ [format_name, format_code], ... ]
-		$cardFormats = CardView::formatsListByCluster($card['block']);
+		$cardFormats = CardView::formatsListByCluster($card['clusters_id']);
 
 		// Banned in these formats (can be empty, most of the times)
 		// Ex.: (assoc) [ [format_name, deck_name, copies_in_deck], ... ]
@@ -228,9 +228,9 @@ foreach ($cardsDb as &$card) {
 	];
 
 	// Remove optional properties for some card types -------------------------
-	foreach ([ 'banned', 'divinity', 'flavor_text' ] as $optional) {
-		if (empty($card[$optional])) unset($card[$optional]);
-	}
+	if (empty($card['banned'])) unset($card['banned']);
+	if (empty($card['divinity'])) unset($card['divinity']);
+	if (empty($card['flavor_text'])) unset($card['flavor_text']);
 
 	// Filter out some props based on card type
 	$cards[] = CardView::removeIllegalProps($card, $_type);

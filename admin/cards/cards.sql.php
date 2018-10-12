@@ -6,7 +6,7 @@ $cards = [];
 
 // DEFAULTS -------------------------------------------------------------------
 $orderby = 'setnum, cardnum'; // Show SETNUM > CARDNUM order as default
-$sql_filter = "NOT(block=1)";
+$sql_filter = "NOT(clusters_id=1)";
 
 
 // SORTING --------------------------------------------------------------------
@@ -87,7 +87,7 @@ $limit_down = $offsets['down'];
 $sql = "SELECT
 			id,
 			narp,
-			block,
+			clusters_id,
 			setnum,
 			setcode,
 			cardcode,
@@ -164,7 +164,7 @@ if (!empty($result)) {
 		$cards[] = array (
 			'id' => $row['id'],
 			'narp' => $row['narp'],
-			'block' => $row['block'],
+			'clusters_id' => $row['clusters_id'],
 			'setnum' => $row['setnum'],
 			'setcode' => $row['setcode'],
 			'cardcode' => $row['cardcode'],

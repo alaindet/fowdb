@@ -41,27 +41,20 @@ class CardNarp
     }
 
     /**
-     * Returns the base print card having this exact name
-     * Ex.: [ name=>, code=>, print=> ]
+     * Returns the card code of the base print having this exact name
      * 
      * @param string $name The exact card name
      * @return array
      */
-    public static function getBaseCard(string $name): array
+    public static function getBaseCode(string $name): string
     {
-        $card = database()->get(
-            "SELECT narp, cardocode
+        return database()->get(
+            "SELECT narp, cardcode
             FROM cards
-            WHERE narp = 0 AND cardname = :name",
-            [':name' => $name],
-            $first = true
-        );
-
-        return empty($card) ? [] : [
-            'name' => $name,
-            'code' =>$card['cardcode'],
-            'print' => self::$map[0]
-        ];
+            WHERE narp = 0 AND cardname = :name
+            LIMIT 1",
+            [':name' => $name]
+        )[0]['cardcode'];
     }
 
     /**
@@ -83,7 +76,7 @@ class CardNarp
             "SELECT narp, cardcode
             FROM cards
             WHERE narp > 0 AND cardname = :name
-            ORDER BY 'block' DESC, setnum DESC, cardnum DESC",
+            ORDER BY clusters_id DESC, setnum DESC, cardnum DESC",
             [':name' => $name]
         );
 
@@ -134,7 +127,9 @@ class CardNarp
         else {
             return [
                 'flag' => 2,
-                'cards' => [ self::getBaseCard($name) ]
+                'cards' => [
+                    'Base Print' => [ self::getBaseCode($name) ]
+                ]
             ];
         }
     }

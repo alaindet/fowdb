@@ -3,12 +3,10 @@
 // Check if ruling ID was passed
 if (isset($_REQUEST['id'])) {
 
-	$db = \App\Database::getInstance();
-
-	$card = $db->get(
+	$card = database()->get(
 		"SELECT * FROM cards WHERE id = :id LIMIT 1",
 		[":id" => (int) $_REQUEST['id']],
-		true
+		$first = true
 	);
 
 	// Adjust returned card
@@ -39,9 +37,9 @@ if (isset($_REQUEST['id'])) {
 else {
 	$card = [
 		'id'           => '',
-		'back_side'     => '',
+		'back_side'    => '',
 		'narp'         => '',
-		'block'        => '',
+		'clusters_id'  => '',
 		'setnum'       => '',
 		'setcode'      => '',
 		'num'          => '',

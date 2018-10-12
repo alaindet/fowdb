@@ -1,11 +1,11 @@
 <!-- Admin menu link -->
 <p>
-	<a href="/index.php?p=admin">
+	<a href="/?p=admin">
 		<button type="button" class="btn btn-default">
 			&larr; Admin menu
 		</button>
 	</a>
-	<a href="/index.php?p=admin/cards">
+	<a href="/?p=admin/cards">
 		<button type="button" class="btn btn-default">
 			Cards menu
 		</button>
@@ -32,15 +32,15 @@
 				<?php
 					// Define sortings
 					$sortings = [
-						'0' => 'Code (default)'
-						,'block' => 'Block'
-						,'attribute' => 'Attribute'
-						,'totalcost' => 'Total Cost'
-						,'cardtype' => 'Type'
-						,'cardname' => 'Name'
-						,'atk' => 'ATK'
-						,'def' => 'DEF'
-						,'id' => 'ID'
+						'0' => 'Code (default)',
+						'clusters_id' => 'Cluster',
+						'attribute' => 'Attribute',
+						'totalcost' => 'Total Cost',
+						'cardtype' => 'Type',
+						'cardname' => 'Name',
+						'atk' => 'ATK',
+						'def' => 'DEF',
+						'id' => 'ID',
 					];
 
 					// Generate an option for each sorting
@@ -127,7 +127,7 @@
 				<tr>
 					<th><h4>#</h4></th>
 					<th><h4>Action</h4></th>
-					<th><h4>Block</h4></th>
+					<th><h4>Cluster</h4></th>
 					<th><h4>Code</h4></th>
 					<th><h4>Attrib</h4></th>
 					<th><h4>Cost</h4></th>
@@ -181,9 +181,9 @@
 							</form>
 						</td>
 
-						<!-- Block -->
+						<!-- Cluster -->
 						<td><?php
-							switch($card['block']) {
+							switch($card['clusters_id']) {
 								case 1: echo 'VAL'; break;
 								case 2: echo 'GRM'; break;
 								case 3: echo 'ALI'; break;

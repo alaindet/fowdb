@@ -21,7 +21,9 @@ class Logger
         }
 
         // Content
-        $content = print_r($x, true);
+        if (is_bool($x)) $content = '(bool) ' . ($x ? 'TRUE' : 'FALSE');
+        elseif (is_string($x)) $content = $x;
+        else $content = print_r($x, true);
 
         // Return log
         return "<pre>{$title}{$line}{$content}</pre>";

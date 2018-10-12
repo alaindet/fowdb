@@ -14,7 +14,7 @@ if (isset($_POST['action'])) {
 	$db = \App\Database::getInstance();
 
 	// DELETE CARD ------------------------------------------------------------
-	if ($_POST['action'] == 'delete' AND isset($_POST['id'])) {
+	if ($_POST['action'] === 'delete' && isset($_POST['id'])) {
 
 		// Delete card from database
 		$db->delete("cards", "id = :id", [":id" => (int) $_POST['id']]);
@@ -24,16 +24,14 @@ if (isset($_POST['action'])) {
 		unlink($_SERVER['DOCUMENT_ROOT']."/".$_POST['imagepath']);
 		unlink($_SERVER['DOCUMENT_ROOT']."/".$_POST['thumbpath']);
 		
-		// Notify the user
+		// Notify and redirect ot the cards list
 		notify("Card \"{$_REQUEST['name']}\" successfully deleted.", 'danger');
-
-		// REDIRECT TO CARD LIST
-		header("Location: /?p=admin/cards&menu_action=list");
+		redirect('admin/cards', ['menu_action', 'list']);
 	}
 	
 
 	// EDIT CARD --------------------------------------------------------------
-	else if ($_POST['action'] == 'edit' && isset($_POST['id'])) {
+	elseif ($_POST['action'] === 'edit' && isset($_POST['id'])) {
 
 		// Check if a valid set was passed
 		if ($_POST['set'] != '0') {
@@ -72,23 +70,23 @@ if (isset($_POST['action'])) {
 
 			// Search set code into database
 			$dbRow = $db->get(
-				"SELECT id as setnum, clusters_id as block FROM sets WHERE code = :code",
+				"SELECT id as setnum, clusters_id as cluster FROM sets WHERE code = :code",
 			    [":code" => $setcode],
 			    true
 			);
 
-			// Define set number and block
+			// Define set number and cluster
 			$setnum = (int) $dbRow['setnum'];
-			$block  = (int) $dbRow['block'];
+			$cluster  = (int) $dbRow['clusters_id'];
 
 			// Assemble paths
-			$imagepath = "images/cards/{$block}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
-			$thumbpath = "images/thumbs/{$block}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
+			$imagepath = "images/cards/{$cluster}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
+			$thumbpath = "images/thumbs/{$cluster}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
 		}
 
 		// Set was not passed, get default values
 		else {
-			$block = '0';
+			$cluster = '0';
 			$setnum = null;
 			$setcode = '';
 			$imagepath = "images/cards/missing.jpg";
@@ -205,7 +203,7 @@ if (isset($_POST['action'])) {
 			'id' => $_POST['id'],
 			'back_side' => $backside,
 			'narp' => $_POST['narp'],
-			'block' => $block,
+			'clusters_id' => $cluster,
 			'setnum' => $setnum,
 			'setcode' => $setcode,
 			'cardnum' => (int) $_POST['cardnum'],
@@ -242,7 +240,7 @@ if (isset($_POST['action'])) {
 	
 	
 	// CREATE CARD ------------------------------------------------------------
-	else if ($_POST['action'] == 'create') {
+	elseif ($_POST['action'] === 'create') {
 
 		// Check if a valid set was passed
 		if ($_POST['set'] != '0') {
@@ -281,25 +279,25 @@ if (isset($_POST['action'])) {
 
 			// Search set code into database
 			$db_set = $db->get(
-			    "SELECT id as setnum, clusters_id as block
+			    "SELECT id as setnum, clusters_id
 			    FROM sets
 			    WHERE code = :code",
 			    [":code" => $setcode],
 			    true
 			);
 
-			// Define set number and block
+			// Define set number and cluster
 			$setnum = (int) $db_set['setnum'];
-			$block  = (int) $db_set['block'];
+			$cluster = (int) $db_set['clusters_id'];
 
 			// Assemble paths
-			$imagepath = "images/cards/{$block}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
-			$thumbpath = "images/thumbs/{$block}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
+			$imagepath = "images/cards/{$cluster}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
+			$thumbpath = "images/thumbs/{$cluster}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
 		}
 
 		// Set was not passed, get default values
 		else {
-			$block = 0;
+			$cluster = 0;
 			$setnum = null;
 			$setcode = '';
 			$imagepath = "images/cards/missing.jpg";
@@ -409,7 +407,7 @@ if (isset($_POST['action'])) {
 		$db->insert("cards", [
 			'narp' => $_POST['narp'],
 			'back_side' => $backside,
-			'block' => $block,
+			'clusters_id' => $cluster,
 			'setnum' => $setnum,
 			'setcode' => $setcode,
 			'cardnum' => (int) $_POST['cardnum'],

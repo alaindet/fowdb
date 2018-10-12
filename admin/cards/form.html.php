@@ -223,7 +223,7 @@
                 	$current = array_values(array_filter(
                 		$backsides,
                 		function ($i) use ($card) {
-                			return $i['value'] == $card['backside'];
+                			return $i['value'] == $card['back_side'];
                 		}
                 	))[0]['code'];
 
@@ -288,7 +288,7 @@
 								<div class="col-sm-4">
 									<span class="form-label">
 										Free
-										<span style="font-size: .95rem">(-1 for X, -2 for XX, etc.)</small>
+										<span class="font-90">(-1 for X, -2 for XX, etc.)</small>
 									</span>
 									<input
 										type="number"

@@ -79,15 +79,15 @@
 			if ($card['narp']['flag'] > 0):
 		?>
 			<div class="col-xs-12">
-				<?php foreach ($card['narp']['cards'] as $print => $cardCodes): ?>
+				<?php foreach ($card['narp']['cards'] as $print => &$cards): ?>
 
 					<h3>
 						<?=$print?>
-						<small>(<?=count($cardCodes)?>)</small>
+						<small>(<?=count($cards)?>)</small>
 					</h3>
 
 					<ul class="list-group">
-						<?php foreach ($cardCodes as &$code): ?>
+						<?php foreach ($cards as &$code): ?>
 					  	<li class="list-group-item">
 								<a href="<?='/?p=card&code='.str_replace(' ','+',$code)?>">
 									<?=$code?>

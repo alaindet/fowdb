@@ -420,7 +420,7 @@ class Search
             $clusters = $formats['list'][$this->f['format']]['clusters'];
 
             // Add all clusters for this format
-            $_sql_f[] = 'block IN('.implode(",", $clusters).')';
+            $_sql_f[] = 'cards.clusters_id IN('.implode(',', $clusters).')';
         }
 
         // FILTER --- EXCLUDE -------------------------------------------------

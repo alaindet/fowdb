@@ -19,7 +19,7 @@ $name = str_replace(['&#039;', '&quot;'], ['\'', "\\\""], $name);
 $cards = database()->get(
 	"SELECT id, cardcode, cardname, thumb_path
 	FROM cards
-	WHERE cardname LIKE \"%{$name}%\" AND block > 1
+	WHERE cardname LIKE \"%{$name}%\" AND clusters_id > 1
 	ORDER BY setnum DESC, cardnum ASC
 	LIMIT 10"
 );
