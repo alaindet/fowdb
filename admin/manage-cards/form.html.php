@@ -202,7 +202,7 @@
 											value="<?=$code?>"<?=$checked?>
 										><!--
 										--><img
-											src="_images/icons/1x1.gif"
+											src="images/icons/1x1.gif"
 											class="fdb-icon-<?=$code?>"
 											alt="<?=$label?>"
 										><!--

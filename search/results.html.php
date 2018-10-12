@@ -48,7 +48,7 @@
 									<i class="fa fa-2x fa-refresh"></i>
 									<br><strong>Load</strong>
 								</span>
-								<img src="_images/in_pages/search/more.jpg">
+								<img src="images/in_pages/search/more.jpg">
 							</button>
 						</form>
 					</div><!--

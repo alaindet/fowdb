@@ -10,7 +10,7 @@ class CardText
 	 * @var array
 	 */
 	private static $replace = [
-		'{rest}' => '<img src="_images/icons/1x1.gif" class="fdb-icon-rest" />',
+		'{rest}' => '<img src="images/icons/1x1.gif" class="fdb-icon-rest" />',
 		'=>' => '&rArr;',
 		'Errata:' => '<span class="ruling-errata">Errata:</span>',
 		'<hr>' => "<div class='fdb-separator-v-05'></div>",
@@ -25,7 +25,7 @@ class CardText
 	 */
 	private static $regexReplace = [
 		// Will symbols
-		"/{([wrugbmvt])}/" => "<img src='_images/icons/1x1.gif' class='fdb-icon-$1' alt='$1'/>",
+		"/{([wrugbmvt])}/" => "<img src='images/icons/1x1.gif' class='fdb-icon-$1' alt='$1'/>",
 		// Free will
 		"/{([0-9x]+)}/" => "<div class='fdb-icon-free'>&nbsp;$1&nbsp;</div>",
 		// Symbol skills

@@ -197,7 +197,7 @@
 						<td><?php
 							foreach ($card['attribute'] as $attribute) {
 								if (!empty($attribute)) {
-									echo "<img src='_images/icons/{$attribute}.png' />";
+									echo "<img src='images/icons/{$attribute}.png' />";
 								}
 							}
 						?></td>

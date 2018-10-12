@@ -64,7 +64,7 @@ foreach ($cardsDb as &$card) {
 			return collapse(
 				"<a href=\"/?do=search&attributes[]={$attribute}\">",
 					"<img ",
-						"src=\"_images/icons/1x1.gif\" ",
+						"src=\"images/icons/1x1.gif\" ",
 						"class=\"fdb-icon-{$attribute}\"",
 					"/>&nbsp;",
 					$attributesMap[$attribute],

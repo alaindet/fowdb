@@ -63,20 +63,20 @@
 			<div class="row">
 				<div class="col-xs-4 col-sm-3 col-md-1">
 					<ul class="list-unstyled">
-						<li>{w} = <img src="_images/icons/1x1.gif" class="fdb-icon-w" /></li>
-						<li>{r} = <img src="_images/icons/1x1.gif" class="fdb-icon-r" /></li>
-						<li>{u} = <img src="_images/icons/1x1.gif" class="fdb-icon-u" /></li>
-						<li>{g} = <img src="_images/icons/1x1.gif" class="fdb-icon-g" /></li>
-						<li>{b} = <img src="_images/icons/1x1.gif" class="fdb-icon-b" /></li>
-						<li>{m} = <img src="_images/icons/1x1.gif" class="fdb-icon-m" /></li>
-						<li>{t} = <img src="_images/icons/1x1.gif" class="fdb-icon-t" /></li>
+						<li>{w} = <img src="images/icons/1x1.gif" class="fdb-icon-w" /></li>
+						<li>{r} = <img src="images/icons/1x1.gif" class="fdb-icon-r" /></li>
+						<li>{u} = <img src="images/icons/1x1.gif" class="fdb-icon-u" /></li>
+						<li>{g} = <img src="images/icons/1x1.gif" class="fdb-icon-g" /></li>
+						<li>{b} = <img src="images/icons/1x1.gif" class="fdb-icon-b" /></li>
+						<li>{m} = <img src="images/icons/1x1.gif" class="fdb-icon-m" /></li>
+						<li>{t} = <img src="images/icons/1x1.gif" class="fdb-icon-t" /></li>
 					</ul>
 				</div>
 				<div class="col-xs-8 col-sm-9 col-md-11">
 					<ul class="list-unstyled">
 						<li>{1} = <span class="fdb-icon-free">1</span></li>
 						<li>{x} = <span class="fdb-icon-free">x</span></li>
-						<li>{rest} = <img src="_images/icons/1x1.gif" class="fdb-icon-rest" /></li>
+						<li>{rest} = <img src="images/icons/1x1.gif" class="fdb-icon-rest" /></li>
 						<li>[Enter] = <span class="mark_abilities">Enter</span> (old abilities)</li>
 						<li>[_Flying_] = <span class="mark_skills">Flying</span> (new abilities)</li>
 					</ul>
@@ -449,7 +449,7 @@
   								?>
   									<label class="btn btn-default<?=$active?>">
   										<input type="checkbox" name="attributes[]" value="<?=$index?>"<?=$checked?>>
-                      <img src="_images/icons/1x1.gif" class="fdb-icon-<?=$index?>">
+                      <img src="images/icons/1x1.gif" class="fdb-icon-<?=$index?>">
   									</label>
   								<?php endforeach; ?>
   							</div>

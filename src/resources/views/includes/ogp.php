@@ -21,10 +21,10 @@ if (isset($ogp_image)) {
     foreach ($ogp_image as &$imagepath) {
         $ogp['image'][] = APP_DOMAIN.$imagepath;
     }
-    $ogp['image'][] = APP_DOMAIN."_images/logosquare.jpg"; // Default
+    $ogp['image'][] = APP_DOMAIN."images/logosquare.jpg"; // Default
 }
 else {
-    $ogp['image'] = APP_DOMAIN."_images/logosquare.jpg";
+    $ogp['image'] = APP_DOMAIN."images/logosquare.jpg";
     $ogp['image:width'] = "300";
     $ogp['image:height'] = "300";
 }

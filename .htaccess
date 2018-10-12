@@ -14,7 +14,7 @@ RewriteRule ^ http://%1%{REQUEST_URI} [L,R=302,NE]
 # If file or directory exists, serve it, no rewriting
 # RewriteCond %{REQUEST_FILENAME} !-d
 # RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(?:css|js|_images)+$ index.php [QSA,L]
+RewriteRule ^(?:css|js|images)+$ index.php [QSA,L]
 
 # EXPIRES CACHING
 <IfModule mod_expires.c>

@@ -123,6 +123,6 @@ $links = [
 
 	<!-- Logo -->
 	<div id="logo">
-		<a href="index.php"><img src="/_images/logo.png"></a>
+		<a href="index.php"><img src="images/logo.png"></a>
 	</div>
 </header>

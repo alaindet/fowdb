@@ -109,7 +109,7 @@ $(document).ready(function () {
                         // Append missing card image (card back)
                         .append(
                             $("<img>")
-                                .attr('src', '_images/in_pages/search/more.jpg')
+                                .attr('src', 'images/in_pages/search/more.jpg')
                                 .attr('alt', 'Missing card - ' + FoWDB.spoiler.pad(missing[k], 3))
                                 .attr(
                                     'data-code',

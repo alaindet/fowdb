@@ -21,7 +21,7 @@
 	<link href="<?=asset('css/app.min.css', 'css')?>" rel="stylesheet" type="text/css" defer>
 
 	<!-- Favicon -->
-	<link rel="icon" type="image/png" href="<?=asset('_images/icons/favicon-16x16.png', 'png')?>">
+	<link rel="icon" type="image/png" href="<?=asset('images/icons/favicon-16x16.png', 'png')?>">
 </head>
 
 <body>

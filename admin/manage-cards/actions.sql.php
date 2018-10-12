@@ -82,8 +82,8 @@ if (isset($_POST['action'])) {
 			$block  = (int) $dbRow['block'];
 
 			// Assemble paths
-			$imagepath = "_images/cards/{$block}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
-			$thumbpath = "_images/thumbs/{$block}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
+			$imagepath = "images/cards/{$block}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
+			$thumbpath = "images/thumbs/{$block}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
 		}
 
 		// Set was not passed, get default values
@@ -91,8 +91,8 @@ if (isset($_POST['action'])) {
 			$block = '0';
 			$setnum = null;
 			$setcode = '';
-			$imagepath = "_images/cards/missing.jpg";
-			$thumbpath = "_images/thumb/missing.jpg";
+			$imagepath = "images/cards/missing.jpg";
+			$thumbpath = "images/thumb/missing.jpg";
 		}
 
 		// Rarity
@@ -183,14 +183,14 @@ if (isset($_POST['action'])) {
 			(new \Intervention\Image\ImageManager())
 				->make($_FILES['cardimage']['tmp_name'])
 				->resize(480, 670)
-				->insert(APP_ROOT."/_images/watermark/watermark480.png")
+				->insert(APP_ROOT."/images/watermark/watermark480.png")
 				->save(APP_ROOT."/".$imagepath, 80);
 
 			// LD quality
 			(new \Intervention\Image\ImageManager())
 				->make($_FILES['cardimage']['tmp_name'])
 				->resize(280, 391)
-				->insert(APP_ROOT."/_images/watermark/watermark280.png")
+				->insert(APP_ROOT."/images/watermark/watermark280.png")
 				->save(APP_ROOT."/".$thumbpath, 80);
 
 			// Update timestamp on database
@@ -293,8 +293,8 @@ if (isset($_POST['action'])) {
 			$block  = (int) $db_set['block'];
 
 			// Assemble paths
-			$imagepath = "_images/cards/{$block}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
-			$thumbpath = "_images/thumbs/{$block}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
+			$imagepath = "images/cards/{$block}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
+			$thumbpath = "images/thumbs/{$block}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
 		}
 
 		// Set was not passed, get default values
@@ -302,8 +302,8 @@ if (isset($_POST['action'])) {
 			$block = 0;
 			$setnum = null;
 			$setcode = '';
-			$imagepath = "_images/cards/missing.jpg";
-			$thumbpath = "_images/thumb/missing.jpg";
+			$imagepath = "images/cards/missing.jpg";
+			$thumbpath = "images/thumb/missing.jpg";
 		}
 
 		// Check for existing card
@@ -436,14 +436,14 @@ if (isset($_POST['action'])) {
 		(new \Intervention\Image\ImageManager())
 	        ->make($_FILES['cardimage']['tmp_name'])
 	        ->resize(480, 670)
-	        ->insert(APP_ROOT."/_images/watermark/watermark480.png")
+	        ->insert(APP_ROOT."/images/watermark/watermark480.png")
 	        ->save(APP_ROOT."/".$imagepath, 80);
 
 		// Create thumbnail image
 		(new \Intervention\Image\ImageManager())
 	        ->make($_FILES['cardimage']['tmp_name'])
 	        ->resize(280, 391)
-	        ->insert(APP_ROOT."/_images/watermark/watermark280.png")
+	        ->insert(APP_ROOT."/images/watermark/watermark280.png")
 	        ->save(APP_ROOT."/".$thumbpath, 80);
 
 		// Generate card link with card name
