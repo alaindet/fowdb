@@ -19,7 +19,7 @@ if (!isset($_SESSION['artist-tool'])) {
   $_SESSION['artist-tool'] = array_reduce(
     // Data
     database()->get(
-      "SELECT id, cardnum, backside
+      "SELECT id, cardnum, back_side
       FROM cards
       WHERE setcode = :setcode AND cardnum >= :num
       ORDER BY cardnum ASC",
@@ -30,7 +30,7 @@ if (!isset($_SESSION['artist-tool'])) {
     ),
     // Reducer
     function ($result, $row) {
-      $result['list'][$row['cardnum'].'.'.$row['backside']] = $row['id'];
+      $result['list'][$row['cardnum'].'.'.$row['back_side']] = $row['id'];
       return $result;
     },
     // Carry

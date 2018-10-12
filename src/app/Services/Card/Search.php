@@ -594,7 +594,7 @@ class Search
                 $this->f['backside'] = [$this->f['backside']];
             }
 
-            $_sql_f[] = "(backside = " . implode(" OR backside = ", array_map(
+            $_sql_f[] = "(back_side = " . implode(" OR back_side = ", array_map(
                 function($i) use ($map) { return $map[$i]; },
                 array_filter(
                     $this->f['backside'],

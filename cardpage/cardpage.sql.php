@@ -22,7 +22,7 @@ $cards = [];
 foreach ($cardsDb as &$card) {
 	
 	// $type ------------------------------------------------------------------
-	$reminder = ($card['backside'] == 2) ? ' (Shift)' : '';
+	$reminder = ($card['back_side'] === '2') ? ' (Shift)' : '';
 	$link = "/?do=search&cardtype[]={$card['cardtype']}";
 	$type = "<a href=\"{$link}\">{$card['cardtype']}</a>{$reminder}";
 	
@@ -220,7 +220,7 @@ foreach ($cardsDb as &$card) {
 		'banned' => $banned,
 		// Extra info
 		'id' => $card['id'],
-		'backside' => $card['backside'],
+		'back_side' => $card['back_side'],
 		'narp' => $narp,
 		'image_path' => $card['image_path'],
 		'thumb_path' => $card['thumb_path'],

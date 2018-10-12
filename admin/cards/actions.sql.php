@@ -203,7 +203,7 @@ if (isset($_POST['action'])) {
 		// Update the database
 		$db->update("cards", [
 			'id' => $_POST['id'],
-			'backside' => $backside,
+			'back_side' => $backside,
 			'narp' => $_POST['narp'],
 			'block' => $block,
 			'setnum' => $setnum,
@@ -408,7 +408,7 @@ if (isset($_POST['action'])) {
 		// Insert into the database
 		$db->insert("cards", [
 			'narp' => $_POST['narp'],
-			'backside' => $backside,
+			'back_side' => $backside,
 			'block' => $block,
 			'setnum' => $setnum,
 			'setcode' => $setcode,

@@ -14,7 +14,7 @@ class Card
      */
     public static $excludeDisplay = [
         'id',
-        'backside',
+        'back_side',
         'narp',
         'image_path',
         'thumb_path',

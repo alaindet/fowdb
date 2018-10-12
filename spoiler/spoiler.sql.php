@@ -9,7 +9,7 @@ foreach ($spoilers['sets'] as &$set) {
 	$setCards = $db->get(
 		"SELECT
 			id,
-			backside,
+			back_side,
 			cardcode,
 			setcode,
 			cardnum,
@@ -26,7 +26,7 @@ foreach ($spoilers['sets'] as &$set) {
 	// Count spoiled cards avoiding double count for cards with a back side
 	if (! empty($setCards)) {
 		$spoiled = array_reduce($setCards, function ($total, $card) {
-		    return ($card['backside'] == "0") ? ++$total : $total;
+		    return ($card['back_side'] == "0") ? ++$total : $total;
 		});
 	} else {
 		$spoiled = 0;

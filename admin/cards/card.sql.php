@@ -39,7 +39,7 @@ if (isset($_REQUEST['id'])) {
 else {
 	$card = [
 		'id'           => '',
-		'backside'     => '',
+		'back_side'     => '',
 		'narp'         => '',
 		'block'        => '',
 		'setnum'       => '',
