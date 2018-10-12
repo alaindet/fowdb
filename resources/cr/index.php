@@ -41,7 +41,7 @@ if (isset($_GET['v'])) {
     }
 
     // Assemble filename
-    $filename = APP_ROOT . $cr['path'];
+    $filename = DIR_ROOT . $cr['path'];
     
     // ERROR: File does not exist!
     if (! file_exists($filename)) {

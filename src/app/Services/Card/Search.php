@@ -76,7 +76,7 @@ class Search
             "table"   => "cards",
             "filter"  => "TRUE",
             "sorting" => "setnum DESC, cardnum ASC",
-            "limit"   => APP_RESULTS_LIMIT + 1,
+            "limit"   => DB_RESULTS_LIMIT + 1,
             "offset"  => 0
         ];
     }
@@ -226,7 +226,7 @@ class Search
         $this->areResults = true;
 
         // Check if results are more than default limit
-        if (count($this->cards) > APP_RESULTS_LIMIT) {
+        if (count($this->cards) > DB_RESULTS_LIMIT) {
 
             // Flag: pagination needed
             $this->isPagination = true;
@@ -685,7 +685,7 @@ class Search
         // FILTER --- LIMIT and OFFSET ----------------------------------------
         if (isset($this->f['page'])) {
             $p = (int) $this->f['page'];
-            $this->sqlPartials['offset'] = ($p - 1) * APP_RESULTS_LIMIT;
+            $this->sqlPartials['offset'] = ($p - 1) * DB_RESULTS_LIMIT;
         }
 
 

@@ -33,7 +33,7 @@ if ($_FILES['crfile']['error'] == 0) {
     }
 
     // Assemble filenames
-    $dir = APP_ROOT . "/app/assets/cr/";
+    $dir = DIR_ROOT . "/app/assets/cr/";
 
     // Old files
     $oldCr = $dir . strtolower($_POST['old-version']);

@@ -10,4 +10,4 @@ echo \App\AdminView::breadcrumbs([
 ]);
 
 // Show list of CRs
-include APP_ROOT . "/admin/cr/main.html.php";
+include DIR_ROOT . "/admin/cr/main.html.php";

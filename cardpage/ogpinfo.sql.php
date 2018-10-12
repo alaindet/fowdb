@@ -7,17 +7,14 @@ if (!isset($_GET['code'])) {
 	return;
 }
 
-// Datanase connection
-$db = \App\Database::getInstance();
-
 // Get card info
-$card = $db->get(
+$card = database()->get(
 	"SELECT cardname, thumb_path
 	FROM cards
 	WHERE cardcode = :code
 	LIMIT 1",
 	[":code" => htmlspecialchars($_GET['code'], ENT_QUOTES, 'UTF-8')],
-	true // Get first result
+	$first = true // Get first result
 );
 
 if (!empty($card)) {

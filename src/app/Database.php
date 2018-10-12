@@ -17,9 +17,9 @@ class Database
     {
         // Create PDO connection using pre-defined constants
         $this->pdo = new PDO(
-            'mysql:host='.APP_DB_HOST.';dbname='.APP_DB_NAME.';charset=utf8',
-            APP_DB_USER,
-            APP_DB_PASSWORD
+            'mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8',
+            DB_USER,
+            DB_PASSWORD
         );
 
         // Db config: Throw exceptions on errors, fetch assoc array as default

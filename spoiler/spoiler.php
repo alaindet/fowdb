@@ -9,16 +9,16 @@
 	<div class="row">
 		<?php
 			// Load spoiler cards
-			require APP_ROOT . '/spoiler/spoiler.sql.php';
+			require DIR_ROOT . '/spoiler/spoiler.sql.php';
 			
 			// Set flag (used in options.html.php)
 			$is_spoiler = true;
 			
 			// Load options side panel
-			require APP_ROOT . '/search/options.html.php';
+			require DIR_ROOT . '/search/options.html.php';
 			
 			// Load spoiler container
-			require APP_ROOT . '/spoiler/spoiler.html.php';
+			require DIR_ROOT . '/spoiler/spoiler.html.php';
 		?>
 	</div>
 <?php endif; ?>

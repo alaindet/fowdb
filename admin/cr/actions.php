@@ -16,22 +16,22 @@ if ($_POST['token'] != $_SESSION['token']) {
 switch ($_POST['admin-cr-action']) {
  
     case 'create':
-        require APP_ROOT . "/admin/cr/action-create.php";
+        require DIR_ROOT . "/admin/cr/action-create.php";
         exit();
 
     case 'update-form':
-        require APP_ROOT . "/admin/cr/action-update-form.php";
+        require DIR_ROOT . "/admin/cr/action-update-form.php";
         exit();
         
     case 'update':
-        require APP_ROOT . "/admin/cr/action-update.php";
+        require DIR_ROOT . "/admin/cr/action-update.php";
         exit();
 
     case 'delete-form':
-        require APP_ROOT . "/admin/cr/action-delete-form.php";
+        require DIR_ROOT . "/admin/cr/action-delete-form.php";
         exit();
         
     case 'delete':
-        require APP_ROOT . "/admin/cr/action-delete.php";
+        require DIR_ROOT . "/admin/cr/action-delete.php";
         exit();
 }

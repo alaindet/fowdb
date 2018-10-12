@@ -26,8 +26,8 @@ if ($_FILES['crfile']['type'] != "text/plain") {
 
 // Assemble file name
 $partialPath = "/app/assets/cr/" . strtolower($_POST['version']);
-$filenameTxt = APP_ROOT . "{$partialPath}.txt";
-$filenameHtml = APP_ROOT . "{$partialPath}.html";
+$filenameTxt = DIR_ROOT . "{$partialPath}.txt";
+$filenameHtml = DIR_ROOT . "{$partialPath}.html";
 
 // ERROR: Cannot save txt file
 if (!move_uploaded_file($_FILES['crfile']['tmp_name'], $filenameTxt)) {

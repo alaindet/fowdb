@@ -16,7 +16,7 @@
 				<small>
 					<?php // Decide on what counts to show
 						$cardsCount = $s->getCardsCount();
-						$partialCount = $cardsCount > APP_RESULTS_LIMIT ? APP_RESULTS_LIMIT : $cardsCount;
+						$partialCount = $cardsCount > DB_RESULTS_LIMIT ? DB_RESULTS_LIMIT : $cardsCount;
 					?>
 					(Showing <span id="cards-counter"><?=$partialCount?></span> out of <strong><?=$cardsCount?></strong>)
 				</small>

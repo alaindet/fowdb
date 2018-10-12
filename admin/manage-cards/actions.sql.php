@@ -183,15 +183,15 @@ if (isset($_POST['action'])) {
 			(new \Intervention\Image\ImageManager())
 				->make($_FILES['cardimage']['tmp_name'])
 				->resize(480, 670)
-				->insert(APP_ROOT."/images/watermark/watermark480.png")
-				->save(APP_ROOT."/".$imagepath, 80);
+				->insert(DIR_ROOT."/images/watermark/watermark480.png")
+				->save(DIR_ROOT."/".$imagepath, 80);
 
 			// LD quality
 			(new \Intervention\Image\ImageManager())
 				->make($_FILES['cardimage']['tmp_name'])
 				->resize(280, 391)
-				->insert(APP_ROOT."/images/watermark/watermark280.png")
-				->save(APP_ROOT."/".$thumbpath, 80);
+				->insert(DIR_ROOT."/images/watermark/watermark280.png")
+				->save(DIR_ROOT."/".$thumbpath, 80);
 
 			// Update timestamp on database
 			$timestamp = date('Ymd-Gis');
@@ -436,15 +436,15 @@ if (isset($_POST['action'])) {
 		(new \Intervention\Image\ImageManager())
 	        ->make($_FILES['cardimage']['tmp_name'])
 	        ->resize(480, 670)
-	        ->insert(APP_ROOT."/images/watermark/watermark480.png")
-	        ->save(APP_ROOT."/".$imagepath, 80);
+	        ->insert(DIR_ROOT."/images/watermark/watermark480.png")
+	        ->save(DIR_ROOT."/".$imagepath, 80);
 
 		// Create thumbnail image
 		(new \Intervention\Image\ImageManager())
 	        ->make($_FILES['cardimage']['tmp_name'])
 	        ->resize(280, 391)
-	        ->insert(APP_ROOT."/images/watermark/watermark280.png")
-	        ->save(APP_ROOT."/".$thumbpath, 80);
+	        ->insert(DIR_ROOT."/images/watermark/watermark280.png")
+	        ->save(DIR_ROOT."/".$thumbpath, 80);
 
 		// Generate card link with card name
 		$card_link = "<strong><a href='/?p=card&code="

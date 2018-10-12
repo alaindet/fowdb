@@ -5,7 +5,7 @@ require __DIR__ . '/_config/config.php';
 
 // Search for cards (spaghetti code here!)
 if (isset($_GET['do']) AND $_GET['do'] == 'search') {
-    include APP_ROOT . '/search/search_retrievedb.php';
+    include DIR_ROOT . '/search/search_retrievedb.php';
     exit();
 }
 
@@ -60,7 +60,7 @@ if (isset($_GET['p'])) {
             exit();
             
         case 'admin/cr/action':
-            require APP_ROOT . "/admin/cr/actions.php";
+            require DIR_ROOT . "/admin/cr/actions.php";
             exit();
 
         case 'admin/cr/raw':
@@ -121,7 +121,7 @@ if (isset($_GET['p'])) {
             exit();
 
         case 'resources/cr':
-            require APP_ROOT . "/resources/cr/index.php";
+            require DIR_ROOT . "/resources/cr/index.php";
             exit();
             
         case 'resources/errata':

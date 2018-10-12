@@ -18,13 +18,11 @@ $ogp['type'] = 'article';
 // IMAGE
 if (isset($ogp_image)) {
     $ogp['image'] = [];
-    foreach ($ogp_image as &$imagepath) {
-        $ogp['image'][] = APP_DOMAIN.$imagepath;
-    }
-    $ogp['image'][] = APP_DOMAIN."images/logosquare.jpg"; // Default
+    foreach ($ogp_image as &$imagepath) $ogp['image'][] = APP_URL.$imagepath;
+    $ogp['image'][] = APP_URL."/images/logosquare.jpg"; // Default
 }
 else {
-    $ogp['image'] = APP_DOMAIN."images/logosquare.jpg";
+    $ogp['image'] = APP_URL."/images/logosquare.jpg";
     $ogp['image:width'] = "300";
     $ogp['image:height'] = "300";
 }

@@ -87,7 +87,7 @@ if (empty($rulers)) {
 
 <?php // Download button
     $filename = "/resources/rulers/files/rulers_{$rulers_set}.pdf";
-    if (file_exists(APP_ROOT.$filename)):
+    if (file_exists(DIR_ROOT.$filename)):
 ?>
   <div class="row">
     <div class="col-xs-12">

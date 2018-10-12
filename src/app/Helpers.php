@@ -95,7 +95,7 @@ class Helpers
     private static function loadJSON()
     {
         self::$helpers = json_decode(
-            file_get_contents(APP_ROOT . '/app/helpers/helpers.json'),
+            file_get_contents(DIR_ROOT . '/app/helpers/helpers.json'),
             $turnJsonIntoPhpArray = true
         );
     }
@@ -108,7 +108,7 @@ class Helpers
     public static function assembleAll(): bool
     {
         $assembled = [];
-        $base = APP_ROOT . '/app/helpers';
+        $base = DIR_ROOT . '/app/helpers';
         
         foreach (self::$allowedFeatures as $feat) {
             $assembled[$feat] = json_decode(
@@ -157,7 +157,7 @@ class Helpers
         elseif ($feat === 'formats') $featArray = self::generateFormats();
         elseif ($feat === 'spoiler') $featArray = self::generateSpoiler();
 
-        $filename = APP_ROOT . "/app/helpers/data/{$feat}.json";
+        $filename = DIR_ROOT . "/app/helpers/data/{$feat}.json";
         $flags = JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT;
         $output = json_encode($featArray, $flags);
         return file_put_contents($filename, $output) ? true : false;

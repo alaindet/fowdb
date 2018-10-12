@@ -21,7 +21,7 @@ class FileSystem
         $input  = rtrim($input, "/");
 
         // Assemble path
-        $path = $absolutePath ? $input : APP_ROOT."/".$input;
+        $path = $absolutePath ? $input : DIR_ROOT."/".$input;
 
         // ERROR: Directory already exists ------------------------------------
         if (is_dir($path)) {
@@ -49,8 +49,8 @@ class FileSystem
         }
 
         // Assemble paths
-        $old = APP_ROOT . "/" . $old;
-        $new = APP_ROOT . "/" . $new;
+        $old = DIR_ROOT . "/" . $old;
+        $new = DIR_ROOT . "/" . $new;
 
         // Can't overwrite!
         if (is_dir($new)) {
@@ -74,7 +74,7 @@ class FileSystem
         }
 
         // Assemble path
-        $path = APP_ROOT . "/" . $input;
+        $path = DIR_ROOT . "/" . $input;
 
         // ERROR: Directory doesn't exist -------------------------------------
         if (! is_dir($path)) {
@@ -97,7 +97,7 @@ class FileSystem
 
 
     public static function deleteDirectoryRecursively($dirPath, $absolutePath = false) {
-        $dirPath = $absolutePath ? $dirPath : APP_ROOT . "/" . $dirPath;
+        $dirPath = $absolutePath ? $dirPath : DIR_ROOT . "/" . $dirPath;
         if (! is_dir($dirPath)) {
             return false;
         }
@@ -116,7 +116,7 @@ class FileSystem
     }
 
     public static function emptyDirectory($dirPath) {
-        $dirPath = APP_ROOT . "/" . $dirPath;
+        $dirPath = DIR_ROOT . "/" . $dirPath;
         if (! is_dir($dirPath)) {
             return false;
         }

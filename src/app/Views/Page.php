@@ -30,7 +30,7 @@ class Page
 	)
 	{
 		if (isset($title)) $page_title = $title;
-		$scriptPath = APP_ROOT . "/{$path}";
+		$scriptPath = DIR_ROOT . "/{$path}";
 		$pdo = Database::getInstance(true);
 		
 		// ERROR: Missing template script
