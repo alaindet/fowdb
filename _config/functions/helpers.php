@@ -55,7 +55,7 @@ function asset(string $path, string $type = 'any'): string
 {
 	$version = [
 		'any' => '20181012-1',
-		'css' => '20181012-2',
+		'css' => '20181012-3',
 		'js' => '20181012-1',
 		'png' => '20181012-1'
 	][$type];
