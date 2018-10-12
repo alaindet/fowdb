@@ -1,8 +1,6 @@
 <?php
 
-// Require configuration file
-// require $_SERVER['DOCUMENT_ROOT'].'/_config/config.php';
-require dirname(dirname(__DIR__)) . '/_config/config.php';
+require dirname(dirname(__DIR__)) . '/src/config/config.php';
 
 // Check if an action was passed, then execute it
 if (isset($_POST['action'])) {

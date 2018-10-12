@@ -5,7 +5,7 @@
 			&larr; Admin menu
 		</button>
 	</a>
-	<a href="/index.php?p=manage-cards">
+	<a href="/index.php?p=admin/cards">
 		<button type="button" class="btn btn-default">
 			Cards menu
 		</button>
@@ -249,7 +249,7 @@
 			&larr; Admin menu
 		</button>
 	</a>
-	<a href="/index.php?p=manage-cards">
+	<a href="/index.php?p=admin/cards">
 		<button type="button" class="btn btn-default">
 			Cards menu
 		</button>

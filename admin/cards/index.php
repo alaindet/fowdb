@@ -10,7 +10,7 @@ if (admin_level() > 0) {
 		$action = $_REQUEST['form_action'];
 
 		// Include form
-		include 'admin/manage-cards/form.html.php'; // Include form
+		include 'admin/cards/form.html.php'; // Include form
 	}
 
 	// Check if menu action or change page or sort cards was passed
@@ -19,17 +19,17 @@ if (admin_level() > 0) {
 		isset($_POST['sort_cards']) OR isset($_POST['page'])
 	) {
 		// Retrieve all cards from DB
-		include 'admin/manage-cards/cards.sql.php';
+		include 'admin/cards/cards.sql.php';
 	
 		// Show list of all cards
-		include 'admin/manage-cards/cards.html.php';
+		include 'admin/cards/cards.html.php';
 	}
 
 	// No create/edit/delete request passed
 	else {
 
 		// Show Create/Edit/Delete menu
-		include 'admin/manage-cards/menu.html.php';
+		include 'admin/cards/menu.html.php';
 	}
 }
 else {

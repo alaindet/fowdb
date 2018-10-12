@@ -1,7 +1,7 @@
 <?php
 
   // Get card info from database
-	require 'admin/manage-cards/card.sql.php';
+	require __DIR__ . '/card.sql.php';
 
 	// Import helpers
 	$clusters = \App\Helpers::get("clusters");
@@ -41,7 +41,7 @@
 	<div class="row">
 		<div class="col-xs-12 col-sm-9">
 			<form
-				action="admin/manage-cards/actions.sql.php"
+				action="admin/cards/actions.sql.php"
 				method="post"
 				enctype="multipart/form-data"
 				id="card-form"
@@ -448,7 +448,7 @@
 				&larr; Admin menu
 			</button>
 		</a>
-		<a href="/index.php?p=manage-cards">
+		<a href="/index.php?p=admin/cards">
 			<button type="button" class="btn btn-default">
 				Cards menu
 			</button>
@@ -480,7 +480,7 @@
 				&larr; Admin menu
 			</button>
 		</a>
-		<a href="/index.php?p=manage-cards">
+		<a href="/index.php?p=admin/cards">
 			<button type="button" class="btn btn-default">
 				Cards menu
 			</button>

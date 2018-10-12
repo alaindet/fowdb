@@ -1,10 +1,7 @@
 <?php
 
-// Init the app
-require dirname(__DIR__) . '/_config/config.php';
-
-// Load helpers
-require __DIR__ . "/helpers.php";
+require dirname(__DIR__) . '/src/config/config.php';
+require __DIR__ . '/helpers.php';
 
 // ERROR: No term passed!
 if (!isset($_GET['term']) OR empty($_GET['term'])) {
@@ -15,14 +12,11 @@ if (!isset($_GET['term']) OR empty($_GET['term'])) {
 	return;
 }
 
-// Get database connection
-$db = \App\Database::getInstance();
-
 // Sanitize name (preserve quotes)
 $name = htmlspecialchars($_GET['term'], ENT_QUOTES, 'UTF-8');
 $name = str_replace(['&#039;', '&quot;'], ['\'', "\\\""], $name);
 
-$cards = $db->get(
+$cards = database()->get(
 	"SELECT id, cardcode, cardname, thumb_path
 	FROM cards
 	WHERE cardname LIKE \"%{$name}%\" AND block > 1

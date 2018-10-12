@@ -1,10 +1,10 @@
 <?php
 
 // Init the app
-require __DIR__ . '/_config/config.php';
+require __DIR__ . '/src/config/config.php';
 
 // Search for cards (spaghetti code here!)
-if (isset($_GET['do']) AND $_GET['do'] == 'search') {
+if (isset($_GET['do']) && $_GET['do'] === 'search') {
     include DIR_ROOT . '/search/search_retrievedb.php';
     exit();
 }
@@ -41,8 +41,7 @@ if (isset($_GET['p'])) {
             exit();
 
         case 'admin/cards':
-        case 'manage-cards':
-            view('Admin - Cards', 'admin/manage-cards/index.php');
+            view('Admin - Cards', 'admin/cards/index.php');
             exit();
 
         case 'admin/database':
@@ -86,9 +85,8 @@ if (isset($_GET['p'])) {
             if (admin_level() == 1) { phpinfo(); }
             exit();
 
-        case 'manage-rulings': // Legacy
         case 'admin/rulings':
-            view('Admin - Rulings', 'admin/manage-rulings/index.php',[
+            view('Admin - Rulings', 'admin/rulings/index.php',[
                 'js' => ['manage-rulings'],
                 'jqueryui' => 1,
                 'lightbox' => 1

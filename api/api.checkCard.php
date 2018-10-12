@@ -1,15 +1,12 @@
 <?php
 
-// Init the app
-require dirname(__DIR__) . '/_config/config.php';
-
-// Load helpers
-require __DIR__ . "/helpers.php";
+require dirname(__DIR__) . '/src/config/config.php';
+require __DIR__ . '/helpers.php';
 
 // ERROR: 
 if (!isset($_GET['name'], $_GET['code']) OR empty($_GET['name']) OR empty($_GET['code'])) {
 	echo outputJson([
-		"response" => "Missing name and/or code in the request"
+		'response' => 'Missing name and/or code in the request'
 	]);
 	return;
 }
@@ -20,9 +17,7 @@ $name = str_replace(array('&#039;', '&quot;'), array('\'', "\\\""), $name);
 $code = htmlspecialchars($_GET['code'], ENT_QUOTES, 'UTF-8');
 $code = str_replace(array('&#039;', '&quot;'), array('\'', "\\\""), $code);
 
-$db = \App\Database::getInstance();
-
-$card = $db->get(
+$card = database()->get(
 	"SELECT id FROM cards
 	WHERE cardname = :name AND cardcode = :code
 	LIMIT 1",

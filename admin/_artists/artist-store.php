@@ -1,7 +1,7 @@
 <?php
 
 // Load configuration
-require dirname(dirname(__DIR__)) . '/_config/config.php';
+require dirname(dirname(__DIR__)) . '/src/config/config.php';
 
 // ERROR: Unauthorized
 if (admin_level() === 0) {

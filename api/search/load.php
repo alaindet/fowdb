@@ -1,8 +1,8 @@
 <?php
 
 // Init the app, load the helpers
-require dirname(dirname(__DIR__)) . '/_config/config.php';
-require dirname(__DIR__) . "/helpers.php";
+require dirname(dirname(__DIR__)) . '/src/config/config.php';
+require dirname(__DIR__) . '/helpers.php';
 
 // ERROR: No inputs
 if (empty($_POST)) {
@@ -32,16 +32,16 @@ $search = new \App\Services\Card\Search();
 $search->processFilters($_POST);
 
 // Join the cards table with the sets table to get the spoiler flag ("isspoiler")
-$search->addTable("sets", ["cards.setnum", "sets.id"]);
-$search->addField("isspoiler");
+$search->addTable('sets', [ 'cards.setnum', 'sets.id' ]);
+$search->addField('isspoiler');
 
 // Get cards as assoc array from db
 $cards = $search->getCards();
 
 // Output JSON
 echo outputJson([
-    "response" => true,
-    "message" => "Here are your cards from the search/load API",
-    "cardsData" => $cards,
-    "nextPagination" => $search->isPagination
+    'response' => true,
+    'message' => 'Here are your cards from the search/load API',
+    'cardsData' => $cards,
+    'nextPagination' => $search->isPagination
 ]);

@@ -1,6 +1,6 @@
 <?php
 
-require dirname(__DIR__) . '/_config/config.php';
+require dirname(__DIR__) . '/src/config/config.php';
 require __DIR__ . '/helpers.php';
 
 // ERROR: No term passed!

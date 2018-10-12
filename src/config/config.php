@@ -36,8 +36,8 @@ foreach ([
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 // Functions
-require __DIR__ . '/functions/helpers.php';
-require __DIR__ . '/functions/auth.php';
+require dirname(__DIR__) . '/app/functions/helpers.php';
+require dirname(__DIR__) . '/app/functions/auth.php';
 
 // Legacy ---------------------------------------------------------------------
 $thereWereResults = false;
