@@ -9,7 +9,7 @@ class Helpers
      *
      * @var array
      */
-    private static $helpers = [];
+    public static $helpers = [];
 
     /**
      * Allowed features
@@ -19,7 +19,7 @@ class Helpers
      *
      * @var array
      */
-    private static $allowedFeatures = [
+    public static $allowedFeatures = [
         'cardfeatures',
         'sortfields',
         'formats',
@@ -37,7 +37,7 @@ class Helpers
      *
      * @var array
      */
-    private static $dynamicFeatures = ['clusters', 'formats', 'spoiler'];
+    public static $dynamicFeatures = ['clusters', 'formats', 'spoiler'];
 
     /**
      * Reads (or imports) the helpers JSON data, then returns it

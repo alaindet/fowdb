@@ -4,7 +4,12 @@ namespace App\Services;
 
 class Alert
 {
-    private static $types = ['success', 'info', 'warning', 'danger'];
+    private static $types = [
+		'success',
+		'info',
+		'warning',
+		'danger'
+	];
 
     /**
 	 * Notify the user
@@ -12,9 +17,9 @@ class Alert
 	 * @param string Alert message
 	 * @param string Alert element color
 	 */
-    public static function set($message, $type = 'info')
+    public static function set(string $message, string $type = null)
     {
-		if (session_status() == PHP_SESSION_NONE) session_start();
+		if (!isset($type)) $type = 'info';
 		if (!in_array($type, self::$types)) $type = 'info';
 		$_SESSION['notif'] = $message;
 		$_SESSION['notif-type'] = $type;

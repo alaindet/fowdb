@@ -10,7 +10,7 @@ function cached(string $request)
 	return \App\Helpers::get($request);
 }
 
-function notify(string $message, string $type)
+function notify(string $message, string $type = null)
 {
 	\App\Services\Alert::set($message, $type);
 }
