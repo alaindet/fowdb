@@ -8,6 +8,7 @@ vendor/
 /images/
 /src/resources/assets/node_modules
 /src/vendor
+/src/storage/views
 
 # Files
 *.min.js
