@@ -2,7 +2,7 @@
 	global $filters;
 	global $cards; // Results
 	global $s; // Search model instance
-	$spoilerCodes = \App\Helpers::get('spoiler.codes');
+	$spoilerCodes = \App\Legacy\Helpers::get('spoiler.codes');
 	$spoilerCodes = !empty($spoilerCodes) ? $spoilerCodes : [];
 ?>
 <div class="col-xs-12" id="search-results">

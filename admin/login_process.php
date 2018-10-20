@@ -11,7 +11,7 @@ if ($_POST['token'] == $_SESSION['token'] AND isset($_POST['action'])) {
 		$pword = $_POST['password'];
 		
 		// Get database connection
-		$db = \App\Database::getInstance();
+		$db = \App\Legacy\Database::getInstance();
 		
 		// Get admin info, if any
 		$admin = $db->get(

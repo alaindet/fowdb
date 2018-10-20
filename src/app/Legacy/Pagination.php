@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Legacy;
 
 class Pagination {
 
@@ -36,7 +36,7 @@ class Pagination {
 	) {
 
 		// MESSY Get global database connection and store it
-		$pdo = \App\Database::getInstance(true);
+		$pdo = \App\Legacy\Database::getInstance(true);
 		$this->_db = $pdo;
 
 		// Check if user passed page number, then validate or default to 1
@@ -254,10 +254,10 @@ class Pagination {
 			foreach($this->_filters as $filter) {
 
 				// Check if filter is set
-				if (\App\Input::exists($filter) AND !is_array($filter)) {;
+				if (\App\Legacy\Input::exists($filter) AND !is_array($filter)) {;
 
 					// Print single filter value
-					$html .= "<!-- Sticky value --><input type='hidden' name='{$filter}' value='".\App\Input::get($filter)."' />";
+					$html .= "<!-- Sticky value --><input type='hidden' name='{$filter}' value='".\App\Legacy\Input::get($filter)."' />";
 				}
 			}
 		}

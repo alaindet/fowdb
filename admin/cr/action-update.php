@@ -52,7 +52,7 @@ if ($_FILES['crfile']['error'] == 0) {
     }
 
     // Convert txt to html
-    $cr = new \App\ComprehensiveRules($newCrTxt);
+    $cr = new \App\Legacy\ComprehensiveRules($newCrTxt);
     $cr->convertToHtml();
 
     // ERROR: Cannot save converted HTML file
@@ -78,7 +78,7 @@ if ($_FILES['crfile']['error'] == 0) {
 }
 
 // Get db connection
-$db = \App\Database::getInstance();
+$db = \App\Legacy\Database::getInstance();
 
 // If this CR must be default, unset every other default CR
 if (isset($_POST['set-default'])) {

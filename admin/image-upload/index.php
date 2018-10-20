@@ -37,8 +37,8 @@ if (admin_level() > 0) {
 				$relativePath = str_replace(".", "/", $_POST['cluster-set']) . "/";
 
 				// Create folder at that path, if not existing
-				\App\FileSystem::createDirectory(DIR_ROOT."/images/uploads/hq/" . $relativePath, true);
-				\App\FileSystem::createDirectory(DIR_ROOT."/images/uploads/lq/" . $relativePath, true);
+				\App\Legacy\FileSystem::createDirectory(DIR_ROOT."/images/uploads/hq/" . $relativePath, true);
+				\App\Legacy\FileSystem::createDirectory(DIR_ROOT."/images/uploads/lq/" . $relativePath, true);
 
 			}
 
@@ -97,14 +97,14 @@ if (admin_level() > 0) {
 
 		echo "<p><strong>Emptied folder(s):</strong><br />";
 		foreach($dirs as &$dir) {
-			\App\FileSystem::emptyDirectory($dir);
+			\App\Legacy\FileSystem::emptyDirectory($dir);
 			echo "/" . $dir . '<br />';
 		}
 		echo '</p>';
 	}
 
 	// Get sets from database
-	$clusters = \App\Helpers::get('clusters');
+	$clusters = \App\Legacy\Helpers::get('clusters');
 
 	// Include form to upload image
 	include 'admin/upload-image/form.html.php';

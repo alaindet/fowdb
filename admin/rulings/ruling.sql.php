@@ -1,6 +1,6 @@
 <?php
 
-$db = \App\Database::getInstance();
+$db = \App\Legacy\Database::getInstance();
 
 // EDIT OR DELETE -------------------------------------------------------------
 
@@ -36,7 +36,7 @@ else if ($action == 'create') {
 
 	if (isset($_GET['card_id'])) {
 
-		$card_id = \App\NARP::getBasic((int) $_GET['card_id']);
+		$card_id = \App\Legacy\NARP::getBasic((int) $_GET['card_id']);
 
 		if ($card = $db->get(
 			"SELECT cardname, cardcode, thumb_path

@@ -4,11 +4,11 @@
 	require __DIR__ . '/card.sql.php';
 
 	// Import helpers
-	$clusters = \App\Helpers::get("clusters");
-	$attributes = \App\Helpers::get("attributes");
-	$types = \App\Helpers::get("types");
-	$backsides = \App\Helpers::get("backsides");
-	$rarities = \App\Helpers::get("rarities");
+	$clusters = \App\Legacy\Helpers::get("clusters");
+	$attributes = \App\Legacy\Helpers::get("attributes");
+	$types = \App\Legacy\Helpers::get("types");
+	$backsides = \App\Legacy\Helpers::get("backsides");
+	$rarities = \App\Legacy\Helpers::get("rarities");
 
 	// Check if action was passed
   if (isset($action)):

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Legacy;
 
 class NARP {
 
@@ -14,7 +14,7 @@ class NARP {
 		$id = (int) $id;
 
 		// Database connection
-		$db = \App\Database::getInstance();
+		$db = \App\Legacy\Database::getInstance();
 
 		$narp = $db->get("SELECT narp, cardname FROM cards WHERE id = :id LIMIT 1", [":id" => $id], true);
 

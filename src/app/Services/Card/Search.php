@@ -25,7 +25,7 @@ class Search
     public function __construct()
     {
         // Initialize database connection
-        $this->db = \App\Database::getInstance();
+        $this->db = \App\Legacy\Database::getInstance();
 
         // Define allowed filters
         $this->allowed = [
@@ -414,7 +414,7 @@ class Search
         if (isset($this->f['format'])) {
 
             // Get format helper
-            $formats = \App\Helpers::get('formats');
+            $formats = \App\Legacy\Helpers::get('formats');
 
             // Get clusters list for this format
             $clusters = $formats['list'][$this->f['format']]['clusters'];
@@ -435,7 +435,7 @@ class Search
                     // Exclude spoilers
                     case 'spoilers':
                         $_sql_f[] = "NOT(setcode IN (\"" .
-                            implode("\",\"", \App\Helpers::get('spoiler')['codes'])
+                            implode("\",\"", \App\Legacy\Helpers::get('spoiler')['codes'])
                             ."\"))";
                         break;
 
@@ -692,7 +692,7 @@ class Search
         // SORTING ============================================================
         if (
             isset($this->f['sort']) &&
-            in_array($this->f['sort'], array_keys(\App\Helpers::get('sortfields'))) &&
+            in_array($this->f['sort'], array_keys(\App\Legacy\Helpers::get('sortfields'))) &&
             $this->f['sort'] != "default"
         ) {
             // Get sorting direction
@@ -709,7 +709,7 @@ class Search
                     break;
 
                 case 'cardtype':
-                    $typesList = implode("','", \App\Helpers::get('types'));
+                    $typesList = implode("','", \App\Legacy\Helpers::get('types'));
                     $sortField = "FIELD(cardtype,'{$typesList}')";
                     break;
                     

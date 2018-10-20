@@ -15,7 +15,7 @@ if ($_POST['admin-cr-action'] != "delete") {
 }
 
 // Get db connection
-$db = \App\Database::getInstance();
+$db = \App\Legacy\Database::getInstance();
 
 // ERROR: Could not delete CR from db
 if (!$db->delete("comprehensive_rules", "id = :id", [":id" => $_POST['id']])) {

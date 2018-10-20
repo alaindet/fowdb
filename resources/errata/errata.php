@@ -1,6 +1,6 @@
 <?php
 
-$db = \App\Database::getInstance();
+$db = \App\Legacy\Database::getInstance();
 
 $errata = $db->get(
 	"SELECT cardname as name, cardcode as code, created as last_edit, ruling

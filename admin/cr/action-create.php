@@ -36,7 +36,7 @@ if (!move_uploaded_file($_FILES['crfile']['tmp_name'], $filenameTxt)) {
 }
 
 // Convert txt to html
-$cr = new \App\ComprehensiveRules($filenameTxt);
+$cr = new \App\Legacy\ComprehensiveRules($filenameTxt);
 $cr->convertToHtml();
 
 // ERROR: Cannot save converted HTML file
@@ -46,7 +46,7 @@ if (!$cr->save($filenameHtml)) {
 }
 
 // Update the database
-$db = \App\Database::getInstance();
+$db = \App\Legacy\Database::getInstance();
 
 // If this CR must be default, unset every other default CR
 if (isset($_POST['set-default'])) {

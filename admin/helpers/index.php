@@ -1,6 +1,6 @@
 <?php
 
-use \App\Helpers;
+use \App\Legacy\Helpers;
 
 // ERROR: Authorization
 if (admin_level() === 0) {
@@ -51,7 +51,7 @@ if (isset($_POST['feat']) && in_array($_POST['feat'], $dynamics)) {
     );
 
     // Log generated file
-    echo logHtml(\App\Helpers::get($feat), $feat);
+    echo logHtml(\App\Legacy\Helpers::get($feat), $feat);
   }
 }
 ?>

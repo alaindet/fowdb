@@ -1,7 +1,7 @@
 <?php
 
 // Get database connection
-$db = \App\Database::getInstance();
+$db = \App\Legacy\Database::getInstance();
 
 $rulings = $db->get(
     "select

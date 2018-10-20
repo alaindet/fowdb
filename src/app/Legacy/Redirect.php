@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Legacy;
 
 class Redirect
 {
@@ -8,6 +8,11 @@ class Redirect
     {
         header('Location: '.self::url($page, $params));
         exit();
+    }
+    
+    public static function back(): void
+    {
+        self::to($_SERVER['HTTP_REFERER'] ?? '/');
     }
 
     public static function url(string $page = '', array $params = []): string

@@ -42,7 +42,7 @@ $items_per_page = 40;
 $page = (isset($_POST['page']) AND $_POST['page'] > 0) ? (int)$_POST['page'] : 1;
 
 // Instantiate Pagination class
-$pagination = new \App\Pagination(
+$pagination = new \App\Legacy\Pagination(
 	'rulings'
 	,$page
 	,$items_per_page

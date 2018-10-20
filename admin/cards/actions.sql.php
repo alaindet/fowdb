@@ -11,7 +11,7 @@ if (admin_level() === 0) {
 
 if (isset($_POST['action'])) {
 
-	$db = \App\Database::getInstance();
+	$db = \App\Legacy\Database::getInstance();
 
 	// DELETE CARD ------------------------------------------------------------
 	if ($_POST['action'] === 'delete' && isset($_POST['id'])) {

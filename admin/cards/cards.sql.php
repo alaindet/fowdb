@@ -39,7 +39,7 @@ if (isset($_POST['sort_cards'])) {
 		case 'cardtype':
 			
 			// Generate a list of all card types
-			$types = \App\Helpers::get('types');
+			$types = \App\Legacy\Helpers::get('types');
 			$types_list = "";
 			for($i = 0, $len = count($types); $i < $len; $i++) {
 				// Add type to list (avoid ", " if last element)
@@ -69,7 +69,7 @@ $items_per_page = 40;
 $page = (isset($_POST['page']) AND $_POST['page'] > 0) ? (int)$_POST['page'] : 1;
 
 // Instantiate Pagination class
-$pagination = new \App\Pagination(
+$pagination = new \App\Legacy\Pagination(
 	'cards'
 	,$page
 	,$items_per_page

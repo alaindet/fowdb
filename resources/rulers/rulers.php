@@ -1,10 +1,10 @@
 <?php
 
 // Database connection
-$db = \App\Database::getInstance();
+$db = \App\Legacy\Database::getInstance();
 
 // Get clusters from helper files
-$clusters = \App\Helpers::get("clusters");
+$clusters = \App\Legacy\Helpers::get("clusters");
 
 // Get last set
 $lastClusterName = array_keys($clusters)[0];

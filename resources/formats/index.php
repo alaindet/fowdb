@@ -1,6 +1,6 @@
 <?php
 // Get db connection
-$db = \App\Database::getInstance();
+$db = \App\Legacy\Database::getInstance();
 
 // Get data from database
 $results = $db->get(

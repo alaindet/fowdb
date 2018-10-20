@@ -6,7 +6,7 @@ require dirname(dirname(__DIR__)) . '/src/config/config.php';
 if (isset($_POST['action'])) {
 
 	// Database connection
-	$db = \App\Database::getInstance();
+	$db = \App\Legacy\Database::getInstance();
 
 	// DELETE RULING ----------------------------------------------------------
 	if ($_POST['action'] == 'delete' AND isset($_POST['id'])) {

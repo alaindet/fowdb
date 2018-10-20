@@ -14,7 +14,7 @@
 	];
 
 	foreach ($helpers as &$helper) {
-		$$helper = \App\Helpers::get($helper);
+		$$helper = \App\Legacy\Helpers::get($helper);
 	}
 ?>
 <form method="GET" action="/" class="form" id="form_search">
