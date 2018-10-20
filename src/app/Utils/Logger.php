@@ -11,7 +11,7 @@ class Logger
      * @param mixed $x object or array to log
      * @return string HTML content to be output
      */
-    public static function html($x = null, $title = ''): string
+    public static function html($data = null, string $title = ''): string
     {
         // Line
         $line = '';
@@ -21,11 +21,36 @@ class Logger
         }
 
         // Content
+        if (is_bool($data)) $content = '(bool) ' . ($data ? 'TRUE' : 'FALSE');
+        elseif (is_string($data)) $content = $data;
+        else $content = print_r($data, true);
+
+        // Return log
+        return "<pre>{$title}{$line}{$content}</pre>";
+    }
+
+    /**
+     * Logs $data using print_r() in CLI-friendly format
+     *
+     * @param mixed $data Can be anything, usually it's an array
+     * @param string $title Output title
+     * @return string Content to be output
+     */
+    public static function cli($data = null, string $title = ''): string
+    {
+        // Line
+        $line = '';
+        if (!empty($title)) {
+            while (strlen($line) < strlen($title)) $line .= '=';
+            $line = "\n{$line}\n";
+        }
+
+        // Content
         if (is_bool($x)) $content = '(bool) ' . ($x ? 'TRUE' : 'FALSE');
         elseif (is_string($x)) $content = $x;
         else $content = print_r($x, true);
 
         // Return log
-        return "<pre>{$title}{$line}{$content}</pre>";
+        return "{$title}{$line}{$content}\n";
     }
 }
