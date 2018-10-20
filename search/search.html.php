@@ -508,12 +508,12 @@
   							<div class="btn-group" data-toggle="buttons">
   								<?php foreach ($costs as &$cost):
   									// Sticky values
-  									(isset($filters['totalcost']) AND in_array($cost, $filters['totalcost']))
+  									(isset($filters['total_cost']) AND in_array($cost, $filters['total_cost']))
                       ? list($active, $checked) = [' active', ' checked=true']
                       : list($active, $checked) = ['', ''];
   								?>
   									<label class="btn btn-default<?=$active?>">
-  										<input type="checkbox" name="totalcost[]" value="<?=$cost?>"<?=$checked?>>
+  										<input type="checkbox" name="total_cost[]" value="<?=$cost?>"<?=$checked?>>
   										<?=$cost?>
   									</label>
   								<?php endforeach; ?>

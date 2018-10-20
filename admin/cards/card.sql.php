@@ -14,7 +14,7 @@ if (isset($_REQUEST['id'])) {
 		$card['num'] = $card['num'];
 		$card['attr'] = $card['attribute'];
 		$card['type'] = $card['type'];
-		$card['attrcost'] = $card['attributecost'];
+		$card['attrcost'] = $card['attribute_cost'];
 		$card['name'] = $card['cardname'];
 		$card['code'] = $card['code'];
 		$card['text'] = $card['cardtext'];
@@ -22,7 +22,7 @@ if (isset($_REQUEST['id'])) {
 		$card['thumbpath'] = $card['thumb_path'];
 
 		unset($card['attribute']);
-		unset($card['attributecost']);
+		unset($card['attribute_cost']);
 		unset($card['cardname']);
 		unset($card['cardtext']);
 		unset($card['image_path']);
@@ -45,8 +45,8 @@ else {
 		'divinity'     => '',
 		'rarity'       => '',
 		'attrcost'     => '',
-		'freecost'     => '',
-		'totalcost'    => '',
+		'free_cost'    => '',
+		'total_cost'   => '',
 		'atk'          => '',
 		'def'          => '',
 		'name'         => '',

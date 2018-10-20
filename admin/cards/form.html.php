@@ -292,8 +292,8 @@
 									</span>
 									<input
 										type="number"
-										name="freecost"
-										value="<?=$card['freecost']?>"
+										name="free_cost"
+										value="<?=$card['free_cost']?>"
 										placeholder="Free cost.."
 										class="form-control">
 								</div>
@@ -303,8 +303,8 @@
 									<span class="form-label">Total</span>
 									<input
 										type="number"
-										name="totalcost"
-										value="<?=$card['totalcost']?>"
+										name="total_cost"
+										value="<?=$card['total_cost']?>"
 										placeholder="Tot cost.."
 										class="form-control">
 								</div>

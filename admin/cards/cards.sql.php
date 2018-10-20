@@ -94,7 +94,7 @@ $sql = "SELECT
 			attribute,
 			type,
 			divinity,
-			totalcost,
+			total_cost,
 			cardname,
 			SUBSTRING(cardtext, 1, 75) as cardtext,
 			atk,
@@ -161,7 +161,7 @@ if (!empty($result)) {
 			: $attribute = array($row['attribute']);
 
 		// Store results in $cards[] array
-		$cards[] = array (
+		$cards[] = [
 			'id' => $row['id'],
 			'narp' => $row['narp'],
 			'clusters_id' => $row['clusters_id'],
@@ -170,10 +170,10 @@ if (!empty($result)) {
 			'code' => $row['code'],
 			'attribute' => $attribute,
 			'type' => $type_abbr[$row['type']],
-			'totalcost' => $row['totalcost'],
+			'total_cost' => $row['total_cost'],
 			'cardname' => $row['cardname'],
 			'cardtext' => "{$row['cardtext']}[...]",
 			'atkdef' => "{$row['atk']}/{$row['def']}"
-		);
+		];
 	}
 }

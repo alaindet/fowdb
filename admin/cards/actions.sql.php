@@ -128,13 +128,13 @@ if (isset($_POST['action'])) {
 			: $attrcost = null;
 
 		// Free cost (allow x costs as value = 100)
-		(isset($_POST['freecost']) AND $_POST['freecost'] != '')
-			? $freecost = (int)$_POST['freecost']
+		(isset($_POST['free_cost']) AND $_POST['free_cost'] != '')
+			? $freecost = (int)$_POST['free_cost']
 			: $freecost = null;
 
 		// Total cost
-		(isset($_POST['totalcost']) AND $_POST['totalcost'] != '')
-			? $totalcost = (int)$_POST['totalcost']
+		(isset($_POST['total_cost']) AND $_POST['total_cost'] != '')
+			? $totalcost = (int)$_POST['total_cost']
 			: $totalcost = null;
 
 		// If total cost is not passed, calculate it
@@ -212,9 +212,9 @@ if (isset($_POST['action'])) {
 			'type' => $_POST['type'],
 			'divinity' => $divinity,
 			'rarity' => $rarity,
-			'attributecost' => ($attrcost == null) ? null : $attrcost,
-			'freecost' => $freecost,
-			'totalcost' => $totalcost,
+			'attribute_cost' => ($attrcost == null) ? null : $attrcost,
+			'free_cost' => $freecost,
+			'total_cost' => $totalcost,
 			'atk' => isset($_POST['atk']) ? (int) $_POST['atk'] : 0,
 			'def' => isset($_POST['def']) ? (int) $_POST['def'] : 0,
 			'cardname' => $_POST['name'],
@@ -360,13 +360,13 @@ if (isset($_POST['action'])) {
 			: $attrcost = null;
 
 		// Free cost (allow x costs as value = 100)
-		(isset($_POST['freecost']) AND $_POST['freecost'] != '')
-			? $freecost = (int)$_POST['freecost']
+		(isset($_POST['free_cost']) AND $_POST['free_cost'] != '')
+			? $freecost = (int)$_POST['free_cost']
 			: $freecost = null;
 
 		// Total cost
-		(isset($_POST['totalcost']) AND $_POST['totalcost'] != '')
-			? $totalcost = (int)$_POST['totalcost']
+		(isset($_POST['total_cost']) AND $_POST['total_cost'] != '')
+			? $totalcost = (int)$_POST['total_cost']
 			: $totalcost = null;
 
 		// If total cost is not passed, calculate it
@@ -416,9 +416,9 @@ if (isset($_POST['action'])) {
 			'type' => $_POST['type'],
 			'divinity' => $divinity,
 			'rarity' => $rarity,
-			'attributecost' => ($attrcost == null) ? null : $attrcost,
-			'freecost' => $freecost,
-			'totalcost' => $totalcost,
+			'attribute_cost' => ($attrcost == null) ? null : $attrcost,
+			'free_cost' => $freecost,
+			'total_cost' => $totalcost,
 			'atk' => isset($_POST['atk']) ? (int) $_POST['atk'] : 0,
 			'def' => isset($_POST['def']) ? (int) $_POST['def'] : 0,
 			'cardname' => $_POST['name'],

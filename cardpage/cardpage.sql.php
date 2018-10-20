@@ -28,12 +28,12 @@ foreach ($cardsDb as &$card) {
 	
 	// $freecost --------------------------------------------------------------
 	$freecost = '';
-	if (!empty($card['freecost'])) {
-		if ($card['freecost'] > 0) {
-			$freecost = render('{'.$card['freecost'].'}');
+	if (!empty($card['free_cost'])) {
+		if ($card['free_cost'] > 0) {
+			$freecost = render('{'.$card['free_cost'].'}');
 		} else {
 			$xCosts = '';
-			for ($i = $card['freecost']; $i < 0; $i++) {
+			for ($i = $card['free_cost']; $i < 0; $i++) {
 				$xCosts .= '{x}';
 			}
 			$freecost = render($xCosts);
@@ -42,16 +42,16 @@ foreach ($cardsDb as &$card) {
 
 	// $attributecost ---------------------------------------------------------
 	$attributecost = '';
-	if (!empty($card['attributecost'])) {
+	if (!empty($card['attribute_cost'])) {
 		$attributecost = array_reduce(
-			str_split($card['attributecost']),
+			str_split($card['attribute_cost']),
 			function ($tot, $attr) { return $tot .= render('{'.$attr.'}'); },
 			''
 		);
 	}
 	
 	// $cost ------------------------------------------------------------------
-	$cost = empty($card['totalcost']) ? '0' : $attributecost . $freecost;
+	$cost = empty($card['total_cost']) ? '0' : $attributecost . $freecost;
 	
 	// $attribute -------------------------------------------------------------
 	$attribute = '';
@@ -204,7 +204,7 @@ foreach ($cardsDb as &$card) {
 		// Shown info (side panel)
 		'name' => $card['cardname'],
 		'cost' => $cost,
-		'total_cost' => $card['totalcost'],
+		'total_cost' => $card['total_cost'],
 		'atk_def' => $atkDef,
 		'divinity' => $card['divinity'],
 		'type' => $type,

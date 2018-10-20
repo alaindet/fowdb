@@ -47,7 +47,7 @@ class Search
             "no_attribute_multi",
             "attrselected", // Legacy
             "attribute_selected",
-            "totalcost",
+            "total_cost",
             "xcost",
             "rarity",
             "race",
@@ -612,22 +612,22 @@ class Search
 
 
         // FILTER --- FREE COST -----------------------------------------------
-        if (isset($this->f['freecost'])) {
-            $_sql_f[] = "(freecost = "
-                      . implode(" OR freecost = ", $this->f['freecost'])
+        if (isset($this->f['free_cost'])) {
+            $_sql_f[] = "(free_cost = "
+                      . implode(" OR free_cost = ", $this->f['free_cost'])
                       . ")";
         }
 
         // FILTER --- TOTAL COST ----------------------------------------------
-        if (isset($this->f['totalcost'])) {
-            $_sql_f[] = "(totalcost = "
-                      . implode(" OR totalcost = ", $this->f['totalcost'])
+        if (isset($this->f['total_cost'])) {
+            $_sql_f[] = "(total_cost = "
+                      . implode(" OR total_cost = ", $this->f['total_cost'])
                       . ")";
         }
 
         // FILTER --- FREE COST AS X ------------------------------------------
         if (isset($this->f['xcost'])) {
-            $_sql_f[] = "freecost < 0";
+            $_sql_f[] = "free_cost < 0";
         }
 
 
