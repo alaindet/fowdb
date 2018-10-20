@@ -2,7 +2,7 @@
 
 namespace App\Views\Card;
 
-use App\Helpers;
+use App\Legacy\Helpers;
 use App\Utils\Arrays;
 
 class Card
