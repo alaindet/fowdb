@@ -236,7 +236,7 @@ $(document).ready(function() {
                     var spoilerClass = c.isspoiler ? " fdb-card-spoiled" : ""; // Spoiler?
 
                     // Card HTML content
-                    cardsHTML.push("<div class=\"" + cardClass + spoilerClass + "\"><a href='/?p=card&code=" + c.code + "' target='_self'><img src=\"" + c.thumb_path + "\" data-code=\"" + c.code + "\" data-id=\"" + c.id + "\" data-set=\"" + c.setcode + "\" alt=\"" + c.cardname + "\"></a></div>");
+                    cardsHTML.push("<div class=\"" + cardClass + spoilerClass + "\"><a href='/?p=card&code=" + c.code + "' target='_self'><img src=\"" + c.thumb_path + "\" data-code=\"" + c.code + "\" data-id=\"" + c.id + "\" data-set=\"" + c.setcode + "\" alt=\"" + c.name + "\"></a></div>");
                 }
 
                 // Get output as string

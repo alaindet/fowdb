@@ -378,7 +378,7 @@
 					<div class="form-group form-section">
 						<label for="race" class="col-sm-2">Race/Trait</label>
 						<div class="col-sm-10">
-							<input type="text" name="race" value="<?=$card['subtype_race']?>" class="form-control" placeholder="Race/Trait..">
+							<input type="text" name="race" value="<?=$card['race']?>" class="form-control" placeholder="Race/Trait..">
 						</div>
 					</div>
 
@@ -398,10 +398,10 @@
 
 					<!-- Flavor Text ================================================ -->
 					<div class="form-group form-section">
-						<label for="flavortext" class="col-sm-2">Flavor Text</label>
+						<label for="flavor_text" class="col-sm-2">Flavor Text</label>
 						<div class="col-sm-10">
-							<textarea name="flavortext" class="form-control" rows="3" placeholder="Flavor text.."><?php
-								echo $card['flavortext'];
+							<textarea name="flavor_text" class="form-control" rows="3" placeholder="Flavor text.."><?php
+								echo $card['flavor_text'];
 							?></textarea>
 						</div>
 					</div>

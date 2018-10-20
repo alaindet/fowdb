@@ -63,7 +63,7 @@ class Search
         $this->fields = [
             "cards.id",
             "cards.code",
-            "cards.cardname",
+            "cards.name",
             "cards.num",
             "cards.setcode",
             "cards.image_path",
@@ -322,11 +322,11 @@ class Search
 
                 // Check if inputs "infields" array has any unallowed element!
                 if (empty(array_diff($this->f['infields'], [
-                    'cardname',
+                    'cards.name',
                     'cards.code',
-                    'cardtext',
-                    'subtype_race',
-                    'flavortext',
+                    'cards.text',
+                    'cards.race',
+                    'cards.flavor_text',
                 ]))) {
 
                     // Initialize empty fields
@@ -339,10 +339,10 @@ class Search
             // No infields restriction, initialize ALL (default)
             else {
                 $q_fields = array(
-                    'cardname' => '',
+                    'cards.name' => '',
                     'cards.code' => '',
-                    'cardtext' => '',
-                    'subtype_race' => '',
+                    'cards.text' => '',
+                    'cards.race' => '',
                 );
             }
 
@@ -381,7 +381,7 @@ class Search
 
             // OVERWRITE RACE IF ALREADY SET INTO FILTERS PANEL
             // -------------------------------------------------------------------------
-            // Check if specific subtype_race filter (Race/Trait input) was provided
+            // Check if specific race filter (Race/Trait input) was provided
             if (isset($this->f['race'])) {
 
                 // Specific filter overwrites generic searchbox terms, if present
@@ -500,7 +500,7 @@ class Search
             // REGEXP
             // It's better than LIKE because it excludes "Four Sacred Beasts" cards
             // when searching for "Beast", but it can search for "Human/Beast" cards!
-            $_sql_f[] = "subtype_race REGEXP \"(^|\/){$race}(\/|$)\"";
+            $_sql_f[] = "race REGEXP \"(^|\/){$race}(\/|$)\"";
         }
 
 

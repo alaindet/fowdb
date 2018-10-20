@@ -19,7 +19,7 @@ $code = str_replace(array('&#039;', '&quot;'), array('\'', "\\\""), $code);
 
 $card = database()->get(
 	"SELECT id FROM cards
-	WHERE cardname = :name AND code = :code
+	WHERE name = :name AND code = :code
 	LIMIT 1",
 	[":name" => $name, ":code" => $code],
 	true // Return first card

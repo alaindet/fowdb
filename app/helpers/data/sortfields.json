@@ -2,7 +2,7 @@
     "default": "Choose",
     "sets_id": "Set",
     "num": "Number",
-    "subtype_race": "Race/Trait",
+    "race": "Race/Trait",
     "attribute": "Attribute",
     "total_cost": "Total Cost",
     "rarity": "Rarity",

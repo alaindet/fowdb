@@ -82,12 +82,12 @@ foreach ($cardsDb as &$card) {
 
 	// $raceValue -------------------------------------------------------------
 	$raceValue = '<em>(none)</em>';
-	if (!empty($card['subtype_race'])) {
+	if (!empty($card['race'])) {
 		$raceValue = implode(' / ', array_map(
 			function ($race) {
 				return "<a href=\"/?do=search&race={$race}\">{$race}</a>";
 			},
-			explode('/', $card['subtype_race'])
+			explode('/', $card['race'])
 		));
 	}
 	
@@ -112,7 +112,7 @@ foreach ($cardsDb as &$card) {
 	// $baseCardId ------------------------------------------------------------
 	($card['narp'] === 0)
 		? $baseCardId = (int) $card['id']
-		: $baseCardId = CardNarp::getBaseIdByName($card['cardname']);
+		: $baseCardId = CardNarp::getBaseIdByName($card['name']);
 	
 	// $format, $banned -------------------------------------------------------
 	$spoilers = cached('spoiler.codes');
@@ -172,7 +172,7 @@ foreach ($cardsDb as &$card) {
 	// $narp ------------------------------------------------------------------
 	$narp = CardNarp::displayRelatedCards(
 		(int) $card['narp'],
-		$card['cardname']
+		$card['name']
 	);
 
 	// $rarity ----------------------------------------------------------------
@@ -187,7 +187,7 @@ foreach ($cardsDb as &$card) {
 	}
 
 	// $flavorText ------------------------------------------------------------
-	$flavorText = "<span class='flavortext'>{$card['flavortext']}</span>";
+	$flavorText = "<span class='flavortext'>{$card['flavor_text']}</span>";
 
 	// $atkDef ----------------------------------------------------------------
 	$atkDef = collapse(
@@ -202,7 +202,7 @@ foreach ($cardsDb as &$card) {
 	// $card ------------------------------------------------------------------
 	$card = [
 		// Shown info (side panel)
-		'name' => $card['cardname'],
+		'name' => $card['name'],
 		'cost' => $cost,
 		'total_cost' => $card['total_cost'],
 		'atk_def' => $atkDef,
@@ -210,7 +210,7 @@ foreach ($cardsDb as &$card) {
 		'type' => $type,
 		$raceLabel => $raceValue,
 		'attribute' => $attribute,
-		'text' => render($card['cardtext']),
+		'text' => render($card['text']),
 		'flavor_text' => $flavorText,
 		'code' => $card['code'],
 		'rarity' => $rarity,

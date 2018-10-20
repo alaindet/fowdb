@@ -33,7 +33,7 @@ class CardNarp
     public static function getBaseIdByName(string $name): int
     {
         $cards = database()->get(
-            "SELECT id FROM cards WHERE narp = 0 AND cardname = :name LIMIT 1",
+            "SELECT id FROM cards WHERE narp = 0 AND name = :name LIMIT 1",
             [':name' => $name]
         );
 
@@ -51,7 +51,7 @@ class CardNarp
         return database()->get(
             "SELECT narp, code
             FROM cards
-            WHERE narp = 0 AND cardname = :name
+            WHERE narp = 0 AND name = :name
             LIMIT 1",
             [':name' => $name]
         )[0]['code'];
@@ -75,7 +75,7 @@ class CardNarp
         $cards = database()->get(
             "SELECT narp, code
             FROM cards
-            WHERE narp > 0 AND cardname = :name
+            WHERE narp > 0 AND name = :name
             ORDER BY clusters_id DESC, sets_id DESC, num DESC",
             [':name' => $name]
         );

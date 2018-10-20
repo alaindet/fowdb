@@ -40,10 +40,10 @@
 					</label>
 					<div class="col-sm-10">
 						<?php if ($action == 'create'): /*Create*/ ?>
-							<input type="text" class="form-control" name="name_suggest" id="name_suggest" placeholder="Card name here.." value="<?=$ruling['cardname']?>" />
+							<input type="text" class="form-control" name="name_suggest" id="name_suggest" placeholder="Card name here.." value="<?=$ruling['name']?>" />
 						<?php else: /*Edit/Delete*/ ?>
-							<input type="hidden" name="name_suggest" value="<?=$ruling['cardname']?>" />
-							<p class="help-block"><?=$ruling['cardname']?></p>
+							<input type="hidden" name="name_suggest" value="<?=$ruling['name']?>" />
+							<p class="help-block"><?=$ruling['name']?></p>
 						<?php endif; ?>
 					</div>
 				</div>
@@ -63,8 +63,8 @@
 				<div class="form-group" id="card_image">
 					<?php if ($action == 'edit' OR $action == 'delete' OR ($action == 'create' AND isset($_GET['card_id']))): ?>
 						<div class="col-sm-offset-2 col-sm-10">
-							<a href="<?=$ruling['image_path']?>" data-lightbox='cards' data-title="<?=$ruling['cardname']?>">
-								<img src="<?=$ruling['thumb_path']?>" alt="<?=$ruling['cardname']?>">
+							<a href="<?=$ruling['image_path']?>" data-lightbox='cards' data-title="<?=$ruling['name']?>">
+								<img src="<?=$ruling['thumb_path']?>" alt="<?=$ruling['name']?>">
 							</a>
 						</div>
 					<?php endif; ?>

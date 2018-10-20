@@ -11,20 +11,13 @@ if (isset($_REQUEST['id'])) {
 
 	// Adjust returned card
 	if (!empty($card)) {
-		$card['num'] = $card['num'];
 		$card['attr'] = $card['attribute'];
-		$card['type'] = $card['type'];
 		$card['attrcost'] = $card['attribute_cost'];
-		$card['name'] = $card['cardname'];
-		$card['code'] = $card['code'];
-		$card['text'] = $card['cardtext'];
 		$card['imagepath'] = $card['image_path'];
 		$card['thumbpath'] = $card['thumb_path'];
 
 		unset($card['attribute']);
 		unset($card['attribute_cost']);
-		unset($card['cardname']);
-		unset($card['cardtext']);
 		unset($card['image_path']);
 		unset($card['thumb_path']);
 	}
@@ -51,9 +44,9 @@ else {
 		'def'          => '',
 		'name'         => '',
 		'code' 		   => '',
-		'subtype_race' => '',
+		'race'         => '',
 		'text'         => '',
-		'flavortext'   => '',
+		'flavor_text'  => '',
 		'artist_name'  => '',
 		'imagepath'    => '',
 		'thumbpath'    => ''

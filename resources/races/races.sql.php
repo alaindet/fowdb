@@ -2,13 +2,13 @@
 
 // Races ----------------------------------------------------------------------
 $racesDb = database()->get(
-	"SELECT DISTINCT subtype_race
+	"SELECT DISTINCT race
 	FROM cards
 	WHERE type IN('Ruler', 'J-Ruler', 'Resonator')"
 );
 $races = [];
 foreach ($racesDb as &$item) {
-	foreach (explode('/', $item['subtype_race']) as $race) {
+	foreach (explode('/', $item['race']) as $race) {
 		if (!isset($races[$race])) $races[$race] = 1;
 	}
 }
@@ -17,15 +17,15 @@ sort($races);
 
 // Traits ---------------------------------------------------------------------
 $traitsDb = database()->get(
-	"SELECT DISTINCT subtype_race
+	"SELECT DISTINCT race
 	FROM cards
 	WHERE
 		NOT (type IN('Ruler','J-Ruler','Resonator')) AND
-		NOT (subtype_race = '')"
+		NOT (race = '')"
 );
 $traits = [];
 foreach ($traitsDb as &$item) {
-	foreach (explode('/', $item['subtype_race']) as $trait) {
+	foreach (explode('/', $item['race']) as $trait) {
 		if (!isset($traits[$trait])) $traits[$trait] = 1;
 	}
 }

@@ -34,7 +34,7 @@
 					--><!-- Card --><!--
 					--><div class="fdb-card<?=$spoiled?>"><!--
 						--><a href="<?=$link?>" target="_self"><!--
-							--><img src="<?=$card['thumb_path']?>" data-code="<?=$card['code']?>" data-id="<?=$card['id']?>" data-set="<?=$card['setcode']?>" alt="<?=$card['cardname']?>"><!--
+							--><img src="<?=$card['thumb_path']?>" data-code="<?=$card['code']?>" data-id="<?=$card['id']?>" data-set="<?=$card['setcode']?>" alt="<?=$card['name']?>"><!--
 						--></a><!--
 					--></div><!-- /Card --><!--
 				<?php endforeach; ?>

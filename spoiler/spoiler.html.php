@@ -34,7 +34,7 @@
 							<?php foreach ($set['cards'] as &$card): ?>
 									--><div class="fdb-card"><!--
 										--><a href="/?p=card&code=<?=str_replace(" ", "+", $card['code'])?>" target="_self"><!--
-											--><img src="<?=$card['thumb_path']?>" data-code="<?=$card['code']?>" data-id="<?=$card['id']?>" data-set="<?=$card['setcode']?>" data-num="<?=$card['num']?>" alt="<?=$card['cardname']?>"><!--
+											--><img src="<?=$card['thumb_path']?>" data-code="<?=$card['code']?>" data-id="<?=$card['id']?>" data-set="<?=$card['setcode']?>" data-num="<?=$card['num']?>" alt="<?=$card['name']?>"><!--
 										--></a><!--
 									--></div><!--
 							<?php endforeach; ?>

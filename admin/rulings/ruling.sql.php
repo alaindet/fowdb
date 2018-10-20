@@ -11,7 +11,7 @@ if (isset($_REQUEST['id'])) {
 		"SELECT
 			rulings.id as id,
 			rulings.cards_id,
-			cards.cardname,
+			cards.name,
 			cards.code,
 			cards.image_path,
 			cards.thumb_path,
@@ -39,7 +39,7 @@ else if ($action == 'create') {
 		$card_id = \App\Legacy\NARP::getBasic((int) $_GET['card_id']);
 
 		if ($card = $db->get(
-			"SELECT cardname, code, thumb_path
+			"SELECT name, code, thumb_path
 			FROM cards
 			WHERE id = :id",
 			[":id" => $card_id],
@@ -48,7 +48,7 @@ else if ($action == 'create') {
 			$ruling = [
 				'id' => '',
 				'cards_id' => $card_id,
-				'cardname' => $card['cardname'],
+				'name' => $card['name'],
 				'code' => $card['code'],
 				'thumb_path' => $card['thumb_path'],
 				'created' => '',
@@ -62,7 +62,7 @@ else if ($action == 'create') {
 		$ruling = [
 			'id' => '',
 			'cards_id' => '',
-			'cardname' => '',
+			'name' => '',
 			'code' => '',
 			'thumb_path' => '',
 			'created' => '',

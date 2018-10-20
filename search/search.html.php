@@ -180,11 +180,11 @@
                   <div class="btn-group" data-toggle="buttons">
                       
                     <?php foreach ([
-                      "cardname" => "Names",
+                      "name" => "Names",
                       "code" => "Codes",
-                      "cardtext" => "Texts",
-                      "subtype_race" => "Races",
-											"flavortext" => "Flavor",
+                      "text" => "Texts",
+                      "race" => "Races",
+											"flavor_text" => "Flavor",
                     ] as $field => $label):
                       // Sticky values
                       (isset($filters['infields']) AND in_array($field, $filters['infields']))

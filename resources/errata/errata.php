@@ -3,7 +3,7 @@
 $db = \App\Legacy\Database::getInstance();
 
 $errata = $db->get(
-	"SELECT cardname as name, code as code, created as last_edit, ruling
+	"SELECT name as name, code as code, created as last_edit, ruling
 	FROM rulings INNER JOIN cards ON rulings.cards_id = cards.id
 	WHERE is_errata = TRUE
 	ORDER BY last_edit DESC"

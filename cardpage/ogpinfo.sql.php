@@ -9,7 +9,7 @@ if (!isset($_GET['code'])) {
 
 // Get card info
 $card = database()->get(
-	"SELECT cardname, thumb_path
+	"SELECT name, thumb_path
 	FROM cards
 	WHERE code = :code
 	LIMIT 1",
@@ -18,7 +18,7 @@ $card = database()->get(
 );
 
 if (!empty($card)) {
-	$page_title = $card['cardname'];
+	$page_title = $card['name'];
 	$ogp_image[] = $card['thumb_path'];
 } else {
 	$page_title = 'Card Page';

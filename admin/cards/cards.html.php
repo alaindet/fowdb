@@ -37,7 +37,7 @@
 						'attribute' => 'Attribute',
 						'total_cost' => 'Total Cost',
 						'type' => 'Type',
-						'cardname' => 'Name',
+						'name' => 'Name',
 						'atk' => 'ATK',
 						'def' => 'DEF',
 						'id' => 'ID',
@@ -212,7 +212,7 @@
 						<td>
 							<strong>
 								<a href="<?=$link?>" target="_blank">
-									<?=$card['cardname']?>
+									<?=$card['name']?>
 								</a>
 							</strong>
 						</td>
@@ -223,7 +223,7 @@
 						?></td>
 
 						<!-- Text -->
-						<td><?=$card['cardtext']?></td>
+						<td><?=$card['text']?></td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>

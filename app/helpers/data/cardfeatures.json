@@ -8,7 +8,7 @@
     "race": "Race",
     "trait": "Trait",
     "divinity": "Divinity",
-    "subtype_race": "Race/Trait",
+    "race": "Race/Trait",
     "text": "Text",
     "atk": "ATK",
     "def": "DEF",

@@ -16,7 +16,7 @@ class NARP {
 		// Database connection
 		$db = \App\Legacy\Database::getInstance();
 
-		$narp = $db->get("SELECT narp, cardname FROM cards WHERE id = :id LIMIT 1", [":id" => $id], true);
+		$narp = $db->get("SELECT narp, name FROM cards WHERE id = :id LIMIT 1", [":id" => $id], true);
 
 		// Card is already in basic form
 		if ($narp['narp'] == 0) {
@@ -27,8 +27,8 @@ class NARP {
 		else {
 
 			$basic = $db->get(
-				"SELECT id FROM cards WHERE narp = 0 AND cardname = :name LIMIT 1",
-				[":name" => $narp['cardname']],
+				"SELECT id FROM cards WHERE narp = 0 AND name = :name LIMIT 1",
+				[":name" => $narp['name']],
 				true
 			);
 

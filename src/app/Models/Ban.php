@@ -113,7 +113,7 @@ class Ban
     {
         $this->items = database()->get(
             "SELECT
-                cards.cardname as card_name,
+                cards.name as card_name,
                 cards.code as card_code,
                 cards.thumb_path as card_image,
                 formats.name as format_name,
@@ -126,7 +126,7 @@ class Ban
                 INNER JOIN cards ON bans.cards_id = cards.id
             ORDER BY
                 bans.formats_id ASC,
-                cards.cardname ASC,
+                cards.name ASC,
                 cards.sets_id DESC,
                 cards.num ASC,
                 cards.id ASC"

@@ -95,8 +95,8 @@ $sql = "SELECT
 			type,
 			divinity,
 			total_cost,
-			cardname,
-			SUBSTRING(cardtext, 1, 75) as cardtext,
+			name,
+			SUBSTRING(text, 1, 75) as text,
 			atk,
 			def
 		FROM
@@ -171,8 +171,8 @@ if (!empty($result)) {
 			'attribute' => $attribute,
 			'type' => $type_abbr[$row['type']],
 			'total_cost' => $row['total_cost'],
-			'cardname' => $row['cardname'],
-			'cardtext' => "{$row['cardtext']}[...]",
+			'name' => $row['name'],
+			'text' => "{$row['text']}[...]",
 			'atkdef' => "{$row['atk']}/{$row['def']}"
 		];
 	}

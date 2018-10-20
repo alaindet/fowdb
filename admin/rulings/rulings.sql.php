@@ -16,7 +16,7 @@ $orderby = 'sets_id asc, num asc';
 if (isset($_POST['sort_rulings'])) {
 	$sort = [
 		'0' => 'sets_id, num',
-		'name' => 'cardname',
+		'name' => 'name',
 		'date' => 'created DESC, sets_id, num',
 		'edited' => 'FIELD(is_edited, 1, 0), sets_id, num',
 		'errata' => 'FIELD(is_errata, 1, 0), sets_id, num'
@@ -61,7 +61,7 @@ $limit_down = $offsets['down'];
 $sql = "SELECT
 			rulings.id as id,
 			code,
-			cardname,
+			name,
 			created,
 			is_edited,
 			is_errata,
@@ -100,7 +100,7 @@ if (!empty($result)) {
 		$rulings[] = [
 			'id' => $row['id'],
 			'code' => $row['code'],
-			'name' => $row['cardname'],
+			'name' => $row['name'],
 			'created' => $row['created'],
 			'is_edited' => $bool[$row['is_edited']],
 			'is_errata' => $bool[$row['is_errata']],
