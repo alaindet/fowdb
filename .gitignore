@@ -1,16 +1,19 @@
-# To be removed
+# 3rd party
 node_modules/
 vendor/
 
-# Directories
+# App and development
 /.backup/
 /.dev/
-/images/
-/src/resources/assets/node_modules
-/src/vendor
-/src/storage/views
+/src/cache/
 
-# Files
-*.min.js
-*.min.css
+# Public assets and files
+/js/
+/css/
+/images/
 .env
+.production.env
+.development.env
+
+# Not these
+!.env.example
