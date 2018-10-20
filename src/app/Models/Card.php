@@ -9,7 +9,7 @@ class Card
         return database()->get(
             "SELECT *
             FROM cards
-            WHERE cardcode = :code
+            WHERE code = :code
             LIMIT 3",
             [':code' => $code]
         );

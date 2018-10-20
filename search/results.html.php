@@ -29,12 +29,12 @@
 				<?php foreach ($cards as &$card): ?>
 					<?php
 						$spoiled = in_array($card['setcode'], $spoilerCodes) ? ' fdb-card-spoiled' : '';
-						$link = "/?p=card&code=".str_replace(" ", "+", $card['cardcode']);
+						$link = "/?p=card&code=".str_replace(" ", "+", $card['code']);
 					?>
 					--><!-- Card --><!--
 					--><div class="fdb-card<?=$spoiled?>"><!--
 						--><a href="<?=$link?>" target="_self"><!--
-							--><img src="<?=$card['thumb_path']?>" data-code="<?=$card['cardcode']?>" data-id="<?=$card['id']?>" data-set="<?=$card['setcode']?>" alt="<?=$card['cardname']?>"><!--
+							--><img src="<?=$card['thumb_path']?>" data-code="<?=$card['code']?>" data-id="<?=$card['id']?>" data-set="<?=$card['setcode']?>" alt="<?=$card['cardname']?>"><!--
 						--></a><!--
 					--></div><!-- /Card --><!--
 				<?php endforeach; ?>

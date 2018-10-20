@@ -49,12 +49,12 @@ class CardNarp
     public static function getBaseCode(string $name): string
     {
         return database()->get(
-            "SELECT narp, cardcode
+            "SELECT narp, code
             FROM cards
             WHERE narp = 0 AND cardname = :name
             LIMIT 1",
             [':name' => $name]
-        )[0]['cardcode'];
+        )[0]['code'];
     }
 
     /**
@@ -73,7 +73,7 @@ class CardNarp
     public static function getRelatedCards(string $name): array
     {
         $cards = database()->get(
-            "SELECT narp, cardcode
+            "SELECT narp, code
             FROM cards
             WHERE narp > 0 AND cardname = :name
             ORDER BY clusters_id DESC, sets_id DESC, num DESC",
@@ -83,7 +83,7 @@ class CardNarp
         return array_reduce($cards, function ($result, $card) {
             $title = self::$map[$card['narp']].'s';
             if (!isset($result[$title])) $result[$title] = [];
-            $result[$title][] = $card['cardcode'];
+            $result[$title][] = $card['code'];
             return $result;
         }, []);
     }

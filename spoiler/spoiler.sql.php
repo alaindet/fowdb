@@ -8,7 +8,7 @@ foreach (cached('spoiler.sets') as $set) {
 		"SELECT
 			id,
 			back_side,
-			cardcode,
+			code,
 			setcode,
 			num,
 			cardname,

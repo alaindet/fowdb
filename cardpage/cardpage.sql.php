@@ -212,7 +212,7 @@ foreach ($cardsDb as &$card) {
 		'attribute' => $attribute,
 		'text' => render($card['cardtext']),
 		'flavor_text' => $flavorText,
-		'code' => $card['cardcode'],
+		'code' => $card['code'],
 		'rarity' => $rarity,
 		'artist_name' => $artist,
 		'set' => $set,

@@ -62,7 +62,7 @@ class Search
         // Fields to return
         $this->fields = [
             "cards.id",
-            "cards.cardcode",
+            "cards.code",
             "cards.cardname",
             "cards.num",
             "cards.setcode",
@@ -323,7 +323,7 @@ class Search
                 // Check if inputs "infields" array has any unallowed element!
                 if (empty(array_diff($this->f['infields'], [
                     'cardname',
-                    'cardcode',
+                    'cards.code',
                     'cardtext',
                     'subtype_race',
                     'flavortext',
@@ -340,7 +340,7 @@ class Search
             else {
                 $q_fields = array(
                     'cardname' => '',
-                    'cardcode' => '',
+                    'cards.code' => '',
                     'cardtext' => '',
                     'subtype_race' => '',
                 );

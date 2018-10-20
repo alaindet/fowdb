@@ -114,7 +114,7 @@ class Ban
         $this->items = database()->get(
             "SELECT
                 cards.cardname as card_name,
-                cards.cardcode as card_code,
+                cards.code as card_code,
                 cards.thumb_path as card_image,
                 formats.name as format_name,
                 formats.code as format_code,

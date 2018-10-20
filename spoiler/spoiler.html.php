@@ -33,8 +33,8 @@
 						<?php if (!empty($set['cards'])): ?>
 							<?php foreach ($set['cards'] as &$card): ?>
 									--><div class="fdb-card"><!--
-										--><a href="/?p=card&code=<?=str_replace(" ", "+", $card['cardcode'])?>" target="_self"><!--
-											--><img src="<?=$card['thumb_path']?>" data-code="<?=$card['cardcode']?>" data-id="<?=$card['id']?>" data-set="<?=$card['setcode']?>" data-num="<?=$card['num']?>" alt="<?=$card['cardname']?>"><!--
+										--><a href="/?p=card&code=<?=str_replace(" ", "+", $card['code'])?>" target="_self"><!--
+											--><img src="<?=$card['thumb_path']?>" data-code="<?=$card['code']?>" data-id="<?=$card['id']?>" data-set="<?=$card['setcode']?>" data-num="<?=$card['num']?>" alt="<?=$card['cardname']?>"><!--
 										--></a><!--
 									--></div><!--
 							<?php endforeach; ?>

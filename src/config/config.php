@@ -19,7 +19,7 @@ foreach ([
     // Timestamps
     'APP_TIMESTAMP' => '20181012-1',
     'APP_TIMESTAMP_CSS' => '20181012-4',
-    'APP_TIMESTAMP_JS'  => '20181012-1',
+    'APP_TIMESTAMP_JS'  => '20181020-1',
     'APP_TIMESTAMP_IMG' => '20181012-1',
 
     // Database

@@ -145,10 +145,10 @@
 				?>
 					<?php
 						// Replace spaces in card code to $nbsp; to avoid line breaks
-						$card['cardcode'] = str_replace(" ", "&nbsp;", $card['cardcode']);
+						$card['code'] = str_replace(" ", "&nbsp;", $card['code']);
 						
 						// Assemble link to the card page
-						$link = '?p=card&code=' . str_replace("&nbsp;", "+", $card['cardcode']);
+						$link = '?p=card&code=' . str_replace("&nbsp;", "+", $card['code']);
 					?>
 					<tr>
 						<!-- Number # -->
@@ -191,7 +191,7 @@
 						?></td>
 						
 						<!-- Code -->
-						<td><?=$card['cardcode']?></td>
+						<td><?=$card['code']?></td>
 						
 						<!-- Attribute -->
 						<td><?php

@@ -53,9 +53,9 @@
 					<label for="code" class="col-sm-2 control-label">Code</label>
 					<div class="col-sm-10">
 						<!-- Code (hidden) -->
-						<input type="hidden" name="code" value="<?=$ruling['cardcode']?>" />
+						<input type="hidden" name="code" value="<?=$ruling['code']?>" />
 						<!-- Code (input) -->
-						<input type="text" class="form-control" name="code" id="code" value="<?=$ruling['cardcode']?>" placeholder="Code.."<?=$not?> <?=(in_array($action, ['edit', 'delete'])) ? " disabled=true" : ""?>/>
+						<input type="text" class="form-control" name="code" id="code" value="<?=$ruling['code']?>" placeholder="Code.."<?=$not?> <?=(in_array($action, ['edit', 'delete'])) ? " disabled=true" : ""?>/>
 					</div>
 				</div>
 

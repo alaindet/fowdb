@@ -17,7 +17,7 @@ $name = htmlspecialchars($_GET['term'], ENT_QUOTES, 'UTF-8');
 $name = str_replace(['&#039;', '&quot;'], ['\'', "\\\""], $name);
 
 $cards = database()->get(
-	"SELECT id, cardcode, cardname, thumb_path
+	"SELECT id, code, cardname, thumb_path
 	FROM cards
 	WHERE cardname LIKE \"%{$name}%\" AND clusters_id > 1
 	ORDER BY sets_id DESC, num ASC
@@ -39,7 +39,7 @@ foreach ($cards as &$card) {
 	$response[] = [
 		'id'    => $card['id'],
 		'label' => $card['cardname'],
-		'value' => $card['cardcode'],
+		'value' => $card['code'],
 		'path'  => $card['thumb_path']
 	];
 }

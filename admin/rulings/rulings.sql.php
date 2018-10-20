@@ -43,10 +43,10 @@ $page = (isset($_POST['page']) AND $_POST['page'] > 0) ? (int)$_POST['page'] : 1
 
 // Instantiate Pagination class
 $pagination = new \App\Legacy\Pagination(
-	'rulings'
-	,$page
-	,$items_per_page
-	,['sort_rulings', 'no_mobile']
+	'rulings',
+	$page,
+	$items_per_page,
+	['sort_rulings', 'no_mobile']
 );
 
 // Get offsets
@@ -59,13 +59,13 @@ $limit_down = $offsets['down'];
 
 // Build SQL statement
 $sql = "SELECT
-			rulings.id as id
-			,cardcode
-			,cardname
-			,created
-			,is_edited
-			,is_errata
-			,SUBSTRING(ruling, 1, 75) as ruling
+			rulings.id as id,
+			code,
+			cardname,
+			created,
+			is_edited,
+			is_errata,
+			SUBSTRING(ruling, 1, 75) as ruling
 		FROM
 			rulings INNER JOIN cards ON cards_id = cards.id
 		ORDER BY
@@ -91,20 +91,20 @@ if (!empty($result)) {
 	
 	// Convert booleans to 'Yes' or 'No' for presentation
 	$bool = [
-		0 => 'No'
-		,1 => '<strong style="color:red;">Yes</strong>'
+		0 => 'No',
+		1 => '<strong style="color:red;">Yes</strong>'
 	];
 	
 	// Store results in $rulings array
-	foreach($result as $row) {
-		$rulings[] = array (
-			'id' => $row['id']
-			,'code' => $row['cardcode']
-			,'name' => $row['cardname']
-			,'created' => $row['created']
-			,'is_edited' => $bool[$row['is_edited']]
-			,'is_errata' => $bool[$row['is_errata']]
-			,'ruling' => $row['ruling'] . '[...]'
-		);
+	foreach($result as &$row) {
+		$rulings[] = [
+			'id' => $row['id'],
+			'code' => $row['code'],
+			'name' => $row['cardname'],
+			'created' => $row['created'],
+			'is_edited' => $bool[$row['is_edited']],
+			'is_errata' => $bool[$row['is_errata']],
+			'ruling' => $row['ruling'] . '[...]'
+		];
 	}
 }

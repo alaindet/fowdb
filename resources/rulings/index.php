@@ -9,7 +9,7 @@ $rulings = $db->get(
         is_errata,
         ruling,
         cardname,
-        cardcode
+        code
     from rulings inner join cards
         on rulings.cards_id = cards.id
     order by created desc
@@ -20,7 +20,7 @@ $rulings = $db->get(
 
 <?php foreach ($rulings as $ruling): ?>
     <p>
-        <u><?=$ruling["created"]?></u> - <strong><?=$ruling["cardname"]?></strong> (<?=$ruling["cardcode"]?>)<br>
+        <u><?=$ruling["created"]?></u> - <strong><?=$ruling["cardname"]?></strong> (<?=$ruling["code"]?>)<br>
         <?=$ruling["is_errata"] ? "ERRATA" : ""?>
         <?=$ruling["ruling"]?>
     </p>

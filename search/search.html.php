@@ -181,7 +181,7 @@
                       
                     <?php foreach ([
                       "cardname" => "Names",
-                      "cardcode" => "Codes",
+                      "code" => "Codes",
                       "cardtext" => "Texts",
                       "subtype_race" => "Races",
 											"flavortext" => "Flavor",

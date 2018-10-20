@@ -11,7 +11,7 @@ if (!isset($_GET['code'])) {
 $card = database()->get(
 	"SELECT cardname, thumb_path
 	FROM cards
-	WHERE cardcode = :code
+	WHERE code = :code
 	LIMIT 1",
 	[":code" => htmlspecialchars($_GET['code'], ENT_QUOTES, 'UTF-8')],
 	$first = true // Get first result
