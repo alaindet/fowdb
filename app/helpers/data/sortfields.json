@@ -6,7 +6,7 @@
     "attribute": "Attribute",
     "totalcost": "Total Cost",
     "rarity": "Rarity",
-    "cardtype": "Type",
+    "type": "Type",
     "atk": "ATK",
     "def": "DEF"
 }

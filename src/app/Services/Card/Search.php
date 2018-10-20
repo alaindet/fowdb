@@ -37,7 +37,7 @@ class Search
             "sort",
             "sortdir",
             "format",
-            "cardtype",
+            "type",
             "backside",
             "divinity",
             "setcode",
@@ -535,12 +535,12 @@ class Search
         }
 
         // FILTER --- TYPE ----------------------------------------------------
-        if (isset($this->f['cardtype'])) {
+        if (isset($this->f['type'])) {
 
             // Game-specific: Chant will add also Spell:Chant-* old types to search results
-            if (in_array("Addition", $this->f['cardtype'])) {
-                $this->f['cardtype'] = Arrays::union(
-                    $this->f['cardtype'], [
+            if (in_array("Addition", $this->f['type'])) {
+                $this->f['type'] = Arrays::union(
+                    $this->f['type'], [
                         "Addition:Resonator",
                         "Addition:J/Resonator",
                         "Addition:Ruler/J-Ruler",
@@ -550,9 +550,9 @@ class Search
             }
 
             // Game-specific: Rune are Chant/Rune as well
-            if (in_array("Rune", $this->f['cardtype'])) {
-                $this->f['cardtype'] = Arrays::union(
-                    $this->f['cardtype'], [
+            if (in_array("Rune", $this->f['type'])) {
+                $this->f['type'] = Arrays::union(
+                    $this->f['type'], [
                         "Chant/Rune",
                         "Rune"
                     ]
@@ -560,9 +560,9 @@ class Search
             }
 
             // Game-specific: Chant will add also Spell:Chant-* old types to search results
-            if (in_array("Chant", $this->f['cardtype'])) {
-                $this->f['cardtype'] = Arrays::union(
-                    $this->f['cardtype'], [
+            if (in_array("Chant", $this->f['type'])) {
+                $this->f['type'] = Arrays::union(
+                    $this->f['type'], [
                         "Spell:Chant",
                         "Spell:Chant-Instant",
                         "Spell:Chant-Standby",
@@ -572,8 +572,8 @@ class Search
             }
 
             // Add to SQL   
-            $_sql_f[] = "(cardtype = \""
-                      . implode("\" OR cardtype = \"", $this->f['cardtype'])
+            $_sql_f[] = "(type = \""
+                      . implode("\" OR type = \"", $this->f['type'])
                       . "\")";
         }
 
@@ -663,16 +663,16 @@ class Search
         $sql_f = empty($_sql_f) ? 'TRUE' : implode(" AND ", $_sql_f);
 
         // Prevent magic stones in the results unless specified
-        // (setcode, num, cardtype or rarity is set)
+        // (setcode, num, type or rarity is set)
         if (
             !(
                 isset($this->f['setcode']) ||
                 isset($this->f['num']) ||
-                isset($this->f['cardtype']) ||
+                isset($this->f['type']) ||
                 isset($this->f['rarity'])
             )
         ) {
-            $_sql_f[] = "NOT(cardtype = \"Magic Stone\")";
+            $_sql_f[] = "NOT(type = \"Magic Stone\")";
         }
 
 
@@ -708,9 +708,9 @@ class Search
                     $sortField = "FIELD(rarity,'c','u','r','sr','pr','s')";
                     break;
 
-                case 'cardtype':
+                case 'type':
                     $typesList = implode("','", \App\Legacy\Helpers::get('types'));
-                    $sortField = "FIELD(cardtype,'{$typesList}')";
+                    $sortField = "FIELD(type,'{$typesList}')";
                     break;
                     
                 default: // No custom sorting for other inputs

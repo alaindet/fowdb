@@ -22,7 +22,7 @@ if (isset($_POST['sort_cards'])) {
 		? $dir = "DESC"
 		: $dir = "ASC";
 
-	// Custom ORDER BY clauses for attribute, rarity and cardtype
+	// Custom ORDER BY clauses for attribute, rarity and card type
 	switch($sort) {
 
 		// Code (default)
@@ -36,7 +36,7 @@ if (isset($_POST['sort_cards'])) {
 			break;
 
 		// Card type
-		case 'cardtype':
+		case 'type':
 			
 			// Generate a list of all card types
 			$types = \App\Legacy\Helpers::get('types');
@@ -49,7 +49,7 @@ if (isset($_POST['sort_cards'])) {
 			}
 			
 			// Set ORDER BY clause
-			$orderby = "FIELD(cardtype, {$types_list}) {$dir}, id";
+			$orderby = "FIELD(type, {$types_list}) {$dir}, id";
 			break;
 
 		// For set, num, race, totcost, ATK and DEF a custom ORDER BY is not needed
@@ -92,7 +92,7 @@ $sql = "SELECT
 			setcode,
 			code,
 			attribute,
-			cardtype,
+			type,
 			divinity,
 			totalcost,
 			cardname,
@@ -169,7 +169,7 @@ if (!empty($result)) {
 			'setcode' => $row['setcode'],
 			'code' => $row['code'],
 			'attribute' => $attribute,
-			'cardtype' => $type_abbr[$row['cardtype']],
+			'type' => $type_abbr[$row['type']],
 			'totalcost' => $row['totalcost'],
 			'cardname' => $row['cardname'],
 			'cardtext' => "{$row['cardtext']}[...]",

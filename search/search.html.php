@@ -309,13 +309,13 @@
   							<div class="btg-group" data-toggle="buttons">
   								<?php foreach ($types as &$value):
 										// Sticky values
-										$filter =& $filters['cardtype'];
+										$filter =& $filters['type'];
   									(isset($filter) && in_array($value, $filter))
                       ? [$active, $checked] = [' active', ' checked=true']
   										: [$active, $checked] = ['', ''];
   								?>
   									<label class="btn btn-default btn-sm separate<?=$active?>">
-  										<input type="checkbox" name="cardtype[]" value="<?=$value?>"<?=$checked?>>
+  										<input type="checkbox" name="type[]" value="<?=$value?>"<?=$checked?>>
   										<span class="pointer"><?=$value?></span>
   									</label>
                     <?=$value==="Special Magic Stone"?"<div class='fdb-separator-v-05'></div>":""?>

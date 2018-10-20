@@ -36,7 +36,7 @@
 						'clusters_id' => 'Cluster',
 						'attribute' => 'Attribute',
 						'totalcost' => 'Total Cost',
-						'cardtype' => 'Type',
+						'type' => 'Type',
 						'cardname' => 'Name',
 						'atk' => 'ATK',
 						'def' => 'DEF',
@@ -206,7 +206,7 @@
 						<td><?=$card['totalcost']?></td>
 
 						<!-- Type -->
-						<td><?=$card['cardtype']?></td>
+						<td><?=$card['type']?></td>
 
 						<!-- Name -->
 						<td>

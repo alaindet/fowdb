@@ -209,7 +209,7 @@ if (isset($_POST['action'])) {
 			'num' => (int) $_POST['num'],
 			'code' => $code,
 			'attribute' => $attribute,
-			'cardtype' => $_POST['type'],
+			'type' => $_POST['type'],
 			'divinity' => $divinity,
 			'rarity' => $rarity,
 			'attributecost' => ($attrcost == null) ? null : $attrcost,
@@ -309,7 +309,7 @@ if (isset($_POST['action'])) {
 		FROM cards
 		WHERE setcode = :setcode
 		AND num = :num
-		AND NOT(cardtype=\"Ruler\")
+		AND NOT(type=\"Ruler\")
 		LIMIT 1";
 		$existingCard = $db->get($sql, [
 			':setcode' => $setcode,
@@ -413,7 +413,7 @@ if (isset($_POST['action'])) {
 			'num' => (int) $_POST['num'],
 			'code' => $code,
 			'attribute' => $attribute,
-			'cardtype' => $_POST['type'],
+			'type' => $_POST['type'],
 			'divinity' => $divinity,
 			'rarity' => $rarity,
 			'attributecost' => ($attrcost == null) ? null : $attrcost,

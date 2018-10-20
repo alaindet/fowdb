@@ -23,8 +23,8 @@ foreach ($cardsDb as &$card) {
 	
 	// $type ------------------------------------------------------------------
 	$reminder = ($card['back_side'] === '2') ? ' (Shift)' : '';
-	$link = "/?do=search&cardtype[]={$card['cardtype']}";
-	$type = "<a href=\"{$link}\">{$card['cardtype']}</a>{$reminder}";
+	$link = "/?do=search&type[]={$card['type']}";
+	$type = "<a href=\"{$link}\">{$card['type']}</a>{$reminder}";
 	
 	// $freecost --------------------------------------------------------------
 	$freecost = '';
@@ -78,7 +78,7 @@ foreach ($cardsDb as &$card) {
 	
 	// $raceLabel -------------------------------------------------------------
 	$raceTypes = ['Ruler', 'J-Ruler', 'Resonator'];
-	$raceLabel = in_array($card['cardtype'], $raceTypes) ? 'race' : 'trait';
+	$raceLabel = in_array($card['type'], $raceTypes) ? 'race' : 'trait';
 
 	// $raceValue -------------------------------------------------------------
 	$raceValue = '<em>(none)</em>';
@@ -197,7 +197,7 @@ foreach ($cardsDb as &$card) {
 	);
 
 	// Backup card type before overwriting $cards
-	$_type = $card['cardtype'];
+	$_type = $card['type'];
 
 	// $card ------------------------------------------------------------------
 	$card = [

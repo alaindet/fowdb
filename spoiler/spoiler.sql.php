@@ -12,7 +12,7 @@ foreach (cached('spoiler.sets') as $set) {
 			setcode,
 			num,
 			cardname,
-			cardtype,
+			type,
 			image_path,
 			thumb_path
 		FROM cards

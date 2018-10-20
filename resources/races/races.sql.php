@@ -4,7 +4,7 @@
 $racesDb = database()->get(
 	"SELECT DISTINCT subtype_race
 	FROM cards
-	WHERE cardtype IN('Ruler', 'J-Ruler', 'Resonator')"
+	WHERE type IN('Ruler', 'J-Ruler', 'Resonator')"
 );
 $races = [];
 foreach ($racesDb as &$item) {
@@ -20,7 +20,7 @@ $traitsDb = database()->get(
 	"SELECT DISTINCT subtype_race
 	FROM cards
 	WHERE
-		NOT (cardtype IN('Ruler','J-Ruler','Resonator')) AND
+		NOT (type IN('Ruler','J-Ruler','Resonator')) AND
 		NOT (subtype_race = '')"
 );
 $traits = [];
