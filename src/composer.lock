@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7053f968e2ac275e00bec7be5326a2b2",
+    "content-hash": "33cd107f3c44a32f54940760bd52f39d",
     "packages": [
         {
             "name": "guzzlehttp/psr7",
@@ -142,6 +142,52 @@
             "time": "2018-05-29T14:19:03+00:00"
         },
         {
+            "name": "nikic/fast-route",
+            "version": "v1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nikic/FastRoute.git",
+                "reference": "181d480e08d9476e61381e04a71b34dc0432e812"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nikic/FastRoute/zipball/181d480e08d9476e61381e04a71b34dc0432e812",
+                "reference": "181d480e08d9476e61381e04a71b34dc0432e812",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.35|~5.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FastRoute\\": "src/"
+                },
+                "files": [
+                    "src/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Nikita Popov",
+                    "email": "nikic@php.net"
+                }
+            ],
+            "description": "Fast request router for PHP",
+            "keywords": [
+                "router",
+                "routing"
+            ],
+            "time": "2018-02-13T20:26:39+00:00"
+        },
+        {
             "name": "psr/http-message",
             "version": "1.0.1",
             "source": {
@@ -190,6 +236,267 @@
                 "response"
             ],
             "time": "2016-08-06T14:39:51+00:00"
+        },
+        {
+            "name": "symfony/polyfill-ctype",
+            "version": "v1.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-ctype.git",
+                "reference": "e3d826245268269cd66f8326bd8bc066687b4a19"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/e3d826245268269cd66f8326bd8bc066687b4a19",
+                "reference": "e3d826245268269cd66f8326bd8bc066687b4a19",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "suggest": {
+                "ext-ctype": "For best performance"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.9-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Ctype\\": ""
+                },
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                },
+                {
+                    "name": "Gert de Pagter",
+                    "email": "BackEndTea@gmail.com"
+                }
+            ],
+            "description": "Symfony polyfill for ctype functions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "ctype",
+                "polyfill",
+                "portable"
+            ],
+            "time": "2018-08-06T14:22:27+00:00"
+        },
+        {
+            "name": "symfony/polyfill-mbstring",
+            "version": "v1.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-mbstring.git",
+                "reference": "d0cd638f4634c16d8df4508e847f14e9e43168b8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/d0cd638f4634c16d8df4508e847f14e9e43168b8",
+                "reference": "d0cd638f4634c16d8df4508e847f14e9e43168b8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "suggest": {
+                "ext-mbstring": "For best performance"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.9-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Mbstring\\": ""
+                },
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill for the Mbstring extension",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "mbstring",
+                "polyfill",
+                "portable",
+                "shim"
+            ],
+            "time": "2018-08-06T14:22:27+00:00"
+        },
+        {
+            "name": "symfony/routing",
+            "version": "v4.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/routing.git",
+                "reference": "537803f0bdfede36b9acef052d2e4d447d9fa0e9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/537803f0bdfede36b9acef052d2e4d447d9fa0e9",
+                "reference": "537803f0bdfede36b9acef052d2e4d447d9fa0e9",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1.3"
+            },
+            "conflict": {
+                "symfony/config": "<3.4",
+                "symfony/dependency-injection": "<3.4",
+                "symfony/yaml": "<3.4"
+            },
+            "require-dev": {
+                "doctrine/annotations": "~1.0",
+                "psr/log": "~1.0",
+                "symfony/config": "~3.4|~4.0",
+                "symfony/dependency-injection": "~3.4|~4.0",
+                "symfony/expression-language": "~3.4|~4.0",
+                "symfony/http-foundation": "~3.4|~4.0",
+                "symfony/yaml": "~3.4|~4.0"
+            },
+            "suggest": {
+                "doctrine/annotations": "For using the annotation loader",
+                "symfony/config": "For using the all-in-one router or any loader",
+                "symfony/dependency-injection": "For loading routes from a service",
+                "symfony/expression-language": "For using expression matching",
+                "symfony/http-foundation": "For using a Symfony Request object",
+                "symfony/yaml": "For using the YAML loader"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Routing\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Routing Component",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "router",
+                "routing",
+                "uri",
+                "url"
+            ],
+            "time": "2018-10-02T12:40:59+00:00"
+        },
+        {
+            "name": "twig/twig",
+            "version": "v2.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twigphp/Twig.git",
+                "reference": "6a5f676b77a90823c2d4eaf76137b771adf31323"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/6a5f676b77a90823c2d4eaf76137b771adf31323",
+                "reference": "6a5f676b77a90823c2d4eaf76137b771adf31323",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0",
+                "symfony/polyfill-ctype": "^1.8",
+                "symfony/polyfill-mbstring": "~1.0"
+            },
+            "require-dev": {
+                "psr/container": "^1.0",
+                "symfony/debug": "^2.7",
+                "symfony/phpunit-bridge": "^3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.5-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Twig_": "lib/"
+                },
+                "psr-4": {
+                    "Twig\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Armin Ronacher",
+                    "email": "armin.ronacher@active-4.com",
+                    "role": "Project Founder"
+                },
+                {
+                    "name": "Twig Team",
+                    "homepage": "https://twig.symfony.com/contributors",
+                    "role": "Contributors"
+                }
+            ],
+            "description": "Twig, the flexible, fast, and secure template language for PHP",
+            "homepage": "https://twig.symfony.com",
+            "keywords": [
+                "templating"
+            ],
+            "time": "2018-07-13T07:18:09+00:00"
         }
     ],
     "packages-dev": [],
