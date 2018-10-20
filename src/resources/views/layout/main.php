@@ -2,7 +2,7 @@
 <html lang="en" prefix="og: http://ogp.me/ns#">
 <head>
 	<!-- Open Graph Project meta tags -->
-	<?php require fromRoot('src/resources/views/includes/ogp.php') ?>
+	<?php require path_root('src/resources/views/includes/ogp.php') ?>
 
 	<!-- Title -->
 	<title><?=$ogp['title']?></title>
@@ -18,19 +18,28 @@
 	</style>
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css" defer>
 	<script src="https://use.fontawesome.com/f5164b39df.js" defer></script>
-	<link href="<?=asset('css/app.min.css', 'css')?>" rel="stylesheet" type="text/css" defer>
+	<link
+		href="<?=asset('css/app.min.css', 'css')?>"
+		rel="stylesheet"
+		type="text/css"
+		defer
+	>
 
 	<!-- Favicon -->
-	<link rel="icon" type="image/png" href="<?=asset('images/icons/favicon-16x16.png', 'png')?>">
+	<link
+		rel="icon"
+		type="image/png"
+		href="<?=asset('images/icons/favicon-16x16.png', 'png')?>"
+	>
 </head>
 
 <body>
 	<a name="top"></a>
 	<div class="container-fluid" id="page-wrapper">
-		<?php require fromRoot('src/resources/views/includes/header.php'); ?>
+		<?php require path_root('src/resources/views/includes/header.php'); ?>
 		<?=$pageContent?>
 	</div>
-	<?php require fromRoot('src/resources/views/includes/footer.php'); ?>
+	<?php require path_root('src/resources/views/includes/footer.php'); ?>
 
 	<!-- JavaScript -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" defer></script>

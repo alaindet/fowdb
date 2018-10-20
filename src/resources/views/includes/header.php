@@ -8,10 +8,10 @@ $links = [
 		'dropdown' => [
 			['label' => 'Comprehensive Rules', 'url' => '?p=resources/cr'],
 			['label' => 'Banlists',            'url' => '?p=resources/ban'],
-			['label' => 'Errata',              'url' => '?p=errata'],
+			['label' => 'Errata',              'url' => '?p=resources/errata'],
 			['label' => 'Formats',             'url' => '?p=resources/formats'],
 			['label' => 'Races and Traits',    'url' => '?p=resources/races'],
-			['label' => 'Rulers',              'url' => '?p=resources/rulers']
+			// ['label' => 'Rulers','url' => '?p=resources/rulers']
 		]
 	],
 ];
@@ -123,6 +123,6 @@ $links = [
 
 	<!-- Logo -->
 	<div id="logo">
-		<a href="index.php"><img src="images/logo.png"></a>
+		<a href="/"><img src="/images/logo.png"></a>
 	</div>
 </header>
