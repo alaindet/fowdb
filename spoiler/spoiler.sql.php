@@ -1,12 +1,10 @@
 <?php
 
 $cards = [];
-$db = \App\Database::getInstance();
-$spoilers = \App\Helpers::get('spoiler');
 
-foreach ($spoilers['sets'] as &$set) {
+foreach (cached('spoiler.sets') as $set) {
 
-	$setCards = $db->get(
+	$setCards = database()->get(
 		"SELECT
 			id,
 			back_side,
@@ -23,19 +21,18 @@ foreach ($spoilers['sets'] as &$set) {
 		[":setcode" => $set['code']]
 	);
 
-	// Count spoiled cards avoiding double count for cards with a back side
-	if (! empty($setCards)) {
-		$spoiled = array_reduce($setCards, function ($total, $card) {
-		    return ($card['back_side'] == "0") ? ++$total : $total;
-		});
-	} else {
-		$spoiled = 0;
+	
+	// Count just base faces
+	$spoiled = 0;
+	if (!empty($setCards)) {
+		for ($i = 0, $len = count($setCards); $i < $len; $i++) {
+			if ($setCards[$i]['back_side'] === '0') $spoiled++;
+		}
 	}
 
-	// Prepend new values (last is on top!)
-	array_unshift($cards, array_merge($set, ['spoiled' => $spoiled, 'cards' => $setCards]));
-}
+	// Add 'spoiled' and 'cards' elements to set
+	$set = array_merge($set, [ 'spoiled' => $spoiler, 'cards' => $setCards ]);
 
-if (empty($cards)) {
-	notify('No spoiler cards found.', 'danger');
+	// Add this set to existing sets, on top
+	array_unshift($cards, $set);
 }

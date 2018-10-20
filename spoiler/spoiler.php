@@ -1,4 +1,4 @@
-<?php if (empty(\App\Helpers::get('spoiler'))): /*NO SPOILERS*/ ?>
+<?php if (empty(cached('spoiler.sets'))): ?>
 	<div class="panel panel-default">
 		<div class="panel-heading"><h4>Coming soon..</h4></div>
 		<div class="panel-body">
@@ -8,17 +8,10 @@
 <?php else: ?>
 	<div class="row">
 		<?php
-			// Load spoiler cards
-			require DIR_ROOT . '/spoiler/spoiler.sql.php';
-			
-			// Set flag (used in options.html.php)
-			$is_spoiler = true;
-			
-			// Load options side panel
-			require DIR_ROOT . '/search/options.html.php';
-			
-			// Load spoiler container
-			require DIR_ROOT . '/spoiler/spoiler.html.php';
+      require path_root('spoiler/spoiler.sql.php');
+			$isSpoiler = true; // Used in options.html.php
+			require path_root('search/options.html.php');
+			require path_root('spoiler/spoiler.html.php');
 		?>
 	</div>
 <?php endif; ?>
