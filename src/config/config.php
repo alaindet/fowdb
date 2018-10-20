@@ -16,6 +16,12 @@ foreach ([
     'DIR_VIEWS' => dirname(__DIR__).'/resources/views',
     'DIR_CACHE' => dirname(__DIR__).'/cache',
     
+    // Timestamps
+    'APP_TIMESTAMP' => '20181012-1',
+    'APP_TIMESTAMP_CSS' => '20181012-4',
+    'APP_TIMESTAMP_JS'  => '20181012-1',
+    'APP_TIMESTAMP_IMG' => '20181012-1',
+
     // Database
     'DB_HOST' => '127.0.0.1',
     'DB_NAME' => 'my_fowdb',

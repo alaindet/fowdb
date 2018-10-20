@@ -155,10 +155,10 @@ function view(
 function asset(string $path, string $type = 'any'): string
 {
 	$version = [
-		'any' => '20181012-1',
-		'css' => '20181012-4',
-		'js'  => '20181012-1',
-		'png' => '20181012-1'
+		'any' => APP_TIMESTAMP,
+		'css' => APP_TIMESTAMP_CSS,
+		'js'  => APP_TIMESTAMP_JS,
+		'png' => APP_TIMESTAMP_IMG,
 	][$type];
 
 	return '/'.$path.'?'.$version;
