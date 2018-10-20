@@ -30,4 +30,4 @@ else {
 
 // Alias the filters
 $filters =& $s->f;
-return view('Search', 'search/search.php', ['js' => ['search']]);
+echo view('Search', 'search/search.php', ['js' => ['search']]);

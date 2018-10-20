@@ -32,7 +32,7 @@
 				</div>
 			</div>
 
-			<?php if (isset($is_spoiler) AND $is_spoiler=true): ?>
+			<?php if (isset($isSpoiler) && $isSpoiler): ?>
 				<hr>
 				<!-- OPTION: SHOW MISSING -->
 				<div class="option" id="option-missing">
