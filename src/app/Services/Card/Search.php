@@ -64,7 +64,7 @@ class Search
             "cards.id",
             "cards.cardcode",
             "cards.cardname",
-            "cards.cardnum",
+            "cards.num",
             "cards.setcode",
             "cards.image_path",
             "cards.thumb_path"
@@ -75,7 +75,7 @@ class Search
             "fields"  => implode(",", $this->fields),
             "table"   => "cards",
             "filter"  => "TRUE",
-            "sorting" => "sets_id DESC, cardnum ASC",
+            "sorting" => "sets_id DESC, num ASC",
             "limit"   => DB_RESULTS_LIMIT + 1,
             "offset"  => 0
         ];
@@ -486,8 +486,8 @@ class Search
         }
 
         // FILTER --- NUMBER --------------------------------------------------
-        if (isset($this->f['cardnum']) AND (int) $this->f['cardnum'] != 0) {
-            $_sql_f[] = "cardnum = {$this->f['cardnum']}";
+        if (isset($this->f['num']) AND (int) $this->f['num'] != 0) {
+            $_sql_f[] = "num = {$this->f['num']}";
         }
 
 
@@ -645,7 +645,7 @@ class Search
 
 
         // FILTER --- DEFENSE -------------------------------------------------
-        if (isset($this->f['def']) AND (int) $this->f['def'] != 0) {
+        if (isset($this->f['def']) && (int) $this->f['def'] != 0) {
             $sign = $atkdef[$this->f['def-operator']];
             $_sql_f[] = "def {$sign} {$this->f['def']}";
         }
@@ -663,12 +663,12 @@ class Search
         $sql_f = empty($_sql_f) ? 'TRUE' : implode(" AND ", $_sql_f);
 
         // Prevent magic stones in the results unless specified
-        // (setcode, cardnum, cardtype or rarity is set)
+        // (setcode, num, cardtype or rarity is set)
         if (
             !(
-                isset($this->f['setcode']) OR
-                isset($this->f['cardnum']) OR
-                isset($this->f['cardtype']) OR
+                isset($this->f['setcode']) ||
+                isset($this->f['num']) ||
+                isset($this->f['cardtype']) ||
                 isset($this->f['rarity'])
             )
         ) {

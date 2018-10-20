@@ -1,7 +1,7 @@
 {
     "default": "Choose",
     "sets_id": "Set",
-    "cardnum": "Number",
+    "num": "Number",
     "subtype_race": "Race/Trait",
     "attribute": "Attribute",
     "totalcost": "Total Cost",

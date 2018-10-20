@@ -128,7 +128,7 @@ class Ban
                 bans.formats_id ASC,
                 cards.cardname ASC,
                 cards.sets_id DESC,
-                cards.cardnum ASC,
+                cards.num ASC,
                 cards.id ASC"
         );
 

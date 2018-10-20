@@ -11,7 +11,7 @@ if (isset($_REQUEST['id'])) {
 
 	// Adjust returned card
 	if (!empty($card)) {
-		$card['num'] = $card['cardnum'];
+		$card['num'] = $card['num'];
 		$card['attr'] = $card['attribute'];
 		$card['type'] = $card['cardtype'];
 		$card['attrcost'] = $card['attributecost'];
@@ -21,7 +21,7 @@ if (isset($_REQUEST['id'])) {
 		$card['imagepath'] = $card['image_path'];
 		$card['thumbpath'] = $card['thumb_path'];
 
-		unset($card['cardnum']);
+		unset($card['num']);
 		unset($card['attribute']);
 		unset($card['cardtype']);
 		unset($card['attributecost']);

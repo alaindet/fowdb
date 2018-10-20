@@ -64,9 +64,9 @@ if (isset($_POST['action'])) {
 			else { $suffix = ''; }
 
 			// Get display card number
-			($_POST['cardnum'] != '')
-				? $cardnum =  str_pad($_POST['cardnum'],3,'0',STR_PAD_LEFT)
-				: $cardnum = '000';
+			($_POST['num'] != '')
+				? $num =  str_pad($_POST['num'],3,'0',STR_PAD_LEFT)
+				: $num = '000';
 
 			// Search set code into database
 			$dbRow = $db->get(
@@ -80,8 +80,8 @@ if (isset($_POST['action'])) {
 			$cluster  = (int) $dbRow['clusters_id'];
 
 			// Assemble paths
-			$imagepath = "images/cards/{$cluster}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
-			$thumbpath = "images/thumbs/{$cluster}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
+			$imagepath = "images/cards/{$cluster}/{$_POST['set']}/{$num}{$suffix}.jpg";
+			$thumbpath = "images/thumbs/{$cluster}/{$_POST['set']}/{$num}{$suffix}.jpg";
 		}
 
 		// Set was not passed, get default values
@@ -105,7 +105,7 @@ if (isset($_POST['action'])) {
 		// Auto-generated if empty
 		else {
 			$codeSet = strtoupper($_POST['set']);
-			$codeNum = str_pad($_POST['cardnum'], 3, '0', STR_PAD_LEFT);
+			$codeNum = str_pad($_POST['num'], 3, '0', STR_PAD_LEFT);
 			$code = "{$codeSet}-{$codeNum} {$codeRarity}";
 		}
 
@@ -206,7 +206,7 @@ if (isset($_POST['action'])) {
 			'clusters_id' => $cluster,
 			'sets_id' => $set,
 			'setcode' => $setcode,
-			'cardnum' => (int) $_POST['cardnum'],
+			'num' => (int) $_POST['num'],
 			'cardcode' => $code,
 			'attribute' => $attribute,
 			'cardtype' => $_POST['type'],
@@ -273,9 +273,9 @@ if (isset($_POST['action'])) {
 			else {$suffix = '';}
 
 			// Get display card number
-			($_POST['cardnum'] != '')
-				? $cardnum =  str_pad($_POST['cardnum'], 3, '0', STR_PAD_LEFT)
-				: $cardnum = '000';
+			($_POST['num'] != '')
+				? $num =  str_pad($_POST['num'], 3, '0', STR_PAD_LEFT)
+				: $num = '000';
 
 			// Search set code into database
 			$db_set = $db->get(
@@ -291,8 +291,8 @@ if (isset($_POST['action'])) {
 			$cluster = (int) $db_set['clusters_id'];
 
 			// Assemble paths
-			$imagepath = "images/cards/{$cluster}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
-			$thumbpath = "images/thumbs/{$cluster}/{$_POST['set']}/{$cardnum}{$suffix}.jpg";
+			$imagepath = "images/cards/{$cluster}/{$_POST['set']}/{$num}{$suffix}.jpg";
+			$thumbpath = "images/thumbs/{$cluster}/{$_POST['set']}/{$num}{$suffix}.jpg";
 		}
 
 		// Set was not passed, get default values
@@ -308,17 +308,17 @@ if (isset($_POST['action'])) {
 		$sql = "SELECT id
 		FROM cards
 		WHERE setcode = :setcode
-		AND cardnum = :num
+		AND num = :num
 		AND NOT(cardtype=\"Ruler\")
 		LIMIT 1";
 		$existingCard = $db->get($sql, [
 			':setcode' => $setcode,
-			':num' => $_POST['cardnum']
+			':num' => $_POST['num']
 		]);
 
 		// ERROR: This number already exists for this set
 		if (!empty($existingCard)) {
-			$message = "Sorry, card number <strong>{$_POST['cardnum']}</strong>"
+			$message = "Sorry, card number <strong>{$_POST['num']}</strong>"
 			         . " already exists for set <strong>{$setcode}</strong>.";
 			notify($message, 'danger');
 			header("Location: /?p=admin/cards&form_action=create");
@@ -337,7 +337,7 @@ if (isset($_POST['action'])) {
 		// Auto-generated if empty
 		else {
 			$codeSet = strtoupper($_POST['set']);
-			$codeNum = str_pad($_POST['cardnum'], 3, '0', STR_PAD_LEFT);
+			$codeNum = str_pad($_POST['num'], 3, '0', STR_PAD_LEFT);
 			$code = "{$codeSet}-{$codeNum} {$codeRarity}";
 		}
 
@@ -410,7 +410,7 @@ if (isset($_POST['action'])) {
 			'clusters_id' => $cluster,
 			'sets_id' => $set,
 			'setcode' => $setcode,
-			'cardnum' => (int) $_POST['cardnum'],
+			'num' => (int) $_POST['num'],
 			'cardcode' => $code,
 			'attribute' => $attribute,
 			'cardtype' => $_POST['type'],

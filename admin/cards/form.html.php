@@ -147,7 +147,7 @@
 						<div class="col-sm-10">
 							<input
 								type="number"
-								name="cardnum"
+								name="num"
 								value="<?=$card['num']?>"
 								placeholder="Card number.."
 								class="form-control">

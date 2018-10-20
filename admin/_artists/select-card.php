@@ -16,7 +16,7 @@ $set = database()->get(
 
 // Read set's cards
 $cards = database()->get(
-  "SELECT * FROM cards WHERE setcode = :setcode ORDER BY cardnum ASC",
+  "SELECT * FROM cards WHERE setcode = :setcode ORDER BY num ASC",
   [':setcode' => $set['code']]
 );
 

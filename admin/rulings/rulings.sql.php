@@ -6,7 +6,7 @@ $rulings = array();
 
 // DEFAULTS
 // -----------------------------------------------------
-$orderby = 'sets_id asc, cardnum asc';
+$orderby = 'sets_id asc, num asc';
 
 
 // SORTING
@@ -15,11 +15,11 @@ $orderby = 'sets_id asc, cardnum asc';
 // Get sorting selected by user
 if (isset($_POST['sort_rulings'])) {
 	$sort = [
-		'0' => 'sets_id, cardnum',
+		'0' => 'sets_id, num',
 		'name' => 'cardname',
-		'date' => 'created DESC, sets_id, cardnum',
-		'edited' => 'FIELD(is_edited, 1, 0), sets_id, cardnum',
-		'errata' => 'FIELD(is_errata, 1, 0), sets_id, cardnum'
+		'date' => 'created DESC, sets_id, num',
+		'edited' => 'FIELD(is_edited, 1, 0), sets_id, num',
+		'errata' => 'FIELD(is_errata, 1, 0), sets_id, num'
 	];
 	
 	// Get ORDERBY value for SQL statement
@@ -28,7 +28,7 @@ if (isset($_POST['sort_rulings'])) {
 else {
 
 	// Default ORDERBY value
-	$orderby = 'sets_id, cardnum';
+	$orderby = 'sets_id, num';
 }
 
 

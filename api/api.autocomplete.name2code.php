@@ -20,7 +20,7 @@ $cards = database()->get(
 	"SELECT id, cardcode, cardname, thumb_path
 	FROM cards
 	WHERE cardname LIKE \"%{$name}%\" AND clusters_id > 1
-	ORDER BY sets_id DESC, cardnum ASC
+	ORDER BY sets_id DESC, num ASC
 	LIMIT 10"
 );
 
