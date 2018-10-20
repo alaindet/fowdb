@@ -160,7 +160,7 @@ $(document).ready(function() {
         $(".dropdown-face", "#atk-group").html("=");
         $("input#def-operator").val("equals");
         $(".dropdown-face", "#def-group").html("=");
-        $("input#sort").val("setnum");
+        $("input#sort").val("sets_id");
         $(".dropdown-face", "#sort-group").html("Choose");
         $("input#sortdir").val("asc");
         $("#sortdir_handle").removeClass("active");

@@ -40,7 +40,7 @@ else {
 		'back_side'    => '',
 		'narp'         => '',
 		'clusters_id'  => '',
-		'setnum'       => '',
+		'sets_id'      => '',
 		'setcode'      => '',
 		'num'          => '',
 		'attr'         => '',

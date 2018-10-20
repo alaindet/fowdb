@@ -32,7 +32,7 @@ $search = new \App\Services\Card\Search();
 $search->processFilters($_POST);
 
 // Join the cards table with the sets table to get the spoiler flag ("isspoiler")
-$search->addTable('sets', [ 'cards.setnum', 'sets.id' ]);
+$search->addTable('sets', [ 'cards.sets_id', 'sets.id' ]);
 $search->addField('isspoiler');
 
 // Get cards as assoc array from db

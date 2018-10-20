@@ -10,7 +10,7 @@ $f = $s->getFilters($_GET);
 $s->processFilters($_GET);
 
 // Join the cards table with the sets table to get the spoiler flag ("isspoiler")
-$s->addTable("sets", ["cards.setnum", "sets.id"]);
+$s->addTable("sets", ["cards.sets_id", "sets.id"]);
 $s->addField("isspoiler", "is_spoiler");
 
 // // TEST

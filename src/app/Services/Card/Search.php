@@ -75,7 +75,7 @@ class Search
             "fields"  => implode(",", $this->fields),
             "table"   => "cards",
             "filter"  => "TRUE",
-            "sorting" => "setnum DESC, cardnum ASC",
+            "sorting" => "sets_id DESC, cardnum ASC",
             "limit"   => DB_RESULTS_LIMIT + 1,
             "offset"  => 0
         ];

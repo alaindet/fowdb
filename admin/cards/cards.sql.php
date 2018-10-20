@@ -5,7 +5,7 @@ $cards = [];
 
 
 // DEFAULTS -------------------------------------------------------------------
-$orderby = 'setnum, cardnum'; // Show SETNUM > CARDNUM order as default
+$orderby = 'sets_id asc , cardnum asc';
 $sql_filter = "NOT(clusters_id=1)";
 
 
@@ -27,7 +27,7 @@ if (isset($_POST['sort_cards'])) {
 
 		// Code (default)
 		case '0':
-			$orderby = "setnum {$dir}, cardnum";
+			$orderby = "sets_id {$dir}, cardnum";
 			break;
 
 		// Attribute
@@ -54,7 +54,7 @@ if (isset($_POST['sort_cards'])) {
 
 		// For set, num, race, totcost, ATK and DEF a custom ORDER BY is not needed
 		default:
-			$orderby = "{$sort} {$dir}, setnum, cardnum";
+			$orderby = "{$sort} {$dir}, sets_id, cardnum";
 			break;
 	}
 }
@@ -88,7 +88,7 @@ $sql = "SELECT
 			id,
 			narp,
 			clusters_id,
-			setnum,
+			sets_id,
 			setcode,
 			cardcode,
 			attribute,
@@ -165,7 +165,7 @@ if (!empty($result)) {
 			'id' => $row['id'],
 			'narp' => $row['narp'],
 			'clusters_id' => $row['clusters_id'],
-			'setnum' => $row['setnum'],
+			'sets_id' => $row['sets_id'],
 			'setcode' => $row['setcode'],
 			'cardcode' => $row['cardcode'],
 			'attribute' => $attribute,

@@ -76,7 +76,7 @@ class CardNarp
             "SELECT narp, cardcode
             FROM cards
             WHERE narp > 0 AND cardname = :name
-            ORDER BY clusters_id DESC, setnum DESC, cardnum DESC",
+            ORDER BY clusters_id DESC, sets_id DESC, cardnum DESC",
             [':name' => $name]
         );
 

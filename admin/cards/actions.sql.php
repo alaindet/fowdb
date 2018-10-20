@@ -70,13 +70,13 @@ if (isset($_POST['action'])) {
 
 			// Search set code into database
 			$dbRow = $db->get(
-				"SELECT id as setnum, clusters_id as cluster FROM sets WHERE code = :code",
+				"SELECT id as sets_id, clusters_id as cluster FROM sets WHERE code = :code",
 			    [":code" => $setcode],
 			    true
 			);
 
 			// Define set number and cluster
-			$setnum = (int) $dbRow['setnum'];
+			$set = (int) $dbRow['sets_id'];
 			$cluster  = (int) $dbRow['clusters_id'];
 
 			// Assemble paths
@@ -87,7 +87,7 @@ if (isset($_POST['action'])) {
 		// Set was not passed, get default values
 		else {
 			$cluster = '0';
-			$setnum = null;
+			$set = null;
 			$setcode = '';
 			$imagepath = "images/cards/missing.jpg";
 			$thumbpath = "images/thumb/missing.jpg";
@@ -204,7 +204,7 @@ if (isset($_POST['action'])) {
 			'back_side' => $backside,
 			'narp' => $_POST['narp'],
 			'clusters_id' => $cluster,
-			'setnum' => $setnum,
+			'sets_id' => $set,
 			'setcode' => $setcode,
 			'cardnum' => (int) $_POST['cardnum'],
 			'cardcode' => $code,
@@ -279,7 +279,7 @@ if (isset($_POST['action'])) {
 
 			// Search set code into database
 			$db_set = $db->get(
-			    "SELECT id as setnum, clusters_id
+			    "SELECT id as sets_id, clusters_id
 			    FROM sets
 			    WHERE code = :code",
 			    [":code" => $setcode],
@@ -287,7 +287,7 @@ if (isset($_POST['action'])) {
 			);
 
 			// Define set number and cluster
-			$setnum = (int) $db_set['setnum'];
+			$set = (int) $db_set['sets_id'];
 			$cluster = (int) $db_set['clusters_id'];
 
 			// Assemble paths
@@ -298,7 +298,7 @@ if (isset($_POST['action'])) {
 		// Set was not passed, get default values
 		else {
 			$cluster = 0;
-			$setnum = null;
+			$set = null;
 			$setcode = '';
 			$imagepath = "images/cards/missing.jpg";
 			$thumbpath = "images/thumb/missing.jpg";
@@ -408,7 +408,7 @@ if (isset($_POST['action'])) {
 			'narp' => $_POST['narp'],
 			'back_side' => $backside,
 			'clusters_id' => $cluster,
-			'setnum' => $setnum,
+			'sets_id' => $set,
 			'setcode' => $setcode,
 			'cardnum' => (int) $_POST['cardnum'],
 			'cardcode' => $code,

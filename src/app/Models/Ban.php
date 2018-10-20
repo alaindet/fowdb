@@ -127,7 +127,7 @@ class Ban
             ORDER BY
                 bans.formats_id ASC,
                 cards.cardname ASC,
-                cards.setnum DESC,
+                cards.sets_id DESC,
                 cards.cardnum ASC,
                 cards.id ASC"
         );
