@@ -5,7 +5,7 @@ vendor/
 # App and development
 /.backup/
 /.dev/
-/src/cache/
+/src/data/cache/
 
 # Public assets and files
 /js/
