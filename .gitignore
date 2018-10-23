@@ -12,8 +12,8 @@ vendor/
 /css/
 /images/
 .env
-.production.env
-.development.env
+.env.production
+.env.development
 
 # Not these
 !.env.example
