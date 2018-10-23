@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Base\Model;
+
 /**
  * | Value | Abbrev | Desc          |
  * | ----- | ------ | ------------- |
@@ -15,8 +17,10 @@ namespace App\Models;
  * Since Force of Will TCG enforces uniqueness of cards by their name,
  * Given a card's name you can extract its base ID from the database
  */
-class CardNarp
+class CardNarp extends Model
 {
+    public $table = 'card_narps';
+
     public static $map = [
         'Base Print',
         'Alternate art',

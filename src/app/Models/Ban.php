@@ -1,140 +1,94 @@
 <?php
 
 namespace App\Models;
-
-use App\Models\BanStaticTrait;
+use App\Exceptions\ModelException;
 
 class Ban
 {
-    use BanStaticTrait;
+    private static $pageFunctions = [
+        'banlist' => 'getBanlistPageData',
+        'card' => 'getCardPageData'
+    ];
 
-    /**
-     * Maps the banned deck ID to its name
-     *
-     * @var array
-     */
-    public static $decks = [
+    private static $decks = [
         'Main Deck',
         'Side Deck',
         'Magic Stone Deck',
         'Rune Deck'
     ];
 
-    /**
-     * Flag to group results by card format
-     *
-     * @var boolean
-     */
-    private $groupByFormat = false;
-
-    /**
-     * Total count of banned cards
-     *
-     * @var integer
-     */
-    private $totalCount = 0;
-
-    /**
-     * Items fetched from the database
-     *
-     * @var array
-     */
-    private $items = [];
-
-    /**
-     * Activates the groupByFormat flag
-     *
-     * @return Ban
-     */
-    public function groupByFormat(): Ban
+    public static function getData(string $page, ...$theRest): array
     {
-        $this->groupByFormat = true;
-        return $this;
+        // ERROR: Invalid page
+        if (!in_array($page, array_keys(self::$pageFunctions))) {
+            throw new ModelException(
+                "Missing function for page \"{$page}\""
+            );
+        }
+
+        $function = self::$pageFunctions[$page];
+        return self::$function($theRest);
     }
 
-    /**
-     * Total count accessor
-     *
-     * @return integer
-     */
-    public function getTotalCount(): int
+    public static function getBanlistPageData(): array
     {
-        return $this->totalCount;
-    }
-
-    /**
-     * Returns straight fetched items or
-     * groups them by format if $this->groupByFormat is TRUE
-     *
-     * @return array
-     */
-    public function getItems(): array
-    {
-        // [
-        //     [
-        //         card_name=>,
-        //         card_code=>,
-        //         card_image=>,
-        //         format_name=>
-        //     ],
-        //     ...
-        // ]
-        if (!$this->groupByFormat) return $this->items;
-
-        // Group by format
-        // Ex.: [ format => [ [name=>,code=>,image=>,format_code=>], .. ], .. ]
-        $cache = '';
-        return array_reduce(
-            $this->items,
-            function ($result, $item) use ($cache) {
-                if ($cache !== $item['format_name']) {
-                    $cache = $item['format_name'];
-                }
-                $result[$cache][] = [
-                    'name' => $item['card_name'],
-                    'code' => $item['card_code'],
-                    'image' => $item['card_image'],
-                    'format_code' => $item['format_code'],
-                    'copies' => $item['ban_copies'],
-                    'deck' => ($item['ban_deck'] > 0)
-                        ? self::$decks[$item['ban_deck']]
-                        : null
-                ];
-                return $result;
-        }, []);
-    }
-
-    /**
-     * Fetches data from the database
-     *
-     * @return array
-     */
-    public function fetch(): Ban
-    {
-        $this->items = database()->get(
+        return database()->get(
             "SELECT
-                cards.name as card_name,
-                cards.code as card_code,
-                cards.thumb_path as card_image,
-                formats.name as format_name,
-                formats.code as format_code,
-                bans.deck as ban_deck,
-                bans.copies as ban_copies
-            FROM 
-                bans
-                INNER JOIN formats ON bans.formats_id = formats.id
-                INNER JOIN cards ON bans.cards_id = cards.id
+                f.name format_name,
+                f.code format_code,
+                c.name card_name,
+                c.code card_code,
+                c.thumb_path card_image,
+                b.deck ban_deck,
+                b.copies ban_copies
+            FROM
+                bans b
+                INNER JOIN cards c ON b.cards_id = c.id
+                INNER JOIN formats f ON b.formats_id = f.id
+            WHERE
+                c.narp = 0
             ORDER BY
-                bans.formats_id ASC,
-                cards.name ASC,
-                cards.sets_id DESC,
-                cards.num ASC,
-                cards.id ASC"
+                b.copies ASC,
+                b.deck ASC,
+                f.ismulticluster DESC,
+                f.id DESC,
+                c.clusters_id DESC,
+                c.sets_id DESC,
+                c.num ASC"
+        );
+    }
+
+    public static function getCardPageData(array $args): array
+    {
+        // ERROR: Missing arguments
+        if (!isset($args[0])) {
+            throw new ModelException('Missing arguments');
+        }
+
+        $id = $args[0];
+
+        $items = database()->get(
+            "SELECT
+                f.name as name,
+                b.deck as deck,
+                b.copies as copies
+            FROM
+                bans b
+                INNER JOIN formats f ON b.formats_id = f.id
+            WHERE
+                cards_id = :id
+            ORDER BY
+                b.deck ASC,
+                f.id ASC",
+            [':id' => $id]
         );
 
-        // Set total count (before grouping anyway)
-        $this->totalCount = count($this->items);
-
-        return $this;
-    }
+        return array_map(function ($i) {
+            $format = $i['name'];
+            $deck = ($i['deck'] > 0) ? self::$decks[$i['deck']] : null;
+            $n = $i['copies'];
+            $copies = ($n > 0) ? "{$i} cop".($i > 1 ? 'ies' : 'y') : null;
+            return compact('format', 'deck', 'copies');
+        }, $items);
+    }       
 }
