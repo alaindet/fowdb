@@ -1,6 +1,6 @@
 <?php
 	require __DIR__ . '/races.sql.php';
-  $url  = url('/', ['do' => 'search', 'race' => '_RACE_']);
+  $url  = url_old('/', ['do' => 'search', 'race' => '_RACE_']);
 ?>
 
 <div class="page-header">
@@ -23,7 +23,7 @@
 					<tr>
 						<td>
               <a
-                href="<?=url('/', [
+                href="<?=url_old('/', [
                   'do' => 'search',
                   'race' => urlencode(strtolower($race))
                 ])?>"
@@ -52,7 +52,7 @@
 					<tr>
 						<td>
 							<a
-                href="<?=url('/', [
+                href="<?=url_old('/', [
                   'do' => 'search',
                   'race' => urlencode(strtolower($trait))
                 ])?>"

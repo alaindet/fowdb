@@ -70,7 +70,7 @@ class Request
     public function app(string $name, $value = null)
     {
         if (isset($value)) {
-            return $this->app[$name];
+            $this->app[$name] = $value;
             return $this;
         }
 

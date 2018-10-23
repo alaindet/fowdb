@@ -130,12 +130,13 @@ foreach ($cardsDb as &$card) {
 
 		// Banned in these formats (can be empty, most of the times)
 		// Ex.: (assoc) [ [format_name, deck_name, copies_in_deck], ... ]
-		$bannedFormats = Ban::formatsList($baseCardId);
+		// $bannedFormats = Ban::formatsList($baseCardId);
+		$bannedFormats = Ban::getData('card', $baseCardId);
 
 		// Is this banned?
 		if (!empty($bannedFormats)) {
 
-			// Exlude banned formats
+			// Exclude banned formats
 			// Ex.: (assoc) [ [format_name, format_code] ]
 			$bannedFormatsNames = array_column($bannedFormats, 'name');
 			$cardFormats = array_filter(

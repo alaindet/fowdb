@@ -3,14 +3,19 @@
 global $results, // Where there search results?
     $ogp_image; // From ogpinfo.sql.php
 
-// Declare ogp array and $metas meta tags string
 $ogp = [];
+
+$app = [
+    'name' => config('app.name'),
+    'url' => config('app.url'),
+    'description' => config('app.description')
+];
 
 // Initialize meta tags with Facebook App ID
 $metas = "<meta property=\"fb:app_id\" content=\"1623441987919274\">";
 
 // TITLE
-$ogp['title'] = $page_title." || ".APP_NAME;
+$ogp['title'] = "{$page_title} || {$app['name']}";
 
 // TYPE
 $ogp['type'] = 'article';
@@ -18,11 +23,15 @@ $ogp['type'] = 'article';
 // IMAGE
 if (isset($ogp_image)) {
     $ogp['image'] = [];
-    foreach ($ogp_image as &$imagepath) $ogp['image'][] = APP_URL.$imagepath;
-    $ogp['image'][] = APP_URL."/images/logosquare.jpg"; // Default
+    foreach ($ogp_image as &$imagepath) {
+        $ogp['image'][] = $app['url'].$imagepath;
+    }
+
+    // Default image (logo)
+    $ogp['image'][] = $app['url'].'/images/logosquare.jpg';
 }
 else {
-    $ogp['image'] = APP_URL."/images/logosquare.jpg";
+    $ogp['image'] = $app['url'].'/images/logosquare.jpg';
     $ogp['image:width'] = "300";
     $ogp['image:height'] = "300";
 }
@@ -31,10 +40,10 @@ else {
 $ogp['url'] = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; // URL
 
 // SITE NAME
-$ogp['site_name'] = APP_NAME;
+$ogp['site_name'] = $app['name'];
 
 // DESCRIPTION
-$ogp['description'] = "Browse all FoW TCG cards with FoWDB! Responsive design, advanced search filters, online tools, updated SPOILER section and more.";
+$ogp['description'] = $app['description'];
 
 
 // Generate meta tags

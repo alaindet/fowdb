@@ -3,7 +3,7 @@
 </div>
 
 <form method="post" action="/test/public/static">
-  <?=csrf_token();?>
+  <?=csrf_token()?>
   <label for="name">
     Your name here:
     <input type="text" id="name" name="name" />
