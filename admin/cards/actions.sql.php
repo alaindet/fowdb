@@ -70,7 +70,7 @@ if (isset($_POST['action'])) {
 
 			// Search set code into database
 			$dbRow = $db->get(
-				"SELECT id as sets_id, clusters_id as cluster FROM sets WHERE code = :code",
+				"SELECT id as sets_id, clusters_id FROM sets WHERE code = :code",
 			    [":code" => $setcode],
 			    true
 			);
@@ -86,7 +86,7 @@ if (isset($_POST['action'])) {
 
 		// Set was not passed, get default values
 		else {
-			$cluster = '0';
+			$cluster = 0;
 			$set = null;
 			$setcode = '';
 			$imagepath = "images/cards/missing.jpg";
@@ -181,15 +181,15 @@ if (isset($_POST['action'])) {
 			(new \Intervention\Image\ImageManager())
 				->make($_FILES['cardimage']['tmp_name'])
 				->resize(480, 670)
-				->insert(DIR_ROOT."/images/watermark/watermark480.png")
-				->save(DIR_ROOT."/".$imagepath, 80);
+				->insert(path_root('images/watermark/watermark480.png'))
+				->save(path_root($imagepath), 80);
 
 			// LD quality
 			(new \Intervention\Image\ImageManager())
 				->make($_FILES['cardimage']['tmp_name'])
 				->resize(280, 391)
-				->insert(DIR_ROOT."/images/watermark/watermark280.png")
-				->save(DIR_ROOT."/".$thumbpath, 80);
+				->insert(path_root('images/watermark/watermark280.png'))
+				->save(path_root($thumbpath), 80);
 
 			// Update timestamp on database
 			$timestamp = date('Ymd-Gis');
@@ -279,7 +279,7 @@ if (isset($_POST['action'])) {
 
 			// Search set code into database
 			$db_set = $db->get(
-			    "SELECT id as sets_id, clusters_id
+			    "SELECT id, clusters_id
 			    FROM sets
 			    WHERE code = :code",
 			    [":code" => $setcode],
@@ -287,7 +287,7 @@ if (isset($_POST['action'])) {
 			);
 
 			// Define set number and cluster
-			$set = (int) $db_set['sets_id'];
+			$set = (int) $db_set['id'];
 			$cluster = (int) $db_set['clusters_id'];
 
 			// Assemble paths
@@ -434,15 +434,15 @@ if (isset($_POST['action'])) {
 		(new \Intervention\Image\ImageManager())
 	        ->make($_FILES['cardimage']['tmp_name'])
 	        ->resize(480, 670)
-	        ->insert(DIR_ROOT."/images/watermark/watermark480.png")
-	        ->save(DIR_ROOT."/".$imagepath, 80);
+			->insert(path_root('images/watermark/watermark480.png'))
+			->save(path_root($imagepath), 80);
 
 		// Create thumbnail image
 		(new \Intervention\Image\ImageManager())
 	        ->make($_FILES['cardimage']['tmp_name'])
-	        ->resize(280, 391)
-	        ->insert(DIR_ROOT."/images/watermark/watermark280.png")
-	        ->save(DIR_ROOT."/".$thumbpath, 80);
+			->resize(280, 391)
+			->insert(path_root('images/watermark/watermark280.png'))
+			->save(path_root($thumbpath), 80);
 
 		// Generate card link with card name
 		$card_link = "<strong><a href='/?p=card&code="
