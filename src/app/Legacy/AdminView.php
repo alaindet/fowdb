@@ -7,7 +7,7 @@ class AdminView
     /**
      * Holds all links
      */
-    public static $crumbs = ["Admin Menu" => "/index.php?p=admin"];
+    public static $crumbs = ["Admin" => "/?p=admin"];
     
     /**
      * Outputs breadcrumbs to the page, 
@@ -17,18 +17,18 @@ class AdminView
      * @param string $active
      * @return string
      */
-    public static function breadcrumbs($crumbs = null)
+    public static function breadcrumbs(array $crumbs = []): string
     {
-        $output = "<ol class='breadcrumb'>";
+        $output = '';
 
-        if (isset($crumbs)) {
-            $crumbs = array_merge(self::$crumbs, $crumbs);
-        }
+        $crumbs = array_merge(self::$crumbs, $crumbs);
         
         foreach ($crumbs as $label => $link) {
-            $output .= "<li><a href='{$link}'>{$label}</a></li>";
+            ($link === '#')
+                ? $output .= "<li>{$label}</li>"
+                : $output .= "<li><a href=\"{$link}\">{$label}</a></li>";
         }
 
-        return $output . "</ol>";
+        return "<ol class=\"breadcrumb\">{$output}</ol>";
     }
 }
