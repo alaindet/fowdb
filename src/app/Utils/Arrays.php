@@ -106,4 +106,32 @@ class Arrays
     {
         return self::filter($array, function ($i) { return isset($i); });
     }
+
+    /**
+     * Adds value to a nested array at the specified nesting level
+     * Builds nested arrays if needed based on the passed nested keys
+     * 
+     * Ex.:
+     * $data = [];
+     * arrayAdd($data, 'Hello', 'foo', 'bar', 'baz');
+     * echo $data['foo']['bar']['baz']; // 'Hello'
+     *
+     * @param array $array
+     * @param any $value String or array of strings
+     * @param string ...$nestedKeys List of strings
+     * @return void
+     */
+    public static function addNested(
+        array &$array,
+        $value,
+        ...$nestedKeys
+    ): void
+    {
+        $pointer =& $array;
+        foreach ($nestedKeys as $key) {
+            if (!isset($pointer[$key])) $pointer[$key] = [];
+            $pointer =& $pointer[$key];
+        }
+        $pointer[] = $value;
+    }
 }
