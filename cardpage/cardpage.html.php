@@ -14,28 +14,25 @@
 		<?php // Admin buttons ----------------------------------------------------
 			if (admin_level() > 0):
 				$id =& $card['id'];
-				$do = 'form_action';
-				$edit = url('admin/cards', [$do => 'edit', 'id' => $id]);
-				$delete = url('admin/cards', [$do => 'delete', 'id' => $id]);
-				$addRuling = url('admin/rulings', [$do => 'create', 'card_id' => $id]);
+        $do = 'form_action';
 		?>
 			<div class="col-xs-12">
 				
-				<a href="<?=$edit?>">
+				<a href="<?=url_old('admin/cards', [$do => 'edit', 'id' => $id])?>">
 					<button type="button" class="btn btn-warning btn-sm cardpage-btn">
 						<span class="glyphicon glyphicon-edit"></span>
 						Edit card
 					</button>
 				</a>
 
-				<a href="<?=$delete?>">
+				<a href="<?=url_old('admin/cards', [$do => 'delete', 'id' => $id])?>">
 					<button type="button" class="btn btn-danger btn-sm cardpage-btn">
 						<span class="glyphicon glyphicon-remove"></span>
 						Delete card
 					</button>
 				</a>
 				
-				<a href="<?=$addRuling?>">
+				<a href="<?=url_old('admin/rulings', [$do => 'create', 'card_id' => $id])?>">
 					<button type="button" class="btn btn-default btn-sm cardpage-btn">
 						<span class="glyphicon glyphicon-plus"></span>
 						Add ruling
@@ -132,7 +129,7 @@
 						    		
 										<!-- Edit -->
 										<a
-											href="<?=url('admin/rulings', [
+											href="<?=url_old('admin/rulings', [
 												'form_action' => 'edit',
 												'id' => $item['id'],
 												'code' => str_replace(' ', '+', $card['code'])
@@ -144,7 +141,7 @@
 
 										<!-- Delete -->
 						    		<a
-											href="<?=url('admin/rulings', [
+											href="<?=url_old('admin/rulings', [
 												'form_action' => 'delete',
 												'id' => $item['id'],
 												'code' => str_replace(' ', '+', $card['code'])

@@ -23,7 +23,7 @@ class Handler
 
         // Show readable log of the exception
         $logger = Logger::class;
-        $method = APP_ENV === 'cli' ? 'cli' : 'html';
+        $method = (config('app.env') === 'cli') ? 'cli' : 'html';
         $data = [
             'message' => $exception->getMessage(),
             'code' => $exception->getCode(),

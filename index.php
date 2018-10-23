@@ -11,6 +11,8 @@ if (isset($_GET['do']) && $_GET['do'] === 'search') {
 // Old routing
 if (isset($_GET['p'])) {
     switch($_GET['p']) {
+
+        // Public -------------------------------------------------------------
         case 'search':
             $options = [ 'lightbox' => 1, 'js' => ['search'] ];
             echo view('Search', 'search/search.php', $options);
@@ -39,12 +41,6 @@ if (isset($_GET['p'])) {
         case 'resources/races':
             echo view('Races and traits', 'resources/races/races.php');
             return;
-        // case 'resources/rulers':
-        //     echo view('Rulers', 'resources/rulers/rulers.php');
-        //     return;
-        // case 'rulings':
-        //     echo view('Rulings', 'resources/rulings/index.php');
-        //     return;
 
         // Admin --------------------------------------------------------------
         case 'admin':
@@ -54,9 +50,10 @@ if (isset($_GET['p'])) {
             echo view('Admin:Cards', 'admin/cards/index.php');
             return;
         case 'admin/database':
-            if (admin_level > 0) {
+            if (admin_level() > 0) {
                 $hash = 'cJ3MRhFC8zNuuv4Eo6pNGCx7HfbznvOAdEZT9Ylt7AG';
-                $url = APP_URL . '/admin/database/'.$hash.'/index.php';
+                $url = config('app.url');
+                $url .= "/admin/database/{$hash}/index.php";
                 header("Location: {$url}");
             }
             return;
@@ -101,6 +98,17 @@ if (isset($_GET['p'])) {
                 require path_root('admin/image-trim/process.php');
             }
             return;
+        case 'admin/clint':
+            echo view('Admin:Clint', 'admin/clint/index.php');
+            return;
+        case 'admin/lookup':
+            echo view(
+                'Admin:Lookup',
+                'admin/lookup/index.php',
+                null, null, $minimize = false
+            );
+            return;
+
         // Temporary ----------------------------------------------------------
         case 'temp/admin/artists/select-set':
             echo view('FoWDB Craton', 'admin/_artists/select-set.php');
@@ -128,7 +136,7 @@ if ($_SERVER['REQUEST_URI'] === '/') {
 $request = (new \App\Http\Request\Request)
     ->baseUrl('/')
     ->method($_SERVER['REQUEST_METHOD'] ?? 'GET')
-    ->host($_SERVER['HTTP_HOST'] ?? APP_HOST)
+    ->host($_SERVER['HTTP_HOST'] ?? config('app.host'))
     ->scheme($_SERVER['REQUEST_SCHEME'] ?? 'http')
     ->httpPort(80)
     ->httpsPort(443)
@@ -137,7 +145,7 @@ $request = (new \App\Http\Request\Request)
 
 // Map request to its route
 $route = (new \App\Http\Response\Router())
-    ->setRoutes(load_file(path_src('data/routes.php')))
+    ->setRoutes(load_file(path_src('data/routes/routes.php')))
     ->setRequest($request)
     ->match();
 

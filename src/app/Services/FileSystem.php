@@ -19,11 +19,16 @@ class FileSystem extends BaseClass
             throw new FileSystemException('Path to file not provided');
         }
 
-        if (!file_exists($path)) {
+        if (!self::existsFile($path)) {
             throw new FileSystemException("No file exists at {$path}");
         }
 
         return require $path;
+    }
+
+    public static function existsFile(string $path): bool
+    {
+        return file_exists($path);
     }
 
     /**
@@ -38,8 +43,8 @@ class FileSystem extends BaseClass
             throw new FileSystemException('Path to file not provided');
         }
 
-        if (!file_exists($path)) {
-            throw new FileSystemException("No file exists at {$path}");
+        if (!self::existsFile($path)) {
+            throw new FileSystemException("No file found at path \"{$path}\"");
         }
 
         return file_get_contents($path);
@@ -53,24 +58,42 @@ class FileSystem extends BaseClass
      * @param bool $overwrite If the file should overwrite an existing file
      * @return bool If the file was written
      */
-    public static function saveFile(
-        string $path = null,
-        string $content = null
-    ): bool
+    public static function saveFile(string $path, string $content = ''): bool
     {
-        if (!isset($path)) {
-            throw new FileSystemException('Path to file not provided');
-        }
-
         $saved = file_put_contents($path, $content);
 
         // ERROR: Could not save the file
         if ($saved === false) {
-            throw new FileSystemException(
-                "Could not save file to: {$path}"
-            );
+            throw new FileSystemException("Could not save file to: {$path}");
         }
 
-        return true;
+        return $saved;
+    }
+
+    public static function renameFile(string $old, string $new): bool
+    {
+        if (!self::existsFile($old)) {
+            throw new FileSystemException("No file found at path \"{$path}\"");
+        }
+
+        return rename($old, $new);
+    }
+
+    public static function copyFile(string $from, string $to): bool
+    {
+        if (!self::existsFile($from)) {
+            throw new FileSystemException("No file found at path \"{$path}\"");
+        }
+
+        return copy($from, $to);
+    }
+
+    public static function deleteFile(string $path): bool
+    {
+        if (!self::existsFile($path)) {
+            throw new FileSystemException("No file found at path \"{$path}\"");
+        }
+
+        return unlink($path);
     }
 }

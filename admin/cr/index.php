@@ -9,4 +9,4 @@ echo \App\Legacy\AdminView::breadcrumbs([
 ]);
 
 // Show list of CRs
-include DIR_ROOT . "/admin/cr/main.html.php";
+include __DIR__ . '/main.html.php';

@@ -4,13 +4,14 @@ use \App\Legacy\Authorization;
 use \App\Legacy\Database;
 use \App\Legacy\Helpers as Cache; // Aliasing here!
 use \App\Services\Alert;
-use \App\Legacy\Redirect;
+use \App\Legacy\Redirect as RedirectLegacy;
 use \App\Views\Card\CardText;
 use \App\Utils\Logger;
-use \App\Legacy\Page as LegacyPage;
+use \App\Legacy\Page as PageLegacy;
 use \App\Services\FileSystem;
 use \App\Services\CsrfToken;
 use \App\Http\Request\Input;
+use \App\Services\Config;
 
 /**
  * Checks the authorization level of the current user
@@ -68,7 +69,7 @@ function notify(string $message, string $type = null): void
  */
 function redirect(string $to = '/', array $params = []): void
 {
-	Redirect::to($to, $params);
+	RedirectLegacy::to($to, $params);
 }
 
 /**
@@ -78,9 +79,9 @@ function redirect(string $to = '/', array $params = []): void
  * @param array $params
  * @return string
  */
-function url(string $page = '', array $params = []): string
+function url_old(string $page = '', array $params = []): string
 {
-	return Redirect::url($page, $params);
+	return RedirectLegacy::url($page, $params);
 }
 
 /**
@@ -142,7 +143,7 @@ function view(
 	bool $minimize = true
 )
 {
-	return LegacyPage::build($title, $path, $options, $vars, $minimize);
+	return PageLegacy::build($title, $path, $options, $vars, $minimize);
 }
 
 /**
@@ -154,11 +155,14 @@ function view(
  */
 function asset(string $path, string $type = 'any'): string
 {
+	$config = Config::getInstance();
+
 	$version = [
-		'any' => APP_TIMESTAMP,
-		'css' => APP_TIMESTAMP_CSS,
-		'js'  => APP_TIMESTAMP_JS,
-		'png' => APP_TIMESTAMP_IMG,
+		'any' => $config->get('app.timestamp'),
+		'css' => $config->get('app.timestamp.css'),
+		'js'  => $config->get('app.timestamp.js'),
+		'png' => $config->get('app.timestamp.img'),
+		'jpg' => $config->get('app.timestamp.img'),
 	][$type];
 
 	return '/'.$path.'?'.$version;
@@ -172,7 +176,8 @@ function asset(string $path, string $type = 'any'): string
  */
 function path_root(string $path = null): string
 {
-	return isset($path) ? DIR_ROOT . "/{$path}" : DIR_ROOT;
+	$root = (Config::getInstance())->get('dir.root');
+	return isset($path) ? "{$root}/{$path}" : $root;
 }
 
 /**
@@ -183,7 +188,8 @@ function path_root(string $path = null): string
  */
 function path_src(string $path = null): string
 {
-	return isset($path) ? DIR_SRC . "/{$path}" : DIR_SRC;
+	$dir = (Config::getInstance())->get('dir.src');
+	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
 /**
@@ -194,7 +200,8 @@ function path_src(string $path = null): string
  */
 function path_views(string $path = null): string
 {
-	return isset($path) ? DIR_VIEWS . "/{$path}" : DIR_VIEWS;
+	$dir = (Config::getInstance())->get('dir.views');
+	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
 /**
@@ -205,7 +212,8 @@ function path_views(string $path = null): string
  */
 function path_cache(string $path = null): string
 {
-	return isset($path) ? DIR_CACHE . "/{$path}" : DIR_CACHE;
+	$dir = (Config::getInstance())->get('dir.cache');
+	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
 /**
@@ -231,4 +239,19 @@ function csrf_token(): string
 function input(): Input
 {
 	return Input::getInstance();
+}
+
+function config(string $name): string
+{
+	return (Config::getInstance())->get($name);
+}
+
+/**
+ * To be continued...
+ *
+ * @return string
+ */
+function url(): string
+{
+	return '';
 }

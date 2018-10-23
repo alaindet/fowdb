@@ -30,13 +30,8 @@ class Page
 	)
 	{
 		if (isset($title)) $page_title = $title;
-		$scriptPath = DIR_ROOT . "/{$path}";
+		$scriptPath = path_root($path);
 		$pdo = Database::getInstance(true);
-		
-		// ERROR: Missing template script
-		if (!(isset($path) && file_exists($scriptPath))) {
-			throw new \Exception("Missing template script.");
-		}
 
 		// EXPLANATION
 		// Starting and stopping buffering needs to be done in order to

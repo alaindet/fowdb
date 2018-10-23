@@ -37,27 +37,31 @@ if (admin_level() > 0) {
 				$relativePath = str_replace(".", "/", $_POST['cluster-set']) . "/";
 
 				// Create folder at that path, if not existing
-				\App\Legacy\FileSystem::createDirectory(DIR_ROOT."/images/uploads/hq/" . $relativePath, true);
-				\App\Legacy\FileSystem::createDirectory(DIR_ROOT."/images/uploads/lq/" . $relativePath, true);
+				\App\Legacy\FileSystem::createDirectory(
+					path_root("images/uploads/hq/{$relativePath}"), true
+				);
+				\App\Legacy\FileSystem::createDirectory(
+					path_root("images/uploads/lq/{$relativePath}"), true
+				);
 
 			}
 
 			// Assemble final absolute paths
-			$hq_path = DIR_ROOT."/images/uploads/hq/" . $relativePath . $upload['name'];
-			$lq_path = DIR_ROOT."/images/uploads/lq/" . $relativePath . $upload['name'];
+			$hq_path = path_root('images/uploads/hq/'.$relativePath.$upload['name']);
+			$lq_path = path_root('images/uploads/lq/'.$relativePath.$upload['name']);
 
 			// Create image
 			$img = \Intervention\Image\ImageManagerStatic
 		        ::make($_FILES['cardimage'])
 		        ->resize(480, 670)
-		        ->insert(DIR_ROOT."/images/watermark/watermark480.png")
+		        ->insert(path_root('images/watermark/watermark480.png'))
 		        ->save($hq_path, 80);
 
 			// Create thumbnail image
 			$imgThumb = \Intervention\Image\ImageManagerStatic
 		        ::make($_FILES['cardimage'])
 		        ->resize(280, 391)
-		        ->insert(DIR_ROOT."/images/watermark/watermark280.png")
+		        ->insert(path_root('images/watermark/watermark280.png'))
 		        ->save($lq_path, 80);
 
 			// Echo image link

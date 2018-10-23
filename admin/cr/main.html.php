@@ -4,5 +4,5 @@
 		<small>Admin panel</small>
 	</h1>
 </div>
-<?php include DIR_ROOT . "/admin/cr/form.html.php"; ?>
-<?php include DIR_ROOT . "/admin/cr/list.html.php"; ?>
+<?php include __DIR__ . '/form.html.php'; ?>
+<?php include __DIR__ . '/list.html.php'; ?>

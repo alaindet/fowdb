@@ -1,44 +1,12 @@
 <?php
 
-// Autoloader -----------------------------------------------------------------
 require dirname(__DIR__) . '/vendor/autoload.php';
-
-// Constants ------------------------------------------------------------------
-foreach ([
-    'APP_NAME' => 'FoWDB - Force of Will Database',
-    'APP_URL' => 'https://www.fowdb.altervista.org',
-    'APP_HOST' => 'www.fowdb.altervista.org',
-    'APP_ENV' => 'html',
-    
-    // Directories
-    'DIR_ROOT' => dirname(dirname(__DIR__)),
-    'DIR_SRC' => dirname(__DIR__),
-    'DIR_VIEWS' => dirname(__DIR__).'/resources/views',
-    'DIR_CACHE' => dirname(__DIR__).'/cache',
-    
-    // Timestamps
-    'APP_TIMESTAMP' => '20181012-1',
-    'APP_TIMESTAMP_CSS' => '20181012-4',
-    'APP_TIMESTAMP_JS'  => '20181020-2',
-    'APP_TIMESTAMP_IMG' => '20181012-1',
-
-    // Database
-    'DB_HOST' => '127.0.0.1',
-    'DB_NAME' => 'my_fowdb',
-    'DB_USER' => 'fowdb',
-    'DB_PASSWORD' => 'UVS4JTpzFPJ8ed3Z',
-    'DB_RESULTS_LIMIT' => 25,
-] as $key => $value) {
-    define($key, $value);
-}
-
-// Functions ---------------------------------------------------------------
 require dirname(__DIR__) . '/app/functions/helpers.php';
 
-// Legacy ------------------------------------------------------------------
+// Legacy
 $thereWereResults = false;
 
-// Anti-CSRF token ---------------------------------------------------------
+// Anti-CSRF token
 session_start();
 if (!\App\Services\CsrfToken::exists()) {
     \App\Services\CsrfToken::create();
