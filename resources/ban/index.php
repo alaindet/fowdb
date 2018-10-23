@@ -1,66 +1,55 @@
 <?php
-  $ban = new \App\Models\Ban;
-  $items = $ban->groupByFormat()->fetch()->getItems();
-  $items = \App\Views\Ban\Ban::display($items);
-  $totalCount = $ban->getTotalCount();
+  $rawData = \App\Models\Ban::getData($page = 'banlist');
+  $items = \App\Views\Ban::display($rawData, 'all');
 ?>
 
-<div class="page-header">
-  <h1>Banned and limited cards (<?=$totalCount?>)</h1>
-</div>
+<?php foreach ($items as $typeLabel => $typeList): ?>
 
-<div class="row">
-  <?php foreach ($items as $format => &$cards): ?>
-    <div class="col-xs-12">
+  <h1><?=$typeLabel?></h1>
 
-      <div class="page-header">
-        <h2>
-          <a
-            name="<?=$cards[0]['format_code']?>"
-            href="#<?=$cards[0]['format_code']?>"
-            class="no-style link-internal"
-          >
-            <?=$format?>
-          </a>
-          (<?=count($cards)?>)
-        </h2>
-      </div>
+  <div class="col-xs-12">
 
-      <div class="fd-grid-items">
+    <?php foreach ($typeList as $deckLabel => $deckList): ?>
 
-        <?php foreach ($cards as &$card): ?>
-          <div class="fd-grid-2 fd-grid-sm-3 fd-grid-md-4 p-25">
+      <h2><?=$deckLabel?></h2>
 
-            <a href="<?=$card['link']?>">
-              <img
-                src="<?=$card['image']?>"
-                alt="<?=$card['name']?>"
-              />
-            </a>
+      <div class="col-xs-12">
 
-            <ul class="p-50">
-              <li><a href="<?=$card['link']?>"><?=$card['name']?></a></li>
-              <li><em><?=$card['code']?></em></li>
+        <?php foreach ($deckList as $formatLabel => $formatList): ?>
 
-              <?php if (isset($card['deck'])): ?>
-                <li>
-                  <span class="label label-danger"><?=$card['deck']?></span>
-                </li>
-              <?php endif; ?>
+          <h3><?=$formatLabel?></h3>
 
-              <?php if ($card['copies'] > 0): ?>
-                <li>
-                  Limited in
-                  <span class="label label-danger"><?=$card['copies']?></span>
-                  cop<?=$card['copies']>1?'ies':'y'?>
-                </li>
-              <?php endif; ?>
+          <div class="fd-grid-items">
 
-            </ul>
+            <?php foreach ($formatList as $card): ?>
+              <div class="fd-grid-2 fd-grid-sm-3 fd-grid-md-4 p-25">
+
+                <!-- Image -->
+                <a href="<?=$card['link']?>">
+                  <img src="<?=$card['image']?>" alt="<?=$card['name']?>" />
+                </a>
+
+                <ul class="p-50">
+
+                  <!-- Name -->
+                  <li><a href="<?=$card['link']?>"><?=$card['name']?></a></li>
+
+                  <!-- Code -->
+                  <li><em><?=$card['code']?></em></li>
+
+                </ul>
+              </div>
+
+            <?php endforeach; ?>
+
           </div>
-        <?php endforeach; ?>
-      </div>
 
-    </div>
-  <?php endforeach; ?>
-</div>
+        <?php endforeach; ?>
+
+      </div>
+    
+    <?php endforeach; ?>
+
+  </div>
+
+<?php endforeach; ?>
