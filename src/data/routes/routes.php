@@ -7,29 +7,21 @@ $uriFriendly = '[A-Za-z0-9\-]+';
 $card = '[A-Z0-9]+\-\d{3}[A-Z]+'; // C => card
 
 // [ [ httpMethod, uri, controller, method, params, middleware ], ... ]
+// [ // Example
+//     'GET','test/public/{id}',
+//     'TestController','testMethod',
+//     ['id' => '[0-9]+'],
+//     ['!token', '!auth', 'captcha']
+// ]
 $public = [
 
-    ['GET', 'test/public','TestController','publicMenu'],
-    ['GET', 'test/public/static','TestController','publicStaticForm'],
-    ['POST','test/public/static','TestController','publicStaticProcess'],
-    [
-        'GET', 'test/public/params/{id}/{hash}',
-        'TestController','publicRouteParams',
-        ['id' => $id, 'hash' => $uriFriendly]
-    ]
+    // ['GET', 'login','LoginController','loginForm'],
+    // ['POST','login','LoginController','login'],
+    // ['GET', 'logout','LoginController','logout']
 
 ];
 
 $admin = [
-
-    ['GET', 'test/admin','TestController','adminMenu'],
-    ['GET', 'test/admin/static','TestController','adminStaticForm'],
-    ['POST','test/admin/static','TestController','adminStaticProcess'],
-    [
-        'GET', 'test/admin/params/{id}/{hash}',
-        'TestController','adminRouteParams',
-        ['id' => $id, 'hash' => $uriFriendly]
-    ]
 
     // Clusters
     // ['GET', 'clusters/create','ClustersController','createFrom'],
