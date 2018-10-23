@@ -13,15 +13,6 @@ if (empty($_POST)) {
     return;
 }
 
-// ERROR: Invalid token
-if (! checkToken($_POST['token'])) {
-    echo outputJson([
-        "response" => false,
-        "message" => "ERROR: Invalid token passed"
-    ]);
-    return;
-}
-
 // Instantiate a new Search object
 $search = new \App\Services\Card\Search();
 

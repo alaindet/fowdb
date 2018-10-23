@@ -205,8 +205,7 @@ $(document).ready(function() {
 
         // Get search filters from GET params and add page number
         var filters = window.location.search.replace("?", "")
-                    + "&page="  + FoWDB.search.page
-                    + "&token=" + $('input[name=token]').val();
+                    + "&page="  + FoWDB.search.page;
 
         $.ajax({
             url: '/api/search/load.php',
