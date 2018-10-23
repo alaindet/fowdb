@@ -46,11 +46,11 @@ class Logger
         }
 
         // Content
-        if (is_bool($x)) $content = '(bool) ' . ($x ? 'TRUE' : 'FALSE');
-        elseif (is_string($x)) $content = $x;
-        else $content = print_r($x, true);
+        if (is_bool($data)) $content = '(bool) ' . ($data ? 'TRUE' : 'FALSE');
+        elseif (is_string($data)) $content = $data;
+        else $content = print_r($data, true);
 
         // Return log
-        return "{$title}{$line}{$content}\n";
+        return "\n\n{$title}{$line}{$content}\n\n";
     }
 }
