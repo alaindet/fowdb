@@ -6,6 +6,8 @@ use App\Services\Session;
 
 class Authorization
 {
+    const NAME = 'admin-hash';
+
     public static $levels = [
         'public' => 0,
         'admin' => 1,
@@ -15,12 +17,12 @@ class Authorization
     public static function level(): int
     {
         // ERROR: No admin hash stored into session
-        if (!Session::exists('admin')) return 0;
+        if (!Session::exists(self::NAME)) return 0;
 
         // Get admin info from database (INT)
         $admin = database()->get(
             "SELECT user_groups_id FROM admins WHERE hash = :hash",
-            [':hash' => Session::get('admin')],
+            [':hash' => Session::get(self::NAME)],
             $first = true
         );
 
