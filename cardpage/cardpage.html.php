@@ -1,4 +1,8 @@
 <?php
+
+	// Variables
+	// $cards
+
   $counter = 0; // Ruling counter
   foreach ($cards as &$card):
 ?>
