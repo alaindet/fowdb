@@ -1,7 +1,7 @@
 <?php
 
-require dirname(__DIR__) . '/src/config/config.php';
-require __DIR__ . '/helpers.php';
+require dirname(__DIR__) . '/src/bootstrap.php';
+require __DIR__ . '/helpers.php'; // API helpers
 
 // ERROR: No term passed!
 if (!isset($_GET['term']) || empty($_GET['term'])) {

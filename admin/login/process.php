@@ -1,6 +1,6 @@
 <?php
 
-require dirname(dirname(__DIR__)) . '/src/config/config.php';
+require dirname(dirname(__DIR__)) . '/src/bootstrap.php';
 
 use \App\Services\CsrfToken;
 use \App\Http\Request\Input;

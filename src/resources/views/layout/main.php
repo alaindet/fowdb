@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" prefix="og: http://ogp.me/ns#">
+<html lang="en" prefix="<?=$ogp->getHtmlPrefix()?>">
 <head>
+	<!-- Facebook tags -->	
+	<meta property="fb:app_id" content="<?=config('facebook.id')?>">
+
 	<!-- Open Graph Project meta tags -->
-	<?php require path_root('src/resources/views/includes/ogp.php') ?>
+	<?=$ogp->toHtml()?>
 
 	<!-- Title -->
-	<title><?=$ogp['title']?></title>
+	<title><?=$ogp->title()?></title>
 
 	<!-- Other meta tags -->
 	<meta charset="UTF-8">
@@ -36,10 +39,10 @@
 <body>
 	<a name="top"></a>
 	<div class="container-fluid" id="page-wrapper">
-		<?php require path_root('src/resources/views/includes/header.php'); ?>
+		<?php require path_views('includes/header.php'); ?>
 		<?=$pageContent?>
 	</div>
-	<?php require path_root('src/resources/views/includes/footer.php'); ?>
+	<?php require path_views('includes/footer.php'); ?>
 
 	<!-- JavaScript -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" defer></script>

@@ -1,7 +1,7 @@
 <?php
 
 // Init the app, load the helpers
-require dirname(dirname(__DIR__)) . '/src/config/config.php';
+require dirname(dirname(__DIR__)) . '/src/bootstrap.php';
 require dirname(__DIR__) . '/helpers.php';
 
 // ERROR: No inputs

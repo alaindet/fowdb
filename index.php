@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/src/config/config.php';
+require __DIR__ . '/src/bootstrap.php';
 
 // Search for cards (spaghetti code here!)
 if (isset($_GET['do']) && $_GET['do'] === 'search') {
@@ -18,9 +18,7 @@ if (isset($_GET['p'])) {
             echo view('Search', 'search/search.php', $options);
             return;
         case 'card':
-            require path_root('cardpage/ogpinfo.sql.php'); // OGP tags
-            $options = [ 'js' => ['cardpage'] ];
-            echo view($page_title, 'cardpage/cardpage.php', $options);
+            require __DIR__ . '/cardpage/cardpage.php';
             return;
         case 'spoiler':
             $options = [ 'lightbox' => 1, 'js' => ['search', 'spoiler'] ];

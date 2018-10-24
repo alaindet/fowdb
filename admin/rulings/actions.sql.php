@@ -1,6 +1,6 @@
 <?php
 
-require dirname(dirname(__DIR__)) . '/src/config/config.php';
+require dirname(dirname(__DIR__)) . '/src/bootstrap.php';
 
 // Check if an action was passed, then execute it
 if (isset($_POST['action'])) {

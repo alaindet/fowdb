@@ -4,6 +4,8 @@ namespace App\Legacy;
 
 use App\Legacy\Database;
 use App\Views\TinyHtmlMinifier\TinyMinify;
+use App\Services\OpenGraphProtocol\OpenGraphProtocol;
+use App\Services\OpenGraphProtocol\OpenGraphProtocolImage;
 
 class Page
 {
@@ -31,7 +33,35 @@ class Page
 	{
 		if (isset($title)) $page_title = $title;
 		$scriptPath = path_root($path);
-		$pdo = Database::getInstance(true);
+
+		// Open Graph Protocol ------------------------------------------------
+		$ogp = OpenGraphProtocol::getInstance();
+
+		if (isset($options['ogp'])) {
+
+			// Update title
+			if (isset($options['ogp']['title'])) {
+				$ogp->title($options['ogp']['title']);
+			}
+
+			// Update URL
+			if (isset($options['ogp']['url'])) {
+				$ogp->url($options['ogp']['url']);
+			}
+
+			// Update image
+			if (isset($options['ogp']['image'])) {
+				$_image =& $options['ogp']['image'];
+				$ogp->image(
+					(new OpenGraphProtocolImage())
+						->url( $_image['url'] ?? config('ogp.image') )
+						->mimeType( config('ogp.image.type') )
+						->width( config('ogp.image.width') )
+						->height( config('ogp.image.height') )
+						->alt( $_image['alt'] ?? config('app.name') )
+				);
+			}
+		}
 
 		// EXPLANATION
 		// Starting and stopping buffering needs to be done in order to
