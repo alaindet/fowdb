@@ -8,8 +8,6 @@ FoWDB started as (and still is) a personal experiment to learn web development v
 
 FoWDB is simply a LAMP website written in plain old PHP and MySQL, without any framework. It's currently hosted on a free hosting and it doesn't follow a full MVC OOP approach at the moment, but I'm working on it to turn it into a reasonable MVC OOP website, as it should. Please be kind while reviewing it!
 
-I could rewrite it in Laravel, but the real challenge here is to rework the existing code to meet the goal. Thank you for reading
-
 ## References
 
 - Official website http://www.fowtcg.com/
