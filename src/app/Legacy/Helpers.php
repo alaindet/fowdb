@@ -2,6 +2,8 @@
 
 namespace App\Legacy;
 
+use App\Services\FileSystem;
+
 class Helpers
 {
     /**
@@ -37,7 +39,11 @@ class Helpers
      *
      * @var array
      */
-    public static $dynamicFeatures = ['clusters', 'formats', 'spoiler'];
+    public static $dynamicFeatures = [
+        'clusters',
+        'formats',
+        'spoiler'
+    ];
 
     /**
      * Reads (or imports) the helpers JSON data, then returns it
@@ -86,6 +92,7 @@ class Helpers
     public static function getAll(): array
     {
         if (empty(self::$helpers)) self::loadJSON();
+
         return self::$helpers;
     }
 
@@ -95,7 +102,7 @@ class Helpers
     private static function loadJSON()
     {
         self::$helpers = json_decode(
-            file_get_contents(path_root('app/helpers/helpers.json')),
+            FileSystem::readFile(path_cache('helpers/helpers.json')),
             $turnJsonIntoPhpArray = true
         );
     }
@@ -107,25 +114,19 @@ class Helpers
      */
     public static function assembleAll(): bool
     {
-        $assembled = [];
-        $base = path_root('app/helpers');
-        
-        foreach (self::$allowedFeatures as $feat) {
-            $assembled[$feat] = json_decode(
-                file_get_contents("{$base}/data/{$feat}.json"),
-                $turnJsonIntoPhpArray = true
+        $data = [];
+        foreach (self::$allowedFeatures as $feature) {
+            $data[$feature] = json_decode(
+                FileSystem::readFile(path_data("helpers/{$feature}.json")),
+                true // Turn JSON into PHP array
             );
         }
 
         // Encode back all arrays as JSON
-        $jsonOutput = json_encode(
-            $assembled,
-            JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES
-        );
+        $json = json_encode($data, JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES);
 
-        $saved = file_put_contents("{$base}/helpers.json", $jsonOutput);
-        
-        return $saved ? true : false;
+        // Store into filesystem
+        return FileSystem::saveFile(path_cache('helpers/helpers.json'), $json);
     }
 
     /**
