@@ -24,7 +24,7 @@ if (!$db->delete("comprehensive_rules", "id = :id", [":id" => $_POST['id']])) {
 }
 
 // Remove files
-$path = path_root('app/assets/cr/'.$_POST['version']);
+$path = path_root('documents/cr/'.$_POST['version']);
 unlink($path . ".txt");
 unlink($path . ".html");
 

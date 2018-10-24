@@ -25,7 +25,7 @@ if ($_FILES['crfile']['type'] != "text/plain") {
 }
 
 // Assemble file name
-$partialPath = "app/assets/cr/" . strtolower($_POST['version']);
+$partialPath = "documents/cr/" . strtolower($_POST['version']);
 $filenameTxt = path_root("{$partialPath}.txt");
 $filenameHtml = path_root("{$partialPath}.html");
 

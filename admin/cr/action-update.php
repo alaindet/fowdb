@@ -33,15 +33,15 @@ if ($_FILES['crfile']['error'] == 0) {
     }
 
     // Assemble filenames
-    $dir = path_root('app/assets/cr/');
+    $dir = path_root('documents/cr');
 
     // Old files
-    $oldCr = $dir . strtolower($_POST['old-version']);
+    $oldCr = $dir . '/' . strtolower($_POST['old-version']);
     $oldCrTxt = $oldCr . ".txt";
     $oldCrHtml = $oldCr . ".html";
 
     // New files
-    $newCr = $dir . strtolower($_POST['version']);
+    $newCr = $dir . '/' . strtolower($_POST['version']);
     $newCrTxt = $newCr . ".txt";
     $newCrHtml = $newCr . ".html";
 
@@ -98,7 +98,7 @@ if (! $db->update("comprehensive_rules",
         "is_default" => $default,
         "date_validity" => $_POST['validity'],
         "version" => substr($_POST['version'], 0, 9), // Max 10 chars for version
-        "path" => "/app/assets/cr/{$_POST['version']}.html"
+        "path" => "/documents/cr/{$_POST['version']}.html"
     ], "id = :id", [":id" => (int) $_POST['id']]
 )) {
     notify("We couldn't update the CR info on the database.", "danger");

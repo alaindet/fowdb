@@ -9,7 +9,7 @@ if (!isset($_GET['v'])) {
 }
 
 // Assemble path of the file
-$relativePath = 'app/assets/cr/'.$_GET['v'].'.txt';
+$relativePath = 'documents/cr/'.$_GET['v'].'.txt';
 $filename = path_rooty($relativePath);
 
 // ERROR: No such file
