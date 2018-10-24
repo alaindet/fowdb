@@ -11,6 +11,7 @@ vendor/
 /js/
 /css/
 /images/
+/documents/
 .env
 .env.production
 .env.development
