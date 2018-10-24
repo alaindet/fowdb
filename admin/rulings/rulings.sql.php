@@ -75,6 +75,7 @@ $sql = "SELECT
 
 // Execute query on DB
 try {
+	$pdo = \App\Legacy\Database::getInstance(true);
 	$query = $pdo->query($sql);
 	$result = $query->fetchAll(\PDO::FETCH_ASSOC);
 }
