@@ -1,55 +1,132 @@
 <?php
 
-use \App\Legacy\Authorization;
-use \App\Legacy\Database;
-use \App\Legacy\Helpers as Cache; // Aliasing here!
-use \App\Services\Alert;
-use \App\Legacy\Redirect as RedirectLegacy;
-use \App\Views\Card\CardText;
-use \App\Utils\Logger;
-use \App\Legacy\Page as PageLegacy;
-use \App\Services\FileSystem;
-use \App\Services\CsrfToken;
+// Imports
+use \App\Legacy\Database as LegacyDatabase;
 use \App\Http\Request\Input;
-use \App\Services\Config;
 
 /**
- * Checks the authorization level of the current user
+ * Index:
+ * 
+ * SERVICES
+ * ========
+ * admin_level // LEGACY
+ * cached // LEGACY
+ * config
+ * database_old // LEGACY
+ * database // TO DO
+ * input
+ * lookup
+ * notify // LEGACY
+ * alert
+ * redirect_old // LEGACY
+ * redirect // TO DO
+ * 
+ * DIRECTORIES
+ * ===========
+ * path_cache
+ * path_root
+ * path_src
+ * path_views
+ * 
+ * VIEW
+ * ====
+ * asset
+ * collapse
+ * csrf_token
+ * logHtml
+ * render
+ * url_old // LEGACY
+ * url // TO DO
+ * view_old // LEGACY
+ * view // TO DO
+ */
+
+
+// SERVICES -------------------------------------------------------------------
+
+/**
+ * LEGACY: Checks the authorization level of current user
  * 
  * 0: public (not logged)
  * 1: super admin
  * 2: judge
  *
- * @return int Authorization level
+ * @return int
  */
 function admin_level(): int
 {
-	return Authorization::level();
+	return \App\Legacy\Authorization::level();
 }
 
 /**
- * Gets the database instance
+ * LEGACY: Gets cached data from App\Legacy\Helpers
  *
- * @return Database
+ * @param string $path
+ * @return mixed string | array
  */
-function database(): Database
+function cached(string $path)
 {
-	return Database::getInstance();
+    return \App\Legacy\Helpers::get($path);
 }
 
 /**
- * Gets cached data
+ * Returns configuration data
  *
- * @param string $request
- * @return any String | Array
+ * @param string $name
+ * @return mixed string | array
  */
-function cached(string $request)
+function config(string $name)
 {
-	return Cache::get($request);
+	return (\App\Services\ Config::getInstance())->get($name);
 }
 
 /**
- * Adds a notification for the next request
+ * LEGACY: Returns the database singleton
+ *
+ * @return LegacyDatabase
+ */
+function database_old(): LegacyDatabase
+{
+    return LegacyDatabase::getInstance();
+}
+
+/**
+ * TO DO: Return a new database instance
+ * TEMPORARY: Mimics database_old()
+ *
+ * @return LegacyDatabase
+ */
+function database(): LegacyDatabase
+{
+    return LegacyDatabase::getInstance();
+    
+    return database_old();
+}
+
+/**
+ * Returns the Input instance for accessing GET, POST and FILES parameters
+ * 
+ * @return Input
+ */
+function input(): Input
+{
+	return Input::getInstance();
+}
+
+/**
+ * Reads and returns lookup data from the cache
+ *
+ * @param string $path Dot-separated path. Ex.: "rarities.id2code"
+ * @return mixed string | array
+ */
+function lookup(string $path = null)
+{
+    return (\App\Services\Lookup\Lookup::getInstance())->get($path);
+}
+
+/**
+ * Adds an alert to be shown. If redirect is used after this, it's shown
+ * on the next request, otherwise it's shown on the current page
  *
  * @param string $message
  * @param string $type
@@ -57,47 +134,119 @@ function cached(string $request)
  */
 function notify(string $message, string $type = null): void
 {
-	Alert::set($message, $type);
+	\App\Services\Alert::set($message, $type);
 }
 
 /**
- * Redirect the user to another URL, can pass querystring parameters
+ * Alias of notify()
+ *
+ * @param string $message
+ * @param string $type
+ * @return void
+ */
+function alert(string $message, string $type = null): void
+{
+    notify($message, $type);
+}
+
+/**
+ * Redirects to another URL, accepts array to parse as querystring
  *
  * @param string $to
  * @param array $params
  * @return void
  */
-function redirect(string $to = '/', array $params = []): void
+function redirect_old(string $to = null, array $params = []): void
 {
-	RedirectLegacy::to($to, $params);
+    \App\Legacy\Redirect::to($to, $params);
 }
 
 /**
- * Build a URL and returns it. Legacy: used with old querystring-routes
+ * TO DO: Call new Redirect library
+ * TEMPORARY: Mimics redirect_old()
  *
- * @param string $page
+ * @param string $to
  * @param array $params
- * @return string
+ * @return void
  */
-function url_old(string $page = '', array $params = []): string
+function redirect(string $to = null, array $params = []): void
 {
-	return RedirectLegacy::url($page, $params);
+    redirect_old($to, $params);
+}
+
+
+// DIRECTORIES ----------------------------------------------------------------
+
+/**
+ * @param string Relative path to /src/cache/
+ * @return string Absolute path
+ */
+function path_cache(string $path = null): string
+{
+	$dir = (\App\Services\Config::getInstance())->get('dir.cache');
+	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
 /**
- * Render any text into an HTML-friendly format using icons and styling
+ * @param string Relative path to /
+ * @return string Absolute path
+ */
+function path_root(string $path = null): string
+{
+	$dir = (\App\Services\Config::getInstance())->get('dir.root');
+	return isset($path) ? "{$dir}/{$path}" : $dir;
+}
+
+/**
+ * @param string Relative path to /src/
+ * @return string Absolute path
+ */
+function path_src(string $path = null): string
+{
+	$dir = (\App\Services\Config::getInstance())->get('dir.src');
+	return isset($path) ? "{$dir}/{$path}" : $dir;
+}
+
+/**
+ * @param string Relative path to /src/resources/views/
+ * @return string Absolute path
+ */
+function path_views(string $path = null): string
+{
+	$dir = (\App\Services\Config::getInstance())->get('dir.views');
+	return isset($path) ? "{$dir}/{$path}" : $dir;
+}
+
+
+// VIEW -----------------------------------------------------------------------
+
+/**
+ * Builds the URL for any asset, appending querystrings to bust the cache
  *
- * @param string $toRender
+ * @param string $path
+ * @param string $type
  * @return string
  */
-function render(string $toRender): string
+function asset(string $path, string $type = 'any'): string
 {
-	return CardText::render($toRender);
+	$config = \App\Services\Config::getInstance();
+    
+    $url = $config->get('app.url');
+
+    $version = [
+		'any' => $config->get('app.timestamp'),
+		'css' => $config->get('app.timestamp.css'),
+		'js'  => $config->get('app.timestamp.js'),
+		'png' => $config->get('app.timestamp.img'),
+		'jpg' => $config->get('app.timestamp.img'),
+    ][$type];
+
+    return "{$url}/{$path}?{$version}";
 }
 
 /**
- * Accepts a list of strings and collapses it in a single string.
- * Useful when building some HTML content into PHP for indentation
+ * Accepts a list of strings and collapses them in a single string.
+ * Useful when building some HTML content for easy indentation
  * 
  * Ex.:
  * collapse(
@@ -114,16 +263,85 @@ function collapse(): string
 }
 
 /**
- * Logs stuff on the page in a HTML-friendly format using .well elements
+ * Prints an <input> element containing the anti-CSRF token
  *
- * @param Any $x Can be anything
- * @param string $title Optional
- * @return string HTML-friendly log of any variable
+ * @return string
  */
-function logHtml($x = null, string $title = ''): string
+function csrf_token(): string
 {
-	return Logger::html($x, $title);
+	return \App\Services\CsrfToken::formInput();
 }
+
+/**
+ * Logs provided data on the page in a HTML-friendly format using .well elements
+ * Useful for debugging data inside views
+ *
+ * @param mixed $data Can be any type of data
+ * @param string $title Optional
+ * @return string HTML-friendly log of provided data
+ */
+function logHtml($data, string $title = null): string
+{
+	return \App\Utils\Logger::html($data, $title);
+}
+
+/**
+ * Render any text into an HTML-friendly format using FoWDB conventions
+ *
+ * @param string $toRender
+ * @return string
+ */
+function render(string $toRender): string
+{
+	return \App\Views\Card\CardText::render($toRender);
+}
+
+/**
+ * LEGACY: Builds a URL and returns it
+ *
+ * @param string $page
+ * @param array $params
+ * @return string
+ */
+function url_old(string $page = '', array $params = []): string
+{
+	return RedirectLegacy::url($page, $params);
+}
+
+/**
+ * TO DO: Call new Redirect library
+ * TEMPORARY: Mimics url_old()
+ *
+ * @param string $page
+ * @param array $params
+ * @return string
+ */
+function url(string $to = null, array $params = []): string
+{
+    return url_old($to, $params);
+}
+
+/**
+ * Calls the page constructor
+ *
+ * @param string $title
+ * @param string $path
+ * @param array $options
+ * @param array $vars
+ * @param boolean $minimize
+ * @return void
+ */
+function view_old(
+	string $title = null,
+	string $path = null,
+	array $options = null,
+	array $vars = null,
+	bool $minimize = true
+)
+{
+    return \App\Legacy\Page::build($title, $path, $options, $vars, $minimize);
+}
+
 
 /**
  * Calls the page constructor
@@ -143,115 +361,5 @@ function view(
 	bool $minimize = true
 )
 {
-	return PageLegacy::build($title, $path, $options, $vars, $minimize);
-}
-
-/**
- * Builds the URL for any asset, appending querystrings to bust the cache
- *
- * @param string $path
- * @param string $type
- * @return string
- */
-function asset(string $path, string $type = 'any'): string
-{
-	$config = Config::getInstance();
-
-	$version = [
-		'any' => $config->get('app.timestamp'),
-		'css' => $config->get('app.timestamp.css'),
-		'js'  => $config->get('app.timestamp.js'),
-		'png' => $config->get('app.timestamp.img'),
-		'jpg' => $config->get('app.timestamp.img'),
-	][$type];
-
-	return '/'.$path.'?'.$version;
-}
-
-/**
- * Returns an absolute path by providing a path relative to /
- *
- * @param string $path (optional)
- * @return string
- */
-function path_root(string $path = null): string
-{
-	$root = (Config::getInstance())->get('dir.root');
-	return isset($path) ? "{$root}/{$path}" : $root;
-}
-
-/**
- * Returns an absolute path by providing a path relative to /src
- *
- * @param string $path (optional)
- * @return string
- */
-function path_src(string $path = null): string
-{
-	$dir = (Config::getInstance())->get('dir.src');
-	return isset($path) ? "{$dir}/{$path}" : $dir;
-}
-
-/**
- * Returns an absolute path by providing a path relative to /src/resources/views
- *
- * @param string $path (optional)
- * @return string
- */
-function path_views(string $path = null): string
-{
-	$dir = (Config::getInstance())->get('dir.views');
-	return isset($path) ? "{$dir}/{$path}" : $dir;
-}
-
-/**
- * Returns an absolute path by providing a path relative to /src/cache
- *
- * @param string $path (optional)
- * @return string
- */
-function path_cache(string $path = null): string
-{
-	$dir = (Config::getInstance())->get('dir.cache');
-	return isset($path) ? "{$dir}/{$path}" : $dir;
-}
-
-/**
- * Returns a loaded file (usually an array)
- *
- * @return void
- */
-function load_file(string $absolutePath)
-{
-	return FileSystem::loadFile($absolutePath);
-}
-
-/**
- * Prints an <input> element containing the anti-CSRF token
- *
- * @return string
- */
-function csrf_token(): string
-{
-	return CsrfToken::formInput();
-}
-
-function input(): Input
-{
-	return Input::getInstance();
-}
-
-function config(string $name): string
-{
-	return (Config::getInstance())->get($name);
-}
-
-/**
- * To be continued...
- *
- * @return string
- */
-function url(): string
-{
-	return '';
+    return view_old($title, $path, $options, $vars, $minimize);
 }

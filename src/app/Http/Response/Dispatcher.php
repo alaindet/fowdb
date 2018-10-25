@@ -20,6 +20,19 @@ class Dispatcher
         '_middleware'
     ];
 
+    /**
+     * Ex.:
+     * Request URI => /a-cool-uri/abc123/here-is-the-id/456
+     * Route => /a-cool-uri/{code}/here-is-the-id/{id}
+     * Route data => [
+     *     '_controller' => 'CardsController',
+     *     '_method' => 'searchForm',
+     *     '_access' => 'public',
+     *     '_route' => 'GET/',
+     *     'code' => 'abc123',
+     *     'id' => 456
+     * ]
+     */
     public function setMatchedRoute(array $route = null): Dispatcher
     {
         if (isset($route)) {

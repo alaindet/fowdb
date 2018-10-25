@@ -2,10 +2,10 @@
 
 namespace App\Services\Lookup;
 
-use App\Services\FileSystem;
 use App\Base\Singleton;
-use App\Exceptions\LookupException;
 use App\Exceptions\FileSystemException;
+use App\Exceptions\LookupException;
+use App\Services\FileSystem;
 
 /**
  * This library generates, reads and stores domain-specific data
@@ -37,40 +37,47 @@ class Lookup
     private $generated = [];
 
     /**
-     * List of generator classes for features
+     * List of generator classes for features. Order reflects importance
      *
      * @var array
      */
     public $features = [
-        'attributes' => \App\Services\Lookup\Generators\AttributesGenerator::class,
-        'backsides'  => \App\Services\Lookup\Generators\BackSidesGenerator::class,
         'clusters'   => \App\Services\Lookup\Generators\ClustersGenerator::class,
-        'costs'      => \App\Services\Lookup\Generators\CostsGenerator::class,
-        'formats'    => \App\Services\Lookup\Generators\FormatsGenerator::class,
-        'narps'      => \App\Services\Lookup\Generators\NarpsGenerator::class,
-        'rarities'   => \App\Services\Lookup\Generators\RaritiesGenerator::class,
         'sets'       => \App\Services\Lookup\Generators\SetsGenerator::class,
-        'spoilers'   => \App\Services\Lookup\Generators\SpoilersGenerator::class,
+        'formats'    => \App\Services\Lookup\Generators\FormatsGenerator::class,
         'types'      => \App\Services\Lookup\Generators\TypesGenerator::class,
+        'spoilers'   => \App\Services\Lookup\Generators\SpoilersGenerator::class,
+        'attributes' => \App\Services\Lookup\Generators\AttributesGenerator::class,
+        'rarities'   => \App\Services\Lookup\Generators\RaritiesGenerator::class,
+        'narps'      => \App\Services\Lookup\Generators\NarpsGenerator::class,
+        'backsides'  => \App\Services\Lookup\Generators\BackSidesGenerator::class,
+        'costs'      => \App\Services\Lookup\Generators\CostsGenerator::class,
         'divinities' => \App\Services\Lookup\Generators\DivinitiesGenerator::class,
     ];
 
+    /**
+     * Defined the cache file location and loads it
+     */
     private function __construct()
     {
         $this->cacheFilename = path_cache('lookup/lookup.txt');
         $this->load();
     }
 
+    /**
+     * Loads the cached lookup file
+     *
+     * @return void
+     */
     private function load(): void
     {
-        // Load cached data
         try {
             $this->cache = unserialize(
                 FileSystem::readFile($this->cacheFilename)
             );
         }
-
-        // Empty data
+        
+        // ERROR: Missing cached file!
         catch (FileSystemException $exception) {
             $this->cache = [];
         }
@@ -80,7 +87,7 @@ class Lookup
      * Stores all the current cache data in the cache file
      * Usually called after PseudoCache::generate() or Cache::generateAll()
      *
-     * @return $this
+     * @return Lookup
      */
     public function cache(): Lookup
     {
@@ -101,7 +108,7 @@ class Lookup
      * then swaps the old data with the new one at runtime
      *
      * @param string $name Name of the feature to re-generate
-     * @return $this
+     * @return Lookup
      */
     public function generate($feature): Lookup
     {
@@ -177,6 +184,11 @@ class Lookup
         return $this->cache;
     }
 
+    /**
+     * Returns the features names only
+     *
+     * @return array
+     */
     public function features(): array
     {
         return array_keys($this->features);
