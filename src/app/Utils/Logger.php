@@ -11,7 +11,7 @@ class Logger
      * @param mixed $x object or array to log
      * @return string HTML content to be output
      */
-    public static function html($data = null, string $title = ''): string
+    public static function html($data, string $title = ''): string
     {
         // Line
         $line = '';
@@ -36,7 +36,7 @@ class Logger
      * @param string $title Output title
      * @return string Content to be output
      */
-    public static function cli($data = null, string $title = ''): string
+    public static function cli($data, string $title = ''): string
     {
         // Line
         $line = '';

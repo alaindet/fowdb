@@ -3,7 +3,12 @@
 <?php if (isset($action) OR $_POST['action'] == 'review'): ?>
 	<div class="row">
 		<div class="col-xs-12 col-sm-9">
-			<form action="/admin/manage-rulings/actions.sql.php" method="post" class="form-horizontal" id="ruling-form">
+			<form
+        action="/admin/rulings/actions.sql.php"
+        method="post"
+        class="form-horizontal"
+        id="ruling-form"
+      >
 
 				<?php
 					// Get ruling info from database
@@ -160,7 +165,7 @@
 
 	<!-- Admin menu link -->
 	<p>
-		<a href="/index.php?admin&p=manage-rulings">
+		<a href="<?=url_old('admin/rulings')?>">
 			<button type="button" class="btn btn-default">&larr; Rulings</button>
 		</a>
 	</p>
@@ -179,7 +184,7 @@
 
 	<!-- Admin menu link -->
 	<p>
-		<a href="/index.php?admin&p=manage-rulings">
+		<a href="<?=url_old('admin/rulings')?>">
 			<button type="button" class="btn btn-default">&larr; Rulings</button>
 		</a>
 	</p>

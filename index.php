@@ -141,27 +141,19 @@ $request = (new \App\Http\Request\Request)
     ->path($_SERVER['REQUEST_URI'] ?? '/')
     ->queryString($_SERVER['QUERY_STRING']);
 
+// Read the routes
+$routes = \App\Services\FileSystem::loadFile(path_data('routes/routes.php'));
+
 // Map request to its route
 $route = (new \App\Http\Response\Router())
-    ->setRoutes(load_file(path_src('data/routes/routes.php')))
+    ->setRoutes($routes)
     ->setRequest($request)
     ->match();
 
 // Set needed access level
 $request->app('access', $route['_access']);
 
-// Initialize the dispatcher and pass the routed data
-// Ex.:
-// Request URI => /a-cool-uri/abc123/here-is-the-id/456
-// Route => /a-cool-uri/{code}/here-is-the-id/{id}
-// Route data => [
-//     '_controller' => 'CardsController',
-//     '_method' => 'searchForm',
-//     '_access' => 'public',
-//     '_route' => 'GET/',
-//     'code' => 'abc123',
-//     'id' => 456
-// ]
+// Initialize the dispatcher
 $response = (new \App\Http\Response\Dispatcher())
     ->setRequest($request)
     ->setMatchedRoute($route)
