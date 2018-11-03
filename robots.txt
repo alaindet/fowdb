@@ -1,6 +1,7 @@
 User-agent: *
 Disallow: /api/
 Disallow: /admin/
+Disallow: /old/
 Disallow: /src/
 
 Sitemap: http://www.fowdb.altervista.org/sitemap.xml
