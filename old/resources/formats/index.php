@@ -1,29 +1,22 @@
 <?php
-// Get db connection
-$db = \App\Legacy\Database::getInstance();
-
-// Get data from database
-$results = $db->get(
+$results = database()->get(
   "SELECT
-    formats.name as fname,
-    formats.code as fcode,
-    clusters.name as cname,
-    clusters.code as ccode,
-    sets.name as sname,
-    sets.code as scode
+    f.name as fname,
+    f.code as fcode,
+    c.name as cname,
+    c.code as ccode,
+    s.name as sname,
+    s.code as scode
   FROM
-    formats
-    INNER JOIN formats_clusters
-      ON formats.id = formats_clusters.formats_id
-    INNER JOIN clusters
-      ON formats_clusters.clusters_id = clusters.id
-    INNER JOIN sets
-      ON clusters.id = sets.clusters_id
+    formats f
+    INNER JOIN pivot_cluster_format cf ON f.id = cf.formats_id
+    INNER JOIN clusters c ON f.clusters_id = c.id
+    INNER JOIN sets s ON c.id = s.clusters_id
     ORDER BY
-      formats.ismulticluster DESC,
-      formats.id DESC, 
-      clusters.id DESC,
-      sets.id DESC"
+      f.is_multi_cluster DESC,
+      f.id DESC, 
+      c.id DESC,
+      s.id DESC"
 );
 
 // Will hold final data
@@ -72,7 +65,7 @@ foreach ($results as &$r) {
                 <li>
                   <div class="fdb-formats-label"><?=strtoupper($scode)?></div>
                   &nbsp;
-                  <a href="/?do=search&setcode=<?=$scode?>"><?=$sname?></a>
+                  <a href="/?do=search&set=<?=$scode?>"><?=$sname?></a>
                 </li>
               <?php endforeach; ?>
             </ul>

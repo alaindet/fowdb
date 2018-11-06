@@ -29,7 +29,7 @@ class Page
 		array $options = null,
 		array $vars = null,
 		bool $minimize = true
-	)
+	): string
 	{
 		if (isset($title)) $page_title = $title;
 		$scriptPath = path_root($path);
@@ -82,22 +82,24 @@ class Page
 		// Execute the script and generate some content into the buffer
 		require $scriptPath;
 
+		// Store generated content and clear the buffer
+		$pageContent = ob_get_contents();
+		ob_clean();
+
+		// Load the main template
+		require path_root('src/resources/views/old/layout/main.php');
+
+		// Get the final HTML output
+		$html = ob_get_clean();
+
+		// Minimize the output
 		if ($minimize) {
-			// Read page content into a variable and clean it all
-			$pageContent = ob_get_contents();
-			ob_clean();
-
-			// Build the entire template using previous content
-			require path_root('src/resources/views/layout/main.php');
-
-			// Get content from buffer, close buffer, minify content
-			return TinyMinify::html(ob_get_clean());
+			return TinyMinify::html($html);
 		}
-	
-		// Do not minimize (preserves <pre></pre> tags)
+		
+		// Do not minimize the output (preserves <pre></pre> tags)
 		else {
-			$pageContent = ob_get_clean();
-			require path_root('src/resources/views/layout/main.php');
+			return $html;
 		}
 	}
 }

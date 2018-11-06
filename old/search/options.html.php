@@ -1,3 +1,12 @@
+<?php
+// VARIABLES
+// $cards
+// $filters
+// $isSpoiler (Optional)
+// $search
+// $spoilers (Optional)
+// $thereWereResults
+?>
 <aside class="col-xs-12 hidden" id="hide-options">
 	<div class="panel panel-default">
 
@@ -52,10 +61,12 @@
 				<!-- OPTION: SPOILER LIST -->
 				<div class="option" id="option-spoiler-list">
 					<h4>Spoiler sets</h4>
-					<ul class="fdb-list">
-						<?php foreach (array_reverse($spoilers['sets']) as &$set): ?>
+					<ul class="fd-list">
+						<?php foreach ($spoilers as $set): ?>
 							<li>
-								<a href='#<?=$set['code']?>'><?=$set['name']?> (<?=$set['code']?>)</a>
+								<a href='#<?=$set['code']?>'>
+									<?=$set['name']?> (<?=$set['code']?>)
+								</a>
 							</li>
 						<?php endforeach; ?>
 					</ul>

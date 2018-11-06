@@ -36,7 +36,7 @@ class CardNarp extends Model
      */
     public static function getBaseIdByName(string $name): int
     {
-        $cards = database()->get(
+        $cards = database_old()->get(
             "SELECT id FROM cards WHERE narp = 0 AND name = :name LIMIT 1",
             [':name' => $name]
         );
@@ -52,7 +52,7 @@ class CardNarp extends Model
      */
     public static function getBaseCode(string $name): string
     {
-        return database()->get(
+        return database_old()->get(
             "SELECT narp, code
             FROM cards
             WHERE narp = 0 AND name = :name
@@ -76,7 +76,7 @@ class CardNarp extends Model
      */
     public static function getRelatedCards(string $name): array
     {
-        $cards = database()->get(
+        $cards = database_old()->get(
             "SELECT narp, code
             FROM cards
             WHERE narp > 0 AND name = :name

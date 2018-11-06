@@ -24,32 +24,83 @@ class Input extends Base
         return $this->read('FILES', $name);
     }
 
-    private function read(string $type, string $name = null, $escape = false)
+    public function request(string $name = null)
     {
-        $global = $this->globalArrayReference($type);
-        if (!isset($name)) return $global;
-        if (isset($global[$name])) {
-            if ($escape) {
-                return htmlentities($global[$name], ENT_QUOTES, 'UTF-8');
-            } else {
-                return $global[$name];
-            }
-        }
-        return null;
+        return $this->read('REQUEST', $name);
     }
 
+    /**
+     * Reads a variable from the input
+     *
+     * @param string $type
+     * @param string $name
+     * @param boolean $escape
+     * @return void
+     */
+    private function read(string $type, string $name = null, $escape = false)
+    {
+        // Alias the super global, like $_GET, $_POST or $_FILES
+        $global = $this->globalArrayReference($type);
+
+        // No name, return entire super global
+        if (!isset($name)) return $global;
+
+        // No value for this name
+        if (!isset($global[$name]) || $global[$name] === '') return null;
+
+        // Escape the value
+        if ($escape) return htmlentities($global[$name], ENT_QUOTES, 'UTF-8');
+
+        // Return value as it is
+        return $global[$name];
+    }
+
+    /**
+     * Returns a reference to global arrays by its name
+     *
+     * @param string $name
+     * @return array
+     */
     private function &globalArrayReference(string $name): array
     {
-        if ($name === 'GET') $ref =& $_GET;
-        if ($name === 'POST') $ref =& $_POST;
-        if ($name === 'FILES') $ref =& $_FILES;
+        if ($name === 'GET' || $name === 'get') $ref =& $_GET;
+        if ($name === 'POST' || $name === 'post') $ref =& $_POST;
+        if ($name === 'REQUEST' || $name === 'request') $ref =& $_REQUEST;
+        if ($name === 'FILES' || $name === 'files') $ref =& $_FILES;
+
         return $ref;
     }
 
-    public function exists(string $name, string $type = 'GET'): bool
+    /**
+     * Checks if a variable exists on the input
+     *
+     * @param string $name
+     * @param string $type (optional) Name of the global array to check
+     * @return boolean
+     */
+    public function exists(string $name, string $type = null): bool
     {
-        if ($type === 'GET') return isset($_GET[$name]);
-        if ($type === 'POST') return isset($_POST[$name]);
+        if (isset($type)) {
+            $array = $this->globalArrayReference($name);
+            return isset($array[$name]);
+        }
+
+        if (isset($_GET[$name])) return true;
+        if (isset($_POST[$name])) return true;
+        if (isset($_FILES[$name])) return true;
+
         return false;
+    }
+
+    /**
+     * Alias for Input::exists()
+     *
+     * @param string $name
+     * @param string $type (optional) Name of the global array to check
+     * @return boolean
+     */
+    public function has(string $name, string $type = null): bool
+    {
+        return $this->exists($name);
     }
 }

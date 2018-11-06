@@ -5,17 +5,17 @@
             "name": "New Frontiers",
             "clusters": [
                 5,
-                4
+                6
             ]
         },
         "wandr": {
             "name": "Wanderer",
             "clusters": [
+                3,
+                4,
                 5,
                 6,
-                2,
-                3,
-                4
+                2
             ]
         },
         "orign": {

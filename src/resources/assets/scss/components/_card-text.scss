@@ -1,35 +1,14 @@
-// Icons ----------------------------------------------------------------------
-
-// Free cost
-.fdb-icon-free {
-  width: 15px;
-  height: 15px;
-  letter-spacing: -2px;
-  font-weight: 700;
-  display: inline-block;
-  padding-right: .2rem;
-  font-style: italic;
-  text-align: center;
-  border-radius: 50%;
-  border: 2px solid #bbb;
-  font-size: .66rem;
-  line-height: 15px;
-  text-align: center;
-  background: #fff;
-  box-shadow: inset 0px 0px 3px 3px #ddd;
-}
-
-// Will and rest symbols
-.fdb-icon-w,
-.fdb-icon-r,
-.fdb-icon-u,
-.fdb-icon-g,
-.fdb-icon-b,
-.fdb-icon-m,
-.fdb-icon-v,
-.fdb-icon-t,
-.fdb-icon-rest {
-  background: url(../images/icons/sprites.png?20180430) no-repeat!important;
+// Will and Rest symbols (Sprite map)
+.fd-icon-w,
+.fd-icon-r,
+.fd-icon-u,
+.fd-icon-g,
+.fd-icon-b,
+.fd-icon-m,
+.fd-icon-v,
+.fd-icon-t,
+.fd-icon-rest {
+  background: url(../images/icons/sprites.png?1) no-repeat!important;
   width: 15px!important;
   height: 15px!important;
   margin-left: 1px!important;
@@ -37,52 +16,110 @@
   min-height: 15px;
   min-width: 15px
 }
-.fdb-icon-w { background-position: 0 0!important; }
-.fdb-icon-r { background-position: -17px 0!important; }
-.fdb-icon-u { background-position: -33px 0!important; }
-.fdb-icon-g { background-position: -50px 0!important; }
-.fdb-icon-b { background-position: -66px 0!important; }
-.fdb-icon-v { background-position: -82px 0!important; }
-.fdb-icon-m { background-position: -98px 0!important; }
-.fdb-icon-t { background-position: -132px 0!important; }
-.fdb-icon-rest {
+
+// Sprite positions for will icons
+.fd-icon-w { background-position: 0 0!important; }
+.fd-icon-r { background-position: -17px 0!important; }
+.fd-icon-u { background-position: -33px 0!important; }
+.fd-icon-g { background-position: -50px 0!important; }
+.fd-icon-b { background-position: -66px 0!important; }
+.fd-icon-v { background-position: -82px 0!important; }
+.fd-icon-m { background-position: -98px 0!important; }
+.fd-icon-t { background-position: -132px 0!important; }
+.fd-icon-rest {
   background-position: -114px 0!important;
   width: 18px!important;
   height: 18px!important;
 }
 
-// Abilities
-.mark_abilities,
-.mark_break,
-.mark_skills,
-.mark_spoiler {
+// Bigger will icons (32x32 pixels)
+.fd-icon-w.--bigger,
+.fd-icon-r.--bigger,
+.fd-icon-u.--bigger,
+.fd-icon-g.--bigger,
+.fd-icon-b.--bigger,
+.fd-icon-v.--bigger {
+  background: url(../images/icons/bigger-sprites.png?1) no-repeat!important;
+  width: 34px!important;
+  height: 34px!important;
+  min-height: 34px;
+  min-width: 34px
+}
+
+.fd-icon-w.--bigger { background-position: 0 0!important; }
+.fd-icon-u.--bigger { background-position: -34px 0!important; }
+.fd-icon-r.--bigger { background-position: -68px 0!important; }
+.fd-icon-g.--bigger { background-position: -102px 0!important; }
+.fd-icon-b.--bigger { background-position: -136px 0!important; }
+.fd-icon-v.--bigger { background-position: -170px 0!important; }
+
+// Free icons styling
+.fd-icon-free {
+  display: inline-block;
+  background:#fff;
+  width: 15px;
+  height: 15px;
+  line-height: 100%;
+  margin-left: 1px;
+  margin-right: 1px;
+  font-family: serif;
+  font-size: $font-080;
+  font-weight: bold;
+  font-style: italic;
+  text-align: center;
+  letter-spacing: -1px;
+  border-radius: 100%; // Make it roud
+  border: 1px solid #ccc;
+  box-shadow: inset 0px 0px 3px 3px #ccc;
+}
+
+
+// ABILITIES ------------------------------------------------------------------
+.fd-mark-ability,
+.fd-mark-old-ability,
+.fd-mark-break,
+.fd-mark-spoiler {
   display: inline-block;
   padding: .1em .3em;
-  line-height: .95em;
+  line-height: .9em;
   border-radius: .3em;
   box-shadow: 1px 1px 3px #989898
 }
-.mark_abilities {
+
+// [Explode]
+.fd-mark-old-ability {
   background: #000;
   color: #fff;
 }
-.mark_skills {
-  border: 1px solid #000
+
+// [_Precision_]
+.fd-mark-ability {
+  border: 1px solid #000;
+  background: #fff;
+  color: #000;
 }
-.mark_break {
-  background: red;
-  color: #fff;
+
+// [Break]
+.fd-mark-break {
+  background: #f00;
+  color: #fff
 }
-.mark_breaktext {
-  color: red;
+
+// [Break] following text
+.fd-mark-break-text {
+  color: #f00;
   display: inline;
 }
-.mark_spoiler {
+
+// [Spoiler] mark on card pages
+.fd-mark-spoiler {
   background: #ff6c39;
   color: #fff;
   box-shadow: 2px 2px 2px grey
 }
-.mark_errata {
-  color: #00f;
-  display: inline;
+
+// Oracle in-text -errata- -/errata-
+.fd-mark-errata {
+  color: #00F;
+  display: inline
 }

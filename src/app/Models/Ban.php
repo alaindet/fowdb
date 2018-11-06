@@ -32,7 +32,7 @@ class Ban
 
     public static function getBanlistPageData(): array
     {
-        return database()->get(
+        return database_old()->get(
             "SELECT
                 f.name format_name,
                 f.code format_code,
@@ -50,7 +50,7 @@ class Ban
             ORDER BY
                 b.copies ASC,
                 b.deck ASC,
-                f.ismulticluster DESC,
+                f.is_multi_cluster DESC,
                 f.id DESC,
                 c.clusters_id DESC,
                 c.sets_id DESC,
@@ -67,7 +67,7 @@ class Ban
 
         $id = $args[0];
 
-        $items = database()->get(
+        $items = database_old()->get(
             "SELECT
                 f.name as name,
                 b.deck as deck,

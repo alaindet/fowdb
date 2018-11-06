@@ -1,0 +1,16 @@
+.fd-pagination a {
+  color: #333!important;
+}
+.fd-pagination li.active a {
+  font-weight: 800;
+  background-color: #a8a8a8!important;
+  border-color: #999;
+  z-index: 10;
+}
+.fd-pagination li.active a:hover {
+  border-color: #999;
+}
+.fd-pagination li a:hover {
+  background-color: #d8d8d8;
+  border-color: #999;
+}

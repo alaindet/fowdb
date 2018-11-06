@@ -11,11 +11,18 @@ class CheckAuthorizationMiddleware implements MiddlewareInterface
 {
     public function run(Request $request): void
     {
-        $access = $request->app('access'); // public | admin | judge
-        if ($access === 'public') return;
+        // Access levels:
+        // 'public' => 0,
+        // 'admin' => 1,
+        // 'user' => 2,
+        // 'judge' => 3
+        $requiredLevel = $request->app('access');
+
+        // Bypass access control
+        if ($requiredLevel === 'public') return;
 
         // ERROR: Not authorized!
-        if (!Authorization::check($access, Authorization::level())) {
+        if (!Authorization::check($requiredLevel)) {
             throw new AuthorizationException();
         }
     }

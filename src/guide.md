@@ -1,5 +1,11 @@
 # Conventions and how-tos on FoWDB
 
+## Inputs
+
+- All inputs must be in kebab-case, not snake_case Ex.: `<input name="card-id">`
+- Variables inside views must be named in snake_case to enhance readabiliy
+- Everywhere else, variables must be in camelCase
+
 # Routes
 
 - Resource = card
@@ -66,3 +72,42 @@ php clint
 3. Edit the command's help description in `/src/app/Clint/descriptions/foo-bar.md`
 
 4. If you did not provide a description, edit the generic description also, in `/src/app/Clint/descriptions/_all.md`
+
+## Notes about Twig
+
+### Include, embed, or macro...?
+
+Reference
+https://github.com/twigphp/Twig/issues/1697#issuecomment-116303935
+
+- Macros: reusable markup for different templates
+- Includes: Parts of a page extracted for readability
+- Embed: Extends a template and overwrites a block
+
+My take
+- Macros: view components to be used around templates
+- Includes: parts of a longer page
+- Embed: basically, use them only to extend or substitute blocks in a more generic template. They're rare
+
+### Hashes, what the heck are they?
+
+Basically, an associative array is an *hash* for Twig, it's an associative array. That's it.
+
+Syntax, from https://twig.symfony.com/doc/2.x/templates.html#literals
+
+```
+{# keys as string #}
+{ 'foo': 'foo', 'bar': 'bar' }
+
+{# keys as names (equivalent to the previous hash) #}
+{ foo: 'foo', bar: 'bar' }
+
+{# keys as integer #}
+{ 2: 'foo', 4: 'bar' }
+
+{# keys as expressions (expression must be enclosed in parentheses) #}
+{% set foo = 'foo' %}
+{ (foo): 'foo', (1 + 1): 'bar', (foo ~ 'b'): 'baz' }
+```
+
+Reference https://mijingo.com/blog/key-value-arrays-in-twig

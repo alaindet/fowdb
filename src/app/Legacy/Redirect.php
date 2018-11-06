@@ -7,7 +7,7 @@ class Redirect
     public static function to(string $page = '', array $params = [])
     {
         header('Location: '.self::url($page, $params));
-        exit();
+        die();
     }
     
     public static function back(): void

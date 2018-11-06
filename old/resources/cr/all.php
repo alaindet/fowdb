@@ -1,21 +1,19 @@
 <div class="page-header">
 	<h1>Comprehensive Rules</h1>
 </div>
-<ul class="fdb-list">
-  <?php foreach ($crs as &$cr): ?>
-  	<li class="separate">
-      <div>
-    		<a
-					href="<?=url_old('resources/cr', ['v' => $cr['version']])?>"
+
+<div class="list-group f-list-group">
+	<?php foreach ($items as $item): ?>
+  	<div class="list-group-item f-list-group-item">
+			<p class="list-group-item-text font-110">
+				<?=$item['date_validity']?>
+				<a
+					href="<?=url_old('resources/cr', ['v' => $item['version']])?>"
 					target="_self"
 				>
-    			<strong>Version:</strong> <?=$cr['version']?> //
-          <strong>Legal from:</strong> <?=$cr['date_validity']?>
-					<?php if ($cr['is_default']): ?>
-						<span class="text-danger"><strong>Current</strong></span>
-					<?php endif; ?>
-    		</a>
-      </div>
-  	</li>
+					Comprehensive Rules ver. <?=$item['version']?>
+				</a>
+			</p>
+		</div>
   <?php endforeach; ?>
-</ul>
+</div>

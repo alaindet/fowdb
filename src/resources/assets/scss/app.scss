@@ -1,10 +1,20 @@
+@import 'variables/colors';
 @import 'variables/typography';
 @import 'variables/space';
 
+@import 'components/alert';
+@import 'components/button';
 @import 'components/card-text';
+@import 'components/forms/text-form-horizontal';
+@import 'components/list';
+@import 'components/pagination';
+@import 'components/progress';
+@import 'components/top-anchor';
+@import 'components/zoomable';
 
 @import 'layout/grid';
-@import 'layout/links';
+@import 'layout/link';
+@import 'layout/table';
 
 @import 'utilities/margin';
 @import 'utilities/padding';

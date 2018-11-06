@@ -31,11 +31,6 @@ class Config
         $this->load();
     }
 
-    public function debug()
-    {
-        return $this->data;
-    }
-
     /**
      * Read data from the configuration
      *
@@ -89,7 +84,6 @@ class Config
             'DIR_ROOT' => dirname($this->srcPath),
             'DIR_SRC' => $this->srcPath,
             'DIR_APP' => $this->srcPath.'/app',
-            'DIR_CONFIG' => $this->srcPath.'/config',
             'DIR_VIEWS' => $this->srcPath.'/resources/views',
             'DIR_DATA' => $this->srcPath.'/data',
             'DIR_CACHE' => $this->srcPath.'/data/cache',

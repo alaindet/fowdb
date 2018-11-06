@@ -1,41 +1,34 @@
 <?php
 
 // Instantiate a new Search object
-$s = new \App\Services\Card\Search();
+$search = new \App\Services\Card\Search();
 
 // Get filters from GET parameters
-$f = $s->getFilters($_GET);
+$filters = $search->getFilters($_GET);
 
 // Process filters
-$s->processFilters($_GET);
+$search->processFilters($_GET);
 
-// Join the cards table with the sets table to get the spoiler flag ("isspoiler")
-$s->addTable("sets", ["cards.sets_id", "sets.id"]);
-$s->addField("isspoiler", "is_spoiler");
+// TEST
+// dump([ '$_GET' => $_GET, 'SQL' => $search->getSQL() ]);
 
-// // TEST
-// echo log_html($_GET, "get");
-// echo log_html($s->getSQL(), "sql");
+$cards = $search->getCards();
 
-// If there's some result, write info into $cards[] array
-if ($cards = $s->getCards()) {
-	$thereWereResults = true;
-}
 // ERROR: Cards not found!
-else {
-	$cards = array();
-	alert("No results. Please try changing your searching criteria.", 'danger');
-	$thereWereResults = false;
+if (empty($cards)) {
+	alert('No results. Please try changing your searching criteria.', 'danger');
+	redirect_old('/');
 }
 
 // Alias the filters
-$filters =& $s->f;
 echo view_old(
 	'Search',
 	'old/search/search.php',
+	[ 'js' => [ 'public/search' ] ],
 	[
-		'js' => [
-			'public/search'
-		]
+		'filters' => $filters,
+		'search' => $search,
+		'cards' => $cards,
+		'thereWereResults' => true
 	]
 );

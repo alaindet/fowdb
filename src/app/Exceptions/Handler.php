@@ -7,7 +7,8 @@ use App\Utils\Logger;
 use App\Base\Exception;
 use App\Exceptions\Alertable;
 use App\Services\Alert;
-// use App\Legacy\Redirect;
+use App\Http\Response\Redirect;
+use App\Services\Config;
 
 class Handler
 {
@@ -15,15 +16,15 @@ class Handler
     {
         // Show exception as an alert
         if ($exception instanceof Alertable) {
-            Alert::set($exception->getMessage(), 'danger');
-            // Redirect::back();
-            header('Location: /');
-            return;
+            Alert::add($exception->getMessage(), 'danger');
+            Redirect::to($exception->getRedirectUrl());
         }
+
+        $config = Config::getInstance();
 
         // Show readable log of the exception
         $logger = Logger::class;
-        $method = (config('app.env') === 'cli') ? 'cli' : 'html';
+        $method = ($config->get('app.env') === 'cli') ? 'cli' : 'html';
         $data = [
             'message' => $exception->getMessage(),
             'code' => $exception->getCode(),

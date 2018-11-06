@@ -1,10 +1,5 @@
 [
     {
-        "value": 0,
-        "code": "no",
-        "name": "(None)"
-    },
-    {
         "value": 1,
         "code": "j",
         "name": "J-Ruler"

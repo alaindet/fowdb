@@ -2,7 +2,7 @@
 	// Define links
 	$links = [
 		'master' => [
-			url_old('temp/admin/artists/select-set') => 'Artists Tool',
+			url_old('admin/_artists/select-set') => 'Artists Tool',
 			url_old('admin/database') => 'Database (Adminer)',
 			url_old('admin/hash') => 'Hashing tool',
 			url_old('admin/helpers') => 'Helpers data',

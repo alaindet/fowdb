@@ -16,7 +16,8 @@
 
 		<!-- Notes -->
 		<p>
-			<ul class="fdb-list">Notes:
+			Notes:
+			<ul class="fd-list --spaced">
 				<li>Works only on solid color borders</li>
 				<li>20% tolerance</li>
 				<li>All borders are trimmed</li>

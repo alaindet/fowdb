@@ -1,10 +1,11 @@
 // Font size
-// .font-050 { font-size: $font-050; }
-// .font-066 { font-size: $font-066; }
+.font-050 { font-size: $font-050; }
+.font-066 { font-size: $font-066; }
 // .font-075 { font-size: $font-075; }
 .font-090 { font-size: $font-090; }
-// .font-100 { font-size: $font-100; }
-// .font-110 { font-size: $font-110; }
+.font-100 { font-size: $font-100; }
+.font-105 { font-size: $font-105; }
+.font-110 { font-size: $font-110; }
 // .font-120 { font-size: $font-120; }
 // .font-125 { font-size: $font-125; }
 .font-150 { font-size: $font-150; }
@@ -13,3 +14,18 @@
 
 // Font style
 .text-italic { font-style: italic; }
+.text-bold { font-weight: 700; }
+.text-monospace { font-family: monospace; }
+
+// Justify
+.text-justified {
+  text-align:justify;
+  text-justify: inter-word;
+}
+
+// (From 786px up)
+@media (min-width: $breakpoint-xs) {
+  .sm-text-left {
+    text-align: left;
+  }
+}

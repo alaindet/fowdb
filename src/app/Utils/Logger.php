@@ -11,11 +11,11 @@ class Logger
      * @param mixed $x object or array to log
      * @return string HTML content to be output
      */
-    public static function html($data, string $title = ''): string
+    public static function html($data, string $title = null): string
     {
         // Line
         $line = '';
-        if (!empty($title)) {
+        if (isset($title)) {
             while (strlen($line) < strlen($title)) $line .= '=';
             $line = "<br>{$line}<br>";
         }
@@ -36,11 +36,11 @@ class Logger
      * @param string $title Output title
      * @return string Content to be output
      */
-    public static function cli($data, string $title = ''): string
+    public static function cli($data, string $title = null): string
     {
         // Line
         $line = '';
-        if (!empty($title)) {
+        if (isset($title)) {
             while (strlen($line) < strlen($title)) $line .= '=';
             $line = "\n{$line}\n";
         }

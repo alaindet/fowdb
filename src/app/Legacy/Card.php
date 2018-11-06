@@ -5,6 +5,7 @@ namespace App\Legacy;
 use App\Models\Ban;
 use App\Models\Card as Model;
 use App\Models\CardNarp;
+use App\Models\Card as CardModel;
 use App\Models\Ruling;
 use App\Utils\Arrays;
 use App\Views\Card\Card as View;
@@ -18,8 +19,11 @@ class Card
 
         // ERROR: No card with that code!
         if (empty($cardsDb)) {
-            notify("No card found with code <strong>{$code}</strong>", 'warning');
-            redirect('/');
+            alert(
+                "No card found with code <strong>{$code}</strong>",
+                'warning'
+            );
+            redirect_old('/');
         }
 
         $results = true;
@@ -27,12 +31,12 @@ class Card
 
         foreach ($cardsDb as &$card) {
             
-            // $type ------------------------------------------------------------------
+            // $type ----------------------------------------------------------
             $reminder = ($card['back_side'] === '2') ? ' (Shift)' : '';
             $link = "/?do=search&type[]={$card['type']}";
             $type = "<a href=\"{$link}\">{$card['type']}</a>{$reminder}";
             
-            // $freecost --------------------------------------------------------------
+            // $freecost ------------------------------------------------------
             $freecost = '';
             if (!empty($card['free_cost'])) {
                 if ($card['free_cost'] > 0) {
@@ -46,7 +50,7 @@ class Card
                 }
             }
 
-            // $attributecost ---------------------------------------------------------
+            // $attributecost -------------------------------------------------
             $attributecost = '';
             if (!empty($card['attribute_cost'])) {
                 $attributecost = array_reduce(
@@ -56,37 +60,36 @@ class Card
                 );
             }
             
-            // $cost ------------------------------------------------------------------
+            // $cost ----------------------------------------------------------
             $cost = empty($card['total_cost']) ? '0' : $attributecost . $freecost;
             
-            // $attribute -------------------------------------------------------------
+            // $attribute -----------------------------------------------------
             $attribute = '';
             if (!empty($card['attribute'])) {
 
                 // Build attribute html
                 // Ex.: [ICON] Fire, [ICON] Dark
                 $attributesMap = cached('attributes');
-                $attributes = array_map(function ($attribute) use ($attributesMap) {
-                    return collapse(
-                        "<a href=\"/?do=search&attributes[]={$attribute}\">",
-                            "<img ",
-                                "src=\"images/icons/1x1.gif\" ",
-                                "class=\"fdb-icon-{$attribute}\"",
-                            "/>&nbsp;",
+                $attributes = [];
+                foreach (explode('/', $card['attribute']) as $attribute) {
+                    $attributes[] = collapse(
+                        '<a href="/?do=search&attributes[]=',$attribute,'">',
+                            '<img ',
+                                'src="',asset('images/icons/blank.gif'),'" ',
+                                'class="fd-icon-',$attribute,'"',
+                            '>&nbsp;',
                             $attributesMap[$attribute],
-                        "</a>"
+                        '</a>'
                     );
-                }, explode('/', $card['attribute']));
-
-                // Remove last comma
+                }
                 $attribute = implode(', ', $attributes);
             }
             
-            // $raceLabel -------------------------------------------------------------
+            // $raceLabel -----------------------------------------------------
             $raceTypes = ['Ruler', 'J-Ruler', 'Resonator'];
             $raceLabel = in_array($card['type'], $raceTypes) ? 'race' : 'trait';
 
-            // $raceValue -------------------------------------------------------------
+            // $raceValue -----------------------------------------------------
             $raceValue = '<em>(none)</em>';
             if (!empty($card['race'])) {
                 $raceValue = implode(' / ', array_map(
@@ -97,15 +100,17 @@ class Card
                 ));
             }
             
-            // $set -------------------------------------------------------------------
+            // $set -----------------------------------------------------------
+            $setId =& $card['sets_id'];
+            $setCode = lookup("sets.id2code.{$setId}");
+            $setName = lookup("sets.id2name.{$setId}");
             $set = collapse(
-                "<a href='/?do=search&setcode={$card['setcode']}'>",
-                    strtoupper($card['setcode']), ' - ',
-                    cached("clusters.{$card['clusters_id']}.sets.{$card['setcode']}"),
+                "<a href='/?do=search&set={$setCode}'>",
+                    strtoupper($setCode),' - ',$setName,
                 "</a>"
             );
 
-            // $artist ----------------------------------------------------------------
+            // $artist --------------------------------------------------------
             $artist = null;
             if (isset($card['artist_name'])) {
                 $artist = collapse(
@@ -115,15 +120,15 @@ class Card
                 );
             }
 
-            // $baseCardId ------------------------------------------------------------
+            // $baseCardId ----------------------------------------------------
             ($card['narp'] === 0)
                 ? $baseCardId = (int) $card['id']
-                : $baseCardId = CardNarp::getBaseIdByName($card['name']);
+                : $baseCardId = CardModel::getBaseIdByName($card['name']);
             
-            // $format, $banned -------------------------------------------------------
-            $spoilers = cached('spoiler.codes');
-            if (!empty($spoilers) && in_array($card['setcode'], $spoilers)) {
-                $format = '<span class="mark_spoiler">Spoiler</span>';
+            // $format, $banned -----------------------------------------------
+            $spoilers = lookup('spoilers.ids');
+            if (!empty($spoilers) && in_array($card['sets_id'], $spoilers)) {
+                $format = '<span class="fd-mark-spoiler">Spoiler</span>';
                 $banned = '';
             }
 
@@ -135,7 +140,7 @@ class Card
                 $cardFormats = View::formatsListByCluster($card['clusters_id']);
 
                 // Banned in these formats (can be empty, most of the times)
-                // Ex.: (assoc) [ [format_name, deck_name, copies_in_deck], ... ]
+                // Ex.: (assoc) [ [format_name, deck_name, copies_in_deck], .. ]
                 // $bannedFormats = Ban::formatsList($baseCardId);
                 $bannedFormats = Ban::getData('card', $baseCardId);
 
@@ -148,7 +153,10 @@ class Card
                     $cardFormats = array_filter(
                         $cardFormats,
                         function ($format) use ($bannedFormatsNames) {
-                            return in_array($format['name'], $bannedFormatsNames);
+                            return in_array(
+                                $format['name'],
+                                $bannedFormatsNames
+                            );
                         }
                     );
 
@@ -156,58 +164,72 @@ class Card
                     // Ex.: (no extra) New Frontiers
                     // Ex.: (extra) New Frontiers (Rune Deck, 1 copy)
                     $bannedHtml = implode(', ', array_map(function ($ban) {
-                        $extra = Arrays::filterNull( [$ban['deck'], $ban['copies']] );
+                        
+                        $extra = Arrays::filterNull([
+                            $ban['deck'],
+                            $ban['copies']
+                        ]);
+
                         return collapse(
-                            "<span style=\"color:red;\">",
-                                "<strong>",$ban['format'],"</strong>","&nbsp",
-                            "</span>",
-                            "<em>",
-                                !empty($extra) ? '('.implode(', ', $extra).')' : '',
-                            "</em>"
+                            '<span style="color:red;">',
+                                '<strong>',$ban['format'],'</strong>&nbsp',
+                            '</span>',
+                            '<em>',
+                                !empty($extra)
+                                    ? '('.implode(', ', $extra).')'
+                                    : '',
+                            '</em>'
                         );
+
                     }, $bannedFormats));
                 }
 
-                // $format, $banned ---------------------------------------------------
+                // $format, $banned -------------------------------------------
                 $format = View::displayFormats($cardFormats);
                 $banned = $bannedHtml ?? '';
             }
             
-            // $rulings ---------------------------------------------------------------
+            // $rulings -------------------------------------------------------
             $rulings = Ruling::getByCardId($baseCardId, $render = true);
 
-            // $narp ------------------------------------------------------------------
+            // $narp ----------------------------------------------------------
             $narp = CardNarp::displayRelatedCards(
                 (int) $card['narp'],
                 $card['name']
             );
 
-            // $rarity ----------------------------------------------------------------
+            // $rarity --------------------------------------------------------
             $rarity = '<em>(none)</em>';
+            $rarityCode =& $card['rarity'];
+            $rarityName = lookup("rarities.code2name.{$rarityCode}");
             if (isset($card['rarity'])) {
                 $rarity = collapse(
-                    "<a href='/?do=search&rarity[]={$card['rarity']}'>",
-                        strtoupper($card['rarity']), ' - ',
-                        cached("rarities.{$card['rarity']}"),
-                    "</a>"
+                    '<a href="/?do=search&rarity[]=',$card['rarity'],'">',
+                        strtoupper($rarityCode),' - ',$rarityName,
+                    '</a>'
                 );
             }
 
-            // $flavorText ------------------------------------------------------------
-            $flavorText = "<span class='flavortext'>{$card['flavor_text']}</span>";
+            // $flavorText ----------------------------------------------------
+            $flavorText = collapse(
+                '<span class="flavortext">',
+                    $card['flavor_text'],
+                '</span>'
+            );
 
-            // $atkDef ----------------------------------------------------------------
+            // $atkDef -------------------------------------------------------------------
             $atkDef = collapse(
-                "<span class=\"font-150 text-italic\">",
-                    "{$card['atk']} / {$card['def']}",
-                "</span>"
+                '<span class="font-150 text-italic">',
+                    $card['atk'],' / ',$card['def'],
+                '</span>'
             );
 
             // Backup card type before overwriting $cards
             $_type = $card['type'];
 
-            // $card ------------------------------------------------------------------
+            // $card -------------------------------------------------------------------
             $card = [
+
                 // Shown info (side panel)
                 'name' => $card['name'],
                 'cost' => $cost,
@@ -225,6 +247,7 @@ class Card
                 'set' => $set,
                 'format' => $format,
                 'banned' => $banned,
+
                 // Extra info
                 'id' => $card['id'],
                 'back_side' => $card['back_side'],
@@ -232,9 +255,10 @@ class Card
                 'image_path' => $card['image_path'],
                 'thumb_path' => $card['thumb_path'],
                 'rulings' => $rulings,
+                
             ];
 
-            // Remove optional properties for some card types -------------------------
+            // Remove optional properties for some card types -------------------------------------------------------------------
             if (empty($card['banned'])) unset($card['banned']);
             if (empty($card['divinity'])) unset($card['divinity']);
             if (empty($card['flavor_text'])) unset($card['flavor_text']);

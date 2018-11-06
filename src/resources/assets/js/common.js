@@ -26,9 +26,19 @@ window.FoWDB = {
       e = ["success", "info", "warning", "danger"],
       a = e.indexOf(i) > 0 ? i : "info",
       l = !!o && o,
-      r = "<div class='row notification'><div class='col-xs-12'><div class='alert alert-" + a + "''><span class='notif-remove pointer'>&times;</span><span class='notif-content'> " + t + "</span></div></div></div>";
-    return !!t.length && (l || ($("#header").append(r), $("html, body").animate({
-        scrollTop: $(".notification").offset().top
+
+      r = [
+        '<div class="fd-alert alert alert-',a,' alert-dismissable">',
+          '<a href="#" class="close" data-dismiss="alert" aria-label="close">',
+            '&times;',
+          '</a>',
+          '<div class="fd-alert-content">',t,'</div>',
+        '</div>',
+      ].join('');
+
+
+    return !!t.length && (l || ($(".fd-alerts").first().append(r), $("html, body").animate({
+        scrollTop: $(".fd-alerts").offset().top
     }, 200)), !l || r)
   }
 };
@@ -63,21 +73,5 @@ $(document).ready(function() {
     var n = $(this).closest(".to-hide"),
       i = ($(this), $(".hide-content", n));
     i.toggleClass("hidden")
-  });
-
-  // Remove notification ----------------------------------------------------
-  $("body").on("click", ".notif-remove", function() {
-    $(this).parents(".notification").remove()
-  });
-
-  // Save previous page when clicking Admin on menu -------------------------
-  $(".menu-admin").on("click", function() {
-    $.post("/api/admin/previous.php",
-      { previous: window.location.href },
-      function (data) {
-        window.location.href = window.location.protocol+"//"+window.location.host+"/?p=admin";
-      },
-      "json"
-    );
   });
 });

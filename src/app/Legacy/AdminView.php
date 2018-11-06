@@ -7,7 +7,7 @@ class AdminView
     /**
      * Holds all links
      */
-    public static $crumbs = ["Admin" => "/?p=admin"];
+    public static $crumbs = ["Admin" => "admin"];
     
     /**
      * Outputs breadcrumbs to the page, 

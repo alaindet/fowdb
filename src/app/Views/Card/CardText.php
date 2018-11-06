@@ -10,12 +10,14 @@ class CardText
 	 * @var array
 	 */
 	private static $replace = [
-		'{rest}' => '<img src="images/icons/1x1.gif" class="fdb-icon-rest" />',
+		'{rest}' => '<img src="images/icons/blank.gif" class="fd-icon-rest" />',
 		'=>' => '&rArr;',
 		'Errata:' => '<span class="ruling-errata">Errata:</span>',
 		'<hr>' => "<div class='fdb-separator-v-05'></div>",
 		'[(' => '【',
-		')]' => '】'
+		')]' => '】',
+		'<<' => '&#12296;',
+		'>>' => '&#12297;'
 	];
 
 	/**
@@ -25,17 +27,17 @@ class CardText
 	 */
 	private static $regexReplace = [
 		// Will symbols
-		"/{([wrugbmvt])}/" => "<img src='images/icons/1x1.gif' class='fdb-icon-$1' alt='$1'/>",
+		"/{([wrugbmvt])}/" => "<img src='images/icons/blank.gif' class='fd-icon-$1' alt='$1'/>",
 		// Free will
-		"/{([0-9x]+)}/" => "<div class='fdb-icon-free'>&nbsp;$1&nbsp;</div>",
+		"/{([0-9x]+)}/" => "<div class='fd-icon-free'>&nbsp;$1&nbsp;</div>",
 		// Symbol skills
-		"/\[_(.+?)_\]/" => "<span class='mark_skills'>$1</span>",
+		"/\[_(.+?)_\]/" => "<span class='fd-mark-ability'>$1</span>",
 		// Break
-		"/^\[Break\](.+?)(<br>|$)/" => "<span class='mark_break'>Break</span> <span class='mark_breaktext'>$1</span><br>",
+		"/^\[Break\](.+?)(<br>|$)/" => "<span class='fd-mark-break'>Break</span> <span class='fd-mark-break-text'>$1</span><br>",
 		// Abilities (white text on black, legacy)
-		"/\[(J-Activate|Continuous|Activate|Target Attack|Enter|Flying|Explode|Pierce|Trigger|First Strike|Imperishable|Swiftness|Awakening|Incarnation|Quickcast|Remnant|Stealth|Judgment|Evolution|Shift)\]/" => "<span class='mark_abilities'>$1</span>",
+		"/\[(J-Activate|Continuous|Activate|Target Attack|Enter|Flying|Explode|Pierce|Trigger|First Strike|Imperishable|Swiftness|Awakening|Incarnation|Quickcast|Remnant|Stealth|Judgment|Evolution|Shift)\]/" => "<span class='fd-mark-old-ability'>$1</span>",
 		// -ERRATA- on card text
-		"~-errata-(.+?)-/errata-~" => "<span class='mark_errata'>$1</span>"
+		"~-errata-(.+?)-/errata-~" => "<span class='fd-mark-errata'>$1</span>"
 	];
 
     /**
@@ -44,17 +46,29 @@ class CardText
 	 * The rendered string has HTML <img> for will and rest symbols,
 	 * CSS classes for abilities, skills, breaks and horizontal rules.
 	 *
-	 * @param string $txt The string to be rendered
-	 * @return string $txt The rendered string
+	 * @param string $text The string to be rendered
+	 * @return string $text The rendered string
 	 */
-	public static function render(string $txt = ''): string
+	public static function render(string $text): string
 	{
-		$replace =& self::$replace;
-		$regexReplace =& self::$regexReplace;
+		$text = preg_replace(
+			array_keys(self::$regexReplace),
+			self::$regexReplace,
+			$text
+		);
 
-		$txt = preg_replace(array_keys($regexReplace), $regexReplace, $txt);
-		$txt = str_replace(array_keys($replace), $replace, $txt);
+		$text = str_replace(
+			array_keys(self::$replace),
+			self::$replace,
+			$text
+		);
 
-		return $txt;
+		$text = str_replace(
+			'images/icons/blank.gif',
+			asset('images/icons/blank.gif'),
+			$text
+		);
+
+		return $text;
 	}
 }

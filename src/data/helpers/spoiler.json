@@ -1,6 +1,14 @@
 {
-    "sets": [],
-    "codes": [],
-    "names": [],
-    "counts": []
+    "codes": [
+        "sdv5",
+        "ndr"
+    ],
+    "names": [
+        "Starter Deck Valhalla - Darkness",
+        "New Dawn Rises"
+    ],
+    "counts": [
+        23,
+        113
+    ]
 }

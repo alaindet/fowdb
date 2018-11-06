@@ -4,7 +4,7 @@ require __DIR__ . '/src/bootstrap.php';
 
 // Search for cards (spaghetti code here!)
 if (isset($_GET['do']) && $_GET['do'] === 'search') {
-    require path_root('search/search_retrievedb.php');
+    require path_root('old/search/search_retrievedb.php');
     return;
 }
 
@@ -14,109 +14,133 @@ if (isset($_GET['p'])) {
 
         // Public -------------------------------------------------------------
         case 'search':
-            $options = [ 'lightbox' => 1, 'js' => ['search'] ];
-            echo view('Search', 'search/search.php', $options);
+            echo view_old(
+                'Search',
+                'old/search/search.php',
+                [
+                    'lightbox' => true,
+                    'js' => [ 'public/search' ]
+                ],
+                ['thereWereResults' => false]
+            );
             return;
         case 'card':
-            require __DIR__ . '/cardpage/cardpage.php';
+            require __DIR__ . '/old/cardpage/cardpage.php';
             return;
-        case 'spoiler':
-            $options = [ 'lightbox' => 1, 'js' => ['search', 'spoiler'] ];
-            echo view('Spoiler', 'spoiler/spoiler.php', $options);
+        case 'spoiler':;
+            echo view_old('Spoiler', 'old/spoiler/spoiler.php', [
+                'lightbox' => true,
+                'js' => [
+                    'public/search',
+                    'public/spoiler'
+                ]
+            ]);
             return;
         case 'resources/ban':
-            echo view('Banlist', 'resources/ban/index.php');
+            echo view_old('Banlist', 'old/resources/ban/index.php');
             return;
         case 'resources/cr':
-            require path_root('resources/cr/index.php');
+            require path_root('old/resources/cr/index.php');
             return;
         case 'resources/errata':
-            echo view('Errata', 'resources/errata/errata.php');
+            echo view_old('Errata', 'old/resources/errata/errata.php');
             return;
         case 'resources/formats':
-            echo view('Formats', 'resources/formats/index.php');
+            echo view_old('Formats', 'old/resources/formats/index.php');
             return;
         case 'resources/races':
-            echo view('Races and traits', 'resources/races/races.php');
+            echo view_old('Races and traits', 'old/resources/races/races.php');
             return;
 
         // Admin --------------------------------------------------------------
-        case 'admin':
-            echo view('Admin:Menu', 'admin/index.php');
-            return;
-        case 'admin/cards':
-            echo view('Admin:Cards', 'admin/cards/index.php');
-            return;
+        // case 'admin':
+        //     echo view_old('Admin:Menu', 'old/admin/index.php');
+        //     return;
+        // case 'admin/cards':
+        //     echo view_old('Admin:Cards', 'old/admin/cards/index.php');
+        //     return;
         case 'admin/database':
-            if (admin_level() > 0) {
-                $hash = 'cJ3MRhFC8zNuuv4Eo6pNGCx7HfbznvOAdEZT9Ylt7AG';
-                $url = config('app.url');
-                $url .= "/admin/database/{$hash}/index.php";
-                header("Location: {$url}");
-            }
-            return;
+            \App\Legacy\Authorization::allow([1]);
+            \App\Http\Response\Redirect::to(implode('', [
+                '/old/admin/database/',
+                'cJ3MRhFC8zNuuv4Eo6pNGCx7HfbznvOAdEZT9Ylt7AG',
+                '/index.php'
+            ]));
         case 'admin/cr':
-            echo view('Admin - Comprehensive Rules', 'admin/cr/index.php');
+            echo view_old(
+                'Admin - Comprehensive Rules',
+                'old/admin/cr/index.php'
+            );
             return;
         case 'admin/cr/action':
-            require path_root('admin/cr/actions.php');
+            require path_root('old/admin/cr/actions.php');
             return;
         case 'admin/cr/raw':
-            echo view('Admin:Helpers', 'admin/cr/view-txt.php');
+            echo view_old('Admin:Helpers', 'old/admin/cr/view-txt.php');
             return;
         case 'admin/hash':
-            echo view('Admin:Hash', 'admin/hash/index.php');
+            echo view_old('Admin:Hash', 'old/admin/hash/index.php');
             return;
         case 'admin/helpers':
-            echo view(
+            echo view_old(
                 $title = 'Admin:Helpers',
-                $path = 'admin/helpers/index.php',
+                $path = 'old/admin/helpers/index.php',
                 $options = null,
                 $vars = null,
                 $minize = false
             );
             return;
         case 'admin/php':
-            if (admin_level() == 1) phpinfo();
+            \App\Legacy\Authorization::allow([1]);
+            phpinfo();
             return;
-        case 'admin/rulings':
-            $options = [
-                'js' => ['manage-rulings'],
-                'jqueryui' => true,
-                'lightbox' => true
-            ];
-            echo view('Admin - Rulings', 'admin/rulings/index.php', $options);
-            return;
+        // case 'admin/rulings':
+        //     $options = [
+        //         'js' => ['manage-rulings'],
+        //         'jqueryui' => true,
+        //         'lightbox' => true
+        //     ];
+        //     echo view_old('Admin - Rulings', 'admin/rulings/index.php', $options);
+        //     return;
         case 'admin/trim-image':
             $method = $_SERVER['REQUEST_METHOD'];
             if ($method === 'GET') {
-                echo view('Admin:Trim image', 'admin/image-trim/form.php');
-            }
-            elseif ($method === 'POST') {
-                require path_root('admin/image-trim/process.php');
+                echo view_old(
+                    'Admin:Trim image',
+                    'old/admin/image-trim/form.php'
+                );
+            } elseif ($method === 'POST') {
+                require path_root('old/admin/image-trim/process.php');
             }
             return;
         case 'admin/clint':
-            echo view('Admin:Clint', 'admin/clint/index.php');
+            echo view_old('Admin:Clint', 'old/admin/clint/index.php');
             return;
         case 'admin/lookup':
-            echo view(
+            echo view_old(
                 'Admin:Lookup',
-                'admin/lookup/index.php',
+                'old/admin/lookup/index.php',
                 null, null, $minimize = false
             );
             return;
 
         // Temporary ----------------------------------------------------------
-        case 'temp/admin/artists/select-set':
-            echo view('FoWDB Craton', 'admin/_artists/select-set.php');
+        case 'admin/_artists/select-set':
+            echo view_old('FoWDB Craton', 'old/admin/_artists/select-set.php');
             return;
-        case 'temp/admin/artists/select-card':
-            echo view('FoWDB Craton', 'admin/_artists/select-card.php');
+        case 'admin/_artists/select-card':
+            echo view_old('FoWDB Craton', 'old/admin/_artists/select-card.php');
             return;
-        case 'temp/admin/artists/card':
-            $options = [ 'js' => ['_artists'], 'jqueryui' => true ];
-            echo view('FoWDB Craton', 'admin/_artists/card.php', $options);
+        case 'admin/_artists/card':
+            echo view_old(
+                'FoWDB Craton',
+                'old/admin/_artists/card.php',
+                [
+                    'jqueryui' => true,
+                    'lightbox' => true,
+                    'js' => [ 'admin/_artists' ]
+                ]
+            );
             return;
     }
 }
@@ -126,7 +150,12 @@ if (isset($_GET['p'])) {
 
 // TEMPORARY - Go to homepage
 if ($_SERVER['REQUEST_URI'] === '/') {
-    echo view('Search', 'search/search.php', [ 'js' => ['search'] ]);
+    echo view_old(
+        'Search',
+        'old/search/search.php',
+        [ 'js' => [ 'public/search' ] ],
+        ['thereWereResults' => false]
+    );
     return;
 }
 

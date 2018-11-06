@@ -3,18 +3,24 @@
 // http://db.fowtc.us/?p=cr - List all
 // http://db.fowtc.us/?p=cr&v=6.3a#1400 - Show specific paragraph
 
-
 // Show all available CR versions
 if (!isset($_GET['v'])) {
     
     // Get all CRs from db
-    $crs = database_old()->get(
-        "SELECT * FROM comprehensive_rules ORDER BY date_validity DESC"
-    );
+    $items = database()
+        ->select(statement('select')
+            ->from('comprehensive_rules')
+            ->orderBy('date_validity DESC')
+        )
+        ->get();
     
     // Show page
-    $vars = [ 'crs' => $crs ];
-    echo view_old('Comprehensive Rules', 'old/resources/cr/all.php', null, $vars);
+    echo view_old(
+        'Comprehensive Rules',
+        'old/resources/cr/all.php',
+        null,
+        ['items' => $items]
+    );
     return;
 }
 
@@ -55,7 +61,7 @@ echo view_old(
     $script = $path,
     $options = [
         'js' => [
-            'public/cr-index'
+            'public/cr'
         ]
     ],
     $vars = null,

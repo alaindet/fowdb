@@ -16,6 +16,6 @@ abstract class Model extends Base
 
         $fields = isset($select) ? implode(',', $select) : '*';
         
-        return database()->get("SELECT {$fields} FROM {$this->table}");
+        return database_old()->get("SELECT {$fields} FROM {$this->table}");
     }
 }

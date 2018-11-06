@@ -2,37 +2,45 @@
 
 $cards = [];
 
-foreach (cached('spoiler.sets') as $set) {
+$spoilers = lookup('spoilers.sets');
+$map = lookup('sets.code2id');
+foreach ($spoilers as &$spoiler) $spoiler['id'] = $map[$spoiler['code']];
 
-	$setCards = database_old()->get(
-		"SELECT
-			id,
-			back_side,
-			code,
-			setcode,
-			num,
-			name,
-			type,
-			image_path,
-			thumb_path
-		FROM cards
-		WHERE setcode = :setcode
-		ORDER BY id DESC",
-		[":setcode" => $set['code']]
-	);
+foreach ($spoilers as $spoilerSet) {
 
-	
+	$spoilerSetCards = database()
+		->select(statement('select')
+			->select([
+				'id',
+				'back_side',
+				'code',
+				'num',
+				'name',
+				'type',
+				'image_path',
+				'thumb_path'
+			])
+			->from('cards')
+			->where('sets_id = :setid')
+			->orderBy('id DESC')
+		)
+		->bind([':setid' => $spoilerSet['id']])
+		->get();
+
 	// Count just base faces
-	$spoiled = 0;
-	if (!empty($setCards)) {
-		for ($i = 0, $len = count($setCards); $i < $len; $i++) {
-			if ($setCards[$i]['back_side'] === '0') $spoiled++;
+	$spoiledCounter = 0;
+	if (!empty($spoilerSetCards)) {
+		foreach ($spoilerSetCards as $card) {
+			if ($card['back_side'] === '0') $spoiledCounter++;
 		}
 	}
 
 	// Add 'spoiled' and 'cards' elements to set
-	$set = array_merge($set, [ 'spoiled' => $spoiler, 'cards' => $setCards ]);
+	$spoilerSet = array_merge($spoilerSet, [
+		'spoiled' => $spoiledCounter,
+		'cards' => $spoilerSetCards
+	]);
 
 	// Add this set to existing sets, on top
-	array_unshift($cards, $set);
+	array_unshift($cards, $spoilerSet);
 }

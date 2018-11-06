@@ -1,0 +1,18 @@
+.fd-progress {
+  position: relative;
+  background-color: #d8d8d8;
+}
+
+.fd-progress-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100;
+  text-align: center;
+  color: #000;
+}
+
+.fd-progress-bar {
+  background-color: #a8a8a8;
+}

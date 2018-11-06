@@ -1,0 +1,54 @@
+// Default button (grey)
+.fd-btn-default {
+  background-color: $color-my-default;
+  color: #333;
+  box-sizing: border-box;
+  // border: 1px solid $color-my-default-darken-10;
+}
+.fd-btn-default:hover,
+.fd-btn-default-hover:hover {
+  background-color: $color-my-default-darken-10;
+  color: #eee;
+}
+.fd-btn-default:active,
+.fd-btn-default.active,
+.fd-btn-default:focus,
+.fd-btn-default.focus {
+  // border: 2px solid #333;
+  box-shadow: inset 0 0 0 2px #444;
+}
+
+// Custom button groups
+.btn-group.fd-btn-group.--border .fd-btn-default {
+  border: 1px solid $color-my-default-darken-10;
+}
+.btn-group.fd-btn-group.--separate .fd-btn-default {
+  margin: 1px!important;
+  border-radius: .25rem!important;
+}
+
+// Primary button (black)
+.fd-btn-primary {
+  background-color: $color-my-primary;
+  color: #eee;
+}
+.fd-btn-primary:hover,
+.fd-btn-primary:active,
+.fd-btn-primary:focus,
+.fd-btn-primary-hover:hover {
+  background-color: $color-my-primary-darken-10;
+  color: #fff;
+}
+
+// Hovering colors
+.fd-btn-success-hover:hover {
+  background-color: $color-success;
+}
+.fd-btn-warning-hover:hover {
+  background-color: $color-warning-darken-10;
+  color: #eee;
+}
+.fd-btn-danger-hover:hover {
+  background-color: $color-danger-darken-10;
+  color: #eee;
+}

@@ -4,6 +4,9 @@ namespace App\Http\Request;
 
 use App\Base\GetterSetterTrait;
 use App\Http\Request\Input;
+use App\Services\Alert;
+use App\Services\Validation\Validation;
+use App\Exceptions\ValidationException;
 
 class Request
 {
@@ -80,5 +83,35 @@ class Request
     public function input(): Input
     {
         return Input::getInstance();
+    }
+
+    public function validate(string $type, array $toValidate): void
+    {
+        $errors = (new Validation)
+            ->input($this->input()->$type())
+            ->validate($toValidate)
+            ->getErrors();
+
+        // Build the error message
+        if (!empty($errors)) {
+
+            // Single error
+            if (count($errors) === 1) {
+                $message = $errors[0];
+            }
+            
+            // Errors list
+            else {
+                $message = collapse(
+                    "<ul style='display:inline-block'>",
+                    array_reduce($errors, function ($message, $error) {
+                        return $message .= "<li>{$error}</li>";
+                    }),
+                    "</ul>"
+                );
+            }
+
+            throw new ValidationException($message);
+        }
     }
 }

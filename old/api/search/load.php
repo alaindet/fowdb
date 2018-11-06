@@ -7,8 +7,8 @@ require dirname(__DIR__) . '/helpers.php';
 // ERROR: No inputs
 if (empty($_POST)) {
     echo outputJson([
-        "response" => false,
-        "message" => "ERROR: No input passed"
+        'response' => false,
+        'message' => 'ERROR: No input passed'
     ]);
     return;
 }
@@ -22,12 +22,14 @@ $search = new \App\Services\Card\Search();
 // default filters return ALL cards starting from id = 1
 $search->processFilters($_POST);
 
-// Join the cards table with the sets table to get the spoiler flag ("isspoiler")
-$search->addTable('sets', [ 'cards.sets_id', 'sets.id' ]);
-$search->addField('isspoiler');
-
 // Get cards as assoc array from db
 $cards = $search->getCards();
+
+// Add the 'is_spoiler' flag to every card
+$spoilers = lookup('spoilers.ids');
+foreach ($cards as &$card) {
+    $card['is_spoiler'] = in_array($card['sets_id'], $spoilers) ? 1 : 0;
+}
 
 // Output JSON
 echo outputJson([

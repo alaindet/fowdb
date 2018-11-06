@@ -1,0 +1,24 @@
+.fd-list {
+  padding-left: 1rem;
+  position: relative;
+}
+
+.fd-list > li:before {
+  // content: "\2b25"; // ⬥
+  content: "\2bc8"; // ⯈
+  // content: "\2b9e"; // ⮞
+  color: $color-my-default-darken-10;
+  font-weight: 900;
+  position: absolute;
+  left: 0;
+}
+
+.fd-list.--spaced > li {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  line-height: 1.2em;
+}
+
+.fd-list.--indented {
+  padding-left: 1rem;
+}

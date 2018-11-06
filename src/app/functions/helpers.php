@@ -2,7 +2,9 @@
 
 // Imports
 use \App\Legacy\Database as LegacyDatabase;
+use \App\Services\Database\Database;
 use \App\Http\Request\Input;
+use \App\Services\Database\Statement\SqlStatement;
 
 /**
  * Index:
@@ -10,20 +12,22 @@ use \App\Http\Request\Input;
  * SERVICES
  * ========
  * admin_level // LEGACY
+ * alert
  * cached // LEGACY
  * config
- * database_old // LEGACY
  * database // TO DO
+ * database_old // LEGACY
+ * dump
  * input
  * lookup
- * notify // LEGACY
- * alert
- * redirect_old // LEGACY
  * redirect // TO DO
+ * redirect_old // LEGACY
+ * statement
  * 
  * DIRECTORIES
  * ===========
  * path_cache
+ * path_data
  * path_root
  * path_src
  * path_views
@@ -32,13 +36,14 @@ use \App\Http\Request\Input;
  * ====
  * asset
  * collapse
+ * component
  * csrf_token
- * logHtml
+ * include_view
+ * log_html
  * render
  * url_old // LEGACY
  * url // TO DO
  * view_old // LEGACY
- * view // TO DO
  */
 
 
@@ -91,16 +96,26 @@ function database_old(): LegacyDatabase
 }
 
 /**
- * TO DO: Return a new database instance
- * TEMPORARY: Mimics database_old()
+ * Returns the database instance
  *
- * @return LegacyDatabase
+ * @return Database
  */
-function database(): LegacyDatabase
+function database(): Database
 {
-    return LegacyDatabase::getInstance();
-    
-    return database_old();
+    return Database::getInstance();
+}
+
+/**
+ * Prints raw data to the screen as readable HTML and STOPS EXECUTION
+ *
+ * @param mixed $data Data to be dumped
+ * @param string $title (Optional) Title to give to the log
+ * @return void
+ */
+function dump($data, string $title = null): void
+{
+	echo \App\Utils\Logger::html($data, $title);
+	die();
 }
 
 /**
@@ -132,21 +147,9 @@ function lookup(string $path = null)
  * @param string $type
  * @return void
  */
-function notify(string $message, string $type = null): void
-{
-	\App\Services\Alert::set($message, $type);
-}
-
-/**
- * Alias of notify()
- *
- * @param string $message
- * @param string $type
- * @return void
- */
 function alert(string $message, string $type = null): void
 {
-    notify($message, $type);
+    \App\Services\Alert::add($message, $type);
 }
 
 /**
@@ -162,28 +165,57 @@ function redirect_old(string $to = null, array $params = []): void
 }
 
 /**
- * TO DO: Call new Redirect library
- * TEMPORARY: Mimics redirect_old()
+ * Redirects to given URI, accepts an array of values to build the query string
  *
  * @param string $to
  * @param array $params
  * @return void
  */
-function redirect(string $to = null, array $params = []): void
+function redirect(string $uri = '', array $qs = []): void
 {
-    redirect_old($to, $params);
+	\App\Http\Response\Redirect::to($uri, $qs);
+}
+
+/**
+ * Returns a database statement based on the passed type
+ *
+ * @param string $type
+ * @return SqlStatement
+ */
+function statement(string $type): SqlStatement
+{
+	$class = [
+		'select' => \App\Services\Database\Statement\SelectSqlStatement::class,
+		'insert' => \App\Services\Database\Statement\InsertSqlStatement::class,
+		'update' => \App\Services\Database\Statement\UpdateSqlStatement::class,
+		'delete' => \App\Services\Database\Statement\DeleteSqlStatement::class,
+	][$type];
+
+	$statement = new $class;
+
+	return $statement;
 }
 
 
 // DIRECTORIES ----------------------------------------------------------------
 
 /**
- * @param string Relative path to /src/cache/
+ * @param string Relative path to /src/data/cache/
  * @return string Absolute path
  */
 function path_cache(string $path = null): string
 {
 	$dir = (\App\Services\Config::getInstance())->get('dir.cache');
+	return isset($path) ? "{$dir}/{$path}" : $dir;
+}
+
+/**
+ * @param string Relative path to /src/data/
+ * @return string Absolute path
+ */
+function path_data(string $path = null): string
+{
+	$dir = (\App\Services\Config::getInstance())->get('dir.data');
 	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
@@ -263,6 +295,36 @@ function collapse(): string
 }
 
 /**
+ * Instantiates a view component, renders it using provided data and
+ * returns its HTML rendering as a string
+ *
+ * @param string $name Name of the component, as in App\Views\Components
+ * @param array $state The state to set, as associative array
+ * @return string HTML rendering of the component
+ */
+function component(string $name, array $state = null): string
+{
+	$class = \App\Views\Components::$components[$name] ?? null;
+
+	// ERROR: Component name doesn't exist
+	if ($class === null) {
+		throw new \App\Exceptions\ViewsComponentException(
+			"Missing component \"{$name}\""
+		);
+	}
+
+	// Simple component (no logic, optional state)
+	if ($class === \App\Views\Components::SIMPLE_COMPONENT) {
+		return include_view("components/{$name}", $state);
+	}
+
+	// Return rendered HTML component
+	$component = new $class();
+	$component->setState(function () use ($state) { return $state; });
+	return $component->render();
+}
+
+/**
  * Prints an <input> element containing the anti-CSRF token
  *
  * @return string
@@ -273,6 +335,27 @@ function csrf_token(): string
 }
 
 /**
+ * Includes a view file, returns it as a string
+ *
+ * @param string $path
+ * @return string
+ */
+function include_view(string $path, array $variables = null): string
+{
+	// Bind variables to this template only
+	if (!empty($variables)) {
+		foreach ($variables as $name => $value) {
+			$$name = $value;
+		}
+	}
+
+	// Load and render this template as a string
+	ob_start();
+	include path_views("{$path}.tpl.php");
+	return ob_get_clean();
+}
+
+/**
  * Logs provided data on the page in a HTML-friendly format using .well elements
  * Useful for debugging data inside views
  *
@@ -280,7 +363,7 @@ function csrf_token(): string
  * @param string $title Optional
  * @return string HTML-friendly log of provided data
  */
-function logHtml($data, string $title = null): string
+function log_html($data, string $title = null): string
 {
 	return \App\Utils\Logger::html($data, $title);
 }
@@ -318,7 +401,7 @@ function url_old(string $page = '', array $params = []): string
  */
 function url(string $to = null, array $params = []): string
 {
-    return url_old($to, $params);
+	return \App\Http\Response\Redirect::url($to, $params);
 }
 
 /**
@@ -342,24 +425,34 @@ function view_old(
     return \App\Legacy\Page::build($title, $path, $options, $vars, $minimize);
 }
 
+/**
+ * Returns a compiled Twig page
+ *
+ * @param string $viewPath Path from the view dir, no extension Ex.: pages/card/index
+ * @param array $variables Variables to bind to the view
+ * @return string HTML output of the page
+ */
 
 /**
- * Calls the page constructor
+ * Returns a rendered page to be output
  *
- * @param string $title
- * @param string $path
- * @param array $options
- * @param array $vars
- * @param boolean $minimize
- * @return void
+ * @param string $viewPath Relative to /src/resorces/views/, no extension
+ * @param string $title Title of the page
+ * @param array $variables Variables to be used to render the template
+ * @param boolean $minify Minify the HTML output
+ * @return string Final HTML for the page
  */
 function view(
+	string $viewPath = null,
 	string $title = null,
-	string $path = null,
-	array $options = null,
-	array $vars = null,
-	bool $minimize = true
-)
+	array $variables = null,
+	bool $minify = true
+): string
 {
-    return view_old($title, $path, $options, $vars, $minimize);
+	return (new \App\Views\Page)
+		->template($template)
+		->title($title)
+		->variables($variables)
+		->minify($minify)
+		->render();
 }

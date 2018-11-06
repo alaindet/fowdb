@@ -1,0 +1,35 @@
+// Bootstrap 3 colors
+$color-primary: #337ab7;
+$color-success: #5cb85c;
+$color-info: #5bc0de;
+$color-warning: #f0ad4e;
+$color-danger:  #d9534f;
+
+// Custom colors
+$color-my-default: #ddd;
+$color-my-primary: #333;
+
+
+// Shades ---------------------------------------------------------------------
+
+// Shades 10%
+$color-primary-darken-10: darken($color-primary, 10%);
+$color-success-darken-10: darken($color-success, 10%);
+$color-info-darken-10: darken($color-info, 10%);
+$color-warning-darken-10: darken($color-warning, 10%);
+$color-danger-darken-10: darken($color-danger, 10%);
+
+$color-my-default-darken-10: darken($color-my-default, 10%);
+$color-my-primary-darken-10: darken($color-my-primary, 10%);
+
+// Tints ----------------------------------------------------------------------
+
+// Tints 10%
+$color-primary-lighten-10: lighten($color-primary, 10%);
+$color-success-lighten-10: lighten($color-success, 10%);
+$color-info-lighten-10: lighten($color-info, 10%);
+$color-warning-lighten-10: lighten($color-warning, 10%);
+$color-danger-lighten-10: lighten($color-danger, 10%);
+
+$color-my-default-lighten-10: lighten($color-my-default, 10%);
+$color-my-primary-lighten-10: lighten($color-my-primary, 10%);

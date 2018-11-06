@@ -17,15 +17,35 @@
 		</div>
 		<div class="panel-body cards-container"><!--
 			<?php foreach ($cards as &$set) : ?>
-				--><div id="<?=$set['code']?>" class="spoiler" data-setcode="<?=$set['code']?>" data-setcount="<?=$set['count']?>">
+				--><div
+					id="<?=$set['code']?>"
+					class="spoiler"
+					data-setcode="<?=$set['code']?>"
+					data-setcount="<?=$set['count']?>"
+				>
 					<!-- Header -->
 					<div class="spoiler-header text-center">
-						<h3 class="js-hider pointer inline" data-target="#hide-spoiler-<?=$set['code']?>">
+						
+						<h3
+							class="js-hider pointer inline"
+							data-target="#hide-spoiler-<?=$set['code']?>"
+						>
 							<i class="fa fa-chevron-down"></i>
 							<?="{$set['name']} ({$set['spoiled']} / {$set['count']})"?>
 						</h3>
-						<a class="btn btn-link" href="#top">Top</a>
-						<a class="btn btn-link" href="#<?=$set['code']?>" name="<?=$set['code']?>">Share</a>
+						
+						<a href="#top" class="btn btn-link">
+							Top
+						</a>
+
+						<a
+							class="btn btn-link"
+							href="#<?=$set['code']?>"
+							name="<?=$set['code']?>"
+						>
+							Share
+						</a>
+            
 					</div>
 					<br>
 					<!-- Body -->

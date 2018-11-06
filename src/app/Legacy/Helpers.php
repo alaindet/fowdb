@@ -158,7 +158,7 @@ class Helpers
         elseif ($feat === 'formats') $featArray = self::generateFormats();
         elseif ($feat === 'spoiler') $featArray = self::generateSpoiler();
 
-        $filename = path_root("app/helpers/data/{$feat}.json");
+        $filename = path_root("src/data/helpers/{$feat}.json");
         $flags = JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT;
         $output = json_encode($featArray, $flags);
         return file_put_contents($filename, $output) ? true : false;
@@ -174,7 +174,7 @@ class Helpers
     {
         $output = [];
 
-        $items = database()->get(
+        $items = database_old()->get(
             "SELECT
                 clusters.id as cid,
                 clusters.code as ccode,
@@ -215,17 +215,17 @@ class Helpers
         $formatsDefault = '';
         $formatsList = [];
 
-        $items = database()->get(
+        $items = database_old()->get(
             "SELECT
                 f.code fcode,
                 f.name fname,
-                f.isdefault fdefault,
+                f.is_default fdefault,
                 c.id cid
             FROM formats f
-            INNER JOIN formats_clusters fc ON f.id=fc.formats_id
-            INNER JOIN clusters c ON fc.clusters_id=c.id
-            GROUP BY fcode,cid
-            ORDER BY f.ismulticluster desc, f.id desc"
+            INNER JOIN pivot_cluster_format cf ON f.id = cf.formats_id
+            INNER JOIN clusters c ON cf.clusters_id = c.id
+            GROUP BY fcode, cid
+            ORDER BY f.is_multi_cluster DESC, f.id DESC"
         );
 
         foreach ($items as &$item) {
@@ -251,34 +251,31 @@ class Helpers
     /**
      * Generates SPOILER from db and returns final array
      *
-     * @param obj $db database connection object
      * @return array final array to be JSON-ed and saved
      */
     private static function generateSpoiler(): array
     {
-        return array_reduce(
+        $data = database()
+            ->select(statement('select')
+                ->select(['code', 'name', 'count'])
+                ->from('sets')
+                ->where('is_spoiler = 1')
+            )
+            ->get();
 
-            // Database data
-            database()->get(
-                "SELECT code, name, count FROM sets WHERE isspoiler = 1"
-            ),
+        $state = [
+            'codes' => [],
+            'names' => [],
+            'counts' => []
+        ];
 
-            // Reducer
-            function ($result, $set) {
-                $result['sets'][] = $set;
-                $result['codes'][] = $set['code'];
-                $result['names'][] = $set['name'];
-                $result['counts'][] = $set['count'];
-            },
+        $result = array_reduce($data, function ($result, $set) {
+            $result['codes'][] = $set['code'];
+            $result['names'][] = $set['name'];
+            $result['counts'][] = $set['count'];
+            return $result;
+        }, $state);
 
-            // State
-            [
-                'sets' => [],
-                'codes' => [],
-                'names' => [],
-                'counts' => []
-            ]
-
-        );
+        return $result;
     }
 }

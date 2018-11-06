@@ -35,6 +35,3 @@ $openGraphProtocol
     ->siteName( config('app.name') )
     ->locale( config('app.locale') )
     ->description( config('ogp.description') );
-
-// Legacy
-$thereWereResults = false;

@@ -11,36 +11,39 @@
     <!-- Card name -->
 		<div class="col-xs-12">
 			<div class="page-header" style="margin-top:0">
-				<h2><?=$card['name']?></h2>
+				<h1 class="text-center sm-text-left">
+					<?=$card['name']?>
+					<span class="font-100 text-muted text-italic">
+						<?=$card['code']?>
+					</span>
+				</h1>
 			</div>
 		</div>
 
 		<?php // Admin buttons ----------------------------------------------------
 			if (admin_level() > 0):
-				$id =& $card['id'];
-        $do = 'form-action';
 		?>
-			<div class="col-xs-12">
+			<div class="col-xs-12 text-center sm-text-left">
 				
-				<a href="<?=url_old('admin/cards', [$do => 'edit', 'id' => $id])?>">
-					<button type="button" class="btn btn-warning btn-sm cardpage-btn">
-						<i class="fa fa-pencil-square-o"></i>
-						Edit card
-					</button>
+        <a
+          href="<?=url("cards/update/{$card['id']}")?>"
+          class="btn btn-warning"
+        >
+          Edit card
 				</a>
 
-				<a href="<?=url_old('admin/cards', [$do => 'delete', 'id' => $id])?>">
-					<button type="button" class="btn btn-danger btn-sm cardpage-btn">
-						<i class="fa fa-trash"></i>
-						Delete card
-					</button>
+        <a
+          href="<?=url("cards/delete/{$card['id']}")?>"
+          class="btn btn-danger"
+        >
+          Delete card
 				</a>
 				
-				<a href="<?=url_old('admin/rulings', [$do => 'create', 'card_id' => $id])?>">
-					<button type="button" class="btn btn-default btn-sm cardpage-btn">
-						<i class="fa fa-plus"></i>
-						Add ruling
-					</button>
+        <a
+          href="<?=url('rulings/create', ['card-id' => $card['id']])?>"
+          class="btn btn-info"
+        >
+          Add ruling
 				</a>
 
 			</div>
@@ -54,7 +57,7 @@
 				src="<?=$card['image_path']?>"
 				alt="<?=$card['name']?>"
 				class="cardpage-img"
-			/>
+			>
 		</div>
 		
 		<!-- Card info -->
@@ -108,10 +111,10 @@
 		?>
 			<div class="col-xs-12 f-rulings">
 
-				<h3>
+				<h2 class="text-center sm-text-left">
 					Rulings
 					<small>(<?=count($card['rulings'])?>)</small>
-				</h3>
+				</h2>
 
 				<div class="list-group f-rulings-list">
 					<?php foreach ($card['rulings'] as $item): $counter++; ?>
@@ -120,24 +123,22 @@
 					    	<?php if ($item['is_errata']): ?>
 					    		<div class="f-rulings-errata">Errata</div>
 					    	<?php endif; ?>
-					    	<div class="f-rulings-date"><?=$item['created']?></div>
+					    	<div class="f-rulings-date"><?=$item['date']?></div>
 					    	<div class="f-rulings-buttons">
 					    		
 									<a
 										href="#ruling<?=$counter?>"
 										name="ruling<?=$counter?>"
 										class="btn btn-sm btn-link"
-									>Share</a>
+									>
+										Share
+									</a>
 
 					    		<?php if (admin_level() > 0): ?>
 						    		
 										<!-- Edit -->
 										<a
-											href="<?=url_old('admin/rulings', [
-												'form-action' => 'edit',
-												'id' => $item['id'],
-												'code' => str_replace(' ', '+', $card['code'])
-											])?>"
+											href="<?=url("rulings/update/{$item['id']}")?>"
 											class="btn btn-sm btn-warning"
                     >
                       Edit
@@ -145,11 +146,7 @@
 
 										<!-- Delete -->
 						    		<a
-											href="<?=url_old('admin/rulings', [
-												'form-action' => 'delete',
-												'id' => $item['id'],
-												'code' => str_replace(' ', '+', $card['code'])
-											])?>"
+											href="<?=url("rulings/delete/{$item['id']}")?>"
 											class="btn btn-sm btn-danger"
                     >
                       Delete
@@ -159,7 +156,7 @@
 
 					    	</div>
 					    </h4>
-					    <p class="list-group-item-text"><?=$item['ruling']?></p>
+					    <p class="list-group-item-text"><?=$item['text']?></p>
 					   </div>
 
 					<?php endforeach; ?>

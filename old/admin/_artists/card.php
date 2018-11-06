@@ -1,106 +1,121 @@
 <?php
 
+use \App\Legacy\Authorization;
+use \App\Models\Card;
+use \App\Services\Session;
+
 // Check authorization and bounce back intruders
-\App\Legacy\Authorization::allow([1, 2]);
+Authorization::allow([1, 3]);
 
-// Read this card's info
-$card = database_old()->get(
-  "SELECT * FROM cards WHERE id = :id",
-  [':id' => $_GET['id']],
-  $first = true
-);
+$card = Card::getById($_GET['id'], [
+  'id',
+  'sets_id',
+  'num',
+  'back_side',
+  'artist_name',
+  'image_path'
+]);
 
-// Store all this set's cards into the session
-if (!isset($_SESSION['artist-tool'])) {
-  $_SESSION['artist-tool'] = array_reduce(
+// Store all this set's *remaining* cards into the session
+if (!Session::has('artist-tool')) {
+
+  Session::set('artist-tool', array_reduce(
+
     // Data
-    database_old()->get(
-      "SELECT id, num, back_side
-      FROM cards
-      WHERE setcode = :setcode AND num >= :num
-      ORDER BY num ASC",
-      [
-        ':setcode' => $card['setcode'],
+    database()
+      ->select(
+        statement('select')
+          ->select(['id', 'num', 'back_side'])
+          ->from('cards')
+          ->where('sets_id = :setid AND num >= :num')
+          ->orderBy('num')
+      )
+      ->bind([
+        ':setid' => $card['sets_id'],
         ':num' => $card['num']
-      ]
-    ),
+      ])
+      ->get(),
+
     // Reducer
-    function ($result, $row) {
-      $result['list'][$row['num'].'.'.$row['back_side']] = $row['id'];
+    function ($result, $card) {
+      $key = "{$card['num']}.{$card['back_side']}";
+      $result['list'][$key] = $card['id'];
       return $result;
     },
-    // Carry
-    ['set' => $card['setcode'], 'list' => []]
-  );
+
+    // State
+    [
+      'set' => $card['sets_id'],
+      'list' => []
+    ]
+
+  ));
 }
 ?>
 
+<div class="page-header">
+  <h1>Artists</h1>
+  <?=component('breadcrumb', [
+    'Admin' => url('admin'),
+    'Artists' => url_old('admin/_artists/select-set'),
+    'Set' => url_old(
+      'admin/_artists/select-card',
+      ['set' => lookup("sets.id2code.{$card['sets_id']}")]
+    ),
+    'Card' => '#'
+  ])?>
+</div>
+
 <div class="row">
-  <div class="col-xs-12">
+
+  <!-- Form -->
+  <div class="col-xs-12 col-sm-7">
+
     <form
-      action="admin/_artists/artist-store.php"
+      action="/old/admin/_artists/artist-store.php"
       method="post"
       class="form-horizontal"
     >
+      <?=csrf_token()?>
 
       <!-- Card ID -->
-      <input type="hidden" name="id" value="<?=$card['id']?>">
+      <input
+        type="hidden"
+        name="id"
+        value="<?=$card['id']?>"
+      >
 
-      <!-- Artist name -->
-      <div class="form-group form-section">
-        <label class="col-sm-2">Artist name</label>
-        <div class="col-sm-10">
-          <div class="col-xs-6">
-            <input
-              type="text"
-              name="artist"
-              id="the-autocomplete"
-              class="form-control input-lg"
-              autofocus
-              value="<?=$card['artist_name'] ?? ''?>"
-            >
-          </div>
-          <div class="col-xs-6">
+      <!-- Input -->
+      <input
+        type="text"
+        name="artist"
+        id="the-autocomplete"
+        class="form-control input-lg"
+        placeholder="Artist name..."
+        autofocus
+        value="<?=$card['artist_name'] ?? ''?>"
+      >
 
-            <!-- Submit -->
-            <button type="submit" class="btn btn-primary btn-lg">
-              <i class="fa fa-save"></i>
-              Save
-            </button>
+      <p></p>
 
-          </div>
-        </div>
-      </div>
-
-      <!-- Image -->
-      <div class="form-group form-section">
-        <label class="col-sm-2">Image</label>
-        <div class="col-sm-10">
-          <img src="<?=$card['image_path']?>">
-        </div>
-      </div>
+      <!-- Save artist name -->
+      <button type="submit" class="btn btn-primary btn-block btn-lg">
+        <i class="fa fa-save"></i>
+        Save
+      </button>
 
     </form>
 
-    <!-- Admin menu link -->
-    <hr>
-
-    <!-- Back to this set -->
-    <a href="<?=url_old('temp/admin/artists/select-card', [
-      'set' => $card['setcode']
-    ])?>"
-
-      <button type="button" class="btn btn-default">
-          &larr; Cards from <?=strtoupper($card['setcode'])?>
-      </button>
-    </a>
-
-    <!-- Back to selecting a new set -->
-    <a href="<?=url_old('temp/admin/artists/select-set')?>"></a>
-      <button type="button" class="btn btn-default">
-          &larr; Select a set
-      </button>
-    </a>
-
   </div>
+
+  <!-- Image -->
+  <div class="col-xs-12 col-sm-5">
+    <a
+      data-lightbox="card"
+      href="<?=asset($card['image_path'])?>"
+    >
+      <img src="<?=asset($card['image_path'])?>">
+    </a>
+  </div>
+
 </div>

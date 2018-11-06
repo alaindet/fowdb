@@ -7,5 +7,5 @@ use App\Exceptions\Alertable;
 
 class AuthenticationException extends Exception implements Alertable
 {
-    //
+    public $redirectTo = 'login';
 }

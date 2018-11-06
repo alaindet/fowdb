@@ -8,30 +8,39 @@ class SpoilersGenerator implements Generatable
 {
     public function generate(): array
     {
-        $items = database()->get(
-            "SELECT
-                code,
-                name,
-                count
-            FROM
-                sets
-            WHERE
-                isspoiler = 1
-            ORDER BY
-                id DESC"
+        $items = database()
+            ->select(statement('select')
+                ->select(['id', 'code', 'name', 'count'])
+                ->from('sets')
+                ->where('is_spoiler = 1')
+                ->orderBy('id DESC')
+            )
+            ->get();
+
+        return array_reduce(
+
+            // Collections
+            $items,
+
+            // Reducer
+            function ($result, $item) {
+                $result['sets'][] = $item;
+                $result['ids'][] = $item['id'];
+                $result['names'][] = $item['name'];
+                $result['codes'][] = $item['code'];
+                $result['counts'][] = $item['count'];
+                return $result;
+            },
+
+            // State
+            [
+                'sets' => [],
+                'ids' => [],
+                'names' => [],
+                'codes' => [],
+                'counts' => []
+            ]
+
         );
-
-        // Is this useless?
-        return array_reduce($items, function ($result, $item) {
-
-            $result[] = [
-                'name' => $item['name'],
-                'code' => $item['code'],
-                'count' => $item['count']
-            ];
-
-            return $result;
-
-        }, []);
     }
 }

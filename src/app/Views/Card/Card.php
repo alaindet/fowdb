@@ -32,7 +32,7 @@ class Card
     {
         // I need the array key, hence the custom Arrays::reduce
         return Arrays::reduce(
-			Helpers::get('formats.list'),
+			cached('formats.list'),
 			function ($result, $format, $formatCode) use (&$cluster) {
 				if (in_array($cluster, $format['clusters'])) {
 					$result[] = [

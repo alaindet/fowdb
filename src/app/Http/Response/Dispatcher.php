@@ -73,13 +73,12 @@ class Dispatcher
 
         $controller = new $fqcn();
         $method =& $this->method;
-        $input = $this->request->input();
 
         if (!empty($this->routeParameters)) {
             $parameters = array_values($this->routeParameters);
-            return $controller->$method($input, ...$parameters);
+            return $controller->$method($this->request, ...$parameters);
         }
 
-        return $controller->$method($input);
+        return $controller->$method($this->request);
     }
 }

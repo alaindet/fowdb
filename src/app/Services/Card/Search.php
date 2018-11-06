@@ -3,6 +3,7 @@
 namespace App\Services\Card;
 
 use App\Utils\Arrays;
+use App\Legacy\Database;
 
 class Search
 {
@@ -13,7 +14,6 @@ class Search
     private $cardsCount;   // Results count from db
     public $f = [];        // Search filters
     public $isPagination;  // Pagination flag (results > default limit)
-    public $areResults;    // Flag for results from database
     public $allowed;       // All and the only allowed search filters
     public $fields;        // Fields to be returned
 
@@ -25,59 +25,60 @@ class Search
     public function __construct()
     {
         // Initialize database connection
-        $this->db = \App\Legacy\Database::getInstance();
+        $this->db = Database::getInstance();
 
         // Define allowed filters
         $this->allowed = [
-            "do",
-            "q",
-            "exact",
-            "infields",
-            "exclude",
-            "sort",
-            "sortdir",
-            "format",
-            "type",
-            "backside",
-            "divinity",
-            "setcode",
-            "attributes",
-            "attrmulti", // Legacy
-            "attribute_multi",
-            "no_attribute_multi",
-            "attrselected", // Legacy
-            "attribute_selected",
-            "total_cost",
-            "xcost",
-            "rarity",
-            "race",
-            "atk-operator",
-            "atk",
-            "def-operator",
-            "def",
-            "artist",
-            "page" // Pagination-related
+            'artist',
+            'atk',
+            'atk-operator',
+            'attribute_multi',
+            'attribute_selected',
+            'attributes',
+            'attrmulti', // LEGACY
+            'attrselected', // LEGACY
+            'backside',
+            'def',
+            'def-operator',
+            'divinity',
+            'do',
+            'exact',
+            'exclude',
+            'format',
+            'infields',
+            'no_attribute_multi',
+            'page', // Pagination-related
+            'q',
+            'race',
+            'rarity',
+            'set',
+            'setcode', // LEGACY
+            'sort',
+            'sortdir',
+            'total_cost',
+            'type',
+            'xcost',
         ];
 
         // Fields to return
         $this->fields = [
-            "cards.id",
-            "cards.code",
-            "cards.name",
-            "cards.num",
-            "cards.setcode",
-            "cards.image_path",
-            "cards.thumb_path"
+            'cards.code',
+            'cards.id',
+            'cards.image_path',
+            'cards.name',
+            'cards.num',
+            'cards.sets_id',
+            'cards.thumb_path'
         ];
 
         // Define default values for SQL partials
         $this->sqlPartials = [
-            "fields"  => implode(",", $this->fields),
-            "table"   => "cards",
-            "filter"  => "TRUE",
-            "sorting" => "sets_id DESC, num ASC",
-            "limit"   => config('db.results.limit') + 1,
-            "offset"  => 0
+            'fields'  => implode(',', $this->fields),
+            'table'   => 'cards',
+            'filter'  => 'TRUE',
+            'sorting' => 'sets_id DESC, num ASC',
+            'limit'   => config('db.results.limit') + 1,
+            'offset'  => 0
         ];
     }
 
@@ -151,37 +152,11 @@ class Search
     }
 
     /**
-     * Adds a field to the list of returned fields. Can have an alias
-     *
-     * @param $field string Name of the field
-     * @param $alias string Different (usually shorter) name for the field
-     * @return void
-     */
-    public function addField($field, $alias = null)
-    {
-        $as = isset($alias) ? " as {$alias}" : "";
-        $this->sqlPartials["fields"] .= ", {$field}{$as}";
-    }
-
-    /**
-     * Adds a table, so that it performs an INNER JOIN
-     *
-     * @param $table string Table name to be added
-     * @param $condition array Two strings, they're the fields to be joined on
-     * @return void
-     */
-    public function addTable($table, $fields)
-    {
-        // Change FROM clause
-        $this->sqlPartials['table'] .= " INNER JOIN {$table} ON {$fields[0]} = {$fields[1]}";
-    }
-
-    /**
      * Assembles the final SQL
      *
      * @return string
      */
-    public function getSQL()
+    public function getSQL(): string
     {
         // Return stored value if any
         if (!empty($this->sqlStatement)) {
@@ -206,7 +181,7 @@ class Search
      * @param bool $overwrite Force to recalculte (overwrite) stored value
      * @return array cards
      */
-    public function getCards($overwrite = false)
+    public function getCards($overwrite = false): array
     {
         // Return stored value if any
         if (!$overwrite && !empty($this->cards)) {
@@ -215,15 +190,6 @@ class Search
 
         // Get results from db
         $this->cards = $this->db->get($this->getSQL());
-
-        // Check if there were results
-        if (empty($this->cards)) {
-            notify("No results. Please try changing your searching criteria.", "danger");
-            $this->areResults = false;
-            return false;
-        }
-
-        $this->areResults = true;
 
         // Check if results are more than default limit
         if (count($this->cards) > config('db.results.limit')) {
@@ -322,11 +288,11 @@ class Search
 
                 // Check if inputs "infields" array has any unallowed element!
                 if (empty(array_diff($this->f['infields'], [
-                    'cards.name',
-                    'cards.code',
-                    'cards.text',
-                    'cards.race',
-                    'cards.flavor_text',
+                    'name',
+                    'code',
+                    'text',
+                    'race',
+                    'flavor_text',
                 ]))) {
 
                     // Initialize empty fields
@@ -413,11 +379,23 @@ class Search
         // FILTER --- FORMAT --------------------------------------------------
         if (isset($this->f['format'])) {
 
+            // LEGACY
+            if (!is_array($this->f['format'])) {
+                $this->f['format'] = [ $this->f['format'] ];
+            }
+
             // Get format helper
-            $formats = \App\Legacy\Helpers::get('formats');
+            $formats = cached('formats');
 
             // Get clusters list for this format
-            $clusters = $formats['list'][$this->f['format']]['clusters'];
+            $clusters = [];
+
+            foreach ($this->f['format'] as $format) {
+                $formatClusters = $formats['list'][$format]['clusters'];
+                $clusters = array_merge($clusters, $formatClusters);
+            }
+
+            $clusters = array_unique($clusters);
 
             // Add all clusters for this format
             $_sql_f[] = 'cards.clusters_id IN('.implode(',', $clusters).')';
@@ -434,9 +412,8 @@ class Search
 
                     // Exclude spoilers
                     case 'spoilers':
-                        $_sql_f[] = "NOT(setcode IN (\"" .
-                            implode("\",\"", \App\Legacy\Helpers::get('spoiler')['codes'])
-                            ."\"))";
+                        $spoilerIds = implode(',', lookup('spoilers.ids'));
+                        $_sql_f[] = "NOT(sets_id IN ({$spoilerIds}))";
                         break;
 
                     // Exclude alternates
@@ -458,30 +435,23 @@ class Search
         }
 
         // FILTER --- SET CODE ------------------------------------------------
-        if (isset($this->f['setcode'])) {
+        if (
+            isset($this->f['set']) ||
+            isset($this->f['setcode']) // LEGACY
+        ) {
+            $sets = $this->f['set'] ?? $this->f['setcode'];
+            $map = lookup('sets.code2id');
 
-            // Multiple sets selected
-            if (is_array($this->f['setcode'])) {
-
-                // Get rid of 0 default setcode (Choose a set..) if present
-                if (in_array("0", $this->f['setcode'])) {
-                    array_splice($this->f['setcode'], 0, 1);
-                }
-                
-                // Build SQL portion of setcode
-                $_sql_f[] = "(setcode =\""
-                          . implode("\" OR setcode = \"", $this->f['setcode'])
-                          . "\")";
+            // Multiple sets
+            if (is_array($sets)) {
+                if (in_array('0', $sets)) array_splice($sets, 0, 1);
+                foreach ($sets as &$set) $set = $map[$set];
+                $_sql_f[] = 'sets_id IN ('.implode(',', $sets).')';
+            }
             
-            // Single set selected
-            } else {
-
-                // Check if set is not default 0 (Choose a set..)
-                if ($this->f['setcode'] != "0") {
-
-                    // Build SQL portion of setcode
-                    $_sql_f[] = "setcode = \"{$this->f['setcode']}\"";
-                }
+            // Single set
+            elseif ($sets !== '0') {
+                $_sql_f[] = "sets_id = {$map[$sets]}";
             }
         }
 
@@ -663,10 +633,10 @@ class Search
         $sql_f = empty($_sql_f) ? 'TRUE' : implode(" AND ", $_sql_f);
 
         // Prevent magic stones in the results unless specified
-        // (setcode, num, type or rarity is set)
+        // (sets_id, num, type or rarity is set)
         if (
             !(
-                isset($this->f['setcode']) ||
+                isset($this->f['set']) ||
                 isset($this->f['num']) ||
                 isset($this->f['type']) ||
                 isset($this->f['rarity'])
@@ -692,11 +662,11 @@ class Search
         // SORTING ============================================================
         if (
             isset($this->f['sort']) &&
-            in_array($this->f['sort'], array_keys(\App\Legacy\Helpers::get('sortfields'))) &&
+            in_array($this->f['sort'], array_keys(cached('sortfields'))) &&
             $this->f['sort'] != "default"
         ) {
             // Get sorting direction
-            $sortDir = (isset($this->f['sortdir']) AND $this->f['sortdir'] == 'desc') ? 'DESC' : 'ASC';
+            $sortDir = (isset($this->f['sortdir']) && $this->f['sortdir'] == 'desc') ? 'DESC' : 'ASC';
 
             switch ($this->f['sort']) {
                 
@@ -709,7 +679,7 @@ class Search
                     break;
 
                 case 'type':
-                    $typesList = implode("','", \App\Legacy\Helpers::get('types'));
+                    $typesList = implode("','", cached('types'));
                     $sortField = "FIELD(type,'{$typesList}')";
                     break;
                     

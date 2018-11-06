@@ -8,7 +8,7 @@ class ClustersGenerator implements Generatable
 {
     public function generate(): array
     {
-        $items = database()->get(
+        $items = database_old()->get(
             "SELECT
                 c.code cluster_slug,
                 c.name cluster_label,

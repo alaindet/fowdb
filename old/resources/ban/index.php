@@ -1,6 +1,16 @@
 <?php
-  $rawData = \App\Models\Ban::getData($page = 'banlist');
-  $items = \App\Views\Ban::display($rawData, 'all');
+
+$rawData = \App\Models\Ban::getData($page = 'banlist');
+$items = \App\Views\Ban::display($rawData, 'all');
+
+if (empty($items)) {
+  alert(
+    'There are no banned or limited cards on FoWDB at the moment',
+    'warning'
+  );
+  redirect_old('/');
+}
+
 ?>
 
 <?php foreach ($items as $typeLabel => $typeList): ?>

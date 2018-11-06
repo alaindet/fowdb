@@ -8,10 +8,10 @@ class FormatsGenerator implements Generatable
 {
     public function generate(): array
     {
-        $items = database()->get(
+        $items = database_old()->get(
             "SELECT *
             FROM formats
-            WHERE ismulticluster = 1"
+            WHERE is_multi_cluster = 1"
         );
 
         $result = [
@@ -24,7 +24,7 @@ class FormatsGenerator implements Generatable
 
         return array_reduce($items, function ($result, $item) {
 
-            if ($item['isdefault']) $result['default'] = $item['code'];
+            if ($item['is_default']) $result['default'] = $item['code'];
             $result['code2id'][$item['code']] = $item['id'];
             $result['code2name'][$item['code']] = $item['name'];
             $result['id2code'][$item['id']] = $item['code'];
