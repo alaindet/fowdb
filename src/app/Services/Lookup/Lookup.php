@@ -42,17 +42,18 @@ class Lookup
      * @var array
      */
     public $features = [
-        'clusters'   => \App\Services\Lookup\Generators\ClustersGenerator::class,
-        'sets'       => \App\Services\Lookup\Generators\SetsGenerator::class,
-        'formats'    => \App\Services\Lookup\Generators\FormatsGenerator::class,
-        'types'      => \App\Services\Lookup\Generators\TypesGenerator::class,
-        'spoilers'   => \App\Services\Lookup\Generators\SpoilersGenerator::class,
         'attributes' => \App\Services\Lookup\Generators\AttributesGenerator::class,
-        'rarities'   => \App\Services\Lookup\Generators\RaritiesGenerator::class,
-        'narps'      => \App\Services\Lookup\Generators\NarpsGenerator::class,
         'backsides'  => \App\Services\Lookup\Generators\BackSidesGenerator::class,
+        'clusters'   => \App\Services\Lookup\Generators\ClustersGenerator::class,
         'costs'      => \App\Services\Lookup\Generators\CostsGenerator::class,
         'divinities' => \App\Services\Lookup\Generators\DivinitiesGenerator::class,
+        'formats'    => \App\Services\Lookup\Generators\FormatsGenerator::class,
+        'narps'      => \App\Services\Lookup\Generators\NarpsGenerator::class,
+        'rarities'   => \App\Services\Lookup\Generators\RaritiesGenerator::class,
+        'sets'       => \App\Services\Lookup\Generators\SetsGenerator::class,
+        'sortables'  => \App\Services\Lookup\Generators\SortablesGenerator::class,
+        'spoilers'   => \App\Services\Lookup\Generators\SpoilersGenerator::class,
+        'types'      => \App\Services\Lookup\Generators\TypesGenerator::class,
     ];
 
     /**

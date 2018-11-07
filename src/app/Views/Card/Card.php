@@ -4,6 +4,7 @@ namespace App\Views\Card;
 
 use App\Legacy\Helpers;
 use App\Utils\Arrays;
+use App\Utils\Strings;
 
 class Card
 {
@@ -30,19 +31,34 @@ class Card
      */
     public static function formatsListByCluster(string $cluster): array
     {
+        $lookup = lookup('formats');
+        $codeToName = $lookup['code2name'];
+        $codeToClusters = $lookup['code2clusters'];
+
         // I need the array key, hence the custom Arrays::reduce
         return Arrays::reduce(
-			cached('formats.list'),
-			function ($result, $format, $formatCode) use (&$cluster) {
-				if (in_array($cluster, $format['clusters'])) {
+            
+            // Data
+            $codeToClusters,
+            
+            // Reducer
+			function (
+                $result,
+                $formatClusters,
+                $formatCode
+            ) use (&$cluster, &$codeToName) {
+				if (in_array($cluster, $formatClusters)) {
 					$result[] = [
-						'name' => $format['name'],
+						'name' => $codeToName[$formatCode],
 						'code' => $formatCode
 					];
 				}
 				return $result;
-			},
-			[]
+            },
+            
+            // Reduced
+            []
+            
 		);
     }
 
@@ -76,31 +92,46 @@ class Card
      */
     public static function addDisplay(array &$cards)
     {
-        $features = cached('cardfeatures');
-
-        for ($i = 0, $ii = count($cards); $i < $ii; $i++) {
-
-            $card =& $cards[$i];
-            $labels = array_keys($card);
-            $card['display'] = [];
-
-            for ($j = 0, $jj = count($labels); $j < $jj; $j++) {
-
-                $label =& $labels[$j];
-                $value =& $card[$label];
-
+        foreach ($cards as &$card) {
+            $display = [];
+            foreach ($card as $key => $value) {
                 if (
-                    !in_array($label, self::$excludeDisplay) &&
+                    !in_array($key, self::$excludeDisplay) &&
                     $value !== null &&
                     $value !== ''
                 ) {
-                    $card['display'][] = [
-                        'label' => $features[$label],
+                    $display[] = [
+                        'label' => Strings::snakeToTitle($key),
                         'value' => $value
                     ];
                 }
             }
+            $card['display'] = $display;
         }
+
+        // for ($i = 0, $ii = count($cards); $i < $ii; $i++) {
+
+        //     $card =& $cards[$i];
+        //     $labels = array_keys($card);
+        //     $card['display'] = [];
+
+        //     for ($j = 0, $jj = count($labels); $j < $jj; $j++) {
+
+        //         $label =& $labels[$j];
+        //         $value =& $card[$label];
+
+        //         if (
+        //             !in_array($label, self::$excludeDisplay) &&
+        //             $value !== null &&
+        //             $value !== ''
+        //         ) {
+        //             $card['display'][] = [
+        //                 'label' => $features[$label],
+        //                 'value' => $value
+        //             ];
+        //         }
+        //     }
+        // }
     }
 
     public static function removeIllegalProps(

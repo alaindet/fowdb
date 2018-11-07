@@ -31,19 +31,18 @@
 // def-operator
 // def
 
-// Read all helper data
-foreach ([
-	'formats',
-	'clusters',
-	'attributes',
-	'costs',
-	'types',
-	'backsides',
-	'rarities',
-	'sortfields',
-] as $helper) {
-	$$helper = cached($helper);
-}
+// New lookup data
+$lookup = (App\Services\Lookup\Lookup::getInstance())->getAll();
+$formats = &$lookup['formats']['code2name'];
+$formatDefault = &$lookup['formats']['default'];
+$sortables = &$lookup['sortables']['cards'];
+$clusters = &$lookup['clusters'];
+$attributes = &$lookup['attributes']['display'];
+$costs = &$lookup['costs'];
+$types = &$lookup['types']['display'];
+$backsides = &$lookup['backsides']['code2name'];
+$divinities = &$lookup['divinities'];
+$rarities = &$lookup['rarities']['code2name'];
 
 $emptyGif = asset('images/icons/blank.gif');
 
@@ -180,9 +179,9 @@ $emptyGif = asset('images/icons/blank.gif');
 
                   <?php // Sticky values
                     (isset($filters) AND !isset($filters['exact']))
-                      ? list($active, $checked) = ['', '']
-                      : list($active, $checked) = [' active', ' checked=true'];
-                  ?>
+                      ? [$active, $checked] = ['', '']
+                      : [$active, $checked] = [' active', ' checked'];
+         					?>
 
                   <!-- Description -->
                   <span class="filter-desc">Must contain every term..</span>
@@ -221,8 +220,8 @@ $emptyGif = asset('images/icons/blank.gif');
                     ] as $field => $label):
                       // Sticky values
                       (isset($filters['infields']) AND in_array($field, $filters['infields']))
-                        ? list($active, $checked) = [' active', 'checked=true']
-                        : list($active, $checked) = ['', ''];
+                        ? [$active, $checked] = [' active', 'checked']
+                        : [$active, $checked] = ['', ''];
                     ?>
                       <!-- Button -->
                       <label class="btn fd-btn-default<?=$active?>">
@@ -257,8 +256,8 @@ $emptyGif = asset('images/icons/blank.gif');
 										] as $field):
                       // Sticky values
                       (isset($filters['exclude']) AND in_array($field, $filters['exclude']))
-                        ? list($active, $checked) = [' active', 'checked=true']
-                        : list($active, $checked) = ['', ''];
+                        ? [$active, $checked] = [' active', 'checked']
+                        : [$active, $checked] = ['', ''];
                     ?>
 											<label class="btn fd-btn-default<?=$active?>">
 												<input
@@ -314,14 +313,25 @@ $emptyGif = asset('images/icons/blank.gif');
 												data-toggle="dropdown"
 											>
                         <span class="dropdown-face">
-													<?=$sortfields[$sort]?>
+													Select field...
 												</span>
                         <span class="caret"></span>
                       </button>
 
                       <!-- Other fields -->
                       <ul class="dropdown-menu">
-                        <?php foreach ($sortfields as $field => $label): ?>
+
+                        <li>
+                          <a
+                            class="seldrop_sort pointer"
+                            data-field="default"
+                            data-field-name="Select a field..."
+                          >
+                            Select a field...
+                          </a>
+                        </li>
+
+                        <?php foreach ($sortables as $field => $label): ?>
                           <li>
 														<a
 															class="seldrop_sort pointer"
@@ -351,14 +361,14 @@ $emptyGif = asset('images/icons/blank.gif');
               <div class="col-xs-12 filter-header">Format</div>
   						<div class="col-xs-12">
   							<div class="btg-group" data-toggle="buttons">
-  								<?php foreach ($formats['list'] as $fcode => $format):
+  								<?php foreach ($formats as $code => $name):
                     // Sticky values
   									if (isset($filters['format'])) {
-  										($fcode == $filters['format'])
+  										($code === $filters['format'])
                         ? [$active, $checked] = [' active', 'checked=true']
                         : [$active, $checked] = ['', ''];
   									} else {
-  										($fcode == $formats['default'])
+  										($code === $formatDefault)
                         ? [$active, $checked] = [' active', 'checked=true']
                         : [$active, $checked] = ['', ''];
   									}
@@ -370,11 +380,11 @@ $emptyGif = asset('images/icons/blank.gif');
 											<input
 												type="checkbox"
 												name="format[]"
-												value="<?=$fcode?>"
+												value="<?=$code?>"
 												<?=$checked?>
 											>
   										<span class="pointer">
-												<?=str_replace(' Cluster', '', $format['name'])?>
+												<?=str_replace(' Cluster', '', $name)?>
 											</span>
   									</label>
   								<?php endforeach; ?>
@@ -417,21 +427,21 @@ $emptyGif = asset('images/icons/blank.gif');
               <div class="col-xs-12 filter-header">Back Side</div>
               <div class="col-xs-12">
                 <div class="btg-group" data-toggle="buttons">
-                  <?php foreach ($backsides as $backside):
+                  <?php foreach ($backsides as $code => $name):
                     (
-                      isset($filters['backside']) &&
-                      $filters['backside'] == $backside['code']
+											isset($filters['backside']) &&
+											$filters['backside'] == $code
                     )
-                      ? list($active, $checked) = [' active', 'checked=true']
-                      : list($active, $checked) = ['', ''];
+                      ? [$active, $checked] = [' active', 'checked']
+                      : [$active, $checked] = ['', ''];
                   ?>
                     <label class="btn btn-xs font-105 fd-btn-default<?=$active?>">
                       <input
                         type="checkbox"
                         name="backside[]"
-                        value="<?=$backside['code']?>"<?=$checked?>
+                        value="<?=$code?>"<?=$checked?>
                       >
-                      <span class="pointer"><?=$backside['name']?></span>
+                      <span class="pointer"><?=$name?></span>
                     </label>
                   <?php endforeach; ?>
                 </div>
@@ -446,12 +456,12 @@ $emptyGif = asset('images/icons/blank.gif');
 									class="btn-group fd-btn-group --separate"
 									data-toggle="buttons"
 								>
-  								<?php foreach ([1,2,3,4,5,6,7,8,9] as $value):
+  								<?php foreach ($divinities as $value):
 										// Sticky values
 										$filter =& $filters['divinity'];
   									(isset($filter) && in_array($value, $filter))
-                      ? list($active, $checked) = [' active', 'checked=true']
-                      : list($active, $checked) = ['', ''];
+                      ? [$active, $checked] = [' active', 'checked']
+                      : [$active, $checked] = ['', ''];
   								?>
   									<label class="btn fd-btn-default font-110<?=$active?>">
 											<input
@@ -509,20 +519,20 @@ $emptyGif = asset('images/icons/blank.gif');
 									<?=$size?>
 								>
   								<option name="set_default" value=0>Choose a set..</option>
-  								<?php foreach ($clusters as $cid => $cluster): ?>
+  								<?php foreach ($clusters as $clusterCode => $cluster): ?>
   									<optgroup label="<?=$cluster['name']?>">
-  									  <?php foreach ($cluster['sets'] as $scode => $sname):
+  									  <?php foreach ($cluster['sets'] as $setCode => $setName):
   											// Sticky values
 												(
 													isset($filters['set']) &&
 													is_array($filters['set']) &&
-													in_array($scode, $filters['set'])
+													in_array($setCode, $filters['set'])
 												)
 													? $checked = ' selected'
 													: $checked = '';
   										?>
-											<option value="<?=$scode?>"<?=$checked?>>
-                        <?=$sname?> - (<?=strtoupper($scode)?>)
+											<option value="<?=$setCode?>"<?=$checked?>>
+                        <?=$setName?> - (<?=strtoupper($setCode)?>)
                       </option>
   									 <?php endforeach; ?>
   									</optgroup>
@@ -539,11 +549,11 @@ $emptyGif = asset('images/icons/blank.gif');
 									class="btn-group fd-btn-group --separate"
 									data-toggle="buttons"
 								>
-  								<?php foreach ($attributes as $index => &$attr):
+  								<?php foreach ($attributes as $code => $name):
 										// Sticky values
 										(
 											isset($filters['attributes']) &&
-											in_array($index, $filters['attributes'])
+											in_array($code, $filters['attributes'])
 										)
 											? [$active, $checked] = [' active', 'checked']
                       : [$active, $checked] = ['', ''];
@@ -552,10 +562,13 @@ $emptyGif = asset('images/icons/blank.gif');
   										<input
 												type="checkbox"
 												name="attributes[]"
-												value="<?=$index?>"
+												value="<?=$code?>"
 												<?=$checked?>												
 											>
-                      <img src="<?=$emptyGif?>" class="fd-icon-<?=$index?> --bigger">
+                      <img
+												src="<?=$emptyGif?>"
+												class="fd-icon-<?=$code?> --bigger"
+											>
   									</label>
   								<?php endforeach; ?>
   							</div>

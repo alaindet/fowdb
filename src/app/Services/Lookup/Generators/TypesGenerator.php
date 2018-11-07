@@ -15,7 +15,8 @@ class TypesGenerator implements Generatable
             'bit2code'  => [],
             'bit2name'  => [],
             'code2bit'  => [],
-            'code2name' => []
+            'code2name' => [],
+            'display'   => $this->legacyTypes()
         ];
 
         return array_reduce($items, function ($result, $item) {
@@ -28,5 +29,30 @@ class TypesGenerator implements Generatable
             return $result;
 
         }, $result);
+    }
+
+    private function legacyTypes(): array
+    {
+        return [
+            'Ruler',
+            'J-Ruler',
+            'Resonator',
+            'Chant',
+            'Chant/Rune',
+            'Master Rune',
+            'Addition',
+            'Regalia',
+            'Rune',
+            'Magic Stone',
+            'Special Magic Stone',
+            'Special Magic Stone/True Magic Stone',
+            'Spell:Chant',
+            'Spell:Chant-Instant',
+            'Spell:Chant-Standby',
+            'Addition:Field',
+            'Addition:J/Resonator',
+            'Addition:Resonator',
+            'Addition:Ruler/J-Ruler',
+        ];
     }
 }

@@ -63,19 +63,10 @@ if (isset($_GET['p'])) {
             require path_root('old/admin/cr/actions.php');
             return;
         case 'admin/cr/raw':
-            echo view_old('Admin:Helpers', 'old/admin/cr/view-txt.php');
+            echo view_old('Admin:CR:View', 'old/admin/cr/view-txt.php');
             return;
         case 'admin/hash':
             echo view_old('Admin:Hash', 'old/admin/hash/index.php');
-            return;
-        case 'admin/helpers':
-            echo view_old(
-                $title = 'Admin:Helpers',
-                $path = 'old/admin/helpers/index.php',
-                $options = null,
-                $vars = null,
-                $minize = false
-            );
             return;
         case 'admin/trim-image':
             $method = $_SERVER['REQUEST_METHOD'];

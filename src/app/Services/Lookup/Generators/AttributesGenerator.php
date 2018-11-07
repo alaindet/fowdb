@@ -14,6 +14,7 @@ class AttributesGenerator implements Generatable
             'bit2name'  => [],
             'code2bit'  => [],
             'code2name' => [],
+            'display'   => [],
         ];
 
         foreach ((new CardAttribute)->all() as $item) {
@@ -21,6 +22,10 @@ class AttributesGenerator implements Generatable
             $result['bit2name'][$item['bit']]  = $item['name'];
             $result['code2bit'][$item['code']] = $item['bit'];
             $result['code2name'][$item['code']] = $item['name'];
+
+            if ($item['display']) {
+                $result['display'][$item['code']] = $item['name'];
+            }
         }
 
         return $result;

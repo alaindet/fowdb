@@ -169,7 +169,7 @@ $(document).ready(function() {
         $("input#def-operator").val("equals");
         $(".dropdown-face", "#def-group").html("=");
         $("input#sort").val("sets_id");
-        $(".dropdown-face", "#sort-group").html("Choose");
+        $(".dropdown-face", "#sort-group").html("Select a field...");
         $("input#sortdir").val("asc");
         $("#sortdir_handle").removeClass("active");
     });

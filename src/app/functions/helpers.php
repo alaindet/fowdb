@@ -13,7 +13,6 @@ use \App\Services\Database\Statement\SqlStatement;
  * ========
  * admin_level // LEGACY
  * alert
- * cached // LEGACY
  * config
  * database // TO DO
  * database_old // LEGACY
@@ -61,17 +60,6 @@ use \App\Services\Database\Statement\SqlStatement;
 function admin_level(): int
 {
 	return \App\Legacy\Authorization::level();
-}
-
-/**
- * LEGACY: Gets cached data from App\Legacy\Helpers
- *
- * @param string $path
- * @return mixed string | array
- */
-function cached(string $path)
-{
-    return \App\Legacy\Helpers::get($path);
 }
 
 /**

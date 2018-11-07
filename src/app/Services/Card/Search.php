@@ -35,8 +35,6 @@ class Search
             'attribute_multi',
             'attribute_selected',
             'attributes',
-            'attrmulti', // LEGACY
-            'attrselected', // LEGACY
             'backside',
             'def',
             'def-operator',
@@ -47,17 +45,20 @@ class Search
             'format',
             'infields',
             'no_attribute_multi',
-            'page', // Pagination-related
             'q',
             'race',
             'rarity',
             'set',
-            'setcode', // LEGACY
             'sort',
             'sortdir',
             'total_cost',
             'type',
             'xcost',
+            
+            'page', // Pagination-related
+            'attrmulti', // LEGACY
+            'attrselected', // LEGACY
+            'setcode', // LEGACY
         ];
 
         // Fields to return
@@ -76,7 +77,7 @@ class Search
             'fields'  => implode(',', $this->fields),
             'table'   => 'cards',
             'filter'  => 'TRUE',
-            'sorting' => 'sets_id DESC, num ASC',
+            'sorting' => 'clusters_id DESC, sets_id DESC, num ASC',
             'limit'   => config('db.results.limit') + 1,
             'offset'  => 0
         ];
@@ -384,17 +385,11 @@ class Search
                 $this->f['format'] = [ $this->f['format'] ];
             }
 
-            // Get format helper
-            $formats = cached('formats');
-
-            // Get clusters list for this format
             $clusters = [];
-
+            $helper = lookup('formats.code2clusters');
             foreach ($this->f['format'] as $format) {
-                $formatClusters = $formats['list'][$format]['clusters'];
-                $clusters = array_merge($clusters, $formatClusters);
+                $clusters = array_merge($clusters, $helper[$format]);
             }
-
             $clusters = array_unique($clusters);
 
             // Add all clusters for this format
@@ -662,8 +657,11 @@ class Search
         // SORTING ============================================================
         if (
             isset($this->f['sort']) &&
-            in_array($this->f['sort'], array_keys(cached('sortfields'))) &&
-            $this->f['sort'] != "default"
+            in_array(
+                $this->f['sort'],
+                array_keys(lookup('sortables.cards'))
+            ) &&
+            $this->f['sort'] !== 'default'
         ) {
             // Get sorting direction
             $sortDir = (isset($this->f['sortdir']) && $this->f['sortdir'] == 'desc') ? 'DESC' : 'ASC';
@@ -679,7 +677,7 @@ class Search
                     break;
 
                 case 'type':
-                    $typesList = implode("','", cached('types'));
+                    $typesList = implode("','", lookup('types.bit2name'));
                     $sortField = "FIELD(type,'{$typesList}')";
                     break;
                     
@@ -695,7 +693,7 @@ class Search
             $this->sqlPartials['sorting'] = "{$sortField} {$sortDir}, {$default}";
         }
 
-        // Build final Filters quuery (if no filter set, bypass it with TRUE)
+        // Build final Filters query (if no filter set, bypass it with TRUE)
         $sql_f = empty($_sql_f) ? 'TRUE' : implode(" AND ", $_sql_f);
 
         // Set the final WHERE clause

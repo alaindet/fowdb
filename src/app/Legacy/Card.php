@@ -69,7 +69,7 @@ class Card
 
                 // Build attribute html
                 // Ex.: [ICON] Fire, [ICON] Dark
-                $attributesMap = cached('attributes');
+                $attributesMap = lookup('attributes.code2name');
                 $attributes = [];
                 foreach (explode('/', $card['attribute']) as $attribute) {
                     $attributes[] = collapse(

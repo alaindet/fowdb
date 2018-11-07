@@ -11,10 +11,11 @@ class Strings
 
     public static function kebabToPascal(string $kebab): string
     {
-        return str_replace(' ', '',
-            ucwords(
-                str_replace(['-', '_'], ' ', $kebab)
-            )
-        );
+        return str_replace('-', '', ucwords($kebab, '-'));
+    }
+
+    public static function snakeToTitle(string $snake): string
+    {
+        return ucwords(str_replace('_', ' ', $snake));
     }
 }
