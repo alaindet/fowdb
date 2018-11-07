@@ -53,16 +53,6 @@ if (isset($_GET['p'])) {
             return;
 
         // Admin --------------------------------------------------------------
-        // case 'admin/cards':
-        //     echo view_old('Admin:Cards', 'old/admin/cards/index.php');
-        //     return;
-        case 'admin/database':
-            \App\Legacy\Authorization::allow([1]);
-            \App\Http\Response\Redirect::to(implode('', [
-                '/old/admin/database/',
-                'cJ3MRhFC8zNuuv4Eo6pNGCx7HfbznvOAdEZT9Ylt7AG',
-                '/index.php'
-            ]));
         case 'admin/cr':
             echo view_old(
                 'Admin - Comprehensive Rules',
