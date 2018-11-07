@@ -19,10 +19,6 @@ $public = [
     ['POST','login','Auth\\LoginController','login'],
     ['GET', 'logout','Auth\\LoginController','logout'],
 
-
-    // ['POST','login','LoginController','login'],
-    // ['GET', 'logout','LoginController','logout']
-
 ];
 
 $user = [
@@ -53,6 +49,9 @@ $admin = [
     ['POST','rulings/update/{d}','RulingsController','update',['d'=>$d]],
     ['GET', 'rulings/delete/{d}','RulingsController','deleteForm',['d'=>$d]],
     ['POST','rulings/delete/{d}','RulingsController','delete',['d'=>$d]],
+
+    // PHP info
+    ['GET', 'phpinfo', 'Admin\\PhpInfoController','showPhpInfo'],
 
 ];
 

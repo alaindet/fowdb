@@ -53,9 +53,6 @@ if (isset($_GET['p'])) {
             return;
 
         // Admin --------------------------------------------------------------
-        // case 'admin':
-        //     echo view_old('Admin:Menu', 'old/admin/index.php');
-        //     return;
         // case 'admin/cards':
         //     echo view_old('Admin:Cards', 'old/admin/cards/index.php');
         //     return;
@@ -90,18 +87,6 @@ if (isset($_GET['p'])) {
                 $minize = false
             );
             return;
-        case 'admin/php':
-            \App\Legacy\Authorization::allow([1]);
-            phpinfo();
-            return;
-        // case 'admin/rulings':
-        //     $options = [
-        //         'js' => ['manage-rulings'],
-        //         'jqueryui' => true,
-        //         'lightbox' => true
-        //     ];
-        //     echo view_old('Admin - Rulings', 'admin/rulings/index.php', $options);
-        //     return;
         case 'admin/trim-image':
             $method = $_SERVER['REQUEST_METHOD'];
             if ($method === 'GET') {
