@@ -1,7 +1,7 @@
 <?php
 
 // ERROR: Missing spoilers at the moment
-if (empty(lookup('spoilers'))) {
+if (empty(lookup('spoilers.ids'))) {
 	alert('There are no spoilers on FoWDB at the moment', 'warning');
 	redirect_old('/');
 }
