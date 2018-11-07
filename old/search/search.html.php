@@ -292,7 +292,7 @@ $emptyGif = asset('images/icons/blank.gif');
 										type="hidden"
 										name="sortdir"
 										id="sortdir"
-										value="desc"
+										value="<?=$sortDir?>"
 									>
                   
                   <!-- Description -->
@@ -501,14 +501,13 @@ $emptyGif = asset('images/icons/blank.gif');
   						<div class="col-xs-12">
   							<?php
 									// Sticky values
-									[$multiple, $brackets, $size] = ['', '', ''];
-									if (
-										isset($filters['set']) &&
-										is_array($filters['set'])
-									) {
-										$multiple = 'multiple';
-										$brackets = '[]';
-										$size = 'size=10';
+									if (isset($filters['set'])) {
+										if (is_array($filters['set'])) {
+											[$multiple, $brackets, $size] = ['multiple', '[]', 'size10'];
+										} else {
+											[$multiple, $brackets, $size] = ['', '', ''];
+											$filters['set'] = [ $filters['set'] ];
+										}
 									}
   							?>
 								<select
@@ -521,16 +520,12 @@ $emptyGif = asset('images/icons/blank.gif');
   								<option name="set_default" value=0>Choose a set..</option>
   								<?php foreach ($clusters as $clusterCode => $cluster): ?>
   									<optgroup label="<?=$cluster['name']?>">
-  									  <?php foreach ($cluster['sets'] as $setCode => $setName):
-  											// Sticky values
-												(
-													isset($filters['set']) &&
-													is_array($filters['set']) &&
-													in_array($setCode, $filters['set'])
-												)
+  									  <?php foreach ($cluster['sets'] as $setCode => $setName): ?>
+											<?php // Sticky values
+												(isset($filters['set']) && in_array($setCode, $filters['set']))
 													? $checked = ' selected'
 													: $checked = '';
-  										?>
+											?>
 											<option value="<?=$setCode?>"<?=$checked?>>
                         <?=$setName?> - (<?=strtoupper($setCode)?>)
                       </option>
