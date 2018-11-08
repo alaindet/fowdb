@@ -41,6 +41,6 @@ foreach ($spoilers as $spoilerSet) {
 		'cards' => $spoilerSetCards
 	]);
 
-	// Add this set to existing sets, on top
-	array_unshift($cards, $spoilerSet);
+	// Add this set to existing sets
+	$cards[] = $spoilerSet;
 }

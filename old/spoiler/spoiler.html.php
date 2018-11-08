@@ -1,5 +1,7 @@
 <div class="col-xs-12" id="search-results">
 	<div class="panel panel-default">
+
+    <!-- Header -->
 		<div class="panel-heading">
 			<h3>
 				<i class="fa fa-th-large"></i>
@@ -15,15 +17,19 @@
 		    </button>
 		   </h3>
 		</div>
-		<div class="panel-body cards-container"><!--
-			<?php foreach ($cards as &$set) : ?>
-				--><div
+
+    <!-- Content -->
+		<div class="panel-body cards-container">
+			<?php foreach ($cards as $set) : ?>
+
+        <!-- Spoiler set container -->
+				<div
 					id="<?=$set['code']?>"
 					class="spoiler"
-					data-setcode="<?=$set['code']?>"
-					data-setcount="<?=$set['count']?>"
+					data-set-code="<?=$set['code']?>"
+					data-set-count="<?=$set['count']?>"
 				>
-					<!-- Header -->
+					<!-- Spoiler set header -->
 					<div class="spoiler-header text-center">
 						
 						<h3
@@ -34,12 +40,12 @@
 							<?="{$set['name']} ({$set['spoiled']} / {$set['count']})"?>
 						</h3>
 						
-						<a href="#top" class="btn btn-link">
-							Top
-						</a>
+            <!-- Top anchor -->
+						<a href="#top" class="btn btn-link">Top</a>
 
+            <!-- Share button -->
 						<a
-							class="btn btn-link"
+              class="btn btn-link"
 							href="#<?=$set['code']?>"
 							name="<?=$set['code']?>"
 						>
@@ -47,28 +53,36 @@
 						</a>
             
 					</div>
-					<br>
-					<!-- Body -->
+
+					<p></p>
+
+					<!-- Spoiler set body -->
 					<div class="spoiler-body" id="hide-spoiler-<?=$set['code']?>"><!--
 						<?php if (!empty($set['cards'])): ?>
-							<?php foreach ($set['cards'] as &$card): ?>
-									--><div class="fdb-card"><!--
-										--><a
+							<?php foreach ($set['cards'] as $card): ?>
+									--><div
+										class="fdb-card"
+										data-number="<?=$card['num']?>"
+										data-code="<?=$card['code']?>"
+										data-id="<?=$card['id']?>"
+									>
+										<a
 											href="<?=url_old('card', ['code' => urlencode($card['code'])])?>"
 											target="_self"
-										><!--
-											--><img
+										>
+											<img
                         src="<?=$card['thumb_path']?>"
                         alt="<?=$card['name']?>"
-                      ><!--
-										--></a><!--
-									--></div><!--
+                      >
+										</a>
+									</div><!--
 							<?php endforeach; ?>
 						<?php endif; ?>
-					--></div><!--
-				--></div><!--
-			<?php endforeach; ?>-->
+				  --></div>
+				</div>
+			<?php endforeach; ?>
 			<?=component('top-anchor')?>
 		</div>
+
 	</div>
 </div>

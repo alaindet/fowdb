@@ -1,147 +1,232 @@
-$(document).ready(function () {
-    FoWDB.spoiler = {
-        /**
-         * Returns a string with leading zeros (or custom character) if needed
-         *
-         * @param integer n Number to process
-         * @param integer width Number of characters of output string
-         * @param string Custom character instead of 0
-         * @return string Padded string
-         */
-        'pad': function (n, width, z) {
-            z = z || '0';
-            n = n + '';
-            return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-        }
-    };
+(function () {
 
-    // Firefox only - hash anchors do not work!
-    // Reference here: http://blog.byteb.us/bug-archeology-firefox-hash-navigation/
-    //if (location.href.indexOf('#') > -1) { location.href+=''; }
+  // CSS Selectors ------------------------------------------------------------
+  var app_css_optionsHider = '.js-hider[data-target="#hide-options"]';
+  var app_css_showMissing = '#opt_i_missing';
+  var app_css_spoiler = '.spoiler';
+  var app_css_spoilerBody = '.spoiler-body';
+  var app_css_card = '.fdb-card';
+  var app_css_missingCard = '.fdb-card-missing';
+
+  // Application data ---------------------------------------------------------
+  // // TO DO: Implement PHP's custom asset() function in JavaScript also
+  var app_data_mobileBreakpoint = 768;
+  var app_data_blankImage = 'images/in-pages/search/more.jpg';
+  var app_data_cardPattern = /fdb-card-/;
+  var app_data_displayClass = 'fdb-card-3';
 
 
-    // Show missing cards -----------------------------------------------------
-    $("#opt_i_missing").on("click", function () {
+  // Controller Functions -----------------------------------------------------
+  function bootstrap() {
+    // Show Options side panel on desktops
+    // view_toggleOptionsPanel(window.innerWidth);
 
-        // Get Show Missing HTML element hook
-        var showMissing = $(this);
+    // Show/Hide missing spoiler cards
+    $(document)
 
-        // Loop on spoiler sections (one for each spoiler set)
-        // To reorder cards by number and THEN show missing ones
-        $(".spoiler").each(function () {
-            
-            var spoilerSection = $(this);
-            var spoilerBody = $('.spoiler-body', spoilerSection);
-            var setcode = spoilerSection.data('setcode');
+      // Basic event: Show/Hide missing spoiler cards
+      .on(
+        'click',
+        app_css_showMissing,
+        function () {
+          handleShowMissingClick($(this));
+        })
 
-            // When deselecting
-            if (showMissing.hasClass("active")) {
+      // Custom events
+      .on('my:show-missing', handleShowMissingEvent)
+      .on('my:hide-missing', handleHideMissingEvent)
+  }
 
-                // Uncheck input
-                $("input", showMissing).removeAttr("checked");
+  function handleShowMissingClick(clickedButton) {
+    // Loop on each spoiler set
+    $(app_css_spoiler).each(function () {
 
-                // Delete every missing card
-                $(".fdb-card-missing").remove();
+      // Select elements and read some data for this spoiler set
+      var spoilerSection = $(this);
+      var spoilerBody = $(app_css_spoilerBody, spoilerSection);
+      var spoilerCode = spoilerSection.data('set-code').toUpperCase();
+      var spoilerCount = parseInt(spoilerSection.data('set-count'));
+      app_data_displayClass = view_readDisplayClass(app_css_card);
 
-                // Re-sort cards by ID (spoiled order) and append to viewer
-                $('.fdb-card', spoilerSection).sort(function(a,b) {
+      // Clicking...
+      if (!clickedButton.hasClass('active')) {
+        $(document).trigger('my:show-missing', [
+          spoilerBody,
+          spoilerCount,
+          spoilerCode
+        ]);
+      }
 
-                    // Get card codes
-                    var a_id = parseInt($('img', a).data('id')),
-                        b_id = parseInt($('img', b).data('id'));
+      // De-clicking...
+      else {
+        $(document).trigger('my:hide-missing', [
+          spoilerBody
+        ]);
+      }
 
-                    // Sorting criteria
-                    if (a_id < b_id) { return 1; }
-                    else if (a_id > b_id) { return -1; }
-                    else { return 0; }
-
-                }).appendTo(spoilerSection);
-
-                // Fit cards to screen
-                FoWDB.search.fitCards();
-            }
-            
-            // When selecting
-            else {
-
-                $("input", showMissing).attr("checked", "true"); // Check the clicked input
-
-                var nums = []; // This will hold spoiled card numbers
-
-                // Loop on each card of this spoiler to get all spoiled card numbers
-                $('.fdb-card', spoilerSection).each(function () {
-
-                    var num = $('img', $(this)).data('num'); // Get card number
-
-                    // Save card number into nums array if no other card has the same card num
-                    // This is needed instead of simply nums.push(num)
-                    // because Rulers/J-rulers and shift cards have the same num!
-                    if($.inArray(num, nums) < 0) { nums.push(parseInt(num)); }
-                });
-
-                nums.sort(function (a,b) { return a - b; }); // Sort array numerically
-
-                // Check card numbers
-                // (Loop as many times as biggest card number to fill missing card numbers)
-                var j = 1,
-                    missing = [],
-                    len = parseInt(spoilerSection.data('setcount'));
-
-                for (var i = 0; i < len; i++) {
-                    
-                    if (j != nums[i]) {
-                        nums.splice(i, 0, j);
-                        missing.push(j);
-                    }
-
-                    j++;
-                }
-
-                // Add covered cards to viewer
-                for (var k = 0, len = missing.length; k < len; k++) {
-
-                    // Create card container
-                    $("<div>")
-                        .addClass("fdb-card")
-                        .addClass("fdb-card-missing")
-                        // Append card number label
-                        .append($("<span class='missing-label'>").text(missing[k]))
-                        // Append missing card image (card back)
-                        .append(
-                            $("<img>")
-                                .attr('src', 'images/in-pages/search/more.jpg')
-                                .attr('alt', 'Missing card - ' + FoWDB.spoiler.pad(missing[k], 3))
-                                .attr(
-                                    'data-code',
-                                    (setcode + '-' + FoWDB.spoiler.pad(missing[k], 3)).toUpperCase()
-                                )
-                                .attr('data-num', missing[k])
-                        )
-                        // Prepend missing card to viewer
-                        .appendTo(spoilerBody);
-                }
-
-                // Sort cards with card code and append them to viewer
-                $('.fdb-card', spoilerSection).sort(function(a,b) {
-
-                    // Get card codes
-                    var a_code = $('img', a).data('code');
-                    var b_code = $('img', b).data('code');
-
-                    // Sorting criteria
-                    if (a_code < b_code) { return -1; }
-                    else if (a_code > b_code) { return 1; }
-                    else { return 0; }
-
-                }).appendTo(spoilerBody);
-
-                // Fit cards
-                FoWDB.search.fitCards();
-            }
-        });
     });
 
-    if (window.innerWidth > 768) {
-        $(".js-hider[data-target='#hide-options']").click();
+  }
+
+  /**
+   * Custom event handler
+   * Shows unspoiled (missing) cards as blank cards
+   * 
+   * @param object event The custom event
+   * @param object spoilerBody The cards container for this spoiler set
+   */
+  function handleShowMissingEvent(event, spoilerBody, spoilerCount, spoilerCode) {
+    // Read existing cards' numbers
+    var nums = view_readExistingNumbers(app_css_card, spoilerBody);
+
+    // Calculate missing numbers
+    var missingNums = model_calculateMissingNumbers(nums, spoilerCount);
+
+    // Build missing cards HTML
+    var missingHtml = missingNums.reduce(function (result, missing) {
+      return result += view_blankCard(missing, spoilerCode);
+    }, '');
+
+    // Add all missing cards to DOM
+    spoilerBody.append(missingHtml);
+
+    // Sort missing and existing cards
+    view_sortCards(app_css_card, spoilerBody);
+  }
+
+  function handleHideMissingEvent(event, spoilerBody) {
+    $(app_css_missingCard).remove();
+    view_restoreOriginalSorting(app_css_card, spoilerBody);
+  }
+
+
+  // View Functions -----------------------------------------------------------
+
+  /**
+   * Toggles the Options side panel if visiting from a desktop
+   * 
+   * @param int resolutionX The horizontal resolution to be checked upon
+   * @return void
+   */
+  function view_toggleOptionsPanel(resolutionX) {
+    if (resolutionX > app_data_mobileBreakpoint) {
+      $(app_css_optionsHider).click();
     }
-});
+  }
+
+  /**
+   * Fetches the current "display class" of cards
+   * 
+   * Ex.: "fdb-card-8", which means 8 cards in a row are visible => width=12.5%
+   * 
+   * @param string itemSelector The card CSS selector
+   * @return string The current display class
+   */
+  function view_readDisplayClass(itemSelector) {
+    var classes = $(itemSelector).first().attr('class').split(' ');
+    return classes.find(function (i) { return i.match(app_data_cardPattern) });
+  }
+
+  /**
+   * Reads card numbers from the view
+   * 
+   * @param string itemSelector 
+   * @param object containerElement 
+   */
+  function view_readExistingNumbers(itemSelector, containerElement) {
+    var nums = [];
+
+    // Read all missing cards' numbers
+    $(itemSelector, containerElement).each(function () {
+      var num = parseInt($(this).data('number'));
+
+      // Check needed for unspoiled Ruler/J-Ruler and shift cards with same num
+      if (nums.indexOf(num) === -1) nums.push(num);
+    });
+
+    return nums.sort(function (a, b) { return a - b; });
+  }
+
+  /**
+   * Returns a missing card element as HTML
+   * 
+   * @param int missing The current missing card number
+   * @param string code The spoiler set code
+   * @return string The HTML of the missing card element
+   */
+  function view_blankCard(missing, code) {
+    return [
+      '<div ',
+      'class="fdb-card ', app_data_displayClass, ' fdb-card-missing" ',
+      'data-number="', missing, '" ',
+      'data-code="', code, '-', util_padNumber(missing, 3), '"',
+      '>',
+      '<span class="fdb-card-missing-label">', missing, '</span>',
+      '<img src="', app_data_blankImage, '">',
+      '</div>'
+    ].join('');
+  }
+
+  /**
+   * Sorts cards by their code inside their container
+   * Code is loosely based on a card's number. Ascending order
+   * 
+   * @param object container Contains cards from the spoiler set
+   * @return void
+   */
+  function view_sortCards(itemSelector, container) {
+    $(itemSelector, container).sort(function (a, b) {
+      return $(a).data('code') < $(b).data('code') ? -1 : 1;
+    })
+      .appendTo(container);
+  }
+
+  function view_restoreOriginalSorting(itemSelector, container) {
+    $(itemSelector, container).sort(function (a, b) {
+      return $(a).data('id') < $(b).data('id') ? 1 : -1;
+    })
+      .appendTo(container);
+  }
+
+
+  // Model Functions ----------------------------------------------------------
+
+  /**
+   * Calculates missing numbers as "holes" in a given sequence with a max value
+   * 
+   * @param array nums
+   * @param int max
+   */
+  function model_calculateMissingNumbers(nums, max) {
+    var missing = [];
+
+    for (var i = 1; i <= max; i++) {
+      if (nums.indexOf(i) === -1) missing.push(i);
+    }
+
+    return missing;
+  }
+
+
+  // Utility Functions --------------------------------------------------------
+  // TODO: They should be abstracted in their own utilities file
+
+  /**
+   * Adds leading zeros (or, optionally, something else) to a number
+   * 
+   * @param int number
+   * @param int len
+   * @param string filler Defaults to 0
+   * @return string The left-padded number
+   */
+  function util_padNumber(number, len, filler) {
+    filler = filler || '0';
+    string = number + '';
+    while (string.length < len) string = filler + string;
+    return string;
+  }
+
+  // Bootstrap the application ------------------------------------------------
+  $(document).ready(bootstrap);
+
+})();
