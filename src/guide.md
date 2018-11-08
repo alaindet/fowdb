@@ -35,8 +35,11 @@
 1. Move to `/src/resources/assets`
 2. Execute this command
    ```
-   ./node_modules/.bin/uglifyjs js/FOO.js -o ../../../js/FOO.min.js
+   ./node_modules/.bin/uglifyjs js/FOO.js -o ../../../js/FOO.min.js -cm
    ```
+- `c` flag: compress (use defaults)
+- `m` flag: mangle (use defaults)
+- Documentation here: https://www.npmjs.com/package/uglify-js
 
 # FoWDB Clint CLI tools
 
