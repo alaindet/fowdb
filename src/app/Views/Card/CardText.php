@@ -13,7 +13,7 @@ class CardText
 		'{rest}' => '<img src="images/icons/blank.gif" class="fd-icon-rest" />',
 		'=>' => '&rArr;',
 		'Errata:' => '<span class="ruling-errata">Errata:</span>',
-		'<hr>' => "<div class='fdb-separator-v-05'></div>",
+		'<hr>' => "<p></p>",
 		'[(' => '【',
 		')]' => '】',
 		'<<' => '&#12296;',
@@ -33,7 +33,7 @@ class CardText
 		// Symbol skills
 		"/\[_(.+?)_\]/" => "<span class='fd-mark-ability'>$1</span>",
 		// Break
-		"/^\[Break\](.+?)(<br>|$)/" => "<span class='fd-mark-break'>Break</span> <span class='fd-mark-break-text'>$1</span><br>",
+		"/^\[Break\](.+?)(<br>|<hr>|$)/" => "<span class='fd-mark-break'>Break</span> <span class='fd-mark-break-text'>$1</span><br>",
 		// Abilities (white text on black, legacy)
 		"/\[(J-Activate|Continuous|Activate|Target Attack|Enter|Flying|Explode|Pierce|Trigger|First Strike|Imperishable|Swiftness|Awakening|Incarnation|Quickcast|Remnant|Stealth|Judgment|Evolution|Shift)\]/" => "<span class='fd-mark-old-ability'>$1</span>",
 		// -ERRATA- on card text

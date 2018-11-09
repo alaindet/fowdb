@@ -1,6 +1,3 @@
-<?php
-$blank = asset('images/icons/blank.gif');
-?>
 <div class="page-header">
   <h1>Cards search help</h1>
   <?=component('breadcrumb', [
@@ -10,108 +7,12 @@ $blank = asset('images/icons/blank.gif');
 </div>
 
 <h2>
-  <a href="#symbols" name="symbols" class="link-as-text link-hash">
-    Symbols
+  <a href="#syntax" name="syntax" class="link-as-text link-hash">
+    Syntax
   </a>
 </h2>
 
-<div class="table-responsive">
-  <table class="table table-striped table-condensed">
-    
-    <!-- Headings -->
-    <thead>
-      <th>What you type</th>
-      <th>What you get</th>
-      <th>Description</th>
-    </thead>
-
-    <!-- Body -->
-    <tbody>
-
-      <!-- Will symbols -->
-      <?php foreach (lookup('attributes.code2name') as $code => $name): ?>
-        <tr>
-          <td class="text-monospace">{<?=$code?>}</td>
-          <td><img src="<?=$blank?>" class="fd-icon-<?=$code?>"></td>
-          <td><?=$name?> symbol</td>
-        </tr>
-      <?php endforeach; ?>
-
-      <!-- Free will -->
-      <tr>
-        <td class="text-monospace">
-          {2}, {x}
-        </td>
-        <td>
-          <span class="fd-icon-free">2</span>,
-          <span class="fd-icon-free">x</span>
-        </td>
-        <td class="text-justified">
-          Free will symbol. You can type any number and even "x" between { and }
-        </td>
-      </tr>
-
-      <!-- Rest -->
-      <tr>
-        <td class="text-monospace">{rest}</td>
-        <td><img src="<?=$blank?>" class="fd-icon-rest"></td>
-        <td>Rest symbol</td>
-      </tr>
-
-      <!-- Automatic ability arrow -->
-      <tr>
-        <td class="text-monospace">=&gt;</td>
-        <td>&rArr;</td>
-        <td>Automatic ability arrow</td>
-      </tr>
-
-      <!-- Sealed ability -->
-      <tr>
-        <td class="text-monospace">[(, )], &lt;&lt;, &gt;&gt;</td>
-        <td>【, 】, &#12296;, &#12297;</td>
-        <td>Sealed ability symbols</td>
-      </tr>
-
-      <!-- Old ability -->
-      <tr>
-        <td class="text-monospace">[Enter]</td>
-        <td><span class="fd-mark-old-ability">Enter</span></td>
-        <td>Old ability style (deprecated since Lapis Cluster)</td>
-      </tr>
-
-      <!-- New ability -->
-      <tr>
-        <td class="text-monospace">[_Enter_]</td>
-        <td><span class="fd-mark-ability">Enter</span></td>
-        <td>
-          New ability style. All cards use this style since Lapis Cluster
-        </td>
-      </tr>
-
-      <!-- Break ability -->
-      <tr>
-        <td class="text-monospace">[Break] Break ability text</td>
-        <td>
-          <span class='fd-mark-break'>Break</span>
-          <span class='fd-mark-break-text'>Break ability text</span>
-        </td>
-        <td>
-          Old [Break] ability (deprecated since Grimm Cluster)
-        </td>
-      </tr>
-
-      <!-- In-text errata -->
-      <tr>
-        <td class="text-monospace">Some -errata-changed text-/errata-</td>
-        <td>Some <span class="fd-mark-errata">changed text</span></td>
-        <td>
-          A card text that was corrected via an official errata
-        </td>
-      </tr>
-
-    </tbody>
-  </table>
-</div>
+<?=include_view('pages/public/cards/includes/syntax-table')?>
 
 <h2>
   <a href="#tips-tricks" name="tips-tricks" class="link-as-text link-hash">
