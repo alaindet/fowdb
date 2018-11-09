@@ -64,11 +64,16 @@ class Input extends Base
     private function &globalArrayReference(string $name): array
     {
         if ($name === 'GET' || $name === 'get') $ref =& $_GET;
-        if ($name === 'POST' || $name === 'post') $ref =& $_POST;
-        if ($name === 'REQUEST' || $name === 'request') $ref =& $_REQUEST;
-        if ($name === 'FILES' || $name === 'files') $ref =& $_FILES;
+        elseif ($name === 'POST' || $name === 'post') $ref =& $_POST;
+        elseif ($name === 'REQUEST' || $name === 'request') $ref =& $_REQUEST;
+        elseif ($name === 'FILES' || $name === 'files') $ref =& $_FILES;
 
         return $ref;
+    }
+
+    public function &getGlobalReference(string $name): array
+    {
+        return $this->globalArrayReference($name);
     }
 
     /**
