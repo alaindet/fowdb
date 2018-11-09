@@ -1,23 +1,29 @@
 <?php
-$results = database()->get(
-  "SELECT
-    f.name as fname,
-    f.code as fcode,
-    c.name as cname,
-    c.code as ccode,
-    s.name as sname,
-    s.code as scode
-  FROM
-    formats f
-    INNER JOIN pivot_cluster_format cf ON f.id = cf.formats_id
-    INNER JOIN clusters c ON f.clusters_id = c.id
-    INNER JOIN sets s ON c.id = s.clusters_id
-    ORDER BY
-      f.is_multi_cluster DESC,
-      f.id DESC, 
-      c.id DESC,
-      s.id DESC"
-);
+$results = database()
+  ->select(
+    statement('select')
+      ->select([
+        'f.name fname',
+        'f.code fcode',
+        'c.name cname',
+        'c.code ccode',
+        's.name sname',
+        's.code scode',
+      ])
+      ->from(
+        'formats f
+        JOIN pivot_cluster_format cf ON f.id = cf.formats_id
+        JOIN clusters c ON cf.clusters_id = c.id
+        JOIN sets s ON c.id = s.clusters_id'
+      )
+      ->orderBy([
+        'f.is_multi_cluster DESC',
+        'f.id DESC', 
+        'c.id DESC',
+        's.id DESC'
+      ])
+  )
+  ->get();
 
 // Will hold final data
 $formats = [];
@@ -52,20 +58,44 @@ foreach ($results as &$r) {
 <?php foreach ($formats as $fcode => &$f): ?>
   <div class="fdb-format">
     <h2>
-      <a href="/?do=search&format=<?=$f['code']?>" class="no-style"><?=$f['name']?></a>
+      <a
+        class=" link-as-text"
+        href="<?=url_old('', [
+          'do' => 'search',
+          'format[]' => $f['code']
+        ])?>"
+      >
+        <?=$f['name']?>
+      </a>
     </h2>
     <ul class="fdb-indented">
       <?php foreach ($f['list'] as $ccode => &$c): ?>
         <li>
           <h4>
-            <a href="/?do=search&format=<?=$c['code']?>" class="no-style"><?=$c['name']?></a>
+            <a
+              class=" link-as-text"
+              href="<?=url_old('', [
+                'do' => 'search',
+                'format[]' => $c['code']
+              ])?>"
+            >
+              <?=$c['name']?>
+            </a>
           </h4>
             <ul>
               <?php foreach ($c['list'] as $scode => &$sname): ?>
                 <li>
-                  <div class="fdb-formats-label"><?=strtoupper($scode)?></div>
-                  &nbsp;
-                  <a href="/?do=search&set=<?=$scode?>"><?=$sname?></a>
+                  <div class="fdb-formats-label">
+                    <?=strtoupper($scode)?>
+                  </div>
+                  <a
+                    href="<?=url_old('', [
+                      'do' => 'search',
+                      'set' => $scode
+                    ])?>"
+                  >
+                    <?=$sname?>
+                  </a>
                 </li>
               <?php endforeach; ?>
             </ul>
