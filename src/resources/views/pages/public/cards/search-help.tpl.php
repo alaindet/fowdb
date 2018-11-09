@@ -9,7 +9,11 @@ $blank = asset('images/icons/blank.gif');
   ])?>
 </div>
 
-<h2>Symbols</h2>
+<h2>
+  <a href="#symbols" name="symbols" class="link-as-text link-hash">
+    Symbols
+  </a>
+</h2>
 
 <div class="table-responsive">
   <table class="table table-striped table-condensed">
@@ -109,7 +113,11 @@ $blank = asset('images/icons/blank.gif');
   </table>
 </div>
 
-<h2>Tips and tricks</h2>
+<h2>
+  <a href="#tips-tricks" name="tips-tricks" class="link-as-text link-hash">
+    Tips and tricks
+  </a>
+</h2>
 
 <ul class="fd-list --spaced">
   <li>
