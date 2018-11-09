@@ -86,7 +86,7 @@ class Lookup
 
     /**
      * Stores all the current cache data in the cache file
-     * Usually called after PseudoCache::generate() or Cache::generateAll()
+     * Usually called after Lookup::generate() or Lookup::generateAll()
      *
      * @return Lookup
      */
