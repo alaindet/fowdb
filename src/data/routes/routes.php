@@ -1,10 +1,5 @@
 <?php
 
-// Regex patterns
-$d = '[0-9]+'; // I => id
-$h = '[A-Za-z0-9]+'; // H => hash
-$c = '[A-Z0-9]+\-\d{3}[A-Z]+'; // C => card
-
 // [ [ httpMethod, uri, controller, method, params, middleware ], ... ]
 // [ // Example
 //     'GET','test/public/{id}',
@@ -12,6 +7,13 @@ $c = '[A-Z0-9]+\-\d{3}[A-Z]+'; // C => card
 //     ['id' => '[0-9]+'],
 //     ['!token', '!auth', 'captcha']
 // ]
+
+// Regex patterns
+$d = ['d' => '[0-9]+']; // I => id
+$h = ['h' => '[A-Za-z0-9]+']; // H => hash
+$c = ['c' => '[A-Z0-9]+\-\d{3}[A-Z]+']; // C => card
+
+// Public routes --------------------------------------------------------------
 $public = [
 
     ['GET', 'cards/search/help','CardsController','showSearchHelp'],
@@ -21,48 +23,51 @@ $public = [
 
 ];
 
+// User (logged) routes -------------------------------------------------------
 $user = [
 
     //
 
 ];
 
+// Admin routes ---------------------------------------------------------------
 $admin = [
 
     // Menu
     ['GET', 'admin','UserController','adminShowProfile'],
-
-    // Cards
-    // ['GET', 'cards/manage','CardsController','indexManage'],
-    // ['GET', 'cards/create','CardsController','createForm'],
-    // ['POST','cards/create','CardsController','create'],
-    // ['GET', 'cards/update/{d}','CardsController','updateForm',['d'=>$d]],
-    // ['GET', 'cards/update/{d}','CardsController','update',['d'=>$d]],
-    // ['GET', 'cards/delete/{d}','CardsController','deleteForm',['d'=>$d]],
-    // ['GET', 'cards/delete/{d}','CardsController','delete',['d'=>$d]],
-
-    // Rulings
-    ['GET', 'rulings/manage','RulingsController','indexManage'],
-    ['GET', 'rulings/create','RulingsController','createForm'],
-    ['POST','rulings/create','RulingsController','create'],
-    ['GET', 'rulings/update/{d}','RulingsController','updateForm',['d'=>$d]],
-    ['POST','rulings/update/{d}','RulingsController','update',['d'=>$d]],
-    ['GET', 'rulings/delete/{d}','RulingsController','deleteForm',['d'=>$d]],
-    ['POST','rulings/delete/{d}','RulingsController','delete',['d'=>$d]],
 
     // PHP info
     ['GET', 'phpinfo', 'Admin\\PhpInfoController','showPhpInfo'],
 
 ];
 
-// Auth: judge ----------------------------------------------------------------
+// Judge routes (Admins too as they bypass any authorization) -----------------
 $judge = [
-    
+
+    // Menu
     ['GET', 'judge','UserController','judgeShowProfile'],
+
+    // Cards
+    ['GET', 'cards/manage','Admin\\CardsController','indexManage'],
+    ['GET', 'cards/create','Admin\\CardsController','createForm'],
+    ['POST','cards/create','Admin\\CardsController','create'],
+    ['GET', 'cards/update/{d}','Admin\\CardsController','updateForm',$d],
+    ['GET', 'cards/update/{d}','Admin\\CardsController','update',$d],
+    ['GET', 'cards/delete/{d}','Admin\\CardsController','deleteForm',$d],
+    ['GET', 'cards/delete/{d}','Admin\\CardsController','delete',$d],
+
+    // Rulings
+    ['GET', 'rulings/manage','RulingsController','indexManage'],
+    ['GET', 'rulings/create','RulingsController','createForm'],
+    ['POST','rulings/create','RulingsController','create'],
+    ['GET', 'rulings/update/{d}','RulingsController','updateForm',$d],
+    ['POST','rulings/update/{d}','RulingsController','update',$d],
+    ['GET', 'rulings/delete/{d}','RulingsController','deleteForm',$d],
+    ['POST','rulings/delete/{d}','RulingsController','delete',$d],
 
 ];
 
-// [ access => routes, ... ]
+// [ role_required => routes, ... ]
 return [
     'public' => $public,
     'user' => $user,
