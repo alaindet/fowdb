@@ -6,7 +6,7 @@ use \App\Utils\Logger;
 use \App\Legacy\Authorization;
 
 // Bounce back unauthorized users
-Authorization::allow([1]);
+auth()->allow([Authorization::ROLE_ADMIN]);
 
 $lookup = Lookup::getInstance();
 $breadcrumb = [

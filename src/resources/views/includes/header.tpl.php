@@ -60,9 +60,9 @@ $links = [
 					?>
 					<?php if (admin_level() > 0): ?>
 						<li>
-							<a href="<?=url('admin')?>" class="menu-admin">
-								<i class="fa fa-rocket"></i>
-								Admin
+							<a href="<?=url('profile')?>">
+								<i class="fa fa-user"></i>
+								Profile
 							</a>
 						</li>
 					<?php endif; ?>

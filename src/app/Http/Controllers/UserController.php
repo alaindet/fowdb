@@ -5,9 +5,19 @@ namespace App\Http\Controllers;
 use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Views\Page;
+use App\Legacy\Authorization;
 
 class UserController extends Controller
 {
+    public function showProfile()
+    {
+        $level = auth()->level();
+
+        if ($level === Authorization::ROLE_ADMIN) redirect('admin');
+        if ($level === Authorization::ROLE_JUDGE) redirect('judge');
+
+    }
+
     public function adminShowProfile(): string
     {
         return (new Page)

@@ -4,6 +4,7 @@ use \App\Services\OpenGraphProtocol\OpenGraphProtocol;
 use \App\Services\OpenGraphProtocol\OpenGraphProtocolImage;
 use \App\Services\CsrfToken;
 use \App\Services\Session;
+use \App\Legacy\Authorization;
 
 // Load required files
 require __DIR__ . '/vendor/autoload.php';
@@ -35,3 +36,6 @@ $openGraphProtocol
     ->siteName( config('app.name') )
     ->locale( config('app.locale') )
     ->description( config('ogp.description') );
+
+// Authorization bootstrap
+Authorization::getInstance();

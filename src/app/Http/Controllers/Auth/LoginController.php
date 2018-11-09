@@ -11,6 +11,9 @@ class LoginController extends Controller
 {
     public function loginForm()
     {
+        // Redirect to the appropriate user's profile
+        if (auth()->logged()) redirect('profile');
+
         return (new Page)
             ->template('pages/auth/login')
             ->title('Login')
@@ -29,14 +32,14 @@ class LoginController extends Controller
 
         Authentication::login($username, $password);
 
-        alert('You logged in as admin', 'success');
-        redirect('admin');
+        alert('You signed in', 'success');
+        redirect('profile');
     }
 
     public function logout()
     {
         Authentication::logout();
-        alert('You logged out.', 'warning');
+        alert('You signed out', 'warning');
         redirect('/');
     }
 }

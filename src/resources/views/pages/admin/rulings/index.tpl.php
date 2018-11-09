@@ -6,7 +6,7 @@
 <div class="page-header">
   <h1>Rulings</h1>
   <?=component('breadcrumb', [
-    'Admin' => url('admin'),
+    'Admin' => url('profile'),
     'Rulings' => '#'
   ])?>
 </div>

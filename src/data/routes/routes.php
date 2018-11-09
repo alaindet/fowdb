@@ -26,7 +26,7 @@ $public = [
 // User (logged) routes -------------------------------------------------------
 $user = [
 
-    //
+    ['GET', 'profile','UserController','showProfile'],
 
 ];
 

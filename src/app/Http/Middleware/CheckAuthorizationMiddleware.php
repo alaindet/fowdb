@@ -4,26 +4,18 @@ namespace App\Http\Middleware;
 
 use App\Http\Request\Request;
 use App\Http\Middleware\MiddlewareInterface;
-use App\Legacy\Authorization;
 use App\Exceptions\AuthorizationException;
 
 class CheckAuthorizationMiddleware implements MiddlewareInterface
 {
     public function run(Request $request): void
     {
-        // Access levels:
-        // 'public' => 0,
-        // 'admin' => 1,
-        // 'user' => 2,
-        // 'judge' => 3
-        $requiredLevel = $request->app('access');
+        $requiredRole = $request->app('access');
 
-        // Bypass access control
-        if ($requiredLevel === 'public') return;
+        // Shortcut for public routes
+        if ($requiredRole === 'public') return;
 
-        // ERROR: Not authorized!
-        if (!Authorization::check($requiredLevel)) {
-            throw new AuthorizationException();
-        }
+        // ERROR: Current user is not authorized
+        if (!auth()->check($requiredRole)) throw new AuthorizationException();
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 // Check authorization and bounce back intruders
-\App\Legacy\Authorization::allow();
+auth()->allow([\App\Legacy\Authorization::ROLE_ADMIN]);
 
 // Set selected!
 if (isset($_GET['set'])) {

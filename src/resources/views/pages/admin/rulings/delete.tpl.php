@@ -12,7 +12,7 @@
 <div class="page-header">
   <h1>Delete ruling</h1>
   <?=component('breadcrumb', [
-    'Admin' => url('admin'),
+    'Admin' => url('profile'),
     'Rulings' => url('rulings/manage'),
     'Delete' => '#'
   ])?>

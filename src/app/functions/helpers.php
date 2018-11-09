@@ -5,6 +5,7 @@ use \App\Legacy\Database as LegacyDatabase;
 use \App\Services\Database\Database;
 use \App\Http\Request\Input;
 use \App\Services\Database\Statement\SqlStatement;
+use \App\Legacy\Authorization as LegacyAuthorization;
 
 /**
  * Index:
@@ -13,6 +14,7 @@ use \App\Services\Database\Statement\SqlStatement;
  * ========
  * admin_level // LEGACY
  * alert
+ * auth
  * config
  * database // TO DO
  * database_old // LEGACY
@@ -59,7 +61,30 @@ use \App\Services\Database\Statement\SqlStatement;
  */
 function admin_level(): int
 {
-	return \App\Legacy\Authorization::level();
+	return (LegacyAuthorization::getInstance())->level();
+}
+
+/**
+ * Adds an alert to be shown. If redirect is used after this, it's shown
+ * on the next request, otherwise it's shown on the current page
+ *
+ * @param string $message
+ * @param string $type
+ * @return void
+ */
+function alert(string $message, string $type = null): void
+{
+    \App\Services\Alert::add($message, $type);
+}
+
+/**
+ * LEGACY: Returns the authorization singleton
+ *
+ * @return LegacyAuthorization
+ */
+function auth(): LegacyAuthorization
+{
+	return LegacyAuthorization::getInstance();
 }
 
 /**
@@ -125,20 +150,7 @@ function input(): Input
 function lookup(string $path = null)
 {
     return (\App\Services\Lookup\Lookup::getInstance())->get($path);
-}
-
-/**
- * Adds an alert to be shown. If redirect is used after this, it's shown
- * on the next request, otherwise it's shown on the current page
- *
- * @param string $message
- * @param string $type
- * @return void
- */
-function alert(string $message, string $type = null): void
-{
-    \App\Services\Alert::add($message, $type);
-}
+} 
 
 /**
  * Redirects to another URL, accepts array to parse as querystring

@@ -5,7 +5,10 @@ use \App\Models\Card;
 use \App\Services\Session;
 
 // Check authorization and bounce back intruders
-Authorization::allow([1, 3]);
+auth()->allow([
+  Authorization::ROLE_ADMIN,
+  Authorization::ROLE_JUDGE
+]);
 
 $card = Card::getById($_GET['id'], [
   'id',

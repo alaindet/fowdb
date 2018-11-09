@@ -49,7 +49,7 @@ class RulingsController extends Controller
         // Render the page
         return (new Page)
             ->template('pages/admin/rulings/index')
-            ->title('Admin ~ Rulings ~ Index')
+            ->title('Rulings,Manage')
             ->variables([
                 'pagination' => $database->paginationInfo(),
                 'rulings' => $rulings
@@ -78,7 +78,7 @@ class RulingsController extends Controller
         // Render the page
         return (new Page)
             ->template('pages/admin/rulings/create')
-            ->title('Admin ~ Rulings ~ Create')
+            ->title('Rulings,Create')
             ->variables([
                 'card' => $card ?? null,
             ])
@@ -139,7 +139,7 @@ class RulingsController extends Controller
         // Render the page
         return (new Page)
             ->template('pages/admin/rulings/update')
-            ->title('Admin ~ Rulings ~ Update')
+            ->title('Rulings,Update')
             ->variables($item)
             ->options([
                 'dependencies' => [
@@ -195,7 +195,7 @@ class RulingsController extends Controller
         // Render the page
         return (new Page)
             ->template('pages/admin/rulings/delete')
-            ->title('Admin ~ Rulings ~ Delete')
+            ->title('Rulings,Delete')
             ->variables($item)
             ->options([
                 'dependencies' => [

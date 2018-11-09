@@ -13,8 +13,8 @@
 <div class="page-header">
   <h1>Create a new ruling</h1>
   <?=component('breadcrumb', [
-    'Admin' => url('admin'),
-    'Rulings' => url('admin/rulings'),
+    'Admin' => url('profile'),
+    'Rulings' => url('rulings/manage'),
     'Create' => '#'
   ])?>
 </div>

@@ -1,7 +1,7 @@
 <?php
 
 // Check authorization and bounce back intruders
-\App\Legacy\Authorization::allow();
+auth()->allow([\App\Legacy\Authorization::ROLE_ADMIN]);
 
 $setId = lookup('sets.code2id.' . $_GET['set']);
 

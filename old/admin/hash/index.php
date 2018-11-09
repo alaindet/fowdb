@@ -6,14 +6,14 @@ use \App\Legacy\AdminView;
 use \App\Legacy\Authorization;
 use \App\Services\CsrfToken;
 
-// Check authorization and bounce back intruders. 1 = super admins
-Authorization::allow([1]);
+// Check authorization and bounce back intruders
+auth()->allow([Authorization::ROLE_ADMIN]);
 
 // Get input instance
 $input = Input::getInstance();
 
 $breadcrumbs = [
-  'Admin' => url_old('admin'),
+  'Admin' => url('admin'),
   'Hash' => '#'
 ];
 
@@ -29,7 +29,7 @@ if ($input->has('toHash')) {
   $hash = password_hash($input->post('toHAsh'), PASSWORD_BCRYPT);
   
   $breadcrumbs = [
-    'Admin' => url_old('admin'),
+    'Admin' => url('admin'),
     'Hash' => url_old('admin/hash'),
     'Hashed' => '#'
   ];

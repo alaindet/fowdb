@@ -1,7 +1,9 @@
 <?php
 
+use \App\Legacy\Authorization;
+
 // Check authorization and bounce back intruders
-\App\Legacy\Authorization::allow();
+auth()->allow([Authorization::ROLE_ADMIN]);
 
 // Alias input
 $input = \App\Http\Request\Input::getInstance();
@@ -48,21 +50,18 @@ if ($input->has('command')) {
   redirect_old('admin/clint');
 }
 ?>
-
 <div class="page-header">
   <h1>Clint commands</h1>
-  <?=\App\Legacy\AdminView::breadcrumbs([
+  <?=component('breadcrumb', [
+    'Admin' => url('admin'),
     'Clint' => '#'
   ])?>
 </div>
 
-<ul>
+<ul class="fd-list --spaced font-110">
   <?php foreach ($commands as $key => $command): ?>
     <li>
-      <a
-        href="<?php echo url_old('admin/clint', ['command' => $key]); ?>"
-        class="btn btn-link btn-lg separate"
-      >
+      <a href="<?=url_old('admin/clint', ['command' => $key])?>">
         <?=$command['label']?>
       </a>
     </li>

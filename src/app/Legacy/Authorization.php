@@ -2,26 +2,75 @@
 
 namespace App\Legacy;
 
+use App\Base\Singleton;
 use App\Services\Session;
 use App\Exceptions\AuthorizationException;
 
 class Authorization
 {
+    use Singleton;
+
+    /**
+     * Name for the session hash
+     */
     public const NAME = 'admin-hash';
 
-    public static $bypassLevel = 1; // Super admin
+    /**
+     * Define user roles
+     */
+    public const ROLE_PUBLIC = 0;
+    public const ROLE_ADMIN = 1;
+    public const ROLE_USER = 2;
+    public const ROLE_JUDGE = 3;
+    
+    /**
+     * Maps some higher level roles to lower levels ones to alias them
+     * Ex.: "Admin" also acts as "User" and "Judge"
+     * Ex.: "Judge" also acts as "User"
+     *
+     * @var array
+     */
+    public $actsAs;
 
-    public static $levels = [
-        'public' => 0,
-        'admin' => 1,
-        'user' => 2,
-        'judge' => 3
-    ];
+    /**
+     * Maps a role to its authorization level
+     *
+     * @var array
+     */
+    public $roleToLevel;
 
-    public static function level(): int
+    protected function __construct()
+    {
+        // Define aliases for higher level roles (more than basic users)
+        $this->actsAs = [
+            self::ROLE_ADMIN => [self::ROLE_USER, self::ROLE_JUDGE],
+            self::ROLE_JUDGE => [self::ROLE_USER],
+        ];
+
+        // Define map: from role name to its authorization level
+        $this->roleToLevel = [
+            'public' => self::ROLE_PUBLIC,
+            'admin' => self::ROLE_ADMIN,
+            'user' => self::ROLE_USER,
+            'judge' => self::ROLE_JUDGE,
+        ];
+    }
+
+    public function logged(): bool
+    {
+        return $this->level() !== self::ROLE_PUBLIC;
+    }
+
+    /**
+     * Roles are defined into __construct but this function checks the
+     * database to match the same hash string
+     *
+     * @return integer
+     */
+    public function level(): int
     {
         // ERROR: No admin hash stored into session
-        if (!Session::exists(self::NAME)) return self::$levels['public'];
+        if (!Session::exists(self::NAME)) return self::ROLE_PUBLIC;
 
         $user = database_old()->get(
             "SELECT roles_id FROM users WHERE remember_token = :hash LIMIT 1",
@@ -30,7 +79,7 @@ class Authorization
         );
 
         // ERROR: Invalid hash stored into session
-        if (empty($user)) return self::$levels['public'];
+        if (empty($user)) return self::ROLE_PUBLIC;
 
         // Authorization level > 0
         return (int) $user['roles_id'];
@@ -42,35 +91,38 @@ class Authorization
      * @param string $role Role to check
      * @return boolean TRUE if logged user is authorized for given role
      */
-    public static function check(string $role): bool
+    // public function check(string $role): bool
+    public function check(string $role)
     {
         // ERROR: Invalid role
-        if (!isset(self::$levels[$role])) {
+        if (!isset($this->roleToLevel[$role])) {
             throw new AuthorizationException(
                 "Role <strong>{$role}</strong> does not exist on FoWDB."
             );
         }
 
-        // Check if logged user's level matches either required level
-        // or bypass level
-        return in_array(
-            self::level(),
-            [ self::$levels[$role], self::$bypassLevel ]
-        );
+        $currentLevel = $this->level();
+        $aliases = $this->actsAs[$currentLevel];
+        $currentLevels = array_merge([$currentLevel], $aliases);
+        $requiredLevel = $this->roleToLevel[$role];
+        
+        return in_array($requiredLevel, $currentLevels);
     }
 
     /**
      * Checks if a user level meets the passed levels
      * Bounces back if not
      * 
-     * @param $allowedLevels List of allowed levels
+     * @param $requiredLevels List of allowed levels
      * @return void
      */
-    public static function allow(array $allowedLevels = []): void
+    public function allow(array $requiredLevels = []): void
     {
-        $levels = array_merge($allowedLevels, [self::$bypassLevel]);
+        $currentLevel = $this->level();
+        $aliases = $this->actsAs[$currentLevel];
+        $requiredLevels = array_merge($requiredLevels, $aliases);
 
-        if (!in_array(self::level(), $levels)) {
+        if (!in_array($currentLevel, $requiredLevels)) {
             throw new AuthorizationException(
                 'You are not allowed to perform this action'
             );

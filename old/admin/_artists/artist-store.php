@@ -6,7 +6,7 @@ use \App\Services\Session;
 require dirname(dirname(dirname(__DIR__))) . '/src/bootstrap.php';
 
 // Check authorization and bounce back intruders
-Authorization::allow();
+auth()->allow([Authorization::ROLE_ADMIN]);
 
 // Update this card's artist name
 database()

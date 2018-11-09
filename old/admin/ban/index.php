@@ -1,6 +1,11 @@
 <?php
 
+use \App\Legacy\Authorization;
+
 // Check authorization and bounce back intruders
-\App\Legacy\Authorization::allow([1, 3]);
+auth()->allow([
+    Authorization::ROLE_ADMIN,
+    Authorization::ROLE_JUDGE
+]);
 
 return 'admin/ban';
