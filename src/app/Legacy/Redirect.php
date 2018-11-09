@@ -20,7 +20,8 @@ class Redirect
         $page = ($page === '' || $page === '/') ? [] : ['p' => $page];
         $params = array_merge($page, $params);
         $qs = self::queryString($params);
-        return "/{$qs}";
+        $baseUrl = config('app.url');
+        return "{$baseUrl}/{$qs}";
     }
 
     private static function queryString(array $params = null): string
