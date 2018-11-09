@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
+use App\Http\Response\Redirect;
+use App\Services\Alert;
+use App\Services\Ruling\RulingCreateService;
+use App\Services\Ruling\RulingDeleteService;
+use App\Services\Ruling\RulingUpdateService;
 use App\Views\Page;
-use App\Models\Card;
-use App\Models\Ruling;
 
 class RulingsController extends Controller
 {
@@ -93,7 +96,6 @@ class RulingsController extends Controller
 
     public function create(Request $request): string
     {
-        // Validate inputs
         $request->validate('post', [
             'card-id' => ['required:1','is:integer','exists:cards,id'],
             'ruling-errata' => ['required:0','is:integer','enum:0,1'],
@@ -101,43 +103,12 @@ class RulingsController extends Controller
             'ruling-text' => ['required:1'],
         ]);
 
-        $input = $request->input();
+        $service = new RulingCreateService($request->input()->post());        $service->processInput();
+        $service->syncDatabase();
+        [$message, $uri] = $service->getFeedback();
 
-        // Read the card's data
-        $card = Card::getById($input->post('card-id'), ['id', 'name', 'code']);
-
-        // Create ruling entity on the database
-        database()
-            ->insert(statement('insert')
-                ->table('rulings')
-                ->values([
-                    'cards_id' => ':cardid',
-                    'date' => ':date',
-                    'is_errata' => ':errata',
-                    'text' => ':text'
-                ])
-            )
-            ->bind([
-                ':cardid' => $card['id'],
-                ':date' => $input->post('ruling-date') ?? date('Y-m-d'),
-                ':errata' => $input->post('ruling-errata') ?? '0',
-                ':text' => $input->post('ruling-text')
-            ])
-            ->execute();
-
-        // Build the success message
-        $label = "{$card['name']} ({$card['code']})";
-        $link = '<a href="'.url('rulings/manage').'">Rulings</a>';
-        alert(
-            collapse(
-                "New ruling for card <strong>{$label}</strong> added. ",
-                "Go back to the <strong>{$link}</strong> page."
-            ),
-            'info'
-        );
-
-        // Redirect to the card's page
-        redirect_old('card', ['code' => urlencode($card['code'])]);
+        Alert::add($message, 'info');
+        Redirect::toAbsoluteUrl($uri);
     }
 
     public function updateForm(Request $request, $id): string
@@ -180,51 +151,20 @@ class RulingsController extends Controller
 
     public function update(Request $request, $id): string
     {
-        // Validate inputs
         $request->validate('post', [
             'ruling-errata' => ['required:0','is:integer','enum:0,1'],
             'ruling-date' => ['required:1','is:date'],
             'ruling-text' => ['required:1'],
         ]);
 
-        // Read the card's data
-        $card = Card::getById($cardId, ['id', 'name', 'code']);
-
-        // Alias the input instance
-        $input = $request->input();
-
-        // Update ruling entity on the database
-        database()
-            ->update(statement('update')
-                ->table('rulings')
-                ->set([
-                    'date' => ':date',
-                    'is_errata' => ':errata',
-                    'text' => ':text'
-                ])
-                ->where('id = :id')
-            )
-            ->bind([
-                ':id' => $id,
-                ':date' => $input->post('ruling-date') ?? date('Y-m-d'),
-                ':errata' => $input->post('ruling-errata') ?? '0',
-                ':text' => $input->post('ruling-text')
-            ])
-            ->execute();
-
-        // Build the success message
-        $label = "{$card['name']} ({$card['code']})";
-        $link = '<a href="'.url('rulings/manage').'">Rulings</a>';
-        alert(
-            collapse(
-                "Ruling #{$id} for card <strong>{$label}</strong> updated. ",
-                "Go back to the <strong>{$link}</strong> page."
-            ),
-            'info'
-        );
-
-        // Redirect to the card's page
-        redirect_old('card', ['code' => urlencode($card['code'])]);
+        $service = new RulingUpdateService($request->input()->post());
+        $service->setOldResource($id);
+        $service->processInput();
+        $service->syncDatabase();
+        [$message, $uri] = $service->getFeedback();
+        
+        Alert::add($message, 'info');
+        Redirect::toAbsoluteUrl($uri);
     }
 
     public function deleteForm(Request $request, $id): string
@@ -262,37 +202,17 @@ class RulingsController extends Controller
                     'lightbox' => true,
                 ],
             ])
-            // TEST
-            ->minify(false)
             ->render();
     }
 
     public function delete(Request $request, $id): string
     {
-        $old = Ruling::getById($id, ['cards_id']);
-        $card = Card::getById($old['cards_id'], ['name', 'code']);
-
-        // Update ruling entity on the database
-        database()
-            ->delete(statement('delete')
-                ->table('rulings')
-                ->where('id = :id')
-            )
-            ->bind([':id' => $id])
-            ->execute();
-
-        // Build the success message
-        $label = "{$card['name']} ({$card['code']})";
-        $link = '<a href="'.url('rulings/manage').'">Rulings</a>';
-        alert(
-            collapse(
-                "Ruling #{$id} for card <strong>{$label}</strong> deleted. ",
-                "Go back to the <strong>{$link}</strong> page."
-            ),
-            'info'
-        );
-
-        // Redirect to the card's page
-        redirect_old('card', ['code' => urlencode($card['code'])]);
+        $service = new RulingDeleteService();
+        $service->setOldResource($id);
+        $service->syncDatabase();
+        [$message, $uri] = $service->getFeedback();
+        
+        Alert::add($message, 'info');
+        Redirect::toAbsoluteUrl($uri);
     }
 }
