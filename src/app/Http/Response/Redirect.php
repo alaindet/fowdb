@@ -20,6 +20,19 @@ class Redirect
     }
 
     /**
+     * Redirects to an absolute URI
+     * Useful for some application logic and external links
+     *
+     * @param string $absoluteUri
+     * @return void
+     */
+    public function toAbsoluteUrl(string $absoluteUri): void
+    {
+        header('Location: ' . $absoluteUri);
+        die();
+    }
+
+    /**
      * Redirects to the previous page
      *
      * @return void
