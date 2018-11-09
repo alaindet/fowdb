@@ -18,8 +18,8 @@ class NarpsGenerator implements Generatable
 
         return array_reduce($items, function ($result, $item) {
 
-            $result['id2code'][$item['id']] = $item['code'];
-            $result['id2name'][$item['id']] = $item['name'];
+            $result['id2code'][$item['value']] = $item['code'];
+            $result['id2name'][$item['value']] = $item['name'];
 
             return $result;
 
