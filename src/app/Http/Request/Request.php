@@ -85,10 +85,14 @@ class Request
         return Input::getInstance();
     }
 
-    public function validate(string $type, array $toValidate): void
+    public function validate(
+        string $type,
+        array $toValidate,
+        array $input = null
+    ): void
     {
         $errors = (new Validation)
-            ->input($this->input()->$type())
+            ->input($input ?? $this->input()->$type())
             ->validate($toValidate)
             ->getErrors();
 

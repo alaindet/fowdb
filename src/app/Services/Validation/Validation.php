@@ -15,6 +15,7 @@ class Validation
     private $validators = [
         'enum' => 'validateEnumRule',
         'equals' => 'validateEqualsRule',
+        'except' => 'validateExceptRule',
         'exists' => 'validateExistsRule',
         'is' => 'validateIsRule',
         'required' => 'validateRequiredRule',
@@ -65,6 +66,24 @@ class Validation
                 );
                 return false;
             }
+        }
+
+        return true;
+    }
+
+    public function validateExceptRule(
+        string $inputName,
+        string $value = null
+    ): bool
+    {
+        $values = explode(',', $value);
+
+        if (in_array($this->input[$inputName], $values)) {
+            $this->pushError(
+                "Input <strong>{$inputName}</strong> value must not be "
+                . "equal to \"{$value}\""
+            );
+            return false;
         }
 
         return true;
@@ -133,7 +152,8 @@ class Validation
         if (
             ($value === 'integer' && !is_numeric($input)) ||
             ($value === 'date' && strtotime($input) === false) ||
-            ($value === 'array' && !is_array($input))
+            ($value === 'array' && !is_array($input)) ||
+            ($value === 'file' && $input['error'] !== UPLOAD_ERR_OK)
         ) {
             $this->pushError("Input <strong>{$inputName}</strong> must be of type {$value}");
             return false;
