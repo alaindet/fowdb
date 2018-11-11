@@ -53,12 +53,18 @@ class Validation
     {
         $values = explode(',', $value);
 
-        if (!in_array($this->input[$inputName], $values)) {
-            $this->pushError(
-                "Input <strong>{$inputName}</strong> value must be "
-                . "in this list: {$value}"
-            );
-            return false;
+        if (!is_array($this->input[$inputName])) {
+            $this->input[$inputName] = [ $this->input[$inputName] ];
+        }
+
+        foreach ($this->input[$inputName] as $input) {
+            if (!in_array($input, $values)) {
+                $this->pushError(
+                    "Input <strong>{$inputName}</strong> value must be "
+                    . "in this list: {$value}"
+                );
+                return false;
+            }
         }
 
         return true;
