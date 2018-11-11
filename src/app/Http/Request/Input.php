@@ -108,4 +108,18 @@ class Input extends Base
     {
         return $this->exists($name);
     }
+
+    /**
+     * Return all input data
+     *
+     * @return array
+     */
+    public function all(): array
+    {
+        return [
+            'GET' => $_GET,
+            'POST' => $_POST,
+            'FILES' => $_FILES
+        ];
+    }
 }
