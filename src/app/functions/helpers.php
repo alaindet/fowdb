@@ -40,6 +40,7 @@ use \App\Legacy\Authorization as LegacyAuthorization;
  * component
  * csrf_token
  * include_view
+ * escape
  * log_html
  * render
  * url_old // LEGACY
@@ -353,6 +354,18 @@ function include_view(string $path, array $variables = null): string
 	ob_start();
 	include path_views("{$path}.tpl.php");
 	return ob_get_clean();
+}
+
+/**
+ * Escapes HTML characters
+ * Doc: http://www.php.net/manual/en/function.htmlspecialchars.php
+ *
+ * @param string $string
+ * @return string Escaped sequence
+ */
+function escape(string $string): string
+{
+	return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
 }
 
 /**

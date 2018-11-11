@@ -49,7 +49,7 @@ class Input extends Base
         if (!isset($global[$name]) || $global[$name] === '') return null;
 
         // Escape the value
-        if ($escape) return htmlentities($global[$name], ENT_QUOTES, 'UTF-8');
+        if ($escape) return htmlspecialchars($global[$name], ENT_QUOTES, 'UTF-8');
 
         // Return value as it is
         return $global[$name];
