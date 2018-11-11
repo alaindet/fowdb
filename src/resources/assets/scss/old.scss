@@ -100,10 +100,7 @@ mark {
 mark {
   font-weight: 700
 }
-.flavortext,
-.form-label {
-  font-style: italic
-}
+.flavortext { font-style: italic }
 .fdb-mono,
 .fdb-monospaced {
   font-family: monospace
@@ -348,19 +345,19 @@ hr.hr-intext {
   margin: .5em;
   border: 1px dashed #dde
 }
-.form-section {
-  padding: .5em 0;
-  border-radius: .5em;
-  border: 1px solid #f0f0f0;
-  background: #f6f6f6
-}
-.form-label {
-  font-size: .9em
-}
-.fdb-admin-breadcrumbs {
-  background: #f0f0f0;
-  border-radius: .5em
-}
+// .form-section {
+//   padding: .5em 0;
+//   border-radius: .5em;
+//   border: 1px solid #f0f0f0;
+//   background: #f6f6f6
+// }
+// .form-label {
+//   font-size: .9em
+// }
+// .fdb-admin-breadcrumbs {
+//   background: #f0f0f0;
+//   border-radius: .5em
+// }
 .fdb-admin-li {
   padding: .5em .3em;
   border: 1px solid #ccc;

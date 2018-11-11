@@ -2,10 +2,9 @@
 .fd-box {
   margin-top: .25rem;
   margin-bottom: .25rem;
-  padding: .5rem;
   border-radius: .5rem;
   border: 1px solid rgba(0,0,0,.1);
-  box-shadow: 3px 3px 3px 0px rgba(0,0,0,.1);
+  // box-shadow: 3px 3px 3px 0px rgba(0,0,0,.1);
 }
 
 // Container component
@@ -15,7 +14,7 @@
 
 // Subcomponents
 .fd-box__title {
-  padding: .75rem;
+  padding: 1rem;
   border-bottom: 1px solid rgba(0,0,0,.1);
 }
 .fd-box__title h1,
@@ -28,11 +27,17 @@
   margin-bottom: 0;
 }
 .fd-box__content {
-  padding: .75rem;
+  padding: 1rem;
 }
 .fd-box__footer {
-  padding: .75rem;
+  padding: 1rem;
   border-top: 1px solid rgba(0,0,0,.1);
+}
+
+// Variation: darker headings
+.fd-box.--darker-headings .fd-box__title,
+.fd-box.--darker-headings .fd-box__footer {
+  background-color: rgba(0,0,0,.05);  
 }
 
 // Variation: darker color
@@ -76,11 +81,10 @@
 }
 
 // Variation: less padding
-.fd-box.--less-padding { padding: 0.25rem; }
 .fd-box.--less-padding .fd-box__title,
 .fd-box.--less-padding .fd-box__content,
 .fd-box.--less-padding .fd-box__footer {
-  padding: .33rem;;
+  padding: .5rem;;
 }
 
 // Variations: margins and paddings
