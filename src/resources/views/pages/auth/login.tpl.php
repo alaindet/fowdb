@@ -1,12 +1,10 @@
 <div class="row">
   <div class="col-xs-12 col-sm-offset-4 col-sm-4">
-    <div class="panel panel-default text-center">
+    <div class="fd-box --darker-headings text-center">
 
-      <div class="panel-heading">
-        <h3 class="panel-title">Sign In</h3>
-      </div>
+      <div class="fd-box__title"><h3>Sign In</h3></div>
 
-      <div class="panel-body">
+      <div class="fd-box__content">
         <form
           action="<?=url('login')?>"
           method="post"
@@ -63,6 +61,7 @@
           </fieldset>
         </form>
       </div>
+      
     </div>
   </div>
 </div>
