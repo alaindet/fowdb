@@ -4,12 +4,19 @@ namespace App\Http\Request;
 
 use App\Base\Base;
 use App\Base\Singleton;
+use App\Services\Session;
 
 class Input extends Base
 {
     use Singleton;
 
     public const PREVIOUS_INPUT = 'previous-input';
+
+    public function previous()
+    {
+        return Session::pop(self::PREVIOUS_INPUT) ?? null;
+    }
+
 
     public function get(string $name = null, $escape = false)
     {
