@@ -68,6 +68,9 @@ abstract class InputProcessor
      */
     public function process()
     {
+        // Execute pre-processing handler
+        $this->beforeProcessing();
+
         // Loop on all inputs
         foreach ($this->input as $name => $value) {
 
@@ -94,6 +97,19 @@ abstract class InputProcessor
         $this->afterProcessing();
 
         return $this->new;
+    }
+
+    /**
+     * Overridden by child class
+     * 
+     * Runs before all processors, useful to perform an action on shared state
+     * Or set default values
+     *
+     * @return void
+     */
+    public function beforeProcessing(): void
+    {
+        //
     }
 
     /**
