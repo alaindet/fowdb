@@ -9,6 +9,8 @@ class Input extends Base
 {
     use Singleton;
 
+    public const PREVIOUS_INPUT = 'previous-input';
+
     public function get(string $name = null, $escape = false)
     {
         return $this->read('GET', $name, $escape);

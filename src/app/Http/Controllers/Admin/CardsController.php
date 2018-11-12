@@ -8,6 +8,8 @@ use App\Views\Page;
 use App\Services\Card\CardCreateService;
 use App\Services\Card\CardDeleteService;
 use App\Services\Card\CardUpdateService;
+use App\Services\Session;
+use App\Http\Request\Input;
 
 /**
  * Contains actions for JUDGE routes only
@@ -28,6 +30,9 @@ class CardsController extends Controller
         return (new Page)
             ->template('pages/admin/cards/create')
             ->title('Cards,Create')
+            ->variables([
+                'previous' => Session::get(Input::PREVIOUS_INPUT) ?? null
+            ])
             ->render();
     }
 
@@ -65,15 +70,17 @@ class CardsController extends Controller
 
         ], $input);
 
-        return log_html($input);
-
         $service = new CardCreateService($input);
         $service->processInput();
         $service->syncDatabase();
-        [$message, $uri] = $service->getFeedback();
+        $service->syncFilesystem();
 
-        Alert::add($message, 'info');
-        Redirect::toAbsoluteUrl($uri);
+        return log_html($service->debug());
+
+        // [$message, $uri] = $service->getFeedback();
+
+        // Alert::add($message, 'info');
+        // Redirect::toAbsoluteUrl($uri);
     }
 
     public function updateForm(): string

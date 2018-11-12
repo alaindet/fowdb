@@ -6,14 +6,23 @@ use Throwable;
 use App\Utils\Logger;
 use App\Base\Exception;
 use App\Exceptions\Alertable;
+use App\Exceptions\Previousable;
 use App\Services\Alert;
 use App\Http\Response\Redirect;
 use App\Services\Config;
+use App\Services\Session;
+use App\Http\Request\Input;
 
 class Handler
 {
     public function handler(Throwable $exception): void
     {
+        // Store $_POST data
+        if ($exception instanceof Previousable) {
+            $input = Input::getInstance();
+            Session::set(Input::PREVIOUS_INPUT, $input->post());
+        }
+
         // Show exception as an alert
         if ($exception instanceof Alertable) {
             Alert::add($exception->getMessage(), 'danger');

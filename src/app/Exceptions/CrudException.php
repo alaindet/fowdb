@@ -4,8 +4,9 @@ namespace App\Exceptions;
 
 use App\Base\Exception;
 use App\Exceptions\Alertable;
+use App\Exceptions\Previousable;
 
-class CardModelException extends Exception implements Alertable
+class CrudException extends Exception implements Alertable, Previousable
 {
     public $redirectTo = 'back';
 }

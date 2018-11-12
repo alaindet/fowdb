@@ -28,22 +28,22 @@ class RulingInputProcessor extends InputProcessor
         if (!isset($this->new['is_errata'])) $this->new['is_errata'] = 0;
     }
 
-    public function processCardIdInput($value = null)
+    public function processCardIdInput($value = null): void
     {
         $this->new['cards_id'] = $value;
     }
 
-    public function processRulingDateInput($value = null)
+    public function processRulingDateInput($value = null): void
     {
         if ($value !== '') $this->new['date'] = $value;
     }
 
-    public function processRulingErrataInput($value = null)
+    public function processRulingErrataInput($value = null): void
     {
         if ($value !== '') $this->new['is_errata'] = $value;
     }
 
-    public function processRulingTextInput($value = null)
+    public function processRulingTextInput($value = null): void
     {
         $this->new['text'] = $value;
     }

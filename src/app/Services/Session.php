@@ -40,6 +40,8 @@ class Session extends BaseClass
      */
     public static function pop(string $name)
     {
+        if (!self::exists($name)) return null;
+
         $data = $_SESSION[$name];
         unset($_SESSION[$name]);
         return $data;
