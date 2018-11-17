@@ -217,17 +217,23 @@ class Card
                 '</span>'
             );
 
-            // $atkDef -------------------------------------------------------------------
-            $atkDef = collapse(
-                '<span class="font-150 text-italic">',
-                    $card['atk'],' / ',$card['def'],
-                '</span>'
-            );
+            // $atkDef --------------------------------------------------------
 
+            // Rare case of a J-Ruler with no printed ATK and DEF
+            if ($card['type'] === 'J-Ruler' && !isset($card['def'])) {
+                $atkDef = '<em>(No battle values)</em>';
+            } else {
+                $atkDef = collapse(
+                    '<span class="font-150 text-italic">',
+                        $card['atk'], ' / ', $card['def'],
+                    '</span>'
+                );
+            }
+
+            // $card ----------------------------------------------------------
             // Backup card type before overwriting $cards
             $_type = $card['type'];
 
-            // $card -------------------------------------------------------------------
             $card = [
 
                 // Shown info (side panel)

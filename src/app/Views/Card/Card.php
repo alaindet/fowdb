@@ -108,30 +108,6 @@ class Card
             }
             $card['display'] = $display;
         }
-
-        // for ($i = 0, $ii = count($cards); $i < $ii; $i++) {
-
-        //     $card =& $cards[$i];
-        //     $labels = array_keys($card);
-        //     $card['display'] = [];
-
-        //     for ($j = 0, $jj = count($labels); $j < $jj; $j++) {
-
-        //         $label =& $labels[$j];
-        //         $value =& $card[$label];
-
-        //         if (
-        //             !in_array($label, self::$excludeDisplay) &&
-        //             $value !== null &&
-        //             $value !== ''
-        //         ) {
-        //             $card['display'][] = [
-        //                 'label' => $features[$label],
-        //                 'value' => $value
-        //             ];
-        //         }
-        //     }
-        // }
     }
 
     public static function removeIllegalProps(
@@ -141,7 +117,7 @@ class Card
     {
         $toRemove = [
             'Ruler' => [ 'cost', 'total_cost', 'atk_def' ],
-            'J-Ruler' => [ 'cost', 'total_ cost' ],
+            'J-Ruler' => [ 'cost', 'total_cost' ],
             'Resonator' => [],
             'Master Rune' => [ 'atk_def' ],
             'Chant' => [ 'atk_def' ],
