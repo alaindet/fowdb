@@ -7,7 +7,7 @@ use App\Base\Model;
 
 class Card extends Model
 {
-    public static $table = 'cards';
+    public $table = 'cards';
 
     public $removables = [
         'no-cost' => [
