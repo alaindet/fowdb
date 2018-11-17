@@ -10,7 +10,7 @@ auth()->allow([
   Authorization::ROLE_JUDGE
 ]);
 
-$card = Card::getById($_GET['id'], [
+$card = (new Card)->byId($_GET['id'], [
   'id',
   'sets_id',
   'num',

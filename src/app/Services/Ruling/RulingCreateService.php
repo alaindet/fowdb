@@ -45,7 +45,7 @@ class RulingCreateService extends CrudService
     {
         // Read the card's data
         $cardId = $this->inputProcessorInstance->getInput('card-id');
-        $card = Card::getById($cardId, ['name', 'code']);
+        $card = (new Card)->byId($cardId, ['name', 'code']);
 
         // Build the success message
         $label = "{$card['name']} ({$card['code']})";

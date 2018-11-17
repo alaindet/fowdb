@@ -4,65 +4,43 @@ namespace App\Models;
 
 class Ruling
 {
-    public static $table = 'rulings';
+    public $table = 'rulings';
 
-    public static function getByCardId(
+    /**
+     * Returns all rulings having the same card ID
+     *
+     * @param string $cardId
+     * @param array $fields
+     * @param array $fieldsToRender
+     * @return array
+     */
+    public function byCardId(
         string $cardId,
-        bool $render = false
+        array $fields = null,
+        array $fieldsToRender = []
     ): array
     {
-        $data = database()
+        $resources = database()
             ->select(
                 statement('select')
-                    ->select(['id', '`date`', 'is_errata', '`text`'])
-                    ->from(self::$table)
+                    ->select(isset($fields) ? implode(',', $fields) : '*')
+                    ->from($this->table)
                     ->where('cards_id = :cardid')
-                    ->orderBy(['`date` DESC'])
+                    ->orderBy(['date DESC'])
             )
             ->bind([':cardid' => $cardId])
             ->get();
 
-        // Do not render ruling text as HTML
-        if (!$render) return $data;
+        // Return raw data (default)
+        if (empty($fieldsToRender)) return $resources;
 
-        // Render ruling text as HTML
-        for ($i = 0, $len = count($data); $i < $len; $i++) {
-            $data[$i]['text'] = render($data[$i]['text']);
+        // Render fields
+        foreach ($resources as &$resource) {
+            foreach ($fieldsToRender as $field) {
+                $resource[$field] = render($resource[$field]);
+            }
         }
 
-        return $data;
-    }
-
-    /**
-     * Reads data for a single resource on db by its ID
-     *
-     * @param string $id ID of the resource
-     * @param array $fields Fields to select, defaults to all
-     * @param boolean $render Render the text?
-     * @return array
-     */
-    public static function getById(
-        string $id,
-        array $fields = [],
-        bool $render = false
-    ): array
-    {
-        $data = database()
-            ->select(statement('select')
-                ->select($fields ?? '*')
-                ->from(self::$table)
-                ->where('id = :id')
-                ->limit(1)
-            )
-            ->bind([':id' => $id])
-            ->first();
-
-        if (!$render) return $data;
-
-        if ($render && isset($data['text'])) {
-            $data['text'] = render($data['text']);
-        }
-
-        return $data;
+        return $resources;
     }
 }

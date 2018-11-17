@@ -36,7 +36,7 @@ class RulingDeleteService extends CrudService
     public function getFeedback(): array
     {
         // Read the card's data
-        $card = Card::getById($this->old['cards_id'], ['name', 'code']);
+        $card = (new Card)->byId($this->old['cards_id'], ['name', 'code']);
 
         $label = "{$card['name']} ({$card['code']})";
         $link = '<a href="'.url('rulings/manage').'">Rulings</a>';

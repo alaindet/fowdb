@@ -45,7 +45,7 @@ class RulingUpdateService extends CrudService
     public function getFeedback(): array
     {
         // Read the card's data
-        $card = Card::getById($this->old['cards_id'], ['name', 'code']);
+        $card = (new Card)->byId($this->old['cards_id'], ['name', 'code']);
 
         // Build the success message
         $label = "{$card['name']} ({$card['code']})";

@@ -3,12 +3,39 @@
 namespace App\Models;
 
 use App\Exceptions\CardModelException;
+use App\Base\Model;
 
-class Card
+class Card extends Model
 {
     public static $table = 'cards';
 
-    public static function getByCode(
+    public $removables = [
+        'no-cost' => [
+            'Ruler',
+            'J-Ruler',
+            'Magic Stone',
+            'Special Magic Stone',
+            'Special Magic Stone/True Magic Stone'
+        ],
+        'no-attribute' => [
+            'Magic Stone',
+            'Special Magic Stone',
+            'Special Magic Stone/True Magic Stone'
+        ],
+        'can-battle' => [
+            'J-Ruler',
+            'Resonator'
+        ]
+    ];
+
+    public function getRemovableFields(string $feature = null): array
+    {
+        if (isset($feature)) return $this->removables[$feature];
+
+        return $this->removables;
+    }
+
+    public function getByCode(
         string $code,
         array $fields = [],
         array $fieldsToRender = []
@@ -17,7 +44,7 @@ class Card
         $data = database()
             ->select(statement('select')
                 ->select($fields)
-                ->from(self::$table)
+                ->from($this->table)
                 ->where('code = :code')
                 ->limit(3)
             )
@@ -37,45 +64,16 @@ class Card
         return $data;
     }
 
-    public static function getById(
-        string $id,
-        array $fields = [],
-        array $fieldsToRender = []
-    ): array
+    public function getBaseIdById(string $id): int
     {
-        $data = database()
-            ->select(statement('select')
-                ->select($fields ?? '*')
-                ->from(self::$table)
-                ->where('id = :id')
-                ->limit(1)
-            )
-            ->bind([':id' => $id])
-            ->first();
-
-        // Return raw data (default)
-        if (empty($fieldsToRender)) return $data;
-
-        // Render fields
-        foreach ($data as &$item) {
-            foreach ($fieldsToRender as $field) {
-                $item[$field] = render($item[$field]);
-            }
-        }
-
-        return $data;
-    }
-
-    public static function getBaseIdById(string $id): int
-    {
-        $card = self::getById($id, ['narp', 'name']);
+        $card = $this->byId($id, ['narp', 'name']);
 
         if ((int) $card['narp'] === 0) return (int) $id;
 
         $baseCard = database()
             ->select(statement('select')
                 ->select('id')
-                ->from(self::$table)
+                ->from($this->table)
                 ->where(['name = :name'])
                 ->limit(1)
             )
@@ -85,16 +83,14 @@ class Card
         return (int) $baseCard['id'];
     }
     
-    public static function getBaseIdByName(string $name): int
+    public function getBaseIdByName(string $name): int
     {
         $baseCard = database()
             ->select(statement('select')
                 ->select('id')
-                ->from(self::$table)
-                ->where([
-                    'name = :name',
-                    'narp = 0'
-                ])
+                ->from($this->table)
+                ->where('name = :name')
+                ->where('narp = 0')
                 ->limit(1)
             )
             ->bind([':name' => $name])

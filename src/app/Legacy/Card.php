@@ -3,9 +3,8 @@
 namespace App\Legacy;
 
 use App\Models\Ban;
-use App\Models\Card as Model;
 use App\Models\CardNarp;
-use App\Models\Card as CardModel;
+use App\Models\Card as Model;
 use App\Models\Ruling;
 use App\Utils\Arrays;
 use App\Views\Card\Card as View;
@@ -15,7 +14,8 @@ class Card
     public static function getCardPageData(): array
     {
         $code = htmlspecialchars($_GET['code'], ENT_QUOTES, 'UTF-8');
-        $cardsDb = Model::getByCode($code);
+        $cardModel = new Model;
+        $cardsDb = $cardModel->getByCode($code);
 
         // ERROR: No card with that code!
         if (empty($cardsDb)) {
@@ -123,7 +123,7 @@ class Card
             // $baseCardId ----------------------------------------------------
             ($card['narp'] === 0)
                 ? $baseCardId = (int) $card['id']
-                : $baseCardId = CardModel::getBaseIdByName($card['name']);
+                : $baseCardId = $cardModel->getBaseIdByName($card['name']);
             
             // $format, $banned -----------------------------------------------
             $spoilers = lookup('spoilers.ids');
@@ -190,7 +190,11 @@ class Card
             }
             
             // $rulings -------------------------------------------------------
-            $rulings = Ruling::getByCardId($baseCardId, $render = true);
+            $rulings = (new Ruling)->byCardId(
+                $baseCardId,
+                $fields = ['id', 'date', 'is_errata', 'text'],
+                $fieldsToRender = ['text']
+            );
 
             // $narp ----------------------------------------------------------
             $narp = CardNarp::displayRelatedCards(
