@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-class Ruling
+use App\Base\Model;
+
+class Ruling extends Model
 {
     public $table = 'rulings';
 

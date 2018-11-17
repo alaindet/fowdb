@@ -19,7 +19,7 @@ abstract class CrudService implements CrudServiceInterface
      *
      * @var array
      */
-    protected $old;
+    protected $old = [];
 
     /**
      * New resource data (even partial data), to be stored into the database
@@ -59,13 +59,16 @@ abstract class CrudService implements CrudServiceInterface
 
     public function __construct(array $input = null, string $id = null)
     {
-        // Instantiate the input processor
-        if (isset($input)) {
-            $this->inputProcessorInstance = new $this->inputProcessor($input);
-        }
-
         // Set the old resource, if present (on updating or deleting)
         $this->setOldResource($id);
+
+        // Instantiate the input processor
+        if (isset($input)) {
+            $this->inputProcessorInstance = new $this->inputProcessor(
+                $input,
+                $this->old
+            );
+        }
     }
 
     /**
@@ -77,7 +80,8 @@ abstract class CrudService implements CrudServiceInterface
     public function setOldResource(string $id = null): CrudServiceInterface
     {
         if (isset($id) && isset($this->model)) {
-            $this->old = call_user_func_array([$this->model, 'getById'], [$id]);
+            $model = new $this->model();
+            $this->old = $model->byId($id);
         }
 
         return $this;
