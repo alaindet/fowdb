@@ -184,10 +184,10 @@ class Database
     private function getParameterFlag($value): int
     {
         $type = gettype($value);
-        if ($type === 'boolean') return PDO::PARAM_BOOL;
-        if ($type === 'integer') return PDO::PARAM_INT;
-        if ($type === 'string')  return PDO::PARAM_STR;
-        if ($type === 'NULL')    return PDO::PARAM_NULL;
+        if ($type === 'string')      return PDO::PARAM_STR;
+        elseif ($type === 'integer') return PDO::PARAM_INT;
+        elseif ($type === 'boolean') return PDO::PARAM_BOOL;
+        elseif ($type === 'NULL')    return PDO::PARAM_NULL;
     }
 
     /**
@@ -353,7 +353,7 @@ class Database
      */
     public function rawStatement(string $statement): int
     {
-        return $this->pdo->exec("ALTER TABLE `{$table}` AUTO_INCREMENT = 1");
+        return $this->pdo->exec($statement);
     }
 
     /**
