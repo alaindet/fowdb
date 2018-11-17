@@ -20,7 +20,6 @@ class CardSet extends Model
                     ->where('id = :setid')
                     ->limit(1)
             )
-            ->from(self::TABLE)
             ->bind([
                 ':setid' => $setId
             ])
