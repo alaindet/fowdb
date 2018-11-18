@@ -17,6 +17,13 @@ abstract class InputProcessor
     protected $input;
 
     /**
+     * Existing data on the database (filled when updating)
+     *
+     * @var array
+     */
+    protected $old;
+
+    /**
      * Processed input as associative array
      * Its keys SHOULD match database fields
      *
@@ -47,18 +54,15 @@ abstract class InputProcessor
      */
     protected $state = [];
 
-    public function __construct(array &$input)
+    public function __construct(array &$input, array &$old)
     {
         $this->input = $input;
+        $this->old = $old;
     }
 
     public function getInput(string $name = null)
     {
-        if (isset($name)) {
-            return $this->input[$name];
-        } else {
-            return $this->input;
-        }
+        return isset($name) ? ($this->input[$name] ?? null) : $this->input;
     }
 
     /**
