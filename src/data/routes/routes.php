@@ -52,9 +52,9 @@ $judge = [
     ['GET', 'cards/create','Admin\\CardsController','createForm'],
     ['POST','cards/create','Admin\\CardsController','create'],
     ['GET', 'cards/update/{d}','Admin\\CardsController','updateForm',$d],
-    ['GET', 'cards/update/{d}','Admin\\CardsController','update',$d],
+    ['POST','cards/update/{d}','Admin\\CardsController','update',$d],
     ['GET', 'cards/delete/{d}','Admin\\CardsController','deleteForm',$d],
-    ['GET', 'cards/delete/{d}','Admin\\CardsController','delete',$d],
+    ['POST','cards/delete/{d}','Admin\\CardsController','delete',$d],
 
     // Rulings
     ['GET', 'rulings/manage','RulingsController','indexManage'],
