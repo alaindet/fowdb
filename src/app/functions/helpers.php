@@ -417,7 +417,7 @@ function url_old(string $page = '', array $params = []): string
  */
 function url(string $to = null, array $params = []): string
 {
-	return \App\Http\Response\Redirect::url($to, $params);
+	return \App\Utils\Uri::build($to, $params);
 }
 
 /**
