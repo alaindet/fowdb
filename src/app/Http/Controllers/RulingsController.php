@@ -111,7 +111,7 @@ class RulingsController extends Controller
         Redirect::toAbsoluteUrl($uri);
     }
 
-    public function updateForm(Request $request, $id): string
+    public function updateForm(Request $request, string $id): string
     {
         $item = database()
             ->select(
@@ -149,7 +149,7 @@ class RulingsController extends Controller
             ->render();
     }
 
-    public function update(Request $request, $id): string
+    public function update(Request $request, string $id): string
     {
         $request->validate('post', [
             'ruling-errata' => ['required:0','is:integer','enum:0,1'],
@@ -167,7 +167,7 @@ class RulingsController extends Controller
         Redirect::toAbsoluteUrl($uri);
     }
 
-    public function deleteForm(Request $request, $id): string
+    public function deleteForm(Request $request, string $id): string
     {
         $item = database()
             ->select(
@@ -205,7 +205,7 @@ class RulingsController extends Controller
             ->render();
     }
 
-    public function delete(Request $request, $id): string
+    public function delete(Request $request, string $id): string
     {
         $service = new RulingDeleteService();
         $service->setOldResource($id);
