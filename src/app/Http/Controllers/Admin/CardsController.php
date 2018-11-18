@@ -159,8 +159,7 @@ class CardsController extends Controller
 
     public function delete(Request $request, string $id): string
     {
-        $service = new CardDeleteService();
-        $service->setOldResource($id);
+        $service = new CardDeleteService($id);
         $service->syncFileSystem();
         $service->syncDatabase();
         [$message, $uri] = $service->getFeedback();
