@@ -8,49 +8,69 @@ class ClustersGenerator implements Generatable
 {
     public function generate(): array
     {
-        $items = database_old()->get(
-            "SELECT
-                c.code cluster_slug,
-                c.name cluster_label,
-                s.name set_label,
-                s.code set_slug
-            FROM
-                sets s
-                INNER JOIN clusters c ON s.clusters_id = c.id
-            ORDER BY
-                c.id DESC,
-                s.id DESC
-            "
-        );
-
-        $cacheCluster = '';
+        $current = '';
 
         return array_reduce(
-            $items,
+
+            // Items
+            database()
+            ->select(
+                statement('select')
+                    ->select([
+                        'c.id c_id',
+                        'c.code c_code',
+                        'c.name c_name',
+                        's.name s_name',
+                        's.code s_code',
+                    ])
+                    ->from(
+                        'sets s INNER JOIN clusters c ON s.clusters_id = c.id'
+                    )
+                    ->orderBy([
+                        'c.id DESC',
+                        's.id DESC'
+                    ])
+            )
+            ->get(),
+
             /**
+             * Reducer function
+             * 
              * IMPORTANT NOTE HERE:
-             * $cacheCluster is imported by reference using &
+             * $current is imported by reference using &
              * This is the ONLY way to manipulate an external variable
              * from inside a closure!
              */
-            function ($result, $item) use (&$cacheCluster) {
+            function ($result, $item) use (&$current) {
 
-                // Update the cached value
-                if ($cacheCluster !== $item['cluster_slug']) {
-                    $cacheCluster = $item['cluster_slug'];
-                    $result[$cacheCluster] = [
-                        'name' => $item['cluster_label'],
+                // Store id => name mapping
+                $result['id2name'][$item['c_id']] = $item['c_name'];
+
+                // Break the cached value
+                if ($current !== $item['c_code']) {
+
+                    // Update the cached value
+                    $current = $item['c_code'];
+
+                    // Initialize a new cluster into the list
+                    $result['list'][$current] = [
+                        'name' => $item['c_name'],
                         'sets' => []
                     ];
                 }
 
-                // Store the set
-                $sets =& $result[$cacheCluster]['sets'];
-                $sets[ $item['set_slug'] ] = $item['set_label'];
+                // Store the set into the list
+                $sets =& $result['list'][$current]['sets'];
+                $sets[ $item['s_code'] ] = $item['s_name'];
 
                 return $result;
             },
-            []
+
+            // Initial state
+            [
+                'list' => [],
+                'id2name' => [],
+            ]
         );
     }
 }

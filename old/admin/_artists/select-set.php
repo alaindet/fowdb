@@ -12,7 +12,7 @@ if (isset($_GET['set'])) {
 }
 
 // Select a set
-$clusters = lookup('clusters');
+$clusters = lookup('clusters.list');
 
 ?>
 <div class="page-header">
