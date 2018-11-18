@@ -7,16 +7,20 @@ use App\Base\CrudServiceInterface;
 use App\Models\Card;
 use App\Services\Card\CardInputProcessor;
 use Intervention\Image\ImageManager;
+use App\Services\Filesystem;
+use App\Utils\Arrays;
+use App\Utils\Uri;
 
-class CardCreateService extends CrudService
+class CardUpdateService extends CrudService
 {
     protected $inputProcessor = CardInputProcessor::class;
-    protected $model = Card::class;
+    protected $model = Card::class; 
 
     public function syncDatabase(): CrudServiceInterface
     {
         $placeholders = [];
-        $bind = [];
+        $bind = [':id' => $this->old['id']];
+
         foreach (array_keys($this->new) as $key) {
             $placeholder = ":{$key}";
             $placeholders[$key] = $placeholder;
@@ -25,10 +29,11 @@ class CardCreateService extends CrudService
 
         // Create a new card entity on the database
         database()
-            ->insert(
-                statement('insert')
+            ->update(
+                statement('update')
                     ->table('cards')
                     ->values($placeholders)
+                    ->where('id = :id')
             )
             ->bind($bind)
             ->execute();
@@ -40,19 +45,41 @@ class CardCreateService extends CrudService
     {
         $image = $this->inputProcessorInstance->getInput('image');
 
-        // Create image
+        // No image passed
+        if (!isset($image) || $image['error'] !== UPLOAD_ERR_OK) return $this;
+
+        // Absolute paths
+        $paths = Arrays::map([
+            'old-image' => $this->old['image_path'],
+            'old-thumb' => $this->old['thumb_path'],
+            'new-image' => $this->new['image_path'],
+            'new-thumb' => $this->new['thumb_path']
+        ], function ($path) {
+            return path_root(Uri::removeQueryString($path));
+        });
+
+        // Remove old cards
+        FileSystem::deleteFile($paths['old-image']);
+        FileSystem::deleteFile($paths['old-thumb']);
+
+        // Append a querystring to images to bust the cache
+        $queryString = '?' . time();
+        $this->new['image_path'] .= $queryString;
+        $this->new['thumb_path'] .= $queryString;
+
+        // Store HQ image (apply watermark)
         (new ImageManager)
             ->make($image['tmp_name'])
             ->resize(480, 670)
             ->insert(path_root('images/watermark/watermark480.png'))
-            ->save(path_root($this->new['image_path']), 80);
+            ->save($paths['new-image'], 80);
 
-        // Create thumbnail image
+        // Store LQ image (apply watermark)
         (new ImageManager)
             ->make($image['tmp_name'])
             ->resize(280, 391)
             ->insert(path_root('images/watermark/watermark280.png'))
-            ->save(path_root($this->new['thumb_path']), 80);
+            ->save($paths['new-thumb'], 80);
 
         return $this;
     }
@@ -64,21 +91,19 @@ class CardCreateService extends CrudService
      */
     public function getFeedback(): array
     {
+        $link = url_old('card', ['code' => urlencode($this->new['code'])]);
+
         $message = collapse(
-            "New card ",
+            "Card ",
             "<strong>",
-                "<a href=\"",
-                    url_old('card', [
-                        'code' => urlencode($this->new['code'])
-                    ]),
-                "\">",
+                "<a href=\"{$link}\">",
                     "{$this->new['name']} ({$this->new['code']})",
                 "</a>",
             "</strong> ",
-            "created."
+            "updated."
         );
 
-        $uri = url('cards/create');
+        $uri = $link;
 
         return [$message, $uri];
     }

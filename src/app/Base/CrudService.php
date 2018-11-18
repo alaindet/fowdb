@@ -158,6 +158,6 @@ abstract class CrudService implements CrudServiceInterface
      */
     public function getFeedback(): array
     {
-        return [];
+        return ['', ''];
     }
 }

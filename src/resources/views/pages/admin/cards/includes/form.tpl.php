@@ -1,7 +1,6 @@
 <?php
 // VARIABLES
 // $action
-// $id (required for $action = 'update')
 // $card (required for $action = 'update')
 
 // INPUT
@@ -26,12 +25,13 @@
 // artist-name
 
 $isCard = isset($card);
-$url = "cards/{$action}". (isset($id) ? "/{$id}" : "");
+$isPrev = isset($prev);
+$url = "cards/{$action}". ($isCard ? "/{$card['id']}" : "");
 
 // Lookup data
 $lookup = (App\Services\Lookup\Lookup::getInstance())->getAll();
 $narps = &$lookup['narps']['id2name'];
-$clusters = &$lookup['clusters'];
+$clusters = &$lookup['clusters']['list'];
 $setMap = &$lookup['sets']['id2code'];
 $rarities = &$lookup['rarities']['code2name'];
 $attributes = &$lookup['attributes']['display'];
@@ -40,6 +40,14 @@ $types = &$lookup['types']['display'];
 
 // Further process
 $backsides = array_merge(['0' => '(Basic)'], $backsides);
+$attributes = array_merge(['no' => 'No'], $attributes);
+
+if ($isCard) {
+  if ($card['attribute'] === null) $card['attribute'] = 'no';
+  if ($card['free_cost'] < 0) {
+    $card['free_cost'] = str_repeat('x', -1 * $card['free_cost']);
+  }  
+}
 ?>
 <form
   action="<?=url($url)?>"
@@ -61,37 +69,53 @@ $backsides = array_merge(['0' => '(Basic)'], $backsides);
   </div>
 
   <!-- NARP =============================================================== -->
+  <?php
+    if ($isPrev) $cardNarp = intval($prev['narp']);
+    elseif ($isCard) $cardNarp = $card['narp'];
+    else $cardNarp = null;
+  ?>
   <div class="form-group">
     <label class="col-sm-2">NARP</label>
     <div class="col-sm-10">
-      <select name="narp" class="form-control">
-        <?php foreach($narps as $key => $label): ?>
-          <?php // STICKY
-            ($isCard && $card['narp'] === $key)
-              ? $checked = ' selected'
-              : $checked = '';
-          ?>
-          <option value="<?=$key?>"<?=$checked?>><?=$label?></option>
+      <select name="narp" class="form-control" required>
+        <?php foreach($narps as $key => $label):
+          ($cardNarp === $key)
+            ? $checked = 'selected'
+            : $checked = '';
+        ?>
+          <option
+            value="<?=$key?>"
+            <?=$checked?>
+          >
+            <?=$label?>
+          </option>
         <?php endforeach; ?>
       </select>
     </div>
   </div>
 
   <!-- Set ================================================================ -->
+  <?php
+    if ($isPrev) $cardSet = $prev['set'];
+    elseif ($isCard) $cardSet = $setMap[$card['sets_id']];
+    else $cardSet = null;
+  ?>
   <div class="form-group">
     <label class="col-sm-2">Set</label>
     <div class="col-sm-10">
-      <select name="set" class="form-control">
-        <option value="0">Choose a set..</option>
+      <select name="set" class="form-control" required>
+        <option value="0">Choose a set...</option>
         <?php foreach($clusters as $clusterCode => $cluster): ?>
           <optgroup label="<?=$cluster['name']?>">
-          <?php foreach ($cluster['sets'] as $setCode => $setName): ?>
-            <?php // STICKY
-              ($isCard && $setMap[$card['sets_id']] === $setCode)
-                ? $checked = ' selected'
-                : $checked = '';
-            ?>
-            <option value="<?=$setCode?>"<?=$checked?>>
+          <?php foreach ($cluster['sets'] as $setCode => $setName):
+            ($cardSet === $setCode)
+              ? $checked = 'selected'
+              : $checked = '';
+          ?>
+            <option
+              value="<?=$setCode?>"
+              <?=$checked?>
+            >
               <?=strtoupper($setCode).' - '.$setName?>
             </option>
           <?php endforeach; ?>
@@ -108,28 +132,36 @@ $backsides = array_merge(['0' => '(Basic)'], $backsides);
       <input
         type="number"
         name="number"
-        value="<?=$card['num'] ?? null?>"
+        value="<?php
+          if ($isPrev) echo intval($prev['number']);
+          elseif ($isCard) echo $card['num'];
+          else echo null;
+        ?>"
         placeholder="Card number..."
-        class="form-control">
+        class="form-control"
+        required
+      >
     </div>
   </div>
 
   <!-- Rarity ============================================================= -->
+  <?php
+    $cardRarity = $isPrev ? $prev['rarity'] : $isCard ? $card['rarity'] : null;
+  ?>
   <div class="form-group">
     <label class="col-sm-2">Rarity</label>
     <div class="col-sm-10">
       <select name="rarity" class="form-control">
-        
-        <!-- Default -->
         <option value="0">(None)</option>
-
-        <?php foreach ($rarities as $code => $name): ?>
-          <?php // STICKY
-            ($isCard && $card['rarity'] === $code)
-              ? $checked = ' selected'
-              : $checked = '';
-          ?>
-          <option value="<?=$code?>"<?=$checked?>>
+        <?php foreach ($rarities as $code => $name):
+          ($cardRarity === $code)
+            ? $checked = 'selected'
+            : $checked = '';
+        ?>
+          <option
+            value="<?=$code?>"
+            <?=$checked?>
+          >
             <?=strtoupper($code)?> - <?=$name?>
           </option>
         <?php endforeach; ?>
@@ -138,54 +170,74 @@ $backsides = array_merge(['0' => '(Basic)'], $backsides);
   </div>
 
   <!-- Attribute ========================================================== -->
-  <?php $cardAttributes = $isCard ? explode('/', $card['attr']) : []; ?>
+  <?php
+    if ($isPrev) $cardAttributes = $prev['attribute'];
+    elseif ($isCard) $cardAttributes = explode('/', $card['attribute']);
+    else $cardAttributes = [];
+  ?>
   <div class="form-group">
     <label for="attribute" class="col-sm-2">Attribute</label>
     <div class="col-sm-10">
       <div
-        class="btn-group fd-btn-group --separate"
+        class="btn-group fd-btn-group --separate fd-grid-items"
         data-toggle="buttons"
       >
         <?php foreach ($attributes as $code => $name):
-          // Sticky values
-          ($isCard && in_array($code, $cardAttributes))
+          (in_array($code, $cardAttributes))
             ? [$active, $checked] = [' active', 'checked']
             : [$active, $checked] = ['', ''];
         ?>
-          <label class="btn fd-btn-default<?=$active?>">
-            <input
-              type="checkbox"
-              name="attribute[]"
-              value="<?=$code?>"
-              <?=$checked?>
-            >
-            <img
-              src="<?=asset('images/icons/blank.gif')?>"
-              class="fd-icon-<?=$code?> --bigger"
-              alt="<?=$name?>"
-            >
-          </label>
+          <?php if ($code === 'no'): ?>
+            <label class="btn font-110 fd-btn-default<?=$active?>">
+              <input
+                type="checkbox"
+                name="attribute[]"
+                value="0"
+                <?=$checked?>
+              >
+              (NO)
+            </label>
+          <?php else: ?>
+            <label class="btn fd-btn-default<?=$active?>">
+              <input
+                type="checkbox"
+                name="attribute[]"
+                value="<?=$code?>"
+                <?=$checked?>
+              >
+              <img
+                src="<?=asset('images/icons/blank.gif')?>"
+                class="fd-icon-<?=$code?> --bigger"
+                alt="<?=$name?>"
+              >
+            </label>
+          <?php endif; ?>
         <?php endforeach; ?>
       </div>
     </div>
   </div>
 
   <!-- Back side ========================================================== -->
-  <?php $cardBackside = $card['back_side'] ?? '0'; ?>
+  <?php
+    if ($isPrev) $cardBackSide = intval($prev['back-side']);
+    elseif ($isCard) $cardBackSide = $card['back_side'];
+    else $cardBackSide = 0;
+  ?>
   <div class="form-group">
     <label class="col-sm-2">Back side</label>
     <div class="col-sm-10">
       <div class="btn-group" data-toggle="buttons">
         <?php foreach ($backsides as $backsideId => $backsideName):
-          ($cardBackside == $backsideId)
-              ? [$checked, $active] = ['checked', ' active']
-              : [$checked, $active] = ['', ''];
+          ($cardBackSide === $backsideId)
+            ? [$checked, $active] = ['checked', ' active']
+            : [$checked, $active] = ['', ''];
         ?>
           <label class="btn btn-default<?=$active?>">
             <input
               type="radio"
               name="back-side"
               value="<?=$backsideId?>"
+              required
               <?=$checked?>
             >
             <span class="pointer"><?=$backsideName?></span>
@@ -196,13 +248,16 @@ $backsides = array_merge(['0' => '(Basic)'], $backsides);
   </div>
 
   <!-- Type =============================================================== -->
+  <?php
+    $cardType = $isPrev ? $prev['type'] : $isCard ? $card['type'] : null;
+  ?>
   <div class="form-group">
     <label class="col-sm-2">Type</label>
     <div class="col-sm-10">
-      <select name="type" class="form-control">
-        <option value="0">(None)</option>
+      <select name="type" class="form-control" required>
+        <option value="0">Choose a type...</option>
         <?php foreach($types as $type):
-          ($isCard && $card['type'] === $type)
+          ($cardType === $type)
             ? $checked = 'selected'
             : $checked = '';
         ?>
@@ -223,19 +278,23 @@ $backsides = array_merge(['0' => '(Basic)'], $backsides);
     <div class="col-xs-12 col-sm-10">
       <div class="row">
 
-        <!-- Attribute cost -->
+        <!-- Attribute cost =============================================== -->
         <div class="col-sm-6">
           <span class="form-label">Attribute cost</span>
           <input 
             type="text"
             name="attribute-cost"
-            value="<?=$card['attribute_cost'] ?? ''?>"
+            value="<?php
+              if ($isPrev) echo $prev['attribute-cost'];
+              elseif ($isCard) echo $card['attribute_cost'];
+              else echo '';
+            ?>"
             placeholder="Attribute cost (w,r,u,g,b)..."
             class="form-control"
           >
         </div>
 
-        <!-- Free cost -->
+        <!-- Free cost ==================================================== -->
         <div class="col-sm-6">
           <span class="form-label">
             Free cost
@@ -244,7 +303,11 @@ $backsides = array_merge(['0' => '(Basic)'], $backsides);
           <input
             type="text"
             name="free-cost"
-            value="<?=$card['free_cost'] ?? null?>"
+            value="<?php
+              if ($isPrev) echo intval($prev['free-cost']);
+              elseif ($isCard) echo $card['free_cost'];
+              else echo null;
+            ?>"
             placeholder="Free cost..."
             class="form-control"
           >
@@ -261,7 +324,11 @@ $backsides = array_merge(['0' => '(Basic)'], $backsides);
       <input
         type="text"
         name="divinity-cost"
-        value="<?=$card['divinity'] ?? null?>"
+        value="<?php
+          if ($isPrev) echo intval($prev['divinity-cost']);
+          elseif ($isCard) echo $card['divinity'];
+          else echo null;
+        ?>"
         placeholder="Divinity (-1 to delete existing value)..."
         class="form-control"
       >
@@ -280,7 +347,11 @@ $backsides = array_merge(['0' => '(Basic)'], $backsides);
           <input
             type="number"
             name="atk"
-            value="<?=$card['atk'] ?? null?>"
+            value="<?php
+              if ($isPrev) echo intval($prev['atk']);
+              elseif ($isCard) echo $card['atk'];
+              else echo null;
+            ?>"
             placeholder="ATK..."
             class="form-control"
           >
@@ -292,7 +363,11 @@ $backsides = array_merge(['0' => '(Basic)'], $backsides);
           <input
             type="number"
             name="def"
-            value="<?=$card['def'] ?? null?>"
+            value="<?php
+              if ($isPrev) echo intval($prev['def']);
+              elseif ($isCard) echo $card['def'];
+              else echo null;
+            ?>"
             placeholder="DEF..."
             class="form-control"
           >
@@ -309,14 +384,18 @@ $backsides = array_merge(['0' => '(Basic)'], $backsides);
       <input
         type="text"
         name="code"
-        value="<?=$card['code'] ?? null?>"
+        value="<?php
+          if ($isPrev) echo $prev['code'];
+          elseif ($isCard) echo $card['code'];
+          else echo null;
+        ?>"
         placeholder="Code (Read below)..."
         class="form-control"
       >
       <div class="well well-sm">
         <ul class="fd-list">
           <li>
-            Leave empty for automatic generation (recommended) or enter a custom code
+            Leave <strong>empty</strong> for automatic generation (recommended) or enter a custom code
           </li>
           <li>
             Automatic code pattern: <code>SETCODE{dash}NUMBER{space}RARITY</code>
@@ -333,9 +412,14 @@ $backsides = array_merge(['0' => '(Basic)'], $backsides);
       <input
         type="text"
         name="name"
-        value="<?=$card['name'] ?? null?>"
+        value="<?php
+          if ($isPrev) echo $prev['name'];
+          elseif ($isCard) echo $card['name'];
+          else echo null;
+        ?>"
         placeholder="Name..."
         class="form-control"
+        required
       >
     </div>
   </div>
@@ -347,7 +431,11 @@ $backsides = array_merge(['0' => '(Basic)'], $backsides);
       <input
         type="text"
         name="race"
-        value="<?=$card['race'] ?? null?>"
+        value="<?php
+          if ($isPrev) echo $prev['race'];
+          elseif ($isCard) echo $card['race'];
+          else echo null;
+        ?>"
         class="form-control"
         placeholder="Race/Trait.."
       >
@@ -363,7 +451,11 @@ $backsides = array_merge(['0' => '(Basic)'], $backsides);
         class="form-control text-monospace font-120"
         rows="6"
         placeholder="Text..."
-      ><?=$isCard ? escape($card['text']) : null?></textarea>
+      ><?php
+        if ($isPrev) echo escape($prev['text']);
+        elseif ($isCard) echo escape($card['text']);
+        else echo null;
+      ?></textarea>
     </div>
   </div>
 
@@ -376,7 +468,11 @@ $backsides = array_merge(['0' => '(Basic)'], $backsides);
         class="form-control"
         rows="3"
         placeholder="Flavor text..."
-      ><?=$card['flavor_text'] ?? null?></textarea>
+      ><?php
+        if ($isPrev) echo $prev['flavor-text'];
+        elseif ($isCard) echo $card['flavor_text'];
+        else echo null;
+      ?></textarea>
     </div>
   </div>
 
@@ -387,7 +483,11 @@ $backsides = array_merge(['0' => '(Basic)'], $backsides);
       <input
         type="text"
         name="artist-name"
-        value="<?=$card['artist_name'] ?? null?>"
+        value="<?php
+          if ($isPrev) echo $prev['artist-name'];
+          elseif ($isCard) echo $card['artist_name'];
+          else echo null;
+        ?>"
         placeholder="Artist name..."
         class="form-control"
       >

@@ -7,6 +7,9 @@
         In any text field, <strong>NEVER</strong> enter a new line (hitting Enter), but <strong>ALWAYS</strong> use <code>&lt;hr&gt;</code> to separate different abilities instead
       </li>
       <li>
+        In the rare case of a <em>battling card</em> (J-Ruler or Resonator) with <strong>no ATK and DEF printed values</strong> (Ex.: <em>Refrain, Child of Convergence (TTW-063 R)</em>), just enter <code>-1</code> on both ATK and DEF inputs!
+      </li>
+      <li>
         Required fields
         <ul class="fd-list">
           <li>Image</li>
@@ -22,7 +25,7 @@
         Optional fields
         <ul class="fd-list">
           <li>Rarity (Reset: <code>(None)</code>)</li>
-          <li>Attribute (Reset: delesect all buttons)</li>
+          <li>Attribute (Reset: Select only <code>(NO)</code>)</li>
           <li>Backside (Reset: <code>(Basic)</code>)</li>
           <li>Attribute cost (Reset: <code>-1</code>)</li>
           <li>Free cost (Reset: <code>-1</code>)</li>
