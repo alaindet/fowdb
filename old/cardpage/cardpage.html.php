@@ -54,7 +54,7 @@
 		<!-- Card image -->
 		<div class="col-xs-12 col-sm-5 box" style="text-align:center;">
 			<img
-				src="<?=$card['image_path']?>"
+				src="<?=asset($card['image_path'])?>"
 				alt="<?=$card['name']?>"
 				class="cardpage-img"
 			>

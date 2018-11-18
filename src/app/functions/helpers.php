@@ -264,7 +264,10 @@ function asset(string $path, string $type = 'any'): string
 {
 	$config = \App\Services\Config::getInstance();
     
-    $url = $config->get('app.url');
+	$url = $config->get('app.url');
+
+	// Bypass query string if already present
+	if (strpos($path, '?')) return "{$url}/{$path}";
 
     $version = [
 		'any' => $config->get('app.timestamp'),
