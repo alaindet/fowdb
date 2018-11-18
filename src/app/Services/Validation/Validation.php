@@ -2,7 +2,6 @@
 
 namespace App\Services\Validation;
 
-use App\Services\Session;
 use App\Http\Response\Redirect;
 use App\Base\Errorable;
 
@@ -174,12 +173,20 @@ class Validation
         string $value = null
     ): bool
     {
+        $exists = true;
+
+        if (!isset($this->input[$inputName])) $exists = false;
+
         // Input is required
         if (
             ($value === '1' || $value === '') &&
             (
                 !isset($this->input[$inputName]) ||
-                $this->input[$inputName] === ''
+                $this->input[$inputName] === '' ||
+                (
+                    isset($this->input[$inputName]['error']) &&
+                    $this->input[$inputName]['error'] !== UPLOAD_ERR_OK
+                )
             )
         ) {
             $this->pushError("Input <strong>{$inputName}</strong> is required");
@@ -192,7 +199,11 @@ class Validation
             $value === '0' && 
             (
                 !isset($this->input[$inputName]) ||
-                empty($this->input[$inputName])
+                $this->input[$inputName] === '' ||
+                (
+                    isset($this->input[$inputName]['error']) &&
+                    $this->input[$inputName]['error'] !== UPLOAD_ERR_OK
+                )
             )
         ) {
             $this->skip = true;
