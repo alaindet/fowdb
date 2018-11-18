@@ -191,6 +191,7 @@ class RulingsController extends Controller
 
         $item['card_image'] = asset($item['card_image']);
         $item['card_label'] = "{$item['card_name']} ({$item['card_code']})";
+        $item['ruling_text'] = render($item['ruling_text']);
 
         // Render the page
         return (new Page)
