@@ -10,10 +10,10 @@ class CardText
 	 * @var array
 	 */
 	private static $replace = [
-		'{rest}' => '<img src="images/icons/blank.gif" class="fd-icon-rest" />',
+		'{rest}' => '<img src="images/icons/blank.gif" class="fd-icon-rest">',
 		'=>' => '&rArr;',
 		'Errata:' => '<span class="ruling-errata">Errata:</span>',
-		'<hr>' => "<p></p>",
+		'<hr>' => '<span class="fd-spacer-vertical-050"></span>',
 		'[(' => '【',
 		')]' => '】',
 		'<<' => '&#12296;',

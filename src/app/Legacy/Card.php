@@ -90,7 +90,7 @@ class Card
             $raceLabel = in_array($card['type'], $raceTypes) ? 'race' : 'trait';
 
             // $raceValue -----------------------------------------------------
-            $raceValue = '<em>(none)</em>';
+            $raceValue = '<em>(None)</em>';
             if (!empty($card['race'])) {
                 $raceValue = implode(' / ', array_map(
                     function ($race) {
@@ -203,7 +203,7 @@ class Card
             );
 
             // $rarity --------------------------------------------------------
-            $rarity = '<em>(none)</em>';
+            $rarity = '<em>(None)</em>';
             $rarityCode =& $card['rarity'];
             $rarityName = lookup("rarities.code2name.{$rarityCode}");
             if (isset($card['rarity'])) {
@@ -215,11 +215,14 @@ class Card
             }
 
             // $flavorText ----------------------------------------------------
-            $flavorText = collapse(
-                '<span class="flavortext">',
-                    $card['flavor_text'],
-                '</span>'
-            );
+            $flavorText = null;
+            if (isset($card['flavor_text'])) {
+                $flavorText = collapse(
+                  '<span class="flavortext">',
+                        $card['flavor_text'],
+                    '</span>'
+                );    
+            }
 
             // $atkDef --------------------------------------------------------
 

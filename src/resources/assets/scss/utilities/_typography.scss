@@ -29,3 +29,17 @@
     text-align: left;
   }
 }
+
+// Vertical in-block separator
+.fd-spacer-vertical-050,
+.fd-spacer-vertical-100 {
+  display: block!important;
+}
+.fd-spacer-vertical-050 {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+}
+.fd-spacer-vertical-100 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
