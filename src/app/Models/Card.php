@@ -9,6 +9,21 @@ class Card extends Model
 {
     public $table = 'cards';
 
+    public $numeric = [
+        'id',
+        'sorted_id',
+        'back_side',
+        'narp',
+        'clusters_id',
+        'sets_id',
+        'num',
+        'divinity',
+        'free_cost',
+        'total_cost',
+        'atk',
+        'def'
+    ];
+
     public $removables = [
         'no-cost' => [
             'Ruler',
@@ -27,6 +42,29 @@ class Card extends Model
             'Resonator'
         ]
     ];
+
+    /**
+     * Override Model::byId by casting numeric values as integers
+     *
+     * @param integer|string id
+     * @param array $fields
+     * @param array $fieldsToRender
+     * @return array
+     */
+    public function byId(
+        $id,
+        array $fields = null,
+        array $fieldsToRender = []
+    ): array
+    {
+        $card = parent::byId($id, $fields, $fieldsToRender);
+        foreach ($this->numeric as $field) {
+            if ($card[$field] !== null) {
+                $card[$field] = intval($card[$field]);
+            }
+        }
+        return $card;
+    }
 
     public function getRemovableFields(string $feature = null): array
     {
