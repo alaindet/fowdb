@@ -87,7 +87,7 @@ class Request
 
     public function getCurrentUrl($withQueryString = true): string
     {
-        $queryString = isset($this->queryString) ? '?'.$this->queryString : '';
+        $queryString = !empty($this->queryString) ? '?'.$this->queryString : '';
         return url($this->path) . $queryString;
     }
 
