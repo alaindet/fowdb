@@ -2,6 +2,8 @@
 
 namespace App\Services\Database;
 
+use App\Utils\Uri;
+
 /**
  * Can only be used by its base class:
  * App\Services\Database\Database
@@ -82,11 +84,7 @@ trait Pageable
      */
     public function paginationLink(string $url): Database
     {
-        if (false !== $pos = strpos($url, 'page=')) {
-            $url = substr($url, 0, $pos - 1);
-        }
-
-        $this->link = $url;
+        $this->link = Uri::removeQueryStringParameter($url, 'page');
 
         return $this;
     }

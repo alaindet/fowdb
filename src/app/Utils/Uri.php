@@ -94,4 +94,48 @@ class Uri
         if (false !== $pos) $uri = substr($uri, 0, $pos);
         return $uri;
     }
+
+    /**
+     * Remove a small portion of a query string
+     *
+     * @param string $uri The URI to process
+     * @param string|array $parameters One or a list of parameters
+     * @return string
+     */
+    public static function removeQueryStringParameter(
+        string $uri,
+        $parameters
+    ): string
+    {
+        [$baseUri, $queryString, $fragment] = ['', '', ''];
+
+        // Split base URI from query string and hash fragment
+        [$baseUri, $queryString] = explode('?', $uri);
+
+        // No query string, return as it is
+        if ($queryString === '') return $uri;
+
+        // Remove the hash fragment
+        [$queryString, $fragment] = explode('#', $queryString);
+
+        // Parse query string as array
+        parse_str($queryString, $qsParameters);
+
+        // Normalize input parameters as array
+        if (!is_array($parameters)) $parameters = [$parameters];
+
+        // Remove all unwanted parameters
+        foreach ($parameters as $parameter) {
+            if (isset($qsParameters[$parameter])) {
+                unset($qsParameters[$parameter]);
+            }
+        }
+
+        // Re-build purged query string
+        $queryString = http_build_query($qsParameters);
+
+        return $baseUri
+            . ($queryString !== '' ? "?{$queryString}" : '')
+            . ($fragment !== '' ? "#{$fragment}" : '');
+    }
 }
