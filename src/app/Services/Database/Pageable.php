@@ -66,12 +66,10 @@ trait Pageable
      */
     private function setOffset(): void
     {
-        if (!isset($this->page)) {
-            $this->page = 1;
-        }
+        if (!isset($this->page)) $this->page = 1;
 
-        $this->lowerBound = ($this->page - 1) * $this->perPage;
-        $this->upperBound = $this->lowerBound + $this->perPage;
+        $this->lowerBound = intval(($this->page - 1) * $this->perPage);
+        $this->upperBound = intval($this->lowerBound + $this->perPage);
 
         $this->statement->offset($this->lowerBound);
     }
@@ -93,12 +91,12 @@ trait Pageable
      * Paginates data and stores pagination basic info
      *
      * @param string $className
-     * @param string $field
+     * @param string $countableField
      * @return array
      */
     public function paginate(
         string $className = null,
-        string $field = null
+        string $countableField = null
     ): array
     {
         $this->setLimit();
@@ -107,9 +105,9 @@ trait Pageable
 
         $this->statement->limit(+1, $add = true);
 
-        $this->totalCount = $this->count($field);
+        $this->totalCount = $this->count($countableField);
 
-        $this->lastPage = ceil($this->totalCount / $this->perPage);
+        $this->lastPage = intval(ceil($this->totalCount / $this->perPage));
 
         $results = $this->get($className);
 
@@ -120,6 +118,8 @@ trait Pageable
 
     /**
      * Returns pagination info
+     * 
+     * MUST be called after paginate() to populate 'total' and 'last-page'
      *
      * @return array
      */
@@ -133,6 +133,7 @@ trait Pageable
             'lower-bound' => $this->lowerBound + 1,
             'upper-bound' => min($this->upperBound, $this->totalCount),
             'link' => $this->link,
+            'has-pagination' => $this->lastPage !== 1
         ];
     }
 }

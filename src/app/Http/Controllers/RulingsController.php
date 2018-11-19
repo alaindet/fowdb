@@ -35,7 +35,6 @@ class RulingsController extends Controller
                         'r.id DESC'
                     ])
             )
-            ->perPage(25)
             ->page($request->input()->get('page') ?? 1)
             ->paginationLink($request->getCurrentUrl());
 
@@ -44,8 +43,9 @@ class RulingsController extends Controller
             ->template('pages/admin/rulings/index')
             ->title('Rulings,Manage')
             ->variables([
+                // paginate() must be called before paginationInfo()!
+                'items' => $database->paginate(),
                 'pagination' => $database->paginationInfo(),
-                'rulings' => $database->paginate()
             ])
             ->render();
     }

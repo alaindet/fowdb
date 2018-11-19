@@ -1,6 +1,6 @@
 <?php
 // VARIABLES
-// $rulings
+// $items
 ?>
 
 <div class="table-responsive">
@@ -17,7 +17,7 @@
     </thead>
 
     <tbody>
-      <?php foreach ($rulings as $item): ?>
+      <?php foreach ($items as $item): ?>
         <tr>
 
           <!-- # -->
@@ -28,16 +28,16 @@
           <!-- Actions -->
           <td>
 
-            <!-- Edit -->
+            <!-- Update -->
             <a
               class="btn btn-xs fd-btn-default fd-btn-warning-hover"
               href="<?=url('rulings/update/'.$item['ruling_id'])?>"
             >
               <i class="fa fa-pencil"></i>
-              Edit
+              Update
             </a>
 
-            <!-- Edit -->
+            <!-- Delete -->
             <a
               class="btn btn-xs fd-btn-default fd-btn-danger-hover"
               href="<?=url('rulings/delete/'.$item['ruling_id'])?>"

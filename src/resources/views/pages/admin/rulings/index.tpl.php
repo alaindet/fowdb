@@ -1,7 +1,9 @@
 <?php
+
 // VARIABLES
+// $items
 // $pagination
-// $rulings
+
 ?>
 <div class="page-header">
   <h1>Rulings</h1>
@@ -42,7 +44,7 @@
   <!-- Rulings -->
   <div class="col-xs-12">
     <?=include_view('pages/admin/rulings/includes/index-list', [
-      'rulings' => $rulings
+      'items' => $items
     ])?>
   </div>
 
