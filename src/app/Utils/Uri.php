@@ -107,16 +107,20 @@ class Uri
         $parameters
     ): string
     {
-        [$baseUri, $queryString, $fragment] = ['', '', ''];
-
         // Split base URI from query string and hash fragment
-        [$baseUri, $queryString] = explode('?', $uri);
+        $bits = explode('?', $uri);
 
         // No query string, return as it is
-        if ($queryString === '') return $uri;
+        if (!isset($bits[1])) return $uri;
+
+        [$baseUri, $queryString] = $bits;
 
         // Remove the hash fragment
-        [$queryString, $fragment] = explode('#', $queryString);
+        $bits = explode('#', $queryString);
+
+        if (!isset($bits[1])) $bits[1] = '';
+
+        [$queryString, $fragment] = $bits;
 
         // Parse query string as array
         parse_str($queryString, $qsParameters);
