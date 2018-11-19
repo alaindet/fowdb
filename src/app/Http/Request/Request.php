@@ -85,6 +85,12 @@ class Request
         return Input::getInstance();
     }
 
+    public function getCurrentUrl($withQueryString = true): string
+    {
+        $queryString = isset($this->queryString) ? '?'.$this->queryString : '';
+        return url($this->path) . $queryString;
+    }
+
     public function validate(
         string $type,
         array $toValidate,

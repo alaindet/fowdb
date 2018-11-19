@@ -15,36 +15,29 @@ class RulingsController extends Controller
 {
     public function indexManage(Request $request): string
     {
-        // Assemble current absolute URL
-        $url = url($request->path());
-        $queryString = $request->queryString();
-        if (!empty($queryString)) $url .= '?'.$queryString;
-
-        $statement = statement('select')
-            ->select([
-                'c.code as card_code',
-                'c.name as card_name',
-                'r.id as ruling_id',
-                'r.is_errata as ruling_is_errata',
-                'r.date as ruling_date',
-                'r.text as ruling_text'
-            ])
-            ->from(
-                'rulings r INNER JOIN cards c ON r.cards_id = c.id'
-            )
-            ->orderBy([
-                'r.date DESC',
-                'r.id DESC'
-            ]);
-
         // Get data from database
         $database = database()
-            ->select($statement)
+            ->select(
+                statement('select')
+                    ->select([
+                        'c.code as card_code',
+                        'c.name as card_name',
+                        'r.id as ruling_id',
+                        'r.is_errata as ruling_is_errata',
+                        'r.date as ruling_date',
+                        'r.text as ruling_text'
+                    ])
+                    ->from(
+                        'rulings r INNER JOIN cards c ON r.cards_id = c.id'
+                    )
+                    ->orderBy([
+                        'r.date DESC',
+                        'r.id DESC'
+                    ])
+            )
             ->perPage(25)
             ->page($request->input()->get('page') ?? 1)
-            ->paginationLink($url);
-
-        $rulings = $database->paginate();
+            ->paginationLink($request->getCurrentUrl());
 
         // Render the page
         return (new Page)
@@ -52,7 +45,7 @@ class RulingsController extends Controller
             ->title('Rulings,Manage')
             ->variables([
                 'pagination' => $database->paginationInfo(),
-                'rulings' => $rulings
+                'rulings' => $database->paginate()
             ])
             ->render();
     }
