@@ -27,7 +27,7 @@ class SelectSqlStatement extends SqlStatement
      * A select expression can be as simple as 'id' or
      * More complex like 'cards.name as c_name'
      * 
-     * @param string|array $expr The select expression(s)
+     * @param string|array $expressions The select expression(s)
      * @return SelectSqlStatement
      */
     public function select($expressions): SelectSqlStatement
@@ -38,6 +38,17 @@ class SelectSqlStatement extends SqlStatement
         else $clause = array_merge($clause, $expressions);
 
         return $this;
+    }
+
+    /**
+     * Alias for SelectSqlStatament::select()
+     *
+     * @param string|array $expressions The select expression(s)
+     * @return SelectSqlStatement
+     */
+    public function fields($expressions): SelectSqlStatement
+    {
+        return $this->select($expressions);
     }
 
     /**
