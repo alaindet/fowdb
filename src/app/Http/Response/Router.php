@@ -10,6 +10,7 @@ use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
 use Symfony\Component\Routing\RequestContext as SymfonyRequestContext;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 /**
  * This class maps a request to its controller and action.
@@ -132,7 +133,7 @@ class Router
             $urlMatcher = new SymfonyUrlMatcher($this->routes, $this->request);
             return $urlMatcher->match($this->uri);
         }
-        catch (ResourceNotFoundException $exception) {
+        catch (ResourceNotFoundException | MethodNotAllowedException $ex) {
             throw new RouterException(
                 "There's no <strong>{$this->uri}</strong> route on FoWDB."
             );
