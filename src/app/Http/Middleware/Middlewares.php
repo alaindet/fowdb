@@ -19,7 +19,6 @@ class Middlewares
 
     private $defaults = [
         'auth'  => CheckAuthorizationMiddleware::class,
-        'token' => CheckCsrfTokenMiddleware::class,
     ];
 
     private $list = [];

@@ -18,7 +18,7 @@ $public = [
 
     ['GET', 'cards/search/help','CardsController','showSearchHelp'],
     ['GET', 'login','Auth\\LoginController','loginForm'],
-    ['POST','login','Auth\\LoginController','login'],
+    ['POST','login','Auth\\LoginController','login', null, ['token']],
     ['GET', 'logout','Auth\\LoginController','logout'],
 
 ];
@@ -50,20 +50,36 @@ $judge = [
     // Cards
     ['GET', 'cards/manage','Admin\\CardsController','indexManage'],
     ['GET', 'cards/create','Admin\\CardsController','createForm'],
-    ['POST','cards/create','Admin\\CardsController','create'],
+    ['POST','cards/create','Admin\\CardsController','create',null,['token']],
     ['GET', 'cards/update/{d}','Admin\\CardsController','updateForm',$d],
-    ['POST','cards/update/{d}','Admin\\CardsController','update',$d],
+    ['POST','cards/update/{d}','Admin\\CardsController','update',$d,['token']],
     ['GET', 'cards/delete/{d}','Admin\\CardsController','deleteForm',$d],
-    ['POST','cards/delete/{d}','Admin\\CardsController','delete',$d],
+    ['POST','cards/delete/{d}','Admin\\CardsController','delete',$d,['token']],
+
+    // Clusters
+    ['GET', 'clusters/manage', 'ClustersController','indexManage'],
+    ['GET', 'clusters/create', 'ClustersController','createForm'],
+    ['POST','clusters/create', 'ClustersController','create',null,['token']],
+    ['GET', 'clusters/update/{d}','ClustersController','updateForm',$d],
+    ['POST','clusters/update/{d}','ClustersController','update',$d,['token']],
+    ['GET', 'clusters/delete/{d}','ClustersController','deleteForm',$d],
+    ['POST','clusters/delete/{d}','ClustersController','delete',$d,['token']],
 
     // Rulings
     ['GET', 'rulings/manage','RulingsController','indexManage'],
     ['GET', 'rulings/create','RulingsController','createForm'],
-    ['POST','rulings/create','RulingsController','create'],
+    ['POST','rulings/create','RulingsController','create',null,['token']],
     ['GET', 'rulings/update/{d}','RulingsController','updateForm',$d],
-    ['POST','rulings/update/{d}','RulingsController','update',$d],
+    ['POST','rulings/update/{d}','RulingsController','update',$d,['token']],
     ['GET', 'rulings/delete/{d}','RulingsController','deleteForm',$d],
-    ['POST','rulings/delete/{d}','RulingsController','delete',$d],
+    ['POST','rulings/delete/{d}','RulingsController','delete',$d,['token']],
+
+    // API --------------------------------------------------------------------
+
+    // Clusters
+    ['POST','api/clusters/{d}','ClustersController','apiRead',$d,
+        ['!auth', '!token', 'api-auth', 'api-token']
+    ],
 
 ];
 

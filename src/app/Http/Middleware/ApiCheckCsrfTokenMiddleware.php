@@ -11,9 +11,6 @@ class ApiCheckCsrfTokenMiddleware implements MiddlewareInterface
 {
     public function run(Request $request): void
     {
-        // Skip GET requests
-        if ($request->method() === 'GET') return;
-
         // Read passed anti-CSRF token
         $token = $request->input()->post(CsrfToken::NAME);
 

@@ -11,7 +11,6 @@ class CheckCsrfTokenMiddleware implements MiddlewareInterface
 {
     public function run(Request $request): void
     {
-        if ($request->method() === 'GET') return;
         $token = $request->input()->post(CsrfToken::NAME);
         if (!isset($token)) throw new CsrfTokenException();
         if (!CsrfToken::check($token)) throw new CsrfTokenException();
