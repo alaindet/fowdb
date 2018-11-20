@@ -6,12 +6,14 @@ use Throwable;
 use App\Utils\Logger;
 use App\Base\Exception;
 use App\Exceptions\Alertable;
+use App\Exceptions\Jsonable;
 use App\Exceptions\Previousable;
 use App\Services\Alert;
 use App\Http\Response\Redirect;
 use App\Services\Config;
 use App\Services\Session;
 use App\Http\Request\Input;
+use App\Http\Response\JsonResponse;
 
 class Handler
 {
@@ -27,6 +29,18 @@ class Handler
         if ($exception instanceof Alertable) {
             Alert::add($exception->getMessage(), 'danger');
             Redirect::to($exception->getRedirectUrl());
+        }
+
+        // Show exception as a JSON
+        if ($exception instanceof Jsonable) {
+
+            $error = [
+                'error' => 1,
+                'message' => $exception->getMessage()
+            ];
+
+            echo (new JsonResponse)->setData($error)->render();
+            die();
         }
 
         $config = Config::getInstance();

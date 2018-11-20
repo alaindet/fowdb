@@ -2,18 +2,24 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Middleware\ApiCheckAuthorizationMiddleware;
+use App\Http\Middleware\ApiCheckCsrfTokenMiddleware;
+use App\Http\Middleware\CheckAuthorizationMiddleware;
+use App\Http\Middleware\CheckCsrfTokenMiddleware;
 use App\Http\Request\Request;
 
 class Middlewares
 {
     private $all = [
-        'auth'  => \App\Http\Middleware\CheckAuthorizationMiddleware::class,
-        'token' => \App\Http\Middleware\CheckCsrfTokenMiddleware::class,
+        'auth'  => CheckAuthorizationMiddleware::class,
+        'token' => CheckCsrfTokenMiddleware::class,
+        'api-auth' => ApiCheckAuthorizationMiddleware::class,
+        'api-token' => ApiCheckCsrfTokenMiddleware::class,
     ];
 
     private $defaults = [
-        'auth'  => \App\Http\Middleware\CheckAuthorizationMiddleware::class,
-        'token' => \App\Http\Middleware\CheckCsrfTokenMiddleware::class,
+        'auth'  => CheckAuthorizationMiddleware::class,
+        'token' => CheckCsrfTokenMiddleware::class,
     ];
 
     private $list = [];
@@ -33,16 +39,16 @@ class Middlewares
 
         for ($i = 0, $len = count($list); $i < $len; $i++) {
 
-            $name =& $list[$i];
+            $name = &$list[$i];
 
-            // Negate a default middleware, ex.: !token
+            // Remove middleware, ex.: !token
             if ($name[0] === '!') {
-                $name = substr($name, 1);
-                if (isset($this->list[$name])) unset($this->list[$name]);
+                $_name = substr($name, 1);
+                if (isset($this->list[$_name])) unset($this->list[$_name]);
             }
-
+            
             // Add new middleware
-            if (!isset($this->list[$name])) {
+            else {
                 $this->list[$name] = $this->all[$name];
             }
         }
