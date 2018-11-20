@@ -7,6 +7,7 @@ use App\Http\Request\Input;
 use App\Services\Alert;
 use App\Services\Validation\Validation;
 use App\Exceptions\ValidationException;
+use App\Exceptions\ApiValidationException;
 
 class Request
 {
@@ -20,8 +21,8 @@ class Request
     private $httpsPort;
     private $path;
     private $queryString;
-
     private $app;
+    private $validationException = ValidationException::class;
 
     public function baseUrl(string $value = null)
     {
@@ -91,6 +92,13 @@ class Request
         return url($this->path) . $queryString;
     }
 
+    public function api(): Request
+    {
+        $this->validationException = ApiValidationException::class;
+
+        return $this;
+    }
+
     public function validate(
         string $type,
         array $toValidate,
@@ -121,7 +129,7 @@ class Request
                 );
             }
 
-            throw new ValidationException($message);
+            throw new $this->validationException($message);
         }
     }
 }

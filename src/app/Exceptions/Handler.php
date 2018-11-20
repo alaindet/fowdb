@@ -33,13 +33,10 @@ class Handler
 
         // Show exception as a JSON
         if ($exception instanceof Jsonable) {
-
-            $error = [
+            echo (new JsonResponse)->setData([
                 'error' => 1,
                 'message' => $exception->getMessage()
-            ];
-
-            echo (new JsonResponse)->setData($error)->render();
+            ])->render();
             die();
         }
 
