@@ -497,7 +497,7 @@ if ($isCard) {
   <!-- Submit ============================================================= -->
   <div class="form-group">
     <div class="col-sm-10 col-sm-offset-2">
-      <button type="submit" class="btn btn-primary btn-lg">
+      <button type="submit" class="btn fd-btn-primary btn-lg">
         <?php if ($isCard): ?>
 
           <i class="fa fa-pencil"></i>
