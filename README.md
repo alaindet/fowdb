@@ -1,6 +1,6 @@
-# FoWDB - Force of Will Database
+# FoWDB - Force of Will TCG Database
 
-Force of Will Database (https://www.fowdb.altervista.org) is a fan site about Force of Will TCG, an amazing japanese trading card game.
+Force of Will TCG Database (https://www.fowdb.altervista.org) is a fan site about Force of Will TCG, an amazing japanese trading card game.
 
 FoWDB started as (and still is) a personal experiment to learn web development via books and tutorials. As a matter of fact, it lacks some best practices and cool new features and that's why this repository exists: it serves as an experiment to refactor FoWDB entirely to meet today's best practices.
 
@@ -10,4 +10,5 @@ FoWDB is simply a LAMP website written in plain old PHP and MySQL, without any f
 
 ## References
 
+- FoWDB http://www.fowdb.altervista.org/
 - Official website http://www.fowtcg.com/
