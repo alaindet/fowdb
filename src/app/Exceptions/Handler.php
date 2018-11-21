@@ -2,21 +2,48 @@
 
 namespace App\Exceptions;
 
-use Throwable;
-use App\Utils\Logger;
 use App\Base\Exception;
 use App\Exceptions\Alertable;
+use App\Exceptions\ErrorException;
 use App\Exceptions\Jsonable;
 use App\Exceptions\Previousable;
-use App\Services\Alert;
-use App\Http\Response\Redirect;
-use App\Services\Config;
-use App\Services\Session;
 use App\Http\Request\Input;
 use App\Http\Response\JsonResponse;
+use App\Http\Response\Redirect;
+use App\Services\Alert;
+use App\Services\Config;
+use App\Services\Session;
+use App\Utils\Logger;
+use Throwable;
 
 class Handler
 {
+    /**
+     * Global error handler
+     * Turns simple errors in manageable exceptions
+     *
+     * @param integer $level
+     * @param string $message
+     * @param string $file
+     * @param integer $line
+     * @return void
+     */
+    public function errorHandler(
+        int $level,
+        string $message,
+        string $file,
+        int $line
+    ): void
+    {
+        throw new ErrorException($message, $level, $file, $line);
+    }
+
+    /**
+     * Global exception handler
+     *
+     * @param Throwable $exception
+     * @return void
+     */
     public function handler(Throwable $exception): void
     {
         // Store $_POST data

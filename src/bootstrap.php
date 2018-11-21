@@ -13,6 +13,10 @@ require __DIR__ . '/app/functions/helpers.php';
 // Global exception handling
 set_exception_handler([\App\Exceptions\Handler::class, 'handler']);
 
+// Global error handling (for warnings)
+// https://stackoverflow.com/a/51091503/5653974
+set_error_handler([\App\Exceptions\Handler::class, 'errorHandler'], E_WARNING);
+
 // Start the session
 Session::start();
 
