@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use App\Base\Exception;
 use App\Exceptions\Alertable;
-use App\Exceptions\ErrorException;
+use ErrorException;
 use App\Exceptions\Jsonable;
 use App\Exceptions\Previousable;
 use App\Http\Request\Input;
@@ -20,6 +20,9 @@ class Handler
     /**
      * Global error handler
      * Turns simple errors in manageable exceptions
+     * 
+     * Please mind some errors are uncatchable no matter what
+     * http://php.net/manual/en/class.errorexception.php#95415
      *
      * @param integer $level
      * @param string $message
@@ -34,7 +37,7 @@ class Handler
         int $line
     ): void
     {
-        throw new ErrorException($message, $level, $file, $line);
+        throw new ErrorException($message, 0, $level, $file, $line);
     }
 
     /**
