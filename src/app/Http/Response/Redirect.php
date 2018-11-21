@@ -14,7 +14,7 @@ class Redirect
      * @param array $qs
      * @return void
      */
-    public function to(string $uri = '', array $queryString = []): void
+    public static function to(string $uri = '', array $queryString = []): void
     {
         header('Location: ' . Uri::build($uri, $queryString));
         die();
@@ -27,7 +27,7 @@ class Redirect
      * @param string $absoluteUri
      * @return void
      */
-    public function toAbsoluteUrl(string $absoluteUri): void
+    public static function toAbsoluteUrl(string $absoluteUri): void
     {
         header('Location: ' . $absoluteUri);
         die();
