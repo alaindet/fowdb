@@ -4,28 +4,35 @@ namespace App\Services;
 
 use App\Exceptions\FileSystemException;
 use App\Base\Base as BaseClass;
+use ErrorException;
 
+/**
+ * Loosely follows this convention
+ * https://stackoverflow.com/a/2235762/5653974
+ */
 class FileSystem extends BaseClass
 {
     /**
      * Loads a file and its data, must be a .php file!
      * 
-     * @param string $path Absolute path with extension
+     * @param string $fullPath
      * @return any Anything contained in the file
      */
-    public static function loadFile(string $path = null)
+    public static function loadFile(string $fullPath)
     {
-        if (!isset($path)) {
-            throw new FileSystemException('Path to file not provided');
+        try {
+            return include $fullPath;
+        } catch (ErrorException $exception) {
+            throw new FileSystemException("No file exists at {$fullPath}");
         }
-
-        if (!self::existsFile($path)) {
-            throw new FileSystemException("No file exists at {$path}");
-        }
-
-        return require $path;
     }
 
+    /**
+     * Checks if a file exists on the filesystem
+     *
+     * @param string $path
+     * @return boolean
+     */
     public static function existsFile(string $path): bool
     {
         return file_exists($path);
@@ -34,66 +41,184 @@ class FileSystem extends BaseClass
     /**
      * Utility function to read a file's content
      *
-     * @param string $path Relative to /src/
-     * @return string
+     * @param string $fullPath
+     * @return string The file content
      */
-    public static function readFile(string $path = null): string
+    public static function readFile(string $fullPath): string
     {
-        if (!isset($path)) {
-            throw new FileSystemException('Path to file not provided');
+        try {   
+            return file_get_contents($fullPath);
+        } catch (ErrorException $exception) {
+            throw new FileSystemException("No file exists at {$fullPath}");
         }
-
-        if (!self::existsFile($path)) {
-            throw new FileSystemException("No file found at path \"{$path}\"");
-        }
-
-        return file_get_contents($path);
     }
 
     /**
-     * Utility function to save a file. Optionally preserve existing files
+     * Stores a new file to the filesystem. Overwrites existing files if needed
      *
-     * @param string $path Relative to /src/
-     * @param string $content The file's content to be written, as string
-     * @param bool $overwrite If the file should overwrite an existing file
-     * @return bool If the file was written
+     * @param string $fullPath Relative to /src/
+     * @param string $fileContent The file's content to be written, as string
+     * @return void
      */
-    public static function saveFile(string $path, string $content = ''): bool
+    public static function saveFile(
+        string $fullPath,
+        string $fileContent = ''
+    ): void
     {
-        $saved = file_put_contents($path, $content);
+        $saved = file_put_contents($fullPath, $fileContent);
 
         // ERROR: Could not save the file
         if ($saved === false) {
-            throw new FileSystemException("Could not save file to: {$path}");
+            throw new FileSystemException(
+                "Could not save file to: {$fullPath}"
+            );
         }
-
-        return $saved;
     }
 
-    public static function renameFile(string $old, string $new): bool
+    /**
+     * Renames a file
+     *
+     * @param string $fromFullPath Full path
+     * @param string $toFullPath Full path
+     * @return void
+     */
+    public static function renameFile(
+        string $fromFullPath,
+        string $toFullPath
+    ): void
     {
-        if (!self::existsFile($old)) {
-            throw new FileSystemException("No file found at path \"{$path}\"");
+        try {
+            rename($fromFullPath, $toFullPath);
+        } catch(ErrorException $exception) {
+            throw new FileSystemException(
+                "File already exists at {$toFullPath}"
+            );
         }
-
-        return rename($old, $new);
     }
 
-    public static function copyFile(string $from, string $to): bool
+    /**
+     * Copies a file to another destination
+     * Overwrites destination path, if needed
+     *
+     * @param string $fromFullPath
+     * @param string $toFullPath
+     * @return void
+     */
+    public static function copyFile(
+        string $fromFullPath,
+        string $toFullPath
+    ): void
     {
-        if (!self::existsFile($from)) {
-            throw new FileSystemException("No file found at path \"{$path}\"");
+        try {
+            copy($fromFullPath, $toFullPath);
+        } catch (ErrorException $exception) {
+            throw new FileSystemException("No file exists at {$fromFullPath}");
         }
-
-        return copy($from, $to);
     }
 
-    public static function deleteFile(string $path): bool
+    /**
+     * Deletes a file
+     *
+     * @param string $fullPath
+     * @return void
+     */
+    public static function deleteFile(string $fullPath): void
     {
-        if (!self::existsFile($path)) {
-            throw new FileSystemException("No file found at path \"{$path}\"");
+        try {
+            unlink($fullPath);
+        } catch (ErrorException $exception) {
+            throw new FileSystemException("No file exists at {$fullPath}");
+        }
+    }
+
+    /**
+     * Creates a directory recursively
+     * 
+     * Reference
+     * http://linuxcommand.org/lc3_lts0090.php
+     * https://www.siteground.com/tutorials/cpanel/file-permissions/
+     *
+     * @param string $fullPath
+     * @param integer $mode (Optional) Ex.: 0755
+     * @return void
+     */
+    public static function createDirectory(
+        string $fullPath,
+        int $mode = null
+    ): void
+    {
+        try {
+            $mode = $mode ?? 0755;
+            mkdir($fullPath, $mode = 0755, $recursive = true);
+        } catch (ErrorException $exception) {
+            throw new FileSystemException(
+                "Directory already exists at {$fullPath}"
+            );
+        }
+    }
+
+    /**
+     * Renames a directory
+     *
+     * @param string $fromFullPath
+     * @param string $toFullPath
+     * @return void
+     */
+    public static function renameDirectory(
+        string $fromFullPath,
+        string $toFullPath
+    ): void
+    {
+        try {
+            rename($fromFullPath, $toFullPath);
+        } catch(\App\Exceptions\ErrorException $exception) {
+            throw new FileSystemException(
+                "Directory already exists at {$dirFullPath}"
+            );
+        }
+    }
+
+    /**
+     * Deletes a directory recursively
+     * 
+     * TO DO: Rewrite it with SPL classes
+     *
+     * @param string $dirFullPath
+     * @return void
+     */
+    public static function deleteDirectory(string $dirFullPath): void
+    {
+        try {
+            $handle = opendir($dirFullPath);
+
+            // Loop on each file (readdir() returns a file at a time)
+            while (false !== ( $baseName = readdir($handle)) ) {
+
+                // Skip non-files
+                if ($baseName === '.' || $baseName === '..') continue;
+
+                $fullPath = "{$dirFullPath}/{$baseName}";
+
+                // It's a directory
+                if (is_dir($fullPath)) deleteDirectory($fullPath);
+                
+                // It's a file
+                else unlink($fullPath);
+            }
+
+            closedir($handle);
+
+            // Remove directory now (must be and it is empty)
+            rmdir($dirFullPath);
         }
 
-        return unlink($path);
+        // ERROR
+        catch(ErrorException $exception) {
+            echo $exception->getMessage();
+            die();
+            // throw new FileSystemException(
+            //     "Could not delete directory at {$dirFullPath}"
+            // );
+        }
     }
 }
