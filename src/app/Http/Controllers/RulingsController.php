@@ -90,10 +90,10 @@ class RulingsController extends Controller
     public function create(Request $request): string
     {
         $request->validate('post', [
-            'card-id' => ['required:1','is:integer','exists:cards,id'],
+            'card-id' => ['required','is:integer','exists:cards,id'],
             'ruling-errata' => ['required:0','is:integer','enum:0,1'],
             'ruling-date' => ['required:0','is:date'],
-            'ruling-text' => ['required:1'],
+            'ruling-text' => ['required'],
         ]);
 
         $service = new RulingCreateService($request->input()->post());        $service->processInput();

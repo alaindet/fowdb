@@ -67,6 +67,8 @@ class CardInputProcessor extends InputProcessor
 
     /**
      * Required. Sets a state variable
+     * 
+     * Immutable on updating
      *
      * @param array $value
      * @return void
@@ -76,13 +78,6 @@ class CardInputProcessor extends InputProcessor
         $map = lookup('sets.code2id');
         $setId = intval($map[$value]);
 
-        // On updating
-        if (!empty($this->old) && $this->old['sets_id'] !== $setId) {
-            throw new CrudException(
-                "You cannot change a card's set while updating!"
-            );
-        }
-
         $this->state['set-code'] = $value;
         $this->state['set-id'] = $setId;
 
@@ -91,19 +86,14 @@ class CardInputProcessor extends InputProcessor
 
     /**
      * Required. Sets a state variable
+     * 
+     * Immutable on updating
      *
      * @param array $value
      * @return void
      */
     public function processNumberInput(string $value = null): void
     {
-        // On updating
-        if (!empty($this->old) && $this->old['num'] !== intval($value)) {
-            throw new CrudException(
-                "You cannot change a card's number while updating!"
-            );
-        }
-
         // Generate the padded number (for later use)
         $this->state['number-padded'] = str_pad($value, 3, '0', STR_PAD_LEFT);
 
@@ -114,6 +104,8 @@ class CardInputProcessor extends InputProcessor
     /**
      * Optional
      * Reset via (Basic) button ($value == 0)
+     * 
+     * Immutable on updating
      *
      * @param array $value
      * @return void
@@ -136,7 +128,12 @@ class CardInputProcessor extends InputProcessor
 
     public function processCodeInput(string $value = null): void
     {
-        if ($value !== null && $value !== '') {
+        // Reset
+        if ($value === '-1') {
+            $this->new['code'] = null;
+        }
+
+        elseif ($value !== null && $value !== '') {
             $this->new['code'] = $value;
         }
     }

@@ -55,7 +55,7 @@ class CardsController extends Controller
             'name' => ['required','except:'],
             'type' => ['required','except:0'],
             'rarity' => ['required','enum:0,c,u,r,sr,s,ar'],
-            'attribute' => ['required','is:array','enum:no,w,r,u,g,b,v'],
+            'attribute' => ['required','is:array'],
 
             // Optional fields
             'code' => ['required:0',],
@@ -90,6 +90,11 @@ class CardsController extends Controller
             ->variables([
                 'previous' => $request->input()->previous(),
                 'card' => (new Card)->byId($id)
+            ])
+            ->options([
+                'dependencies' => [
+                    'lightbox' => true,
+                ],
             ])
             ->render();
     }
@@ -132,8 +137,8 @@ class CardsController extends Controller
 
         $service = new CardUpdateService($input, $id);
         $service->processInput();
-        $service->syncFilesystem();
         $service->syncDatabase();
+        $service->syncFilesystem();
 
         [$message, $uri] = $service->getFeedback();
 
@@ -159,7 +164,7 @@ class CardsController extends Controller
 
     public function delete(Request $request, string $id): string
     {
-        $service = new CardDeleteService($id);
+        $service = new CardDeleteService(null, $id);
         $service->syncFileSystem();
         $service->syncDatabase();
         [$message, $uri] = $service->getFeedback();

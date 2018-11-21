@@ -17,7 +17,10 @@
           <li>Set</li>
           <li>Number</li>
           <li>Back side</li>
-          <li>Code</li>
+          <li>
+            Code<strong class="font-110">*</strong>
+            (Reset: <code>-1</code>)
+          </li>
           <li>Name</li>
         </ul>
       </li>
@@ -37,6 +40,9 @@
           <li>Flavor text (Reset: <code>-1</code>)</li>
           <li>Artist name (Reset: <code>-1</code>)</li>
         </ul>
+      </li>
+      <li>
+        <strong class="font-110">*</strong> The code field is required, but can be left empty (or with <code>-1</code> to reset it) because the system automatically generates the code in those cases.
       </li>
     </ul>
   </div>

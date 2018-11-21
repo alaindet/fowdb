@@ -7,7 +7,7 @@
 ?>
 <div class="page-header">
   <h1>
-    Edit card
+    Update card
     <small><?=$card['name']?> (<?=$card['code']?>)</small>
   </h1>
   <?=component('breadcrumb', [

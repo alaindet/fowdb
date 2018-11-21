@@ -14,14 +14,14 @@ class CardDeleteService extends CrudService
 
     public function syncDatabase(): CrudServiceInterface
     {
-        $bind = [':id' => $this->old['id']];
+        $bind = [':cardid' => $this->old['id']];
 
         // Remove from 'cards' table
         database()
             ->delete(
                 statement('delete')
                     ->table('cards')
-                    ->where('id = :id')
+                    ->where('id = :cardid')
             )
             ->bind($bind)
             ->execute();
@@ -31,7 +31,7 @@ class CardDeleteService extends CrudService
             ->delete(
                 statement('delete')
                     ->table('bans')
-                    ->where('cards_id = :id')
+                    ->where('cards_id = :cardid')
             )
             ->bind($bind)
             ->execute();
@@ -41,7 +41,7 @@ class CardDeleteService extends CrudService
             ->delete(
                 statement('delete')
                     ->table('rulings')
-                    ->where('cards_id = :id')
+                    ->where('cards_id = :cardid')
             )
             ->bind($bind)
             ->execute();

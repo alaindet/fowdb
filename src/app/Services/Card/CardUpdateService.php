@@ -16,15 +16,32 @@ class CardUpdateService extends CrudService
     protected $inputProcessor = CardInputProcessor::class;
     protected $model = Card::class; 
 
+    private $image;
+    private $didImageChange = false;
+    private $didPathsChange = false;
+
+    private function bustCachedImages(): void
+    {
+        $this->image = $this->inputProcessorInstance->getInput('image');
+        $this->didImageChange = $this->new['_image-changed'];
+        $this->didPathsChange = $this->new['_paths-changed'];
+    }
+
     public function syncDatabase(): CrudServiceInterface
     {
+        // Bust the cache if a new image was uploaded
+        $this->bustCachedImages();
+
         $placeholders = [];
         $bind = [':id' => $this->old['id']];
 
         foreach (array_keys($this->new) as $key) {
-            $placeholder = ":{$key}";
-            $placeholders[$key] = $placeholder;
-            $bind[$placeholder] = $this->new[$key];
+            // Avoid extra props (with keys like _wassup)
+            if (substr($key, 0, 1) !== '_') {
+                $placeholder = ":{$key}";
+                $placeholders[$key] = $placeholder;
+                $bind[$placeholder] = $this->new[$key];    
+            }
         }
 
         // Create a new card entity on the database
@@ -43,10 +60,8 @@ class CardUpdateService extends CrudService
 
     public function syncFilesystem(): CrudServiceInterface
     {
-        $image = $this->inputProcessorInstance->getInput('image');
-
-        // No image passed
-        if (!isset($image) || $image['error'] !== UPLOAD_ERR_OK) return $this;
+        // No new image, no path changed
+        if (!$this->didImageChange && !$this->didPathsChange) return $this;
 
         // Absolute paths
         $paths = Arrays::map([
@@ -58,28 +73,36 @@ class CardUpdateService extends CrudService
             return path_root(Uri::removeQueryString($path));
         });
 
-        // Remove old cards
-        FileSystem::deleteFile($paths['old-image']);
-        FileSystem::deleteFile($paths['old-thumb']);
+        // Update this card's image paths
+        if ($this->didPathsChange) {
+            
+            // Rename old images
+            FileSystem::renameFile($paths['old-image'], $paths['new-image']);
+            FileSystem::renameFile($paths['old-thumb'], $paths['new-thumb']);
 
-        // Append a querystring to images to bust the cache
-        $queryString = '?' . time();
-        $this->new['image_path'] .= $queryString;
-        $this->new['thumb_path'] .= $queryString;
+        }
 
-        // Store HQ image (apply watermark)
-        (new ImageManager)
-            ->make($image['tmp_name'])
-            ->resize(480, 670)
-            ->insert(path_root('images/watermark/watermark480.png'))
-            ->save($paths['new-image'], 80);
+        // Store new images for this card
+        elseif ($this->didImageChange) {
+        
+            // Remove old images
+            FileSystem::deleteFile($paths['old-image']);
+            FileSystem::deleteFile($paths['old-thumb']);
 
-        // Store LQ image (apply watermark)
-        (new ImageManager)
-            ->make($image['tmp_name'])
-            ->resize(280, 391)
-            ->insert(path_root('images/watermark/watermark280.png'))
-            ->save($paths['new-thumb'], 80);
+            // Store HQ image (apply watermark)
+            (new ImageManager)
+                ->make($image['tmp_name'])
+                ->resize(480, 670)
+                ->insert(path_root('images/watermark/watermark480.png'))
+                ->save($paths['new-image'], 80);
+
+            // Store LQ image (apply watermark)
+            (new ImageManager)
+                ->make($image['tmp_name'])
+                ->resize(280, 391)
+                ->insert(path_root('images/watermark/watermark280.png'))
+                ->save($paths['new-thumb'], 80);
+        }
 
         return $this;
     }

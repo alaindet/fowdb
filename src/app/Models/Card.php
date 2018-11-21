@@ -59,7 +59,7 @@ class Card extends Model
     {
         $card = parent::byId($id, $fields, $fieldsToRender);
         foreach ($this->numeric as $field) {
-            if ($card[$field] !== null) {
+            if (isset($card[$field])) {
                 $card[$field] = intval($card[$field]);
             }
         }

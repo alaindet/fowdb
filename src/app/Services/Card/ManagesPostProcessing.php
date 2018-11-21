@@ -20,21 +20,27 @@ trait ManagesPostProcessing
      */
     public function checkExistingNumber(): void
     {
-        if (!empty($this->old)) return;
+        $statement = statement('select')
+            ->select('id')
+            ->from('cards')
+            ->where('sets_id = :set')
+            ->where('num = :num')
+            ->limit(1);
+
+        $bind = [
+            ':set' => $this->state['set-id'],
+            ':num' => $this->new['num']
+        ];
+
+        if (!empty($this->old)) {
+            $statement->where('id <> :cardid');
+            $bind[':cardid'] = $this->old['id'];
+        }
 
         // Check for an existing card with this set/number combination
         $existing = database()
-            ->select(
-                statement('select')
-                    ->select('id')
-                    ->from('cards')
-                    ->where('sets_id = :set AND num = :num')
-                    ->limit(1)
-            )
-            ->bind([
-                ':set' => $this->state['set-id'],
-                ':num' => $this->new['num']
-             ])
+            ->select($statement)
+            ->bind($bind)
             ->get();
 
         // ERROR: Number already exists!
@@ -121,7 +127,7 @@ trait ManagesPostProcessing
      */
     public function calculateCodeField(): void
     {
-        if (isset($this->new['code'])) return;
+        if (isset($this->new['code']) && $this->new['code'] !== '') return;
 
         // Ex.: "NDR-001"
         $set = strtoupper($this->state['set-code']);
@@ -159,7 +165,7 @@ trait ManagesPostProcessing
         ($this->new['back_side'] !== '0')
             ? $suffix = lookup("backsides.id2code.{$this->new['back_side']}")
             : $suffix = '';
-        
+
         // Assemble the template for this card's image paths
         // Template: '{CLUSTER}/{SET}/{NUMBER}{SUFFIX}.jpg'
         $path = $this->new['clusters_id'] . '/'
@@ -170,6 +176,27 @@ trait ManagesPostProcessing
 
         $this->new['image_path'] = "images/cards/{$path}";
         $this->new['thumb_path'] = "images/thumbs/{$path}";
+
+        // On updating...
+        if (empty($this->old)) return;
+
+        // Check if there's a new image
+        $image = &$this->input['image'];
+        $imageChanged = isset($image) && $image['error'] === UPLOAD_ERR_OK;
+
+        // Check if image paths have changed
+        $pathsChanged = $this->old['thumb_path'] !== $this->new['thumb_path'];
+
+        // Set some flags as "extra props" (starting with underscore)
+        $this->new['_image-changed'] = $imageChanged ? 1 : 0;
+        $this->new['_paths-changed'] = $pathsChanged ? 1 : 0;
+
+        // New image, same path
+        if ($imageChanged && !$pathsChanged) {
+            $queryString = '?' . time();
+            $this->new['image_path'] .= $queryString;
+            $this->new['thumb_path'] .= $queryString;    
+        }
     }
 
     /**

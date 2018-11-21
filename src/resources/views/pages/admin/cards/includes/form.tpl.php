@@ -62,7 +62,20 @@ if ($isCard) {
     <label class="col-sm-2">Image</label>
     <div class="col-sm-10">
       <?php if ($isCard): ?>
-        <img src="<?=asset($card['thumb_path'])?>">
+        
+        <a
+          href="<?=asset($card['image_path'])?>"
+          data-lightbox="cards"
+          data-title="<?="{$card['name']} ({$card['code']})"?>"
+        >
+          <span class="fd-zoomable-lg">
+            <img
+              src="<?=asset($card['thumb_path'])?>"
+              width="200px"
+            >
+          </span>
+        </a>
+
       <?php endif; ?>
       <input type="file" name="image">
     </div>
@@ -192,7 +205,7 @@ if ($isCard) {
               <input
                 type="checkbox"
                 name="attribute[]"
-                value="0"
+                value="no"
                 <?=$checked?>
               >
               (NO)
@@ -256,7 +269,7 @@ if ($isCard) {
     <div class="col-sm-10">
       <select name="type" class="form-control" required>
         <option value="0">Choose a type...</option>
-        <?php foreach($types as $type):
+        <?php foreach ($types as $type):
           ($cardType === $type)
             ? $checked = 'selected'
             : $checked = '';

@@ -91,10 +91,12 @@ $displayCsn = collapse(
           href="<?=asset($card['image_path'])?>"
           data-lightbox="cards"
         >
-          <img
-            src="<?=asset($card['image_path'])?>"
-            width="200px"
-          >
+          <span class="fd-zoomable-lg">
+            <img
+              src="<?=asset($card['image_path'])?>"
+              width="200px"
+            >
+          </span>
         </a>
       </div>
     </div>

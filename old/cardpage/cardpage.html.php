@@ -29,7 +29,7 @@
           href="<?=url("cards/update/{$card['id']}")?>"
           class="btn btn-warning"
         >
-          Edit card
+          Update card
 				</a>
 
         <a
@@ -141,7 +141,7 @@
 											href="<?=url("rulings/update/{$item['id']}")?>"
 											class="btn btn-sm btn-warning"
                     >
-                      Edit
+                      Update
                     </a>
 
 										<!-- Delete -->

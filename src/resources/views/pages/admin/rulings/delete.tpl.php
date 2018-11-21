@@ -46,10 +46,12 @@
             data-lightbox="cards"
             data-title="<?=$card_label?>"
           >
-            <img
-              src="<?=$card_image?>"
-              width="200px"
-            >
+            <span class="fd-zoomable-lg">
+              <img
+                src="<?=$card_image?>"
+                width="200px"
+              >
+            </span>
           </a>
         </div>
       </div>
