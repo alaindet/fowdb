@@ -9,7 +9,7 @@
 
     <!-- Action, token and ID -->
     <input type="hidden" name="admin-cr-action" value="delete">
-    <input type="hidden" name="token" value="<?=$_SESSION['token']?>">
+    <?=csrf_token()?>
     <input type="hidden" name="id" value="<?=$cr['id']?>">
     <input type="hidden" name="version" value="<?=$cr['version']?>">
     

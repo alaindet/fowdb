@@ -1,13 +1,13 @@
 <?php
 
 // ERROR: No action requested
-if (!isset($_POST['admin-cr-action'], $_POST['token'])) {
+if (!isset($_POST['admin-cr-action'], $_POST['_token'])) {
     alert('No action requested.', 'warning');
     redirect_old('admin/cr');
 }
 
 // ERROR: Invalid token
-if ($_POST['token'] !== $_SESSION['token']) {
+if ($_POST['_token'] !== $_SESSION['_token']) {
     alert('Invalid token.', 'danger');
     redirect_old('admin/cr');
 }

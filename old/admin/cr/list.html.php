@@ -18,7 +18,7 @@
 					class="form-inline inline"
 				>
 					<!-- Token -->
-					<input type="hidden" name="token" value="<?=$_SESSION['token']?>">
+					<?=csrf_token()?>
 					<!-- ID -->
 					<input type="hidden" name="id" value="<?=$cr['id']?>">
 					<!--  Delete -->

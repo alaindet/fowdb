@@ -15,7 +15,7 @@
 
 	<!-- Action and Token -->
 	<input type="hidden" name="admin-cr-action" value="create">
-	<input type="hidden" name="token" value="<?=$_SESSION['token']?>">
+	<?=csrf_token()?>
 
 	<!-- Uploader -->
 	<div class="form-group form-section">

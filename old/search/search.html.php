@@ -508,6 +508,8 @@ $emptyGif = asset('images/icons/blank.gif');
 											[$multiple, $brackets, $size] = ['', '', ''];
 											$filters['set'] = [ $filters['set'] ];
 										}
+									} else {
+										[$multiple, $brackets, $size] = ['', '', ''];
 									}
   							?>
 								<select

@@ -52,7 +52,7 @@ $spoilerIds = lookup('spoilers.ids');
 							class="form-inline text-center"
 							id="loadCards"
 						>
-							<input type="hidden" name="token" value="<?=$_SESSION['token']?>">
+              <?=csrf_token()?>
 							<input type="hidden" name="page" value="<?=isset($filters['page'])?$filters['page']:"1"?>">
 							<button type="submit" class="fdb-load-btn">
 								<span class="fdb-loading-icon">

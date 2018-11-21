@@ -40,5 +40,5 @@ function outputJson($arg = null)
 
 function checkToken($token = null)
 {
-    return $token == $_SESSION['token'];
+    return $token == $_SESSION['_token'];
 }

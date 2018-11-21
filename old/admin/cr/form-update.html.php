@@ -9,7 +9,7 @@
 
     <!-- Action, token, ID and old-verion -->
     <input type="hidden" name="admin-cr-action" value="update">
-    <input type="hidden" name="token" value="<?=$_SESSION['token']?>">
+    <?=csrf_token()?>
     <input type="hidden" name="id" value="<?=$cr['id']?>">
     <input type="hidden" name="old-version" value="<?=$cr['version']?>">
 

@@ -11,7 +11,6 @@ use App\Http\Request\Input;
 use App\Http\Response\JsonResponse;
 use App\Http\Response\Redirect;
 use App\Services\Alert;
-use App\Services\Config;
 use App\Services\Session;
 use App\Utils\Logger;
 use Throwable;
@@ -28,7 +27,7 @@ class Handler
      * @param integer $line
      * @return void
      */
-    public function errorHandler(
+    public static function errorHandler(
         int $level,
         string $message,
         string $file,
@@ -44,7 +43,7 @@ class Handler
      * @param Throwable $exception
      * @return void
      */
-    public function handler(Throwable $exception): void
+    public static function handler(Throwable $exception): void
     {
         // Store $_POST data
         if ($exception instanceof Previousable) {
@@ -67,19 +66,20 @@ class Handler
             die();
         }
 
-        $config = Config::getInstance();
-
         // Show readable log of the exception
-        $logger = Logger::class;
-        $method = ($config->get('app.env') === 'cli') ? 'cli' : 'html';
-        $data = [
-            'message' => $exception->getMessage(),
-            'code' => $exception->getCode(),
-            'file' => $exception->getFile(),
-            'line' => $exception->getLine(),
-            'trace' => $exception->getTrace()
-        ];
-        $title = get_class($exception);
-        echo call_user_func([$logger, $method], $data, $title);
+        echo call_user_func(
+            [
+                $class = Logger::class,
+                $method = 'html' // Change to 'cli' for CLI debugging
+            ],
+            $data = [
+                'message' => $exception->getMessage(),
+                'code' => $exception->getCode(),
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine(),
+                'trace' => $exception->getTrace()
+            ],
+            $title = get_class($exception)
+        );
     }
 }
