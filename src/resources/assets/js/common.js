@@ -1,45 +1,29 @@
 // Library ----------------------------------------------------------------
 window.FoWDB = {
-  getBaseUrl: function(n) {
-    var i = "object" == typeof n ? n : {},
-      o = !1,
-      t = window.location.protocol,
-      e = window.location.hostname,
-      a = window.location.pathname,
-      l = window.location.search,
-      r = window.location.hash,
-      s = t + "//" + e;
-    if (i.page)
-      if (o) s += a;
-      else
-        for (var c = l.replace("?", "").split("&"), d = 0, h = c.length; d < h; d++) {
-          var f = c[d];
-          if (f.indexOf("p=") > -1) {
-            s += "/?" + f;
-            break
-          }
-        }
-      return i.hash && (s += r), s
+  clearNotifications: function () {
+    $('.fd-alerts').empty();
+    return this;
   },
-  notify: function(n, i, o) {
-    var t = n ? n : "",
-      e = ["success", "info", "warning", "danger"],
-      a = e.indexOf(i) > 0 ? i : "info",
-      l = !!o && o,
+  notify: function(message, type, returnHtml) {
+    var message = message || '';
+    var types = ['success', 'info', 'warning', 'danger'];
+    var type = types.indexOf(type) !== -1 ? type : 'info';
+    var returnHtml = returnHtml || false;
 
-      r = [
-        '<div class="fd-alert alert alert-',a,' alert-dismissable">',
-          '<a href="#" class="close" data-dismiss="alert" aria-label="close">',
-            '&times;',
-          '</a>',
-          '<div class="fd-alert-content">',t,'</div>',
-        '</div>',
-      ].join('');
+    var html = [
+      '<div class="fd-alert alert alert-',type,' alert-dismissable">',
+        '<a href="#" class="close" data-dismiss="alert" aria-label="close">',
+          '&times;',
+        '</a>',
+        '<div class="fd-alert-content">',message,'</div>',
+      '</div>',
+    ].join('');
 
+    if (returnHtml) return html;
 
-    return !!t.length && (l || ($(".fd-alerts").first().append(r), $("html, body").animate({
-        scrollTop: $(".fd-alerts").offset().top
-    }, 200)), !l || r)
+    var alerts = $('.fd-alerts');
+    alerts.first().append(html);
+    $('html').animate({ scrollTop: alerts.offset().top }, 200);
   }
 };
 
@@ -65,13 +49,5 @@ $(document).ready(function() {
   $(".hider").on("click", function () {
     $($(this).data("target"))
       .toggleClass("hidden");
-  });
-
-  // LEGACY CODE
-  // Hide content -----------------------------------------------------------
-  $(".hide-handle").on("click", function() {
-    var n = $(this).closest(".to-hide"),
-      i = ($(this), $(".hide-content", n));
-    i.toggleClass("hidden")
   });
 });
