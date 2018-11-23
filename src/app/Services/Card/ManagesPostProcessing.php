@@ -13,6 +13,25 @@ use App\Models\Card;
 trait ManagesPostProcessing
 {
     /**
+     * Overrides App\Base\InputProcessor::afterProcessing
+     * 
+     * Calculate total cost, sorted ID and image paths
+     * Remove illegal fields like ATK and DEF from Chants
+     *
+     * @return void
+     */
+    public function afterProcessing(): void
+    {
+        $this->checkExistingNumber();
+        $this->checkExistingName();
+        $this->calculateTotalCost();
+        $this->calculateCodeField();
+        $this->calculateCluster();
+        $this->calculateImagePaths();
+        $this->removeIllegalFields();
+    }
+
+    /**
      * Checks if passed set/number combination already exists in the database
      * Throws an exception if so
      *

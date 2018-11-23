@@ -18,9 +18,11 @@ class CardCreateService extends CrudService
         $placeholders = [];
         $bind = [];
         foreach (array_keys($this->new) as $key) {
-            $placeholder = ":{$key}";
-            $placeholders[$key] = $placeholder;
-            $bind[$placeholder] = $this->new[$key];
+            if (substr($key, 0, 1) !== '_') {
+                $placeholder = ":{$key}";
+                $placeholders[$key] = $placeholder;
+                $bind[$placeholder] = $this->new[$key];
+            }
         }
 
         // Create a new card entity on the database

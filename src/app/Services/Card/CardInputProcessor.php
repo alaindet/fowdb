@@ -37,23 +37,6 @@ class CardInputProcessor extends InputProcessor
     ];
 
     /**
-     * Calculate total cost, sorted ID and image paths
-     * Remove illegal fields like ATK and DEF from Chants
-     *
-     * @return void
-     */
-    public function afterProcessing(): void
-    {
-        $this->checkExistingNumber();
-        $this->checkExistingName();
-        $this->calculateTotalCost();
-        $this->calculateCodeField();
-        $this->calculateCluster();
-        $this->calculateImagePaths();
-        $this->removeIllegalFields();
-    }
-
-    /**
      * On create: required
      * On update: optional
      *
