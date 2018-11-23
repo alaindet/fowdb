@@ -150,8 +150,7 @@ class RulingsController extends Controller
             'ruling-text' => ['required:1'],
         ]);
 
-        $service = new RulingUpdateService($request->input()->post());
-        $service->setOldResource($id);
+        $service = new RulingUpdateService($request->input()->post(), $id);
         $service->processInput();
         $service->syncDatabase();
         [$message, $uri] = $service->getFeedback();
@@ -201,8 +200,7 @@ class RulingsController extends Controller
 
     public function delete(Request $request, string $id): string
     {
-        $service = new RulingDeleteService();
-        $service->setOldResource($id);
+        $service = new RulingDeleteService(null, $id);
         $service->syncDatabase();
         [$message, $uri] = $service->getFeedback();
         

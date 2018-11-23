@@ -77,7 +77,7 @@ abstract class CrudService implements CrudServiceInterface
      * @param string $id
      * @return CrudServiceInterface
      */
-    public function setOldResource(string $id = null): CrudServiceInterface
+    private function setOldResource(string $id = null): CrudServiceInterface
     {
         if (isset($id) && isset($this->model)) {
             $model = new $this->model();
@@ -94,7 +94,9 @@ abstract class CrudService implements CrudServiceInterface
      */
     public function processInput(): CrudServiceInterface
     {
-        $this->new = $this->inputProcessorInstance->process();
+        if (isset($this->inputProcessorInstance)) {
+            $this->new = $this->inputProcessorInstance->process();
+        }
 
         return $this;
     }
