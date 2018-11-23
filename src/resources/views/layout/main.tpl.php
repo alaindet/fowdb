@@ -1,12 +1,14 @@
 <?php
+
 // VARIABLES
-// =========
 // $ogp
 // $title
 // $content
 // $dependencies: jqueryui, lightbox
 // $scripts
 // $state
+// $token
+
 ?>
 <!DOCTYPE html>
 <html lang="en" prefix="<?=$ogp->getHtmlPrefix()?>">
@@ -18,6 +20,10 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <?php if (isset($token)): // Anti-CSRF token ?>
+    <meta name="_token" content="<?=$token?>">
+  <?php endif; ?>
 
   <!-- Reset CSS -->
 	<style>
@@ -75,7 +81,8 @@
     window.INIITIAL_STATE = <?=json_encode(
       $state,
       JSON_FORCE_OBJECT | JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES
-    )?>
+    )?>;
+    window.BASE_URL = "<?=config('app.url')?>";
   </script>
 
   <!-- My scripts -->

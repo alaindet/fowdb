@@ -76,9 +76,21 @@ $judge = [
 
     // API --------------------------------------------------------------------
 
-    // Clusters
-    ['POST','api/clusters/{d}','ClustersController','apiRead',$d,
-        ['!auth', '!token', 'api-auth', 'api-token']
+    // Clusters TEST
+    ['GET', 'api/clusters','ClustersController','apiShowAll',null,
+        ['!auth', 'api-auth']
+    ],
+    ['GET', 'api/clusters/{d}','ClustersController','apiShow',$d,
+        ['!auth', 'api-auth']
+    ],
+    ['POST','api/clusters/create','ClustersController','apiCreate',null,
+        ['!auth', 'api-auth', 'api-token']
+    ],
+    ['POST','api/clusters/update/{d}','ClustersController','apiUpdate',$d,
+        ['!auth', 'api-auth', 'api-token']
+    ],
+    ['POST','api/clusters/delete/{d}','ClustersController','apiDelete',$d,
+        ['!auth', 'api-auth', 'api-token']
     ],
 
 ];
