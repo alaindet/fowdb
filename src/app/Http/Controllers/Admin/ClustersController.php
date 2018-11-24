@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
@@ -16,7 +16,7 @@ use App\Exceptions\CrudException;
 
 class ClustersController extends Controller
 {
-    public function indexManage(Request $request): string
+    public function index(Request $request): string
     {
         $items = database()
             ->select(statement('select')->from('clusters'))

@@ -57,13 +57,7 @@ $judge = [
     ['POST','cards/delete/{d}','Admin\\CardsController','delete',$d,['token']],
 
     // Clusters
-    ['GET', 'clusters/manage', 'ClustersController','indexManage'],
-    ['GET', 'clusters/create', 'ClustersController','createForm'],
-    ['POST','clusters/create', 'ClustersController','create',null,['token']],
-    ['GET', 'clusters/update/{d}','ClustersController','updateForm',$d],
-    ['POST','clusters/update/{d}','ClustersController','update',$d,['token']],
-    ['GET', 'clusters/delete/{d}','ClustersController','deleteForm',$d],
-    ['POST','clusters/delete/{d}','ClustersController','delete',$d,['token']],
+    ['GET', 'clusters/manage', 'Admin\\ClustersController','index'],
 
     // Rulings
     ['GET', 'rulings/manage','RulingsController','indexManage'],
@@ -76,20 +70,20 @@ $judge = [
 
     // API --------------------------------------------------------------------
 
-    // Clusters TEST
-    ['GET', 'api/clusters','ClustersController','apiShowAll',null,
+    // Clusters
+    ['GET', 'api/clusters','Admin\\ClustersController','apiShowAll',null,
         ['!auth', 'api-auth']
     ],
-    ['GET', 'api/clusters/{d}','ClustersController','apiShow',$d,
+    ['GET', 'api/clusters/{d}','Admin\\ClustersController','apiShow',$d,
         ['!auth', 'api-auth']
     ],
-    ['POST','api/clusters/create','ClustersController','apiCreate',null,
+    ['POST','api/clusters/create','Admin\\ClustersController','apiCreate',null,
         ['!auth', 'api-auth', 'api-token']
     ],
-    ['POST','api/clusters/update/{d}','ClustersController','apiUpdate',$d,
+    ['POST','api/clusters/update/{d}','Admin\\ClustersController','apiUpdate',$d,
         ['!auth', 'api-auth', 'api-token']
     ],
-    ['POST','api/clusters/delete/{d}','ClustersController','apiDelete',$d,
+    ['POST','api/clusters/delete/{d}','Admin\\ClustersController','apiDelete',$d,
         ['!auth', 'api-auth', 'api-token']
     ],
 
