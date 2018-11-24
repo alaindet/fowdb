@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
@@ -13,7 +13,7 @@ use App\Views\Page;
 
 class RulingsController extends Controller
 {
-    public function indexManage(Request $request): string
+    public function index(Request $request): string
     {
         // Get data from database
         $database = database()
@@ -96,7 +96,8 @@ class RulingsController extends Controller
             'ruling-text' => ['required'],
         ]);
 
-        $service = new RulingCreateService($request->input()->post());        $service->processInput();
+        $service = new RulingCreateService($request->input()->post());
+        $service->processInput();
         $service->syncDatabase();
         [$message, $uri] = $service->getFeedback();
 

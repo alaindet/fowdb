@@ -1,19 +1,45 @@
 <?php
 
-// [ [ httpMethod, uri, controller, method, params, middleware ], ... ]
-// [ // Example
-//     'GET','test/public/{id}',
-//     'TestController','testMethod',
-//     ['id' => '[0-9]+'],
-//     ['!token', '!auth', 'captcha']
-// ]
+/*
+ | ----------------------------------------------------------------------------
+ |
+ | Define all routes here
+ | 
+ | Every route is an array like this
+ | [ [ httpMethod, uri, controller, method, params, middleware ], ... ]
+ | 
+ | Ex.:
+ | - Register a POST test/update/{id} route
+ | - Handle it with TestController::update
+ | - Bind {id} uri parameter to its regex pattern [0-9]+ (only digits)
+ | - Run the 'captcha' middleware, but *NOT* the 'token' middleware
+ | [
+ |     'POST',
+ |     'test/update/{id}',
+ |     'TestController',
+ |     'update',
+ |     ['d' => '[0-9]+'],
+ |     ['!token','captcha']
+ | ]
+ |
+ | ----------------------------------------------------------------------------
+ */
 
-// Regex patterns
+/**
+ * Pre-defined regex patterns to shorten route arrays
+ * d => digits only
+ * h => digits and letters only (uppercase and lowercase)
+ * c => card code specific ex.: NDR-001 U
+ */
 $d = ['d' => '[0-9]+']; // I => id
 $h = ['h' => '[A-Za-z0-9]+']; // H => hash
-$c = ['c' => '[A-Z0-9]+\-\d{3}[A-Z]+']; // C => card
+$c = ['c' => '[A-Z0-9]+\-\d{3}\s[A-Z]+']; // C => card
 
-// Public routes --------------------------------------------------------------
+/**
+ * Public routes --------------------------------------------------------------
+ * 
+ * Anyone can access
+ */
 $public = [
 
     ['GET', 'cards/search/help','CardsController','showSearchHelp'],
@@ -23,14 +49,22 @@ $public = [
 
 ];
 
-// User (logged) routes -------------------------------------------------------
+/**
+ * User routes ----------------------------------------------------------------
+ * 
+ * Any logged user can access
+ */
 $user = [
 
     ['GET', 'profile','UserController','showProfile'],
 
 ];
 
-// Admin routes ---------------------------------------------------------------
+/**
+ * Admin routes ---------------------------------------------------------------
+ * 
+ * Only admins can access
+ */
 $admin = [
 
     // Menu
@@ -41,7 +75,12 @@ $admin = [
 
 ];
 
-// Judge routes (Admins too as they bypass any authorization) -----------------
+/**
+ * Judge routes ---------------------------------------------------------------
+ * 
+ * Only judges can access
+ * Bypass: admins
+ */
 $judge = [
 
     // Menu
@@ -56,17 +95,28 @@ $judge = [
     ['GET', 'cards/delete/{d}','Admin\\CardsController','deleteForm',$d],
     ['POST','cards/delete/{d}','Admin\\CardsController','delete',$d,['token']],
 
+    // Sets
+    ['GET', 'sets/manage','Admin\\SetsController','index'],
+    ['GET', 'sets/create','Admin\\SetsController','createForm'],
+    ['POST','sets/create','Admin\\SetsController','create',null,['token']],
+    ['GET', 'sets/update/{d}','Admin\\SetsController','updateForm',$d],
+    ['POST','sets/update/{d}','Admin\\SetsController','update',$d,['token']],
+    ['GET', 'sets/delete/{d}','Admin\\SetsController','deleteForm',$d],
+    ['POST','sets/delete/{d}','Admin\\SetsController','delete',$d,['token']],
+
     // Clusters
-    ['GET', 'clusters/manage', 'Admin\\ClustersController','index'],
+    ['GET', 'clusters/manage','Admin\\ClustersController','index'],
 
     // Rulings
-    ['GET', 'rulings/manage','RulingsController','indexManage'],
-    ['GET', 'rulings/create','RulingsController','createForm'],
-    ['POST','rulings/create','RulingsController','create',null,['token']],
-    ['GET', 'rulings/update/{d}','RulingsController','updateForm',$d],
-    ['POST','rulings/update/{d}','RulingsController','update',$d,['token']],
-    ['GET', 'rulings/delete/{d}','RulingsController','deleteForm',$d],
-    ['POST','rulings/delete/{d}','RulingsController','delete',$d,['token']],
+    ['GET', 'rulings/manage','Admin\\RulingsController','index'],
+    ['GET', 'rulings/create','Admin\\RulingsController','createForm'],
+    ['POST','rulings/create','Admin\\RulingsController','create',null,['token']],
+    ['GET', 'rulings/update/{d}','Admin\\RulingsController','updateForm',$d],
+    ['POST','rulings/update/{d}','Admin\\RulingsController','update',$d,['token']],
+    ['GET', 'rulings/delete/{d}','Admin\\RulingsController','deleteForm',$d],
+    ['POST','rulings/delete/{d}','Admin\\RulingsController','delete',$d,['token']],
+
+    ['POST','rulings/delete/{d}','Admin\\RulingsController','delete',$d,['token']],
 
     // API --------------------------------------------------------------------
 
@@ -89,7 +139,9 @@ $judge = [
 
 ];
 
-// [ role_required => routes, ... ]
+/**
+ * Return the routes map, grouped by the required role to access them
+ */
 return [
     'public' => $public,
     'user' => $user,
