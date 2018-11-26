@@ -17,6 +17,7 @@ class Validation
         'equals' => 'validateEqualsRule',
         'except' => 'validateExceptRule',
         'exists' => 'validateExistsRule',
+        '!exists' => 'validateNotExistsRule',
         'is' => 'validateIsRule',
         'max' => 'validateMaxRule',
         'min' => 'validateMinRule',
@@ -196,6 +197,52 @@ class Validation
                 "Input <strong>{$inputName}</strong> does not exist "
                 . "into database table <strong>{$table}</strong> "
                 . "on the column <strong>{$column}</strong>"
+            );
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Rule: input must *NOT* exist in given table and column
+     *
+     * @param string $inputName
+     * @param string $value
+     * @return boolean
+     */
+    public function validateNotExistsRule(
+        string $inputName,
+        string $value = null
+    ): bool
+    {
+        [$table, $column] = explode(',', $value);
+
+        if (!isset($column)) {
+            $this->pushError(
+                "Missing database column for rule <strong>exists</strong> "
+                . "of input <strong>{$inputName}</strong>"
+            );
+            return false;
+        }
+
+        $exists = database()
+            ->select(statement('select')
+                ->select($column)
+                ->from($table)
+                ->where("{$column} = :value")
+                ->limit(1)
+            )
+            ->bind([':value' => $this->input[$inputName]])
+            ->first();
+
+        if (!empty($exists)) {
+            $this->pushError(
+                collapse(
+                    "Input <strong>{$inputName}</strong> already exists ",
+                    "into database table <strong>{$table}</strong> ",
+                    "on the column <strong>{$column}</strong>"
+                )
             );
             return false;
         }
