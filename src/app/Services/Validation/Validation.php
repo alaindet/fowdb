@@ -12,11 +12,14 @@ class Validation
     private $input = [];
     private $skip = false;
     private $validators = [
+        'between' => 'validateBetweenRule',
         'enum' => 'validateEnumRule',
         'equals' => 'validateEqualsRule',
         'except' => 'validateExceptRule',
         'exists' => 'validateExistsRule',
         'is' => 'validateIsRule',
+        'max' => 'validateMaxRule',
+        'min' => 'validateMinRule',
         'required' => 'validateRequiredRule',
     ];
 
@@ -46,6 +49,44 @@ class Validation
         return $this;
     }
 
+    /**
+     * Rule: input must be contained in given range (including both ends)
+     * Value *MUST* be two numeric values separated by a comma
+     *
+     * @param string $inputName
+     * @param string $value
+     * @return boolean
+     */
+    public function validateBetweenRule(
+        string $inputName,
+        string $value = null
+    ): bool
+    {
+        $input = intval($this->input[$inputName]);
+        $bits = explode(',', $value);
+        $min = intval($bits[0]);
+        $max = intval($bits[1]);
+
+        if ($input < $min || $input > $max) {
+            $this->pushError(
+                collapse(
+                    "Input <strong>{$inputName}</strong> must be ",
+                    "included in range ({$min} ; {$max})"
+                )
+            );
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Rule: input must have one of the listed values
+     *
+     * @param string $inputName
+     * @param string $value List of comma-separated values
+     * @return boolean
+     */
     public function validateEnumRule(
         string $inputName,
         string $value = null
@@ -70,6 +111,13 @@ class Validation
         return true;
     }
 
+    /**
+     * Rule: input must *NOT* be equal to given value
+     *
+     * @param string $inputName
+     * @param string $value
+     * @return boolean
+     */
     public function validateExceptRule(
         string $inputName,
         string $value = null
@@ -88,6 +136,13 @@ class Validation
         return true;
     }
 
+    /**
+     * Rule: Input must be equal to given value
+     *
+     * @param string $inputName
+     * @param string $value
+     * @return boolean
+     */
     public function validateEqualsRule(
         string $inputName,
         string $value = null
@@ -104,6 +159,13 @@ class Validation
         return true;
     }
 
+    /**
+     * Rule: input must exist in given table and column
+     *
+     * @param string $inputName
+     * @param string $value
+     * @return boolean
+     */
     public function validateExistsRule(
         string $inputName,
         string $value = null
@@ -141,6 +203,13 @@ class Validation
         return true;
     }
 
+    /**
+     * Rule: input type must be of given type
+     *
+     * @param string $inputName
+     * @param string $value
+     * @return boolean
+     */
     public function validateIsRule(
         string $inputName,
         string $value = null
@@ -152,9 +221,64 @@ class Validation
             ($value === 'integer' && !is_numeric($input)) ||
             ($value === 'date' && strtotime($input) === false) ||
             ($value === 'array' && !is_array($input)) ||
-            ($value === 'file' && $input['error'] !== UPLOAD_ERR_OK)
+            (
+                $value === 'alphanumeric' &&
+                preg_match('/^[a-zA-Z0-9]+$/', $input)
+            ) ||
+            ($value === 'file' && $input['error'] !== UPLOAD_ERR_OK) ||
+            ($value === 'boolean' && !in_array($input, ['0', '1']))
         ) {
             $this->pushError("Input <strong>{$inputName}</strong> must be of type {$value}");
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Rule: input must be less than passed max value
+     *
+     * @param string $inputName
+     * @param string $value
+     * @return boolean
+     */
+    public function validateMaxRule(
+        string $inputName,
+        string $value = null
+    ): bool
+    {
+        if (intval($this->input[$inputName]) > intval($value)) {
+            $this->pushError(
+                collapse(
+                    "Input <strong>{$inputName}</strong> must be ",
+                    "less than {$value}"
+                )
+            );
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Rule: input must be more than passed min value
+     *
+     * @param string $inputName
+     * @param string $value
+     * @return boolean
+     */
+    public function validateMinRule(
+        string $inputName,
+        string $value = null
+    ): bool
+    {
+        if (intval($this->input[$inputName]) < intval($value)) {
+            $this->pushError(
+                collapse(
+                    "Input <strong>{$inputName}</strong> must be ",
+                    "more than {$value}"
+                )
+            );
             return false;
         }
 
