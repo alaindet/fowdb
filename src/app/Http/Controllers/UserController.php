@@ -44,7 +44,7 @@ class UserController extends Controller
         $links = [
             'judge' => [
                 url('cards/manage') => 'Cards',
-                // url('sets/manage') => 'Sets',
+                url('sets/manage') => 'Sets',
                 url('clusters/manage') => 'Clusters',
                 url('rulings/manage') => 'Rulings',
                 url_old('admin/cr') => 'Comprehensive Rules',

@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Services\Cluster;
+namespace App\Services\Set;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
-use App\Services\Cluster\ClusterInputProcessor;
+use App\Services\Set\SetInputProcessor;
 use App\Services\FileSystem;
 
-class ClusterCreateService extends CrudService
+class SetCreateService extends CrudService
 {
-    public $inputProcessor = ClusterInputProcessor::class;
-    public $lookup = ['clusters', 'formats'];
-
+    public $inputProcessor = SetInputProcessor::class;
+    public $lookup = ['clusters', 'sets', 'spoilers'];
+    
     public function syncDatabase(): CrudServiceInterface
     {
         $placeholders = [];
@@ -24,11 +24,10 @@ class ClusterCreateService extends CrudService
             }
         }
 
-        // Create cluster entity on the database
         database()
             ->insert(
                 statement('insert')
-                    ->table('clusters')
+                    ->table('sets')
                     ->values($placeholders)
             )
             ->bind($bind)
@@ -39,8 +38,9 @@ class ClusterCreateService extends CrudService
 
     public function syncFilesystem(): CrudServiceInterface
     {
-        $cardsDirectory =  path_root('images/cards/'.$this->new['id']);
-        $thumbsDirectory = path_root('images/thumbs/'.$this->new['id']);
+        $partial = $this->new['clusters_id'] . '/' . $this->new['code'];
+        $cardsDirectory =  path_root('images/cards/'  . $partial);
+        $thumbsDirectory = path_root('images/thumbs/' . $partial);
 
         FileSystem::createDirectory($cardsDirectory);
         FileSystem::createDirectory($thumbsDirectory);
@@ -56,12 +56,14 @@ class ClusterCreateService extends CrudService
     public function getFeedback(): array
     {
         $message = collapse(
-            "New cluster <strong> ",
+            "New set <strong> ",
             "#{$this->new['id']} ",
             "{$this->new['name']} ({$this->new['code']})",
             "</strong> created."
         );
 
-        return [$message];
+        $uri = url('sets/manage');
+
+        return [$message, $uri];
     }
 }

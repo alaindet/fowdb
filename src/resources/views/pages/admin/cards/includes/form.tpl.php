@@ -1,6 +1,6 @@
 <?php
+
 // VARIABLES
-// $action
 // $card (required for $action = 'update')
 
 // INPUT
@@ -26,7 +26,7 @@
 
 $isCard = isset($card);
 $isPrev = isset($prev);
-$url = "cards/{$action}". ($isCard ? "/{$card['id']}" : "");
+$url = $isCard ? 'cards/update/'.$card['id'] : 'cards/create';
 
 // Lookup data
 $lookup = (App\Services\Lookup\Lookup::getInstance())->getAll();
@@ -48,6 +48,7 @@ if ($isCard) {
     $card['free_cost'] = str_repeat('x', -1 * $card['free_cost']);
   }  
 }
+
 ?>
 <form
   action="<?=url($url)?>"
@@ -59,7 +60,7 @@ if ($isCard) {
 
   <!-- Image ============================================================== -->
   <div class="form-group">
-    <label class="col-sm-2">Image</label>
+    <label class="col-sm-2 control-label">Image</label>
     <div class="col-sm-10">
       <?php if ($isCard): ?>
         
@@ -88,7 +89,7 @@ if ($isCard) {
     else $cardNarp = null;
   ?>
   <div class="form-group">
-    <label class="col-sm-2">NARP</label>
+    <label class="col-sm-2 control-label">NARP</label>
     <div class="col-sm-10">
       <select name="narp" class="form-control" required>
         <?php foreach($narps as $key => $label):
@@ -114,7 +115,7 @@ if ($isCard) {
     else $cardSet = null;
   ?>
   <div class="form-group">
-    <label class="col-sm-2">Set</label>
+    <label class="col-sm-2 control-label">Set</label>
     <div class="col-sm-10">
       <select name="set" class="form-control" required>
         <option value="0">Choose a set...</option>
@@ -140,7 +141,7 @@ if ($isCard) {
 
   <!-- Number ============================================================= -->
   <div class="form-group">
-    <label class="col-sm-2">Number</label>
+    <label class="col-sm-2 control-label">Number</label>
     <div class="col-sm-10">
       <input
         type="number"
@@ -162,7 +163,7 @@ if ($isCard) {
     $cardRarity = $isPrev ? $prev['rarity'] : $isCard ? $card['rarity'] : null;
   ?>
   <div class="form-group">
-    <label class="col-sm-2">Rarity</label>
+    <label class="col-sm-2 control-label">Rarity</label>
     <div class="col-sm-10">
       <select name="rarity" class="form-control">
         <option value="0">(None)</option>
@@ -189,7 +190,7 @@ if ($isCard) {
     else $cardAttributes = [];
   ?>
   <div class="form-group">
-    <label for="attribute" class="col-sm-2">Attribute</label>
+    <label for="attribute" class="col-sm-2 control-label">Attribute</label>
     <div class="col-sm-10">
       <div
         class="btn-group fd-btn-group --separate fd-grid-items"
@@ -237,7 +238,7 @@ if ($isCard) {
     else $cardBackSide = 0;
   ?>
   <div class="form-group">
-    <label class="col-sm-2">Back side</label>
+    <label class="col-sm-2 control-label">Back side</label>
     <div class="col-sm-10">
       <div class="btn-group" data-toggle="buttons">
         <?php foreach ($backsides as $backsideId => $backsideName):
@@ -265,7 +266,7 @@ if ($isCard) {
     $cardType = $isPrev ? $prev['type'] : $isCard ? $card['type'] : null;
   ?>
   <div class="form-group">
-    <label class="col-sm-2">Type</label>
+    <label class="col-sm-2 control-label">Type</label>
     <div class="col-sm-10">
       <select name="type" class="form-control" required>
         <option value="0">Choose a type...</option>
@@ -287,7 +288,7 @@ if ($isCard) {
 
   <!-- Cost =============================================================== -->
   <div class="form-group">
-    <label class="col-sm-2">Cost</label>
+    <label class="col-sm-2 control-label">Cost</label>
     <div class="col-xs-12 col-sm-10">
       <div class="row">
 
@@ -332,7 +333,7 @@ if ($isCard) {
 
   <!-- Divinity =========================================================== -->
   <div class="form-group">
-    <label class="col-sm-2">Divinity cost</label>
+    <label class="col-sm-2 control-label">Divinity cost</label>
     <div class="col-sm-10">
       <input
         type="text"
@@ -350,7 +351,7 @@ if ($isCard) {
 
   <!-- ATK/DEF ============================================================ -->
   <div class="form-group">
-    <label class="col-sm-2">ATK/DEF</label>
+    <label class="col-sm-2 control-label">ATK/DEF</label>
     <div class="col-xs-12 col-sm-10">
       <div class="row">
 
@@ -392,7 +393,7 @@ if ($isCard) {
 
   <!-- Code =============================================================== -->
   <div class="form-group">
-    <label for="code" class="col-sm-2">Code</label>
+    <label for="code" class="col-sm-2 control-label">Code</label>
     <div class="col-sm-10">
       <input
         type="text"
@@ -420,7 +421,7 @@ if ($isCard) {
 
   <!-- Name =============================================================== -->
   <div class="form-group">
-    <label for="name" class="col-sm-2">Name</label>
+    <label for="name" class="col-sm-2 control-label">Name</label>
     <div class="col-sm-10">
       <input
         type="text"
@@ -439,7 +440,7 @@ if ($isCard) {
 
   <!-- Race/Trait ========================================================= -->
   <div class="form-group">
-    <label for="race" class="col-sm-2">Race/Trait</label>
+    <label for="race" class="col-sm-2 control-label">Race/Trait</label>
     <div class="col-sm-10">
       <input
         type="text"
@@ -457,7 +458,7 @@ if ($isCard) {
 
   <!-- Text =============================================================== -->
   <div class="form-group">
-    <label for="text" class="col-sm-2">Text</label>
+    <label for="text" class="col-sm-2 control-label">Text</label>
     <div class="col-sm-10">
       <textarea
         name="text"
@@ -474,7 +475,7 @@ if ($isCard) {
 
   <!-- Flavor Text ======================================================== -->
   <div class="form-group">
-    <label class="col-sm-2">Flavor text</label>
+    <label class="col-sm-2 control-label">Flavor text</label>
     <div class="col-sm-10">
       <textarea
         name="flavor-text"
@@ -491,7 +492,7 @@ if ($isCard) {
 
   <!-- Artist name ======================================================== -->
   <div class="form-group">
-    <label class="col-sm-2">Artist name</label>
+    <label class="col-sm-2 control-label">Artist name</label>
     <div class="col-sm-10">
       <input
         type="text"

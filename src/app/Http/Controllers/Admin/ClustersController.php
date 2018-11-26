@@ -19,7 +19,7 @@ class ClustersController extends Controller
     public function index(Request $request): string
     {
         $items = database()
-            ->select(statement('select')->from('clusters'))
+            ->select(statement('select')->from('clusters')->orderBy('id DESC'))
             ->get();
 
         return (new Page)
@@ -37,7 +37,9 @@ class ClustersController extends Controller
 
     public function apiShowAll(Request $request): string
     {
-        $items = (new CardCluster)->all();
+        $items = database()
+            ->select(statement('select')->from('clusters')->orderBy('id DESC'))
+            ->get();
 
         return (new JsonResponse)->setData($items)->render();
     }
@@ -100,7 +102,6 @@ class ClustersController extends Controller
             $service = new ClusterUpdateService($request->input()->post(), $id);
             $service->processInput();
             $service->syncDatabase();
-            $service->syncFilesystem();
             $service->updateLookupData();
             [$message] = $service->getFeedback();
         } catch (CrudException $exception) {

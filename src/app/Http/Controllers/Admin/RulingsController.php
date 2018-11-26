@@ -146,9 +146,9 @@ class RulingsController extends Controller
     public function update(Request $request, string $id): string
     {
         $request->validate('post', [
-            'ruling-errata' => ['required:0','is:integer','enum:0,1'],
-            'ruling-date' => ['required:1','is:date'],
-            'ruling-text' => ['required:1'],
+            'ruling-errata' => ['required:0','is:boolean'],
+            'ruling-date' => ['required','is:date'],
+            'ruling-text' => ['required'],
         ]);
 
         $service = new RulingUpdateService($request->input()->post(), $id);

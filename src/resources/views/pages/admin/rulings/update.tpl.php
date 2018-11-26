@@ -78,6 +78,9 @@
       </div>
 
       <!-- Ruling is errata -->
+      <?php
+        $checked = $ruling_is_errata ? 'checked="true"' : '';
+      ?>
       <div class="form-group">
         <label class="col-sm-2 control-label">Errata</label>
         <div class="col-sm-10">
@@ -87,7 +90,8 @@
                 type="checkbox"
                 name="ruling-errata"
                 id="ruling-errata"
-                value="<?=$ruling_is_errata?>"
+                value="1"
+                <?=$checked?>
               >
               <span class="text-danger font-110 text-bold">
                 It's an errata

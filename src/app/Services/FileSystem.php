@@ -200,7 +200,7 @@ class FileSystem extends BaseClass
                 $fullPath = "{$dirFullPath}/{$baseName}";
 
                 // It's a directory
-                if (is_dir($fullPath)) deleteDirectory($fullPath);
+                if (is_dir($fullPath)) self::deleteDirectory($fullPath);
                 
                 // It's a file
                 else unlink($fullPath);
