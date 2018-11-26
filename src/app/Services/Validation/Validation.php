@@ -223,7 +223,7 @@ class Validation
             ($value === 'array' && !is_array($input)) ||
             (
                 $value === 'alphanumeric' &&
-                preg_match('/^[a-zA-Z0-9]+$/', $input)
+                !preg_match('/^[a-zA-Z0-9]+$/', $input)
             ) ||
             ($value === 'file' && $input['error'] !== UPLOAD_ERR_OK) ||
             ($value === 'boolean' && !in_array($input, ['0', '1']))
