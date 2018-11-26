@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Set;
+namespace App\Services\Resources\Set;
 
 use App\Exceptions\CrudException;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Card;
+namespace App\Services\Resources\Card;
 
 use App\Utils\Arrays;
 use App\Legacy\Database;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Card;
+namespace App\Services\Resources\Card;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;

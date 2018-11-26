@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Card;
+namespace App\Services\Resources\Card;
 
 use App\Base\InputProcessor;
 use App\Exceptions\CrudException;
-use App\Services\Card\ManagesPostProcessing;
+use App\Services\Resources\Card\ManagesPostProcessing;
 
 class CardInputProcessor extends InputProcessor
 {

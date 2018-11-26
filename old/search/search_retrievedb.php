@@ -1,7 +1,7 @@
 <?php
 
 // Instantiate a new Search object
-$search = new \App\Services\Card\Search();
+$search = new \App\Services\Resources\Card\Search();
 
 // Get filters from GET parameters
 $filters = $search->getFilters($_GET);

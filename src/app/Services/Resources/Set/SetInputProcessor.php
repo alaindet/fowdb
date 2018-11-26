@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Set;
+namespace App\Services\Resources\Set;
 
 use App\Base\InputProcessor;
 use App\Exceptions\CrudException;
-use App\Services\Set\ManagesPostProcessing;
+use App\Services\Resources\Set\ManagesPostProcessing;
 
 class SetInputProcessor extends InputProcessor
 {

@@ -6,9 +6,9 @@ use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Http\Response\Redirect;
 use App\Services\Alert;
-use App\Services\Set\SetCreateService;
-use App\Services\Set\SetDeleteService;
-use App\Services\Set\SetUpdateService;
+use App\Services\Resources\Set\SetCreateService;
+use App\Services\Resources\Set\SetDeleteService;
+use App\Services\Resources\Set\SetUpdateService;
 use App\Views\Page;
 use App\Models\CardSet;
 

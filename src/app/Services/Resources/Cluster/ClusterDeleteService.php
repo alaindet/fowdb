@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Cluster;
+namespace App\Services\Resources\Cluster;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;

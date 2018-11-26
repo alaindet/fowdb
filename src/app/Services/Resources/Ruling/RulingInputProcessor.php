@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Ruling;
+namespace App\Services\Resources\Ruling;
 
 use App\Base\InputProcessor;
 

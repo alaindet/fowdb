@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Cluster;
+namespace App\Services\Resources\Cluster;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
-use App\Services\Cluster\ClusterInputProcessor;
+use App\Services\Resources\Cluster\ClusterInputProcessor;
 use App\Models\CardCluster;
 
 class ClusterUpdateService extends CrudService

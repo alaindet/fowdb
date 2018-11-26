@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Http\Response\Redirect;
-use App\Services\Alert;
-use App\Services\Card\CardCreateService;
-use App\Services\Card\CardDeleteService;
-use App\Services\Card\CardUpdateService;
-use App\Views\Page;
 use App\Models\Card;
+use App\Services\Alert;
+use App\Services\Resources\Card\CardCreateService;
+use App\Services\Resources\Card\CardDeleteService;
+use App\Services\Resources\Card\CardUpdateService;
+use App\Views\Page;
 
 /**
  * Contains actions for JUDGE routes only

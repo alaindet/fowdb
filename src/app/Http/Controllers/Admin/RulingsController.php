@@ -6,9 +6,9 @@ use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Http\Response\Redirect;
 use App\Services\Alert;
-use App\Services\Ruling\RulingCreateService;
-use App\Services\Ruling\RulingDeleteService;
-use App\Services\Ruling\RulingUpdateService;
+use App\Services\Resources\Ruling\RulingCreateService;
+use App\Services\Resources\Ruling\RulingDeleteService;
+use App\Services\Resources\Ruling\RulingUpdateService;
 use App\Views\Page;
 
 class RulingsController extends Controller

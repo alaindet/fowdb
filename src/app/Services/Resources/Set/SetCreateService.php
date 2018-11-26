@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Set;
+namespace App\Services\Resources\Set;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
-use App\Services\Set\SetInputProcessor;
+use App\Services\Resources\Set\SetInputProcessor;
 use App\Services\FileSystem;
 
 class SetCreateService extends CrudService

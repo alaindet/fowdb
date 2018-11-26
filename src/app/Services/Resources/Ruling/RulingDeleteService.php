@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Ruling;
+namespace App\Services\Resources\Ruling;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
-use App\Services\Ruling\RulingInputProcessor;
+use App\Services\Resources\Ruling\RulingInputProcessor;
 use App\Models\Card;
 use App\Models\Ruling;
 

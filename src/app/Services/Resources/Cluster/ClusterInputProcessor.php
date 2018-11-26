@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Cluster;
+namespace App\Services\Resources\Cluster;
 
 use App\Base\InputProcessor;
 use App\Exceptions\CrudException;
-use App\Services\Cluster\ManagesPostProcessing;
+use App\Services\Resources\Cluster\ManagesPostProcessing;
 
 class ClusterInputProcessor extends InputProcessor
 {

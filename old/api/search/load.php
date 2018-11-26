@@ -14,7 +14,7 @@ if (empty($_POST)) {
 }
 
 // Instantiate a new Search object
-$search = new \App\Services\Card\Search();
+$search = new \App\Services\Resources\Card\Search();
 
 // Processes search filters by removing unallowed elements
 // And further validating every single value
