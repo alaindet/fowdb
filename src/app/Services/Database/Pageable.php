@@ -52,6 +52,7 @@ trait Pageable
      */
     private function setLimit(): void
     {
+        // Use default
         if (!isset($this->perPage)) {
             $this->perPage = config('db.results.limit');
         }
@@ -103,6 +104,7 @@ trait Pageable
 
         $this->setOffset();
 
+        // "Peek" ahead to see if there are more results after these
         $this->statement->limit(+1, $add = true);
 
         $this->totalCount = $this->count($countableField);
@@ -112,6 +114,9 @@ trait Pageable
         $results = $this->get($className);
 
         $this->hasMorePages = count($results) > $this->perPage;
+
+        // Remove the last item (it's been used to peek)
+        if ($this->hasMorePages) array_pop($results);
 
         return $results;
     }

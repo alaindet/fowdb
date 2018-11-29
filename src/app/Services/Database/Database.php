@@ -204,7 +204,10 @@ class Database
      * @param array $values Reference to values to bind
      * @return void
      */
-    private function bindValues(PDOStatement &$query, array &$values = null): void
+    private function bindValues(
+        PDOStatement &$query,
+        array &$values = null
+    ): void
     {
         if (!empty($values)) {
             foreach ($values as $placeholder => $value) {
