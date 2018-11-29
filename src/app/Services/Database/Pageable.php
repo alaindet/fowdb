@@ -138,7 +138,8 @@ trait Pageable
             'lower-bound' => $this->lowerBound + 1,
             'upper-bound' => min($this->upperBound, $this->totalCount),
             'link' => $this->link,
-            'has-pagination' => $this->lastPage !== 1
+            'has-pagination' => $this->lastPage !== 1,
+            'per-page' => $this->perPage
         ];
     }
 }
