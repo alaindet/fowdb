@@ -10,31 +10,79 @@ use App\Services\Resources\Ruling\RulingCreateService;
 use App\Services\Resources\Ruling\RulingDeleteService;
 use App\Services\Resources\Ruling\RulingUpdateService;
 use App\Views\Page;
+use App\Services\Database\Statement\SqlStatement;
 
 class RulingsController extends Controller
 {
+    /**
+     * Acquires specific GET parameters,
+     * alters (filters) the query if needed,
+     * returns the list of valid GET parameters names
+     *
+     * @param Request $request
+     * @param SqlStatement $statement
+     * @param array $bind
+     * @return array
+     */
+    private function setFilters(
+        Request &$request,
+        SqlStatement &$statement,
+        array &$bind
+    ): array
+    {
+        // GET param => DB field
+        $paramToColumn = [
+            'card' => 'cards_id',
+            // Add filters here...
+        ];
+
+        // Read only valid GET filters
+        $params = $request->input()->getMultiple(array_keys($paramToColumn));
+
+        // No valid filters passed
+        if (empty($params)) return [];
+
+        // Process each filter (by altering the query)
+        foreach ($params as $param => $value) {
+            $column = $paramToColumn[$param];
+            $placeholder = ":{$column}";
+            // Ex.: card = :card
+            $statement->where("{$column} = {$placeholder}");
+            $bind[$placeholder] = $value;
+        }
+
+        // One ore more filters were passed
+        return $params;
+    }
+
     public function index(Request $request): string
     {
+        $statement = statement('select')
+            ->select([
+                'c.id as card_id',
+                'c.code as card_code',
+                'c.name as card_name',
+                'r.id as ruling_id',
+                'r.is_errata as ruling_is_errata',
+                'r.date as ruling_date',
+                'r.text as ruling_text'
+            ])
+            ->from(
+                'rulings r INNER JOIN cards c ON r.cards_id = c.id'
+            )
+            ->orderBy([
+                'r.date DESC',
+                'r.id DESC'
+            ]);
+
+        $bind = [];
+
+        $filters = $this->setFilters($request, $statement, $bind);
+
         // Get data from database
         $database = database()
-            ->select(
-                statement('select')
-                    ->select([
-                        'c.code as card_code',
-                        'c.name as card_name',
-                        'r.id as ruling_id',
-                        'r.is_errata as ruling_is_errata',
-                        'r.date as ruling_date',
-                        'r.text as ruling_text'
-                    ])
-                    ->from(
-                        'rulings r INNER JOIN cards c ON r.cards_id = c.id'
-                    )
-                    ->orderBy([
-                        'r.date DESC',
-                        'r.id DESC'
-                    ])
-            )
+            ->select($statement)
+            ->bind($bind)
             ->page($request->input()->get('page') ?? 1)
             ->paginationLink($request->getCurrentUrl());
 
@@ -46,6 +94,7 @@ class RulingsController extends Controller
                 // paginate() must be called before paginationInfo()!
                 'items' => $database->paginate(),
                 'pagination' => $database->paginationInfo(),
+                'filters' => $filters
             ])
             ->render();
     }

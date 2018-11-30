@@ -50,7 +50,16 @@
 
           <!-- Card -->
           <td>
-            <a href="<?=url_old('card', ['code' => urlencode($item['card_code'])])?>">
+            <a
+              href="<?=url_old('card', [
+                'code' => urlencode($item['card_code'])
+              ])?>"
+              class="btn btn-xs fd-btn-default"
+              target="_blank"
+            >
+              <i class="fa fa-external-link"></i>
+            </a>
+            <a href="<?=url('rulings/manage', ['card' => $item['card_id']])?>">
               <span class="text-muted">(<?=$item['card_code']?>)</span>
               <?=$item['card_name']?>
             </a>
