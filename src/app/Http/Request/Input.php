@@ -17,7 +17,6 @@ class Input extends Base
         return Session::pop(self::PREVIOUS_INPUT) ?? null;
     }
 
-
     public function get(string $name = null, $escape = false)
     {
         return $this->read('GET', $name, $escape);
@@ -36,6 +35,16 @@ class Input extends Base
     public function request(string $name = null)
     {
         return $this->read('REQUEST', $name);
+    }
+
+    public function getMultiple(array $names = null, $escape = false)
+    {
+        return $this->readMultiple('GET', $names, $escape);    
+    }
+
+    public function postMultiple(array $names = null, $escape = false)
+    {
+        return $this->readMultiple('POST', $names, $escape);    
     }
 
     /**
@@ -58,10 +67,50 @@ class Input extends Base
         if (!isset($global[$name]) || $global[$name] === '') return null;
 
         // Escape the value
-        if ($escape) return htmlspecialchars($global[$name], ENT_QUOTES, 'UTF-8');
+        if ($escape) {
+            return htmlspecialchars($global[$name], ENT_QUOTES, 'UTF-8');
+        }
 
         // Return value as it is
         return $global[$name];
+    }
+
+    private function readMultiple(
+        string $type,
+        array $names = null,
+        $escape = false
+    )
+    {
+        // Alias the super global, like $_GET, $_POST or $_FILES
+        $global = $this->globalArrayReference($type);
+
+        // No name, return entire super global
+        if (!isset($names)) return $global;
+
+        // Initialize results array
+        $results = [];
+
+        foreach ($names as $name) {
+
+            // No value for this name
+            if (!isset($global[$name]) || $global[$name] === '') {
+                continue;
+            }
+
+            // Escape the value
+            if ($escape) {
+                $value = htmlspecialchars($global[$name], ENT_QUOTES, 'UTF-8');
+                $results[$name] = $value;
+            }
+            
+            // Read from global without escaping (default)
+            else {
+                $results[$name] = $global[$name];
+            }
+
+        }
+
+        return $results;
     }
 
     /**
