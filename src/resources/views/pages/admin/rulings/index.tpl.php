@@ -4,13 +4,31 @@
 // $items
 // $pagination
 
+// Process filters
+$hasItems = !empty($items);
+$hasFilters = !empty($filters);
+if ($hasFilters && $hasItems) {
+  \App\Views\Ruling::buildFiltersLabels($filters, $items[0]);
+}
+
 ?>
 <div class="page-header">
-  <h1>Rulings</h1>
-  <?=component('breadcrumb', [
-    'Admin' => url('profile'),
-    'Rulings' => '#'
-  ])?>
+  <h1>
+    Rulings
+    <small>(<?=$pagination['total']?>)</small>
+  </h1>
+  <?php
+    $links = [
+      'Admin' => url('profile'),
+      'Rulings' => '#'
+    ];
+    if ($hasFilters) {
+      $links['Rulings'] = url('rulings/manage');
+      $links['&larr; Clear filter'] = '#';
+    }
+    echo component('breadcrumb', $links);
+  ?>
+
 </div>
 
 <div class="row">
@@ -26,6 +44,31 @@
     </a>
     <hr>
   </div>
+
+  <!-- ERROR: No items to show -->
+  <?php if (!$hasItems): ?>
+
+    <div class="col-xs-12">
+      <span class="font-120">No items to show</span>
+    </div>
+
+    </div><!-- Close .row before quitting -->
+    <?php return; // Quit ?>
+
+  <?php endif; ?>
+
+  <!-- Show set filters -->
+  <?php if ($hasFilters): ?>
+    <div class="col-xs-12">
+      <ul class="fd-list">
+        <?php foreach($filters as $name => $value): ?>
+          <li>
+            <strong><?=ucfirst($name)?></strong>: <?=$value?>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+  <?php endif; ?>
 
   <!-- Pagination (save and re-use it) -->
   <div class="col-xs-12">
