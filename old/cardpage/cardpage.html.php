@@ -3,8 +3,9 @@
 	// Variables
 	// $cards
 
-  $counter = 0; // Ruling counter
-  foreach ($cards as &$card):
+	$counter = 0; // Ruling counter
+	foreach ($cards as &$card):
+		$hasRulings = !empty($card['rulings']);
 ?>
 	<div class="row cardpage">
 
@@ -41,10 +42,19 @@
 				
         <a
           href="<?=url('rulings/create', ['card-id' => $card['id']])?>"
-          class="btn btn-info"
+          class="btn fd-btn-default"
         >
           Add ruling
 				</a>
+
+				<?php if ($hasRulings): ?>
+					<a
+						href="<?=url('rulings/manage', ['card' => $card['id']])?>"
+						class="btn fd-btn-default"
+					>
+						Show rulings
+					</a>
+				<?php endif; ?>
 
 			</div>
 		<?php // End admin buttons ------------------------------------------------
@@ -107,7 +117,7 @@
 		?>
 
 		<?php // Rulings ----------------------------------------------------------
-			if (!empty($card['rulings'])):
+			if ($hasRulings):
 		?>
 			<div class="col-xs-12 f-rulings">
 
