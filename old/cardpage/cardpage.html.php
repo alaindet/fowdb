@@ -56,6 +56,13 @@
 					</a>
 				<?php endif; ?>
 
+				<a
+          href="<?=url('bans/manage', ['card' => $card['id']])?>"
+          class="btn fd-btn-default"
+        >
+          Show banned?
+				</a>
+
 			</div>
 		<?php // End admin buttons ------------------------------------------------
 			endif;
