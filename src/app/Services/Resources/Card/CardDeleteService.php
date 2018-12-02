@@ -26,26 +26,6 @@ class CardDeleteService extends CrudService
             ->bind($bind)
             ->execute();
 
-        // Remove from 'bans' table
-        database()
-            ->delete(
-                statement('delete')
-                    ->table('bans')
-                    ->where('cards_id = :cardid')
-            )
-            ->bind($bind)
-            ->execute();
-
-        // Remove from 'rulings' table
-        database()
-            ->delete(
-                statement('delete')
-                    ->table('rulings')
-                    ->where('cards_id = :cardid')
-            )
-            ->bind($bind)
-            ->execute();
-
         return $this;
     }
 
