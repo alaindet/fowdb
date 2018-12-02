@@ -58,7 +58,7 @@
 
 				<?php if (isset($card['banned'])): ?>
 					<a
-						href="<?=url('bans/manage', ['card' => $card['id']])?>"
+						href="<?=url('restrictions/manage', ['card' => $card['id']])?>"
 						class="btn fd-btn-default"
 					>
 						Show banned

@@ -1,7 +1,7 @@
 <?php
 
-$rawData = \App\Models\Ban::getData($page = 'banlist');
-$items = \App\Views\Ban::display($rawData, 'all');
+$rawData = \App\Models\PlayRestriction::getData($page = 'banlist');
+$items = \App\Views\PlayRestriction::display($rawData, 'all');
 
 if (empty($items)) {
   alert(

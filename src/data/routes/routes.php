@@ -1,7 +1,7 @@
 <?php
 
 /*
- | ----------------------------------------------------------------------------
+ | ----------------------------------------------------------------------
  |
  | Define all routes here
  | 
@@ -22,7 +22,7 @@
  |     ['!token','captcha']
  | ]
  |
- | ----------------------------------------------------------------------------
+ | -----------------------------------------------------------------------
  */
 
 /**
@@ -41,6 +41,9 @@ $c = ['c' => '[A-Z0-9]+\-\d{3}\s[A-Z]+']; // C => card
  * Anyone can access
  */
 $public = [
+
+    // TEST
+    // ['GET', 'test','TestController','paginationTest'],
 
     ['GET', 'cards/search/help','CardsController','showSearchHelp'],
     ['GET', 'login','Auth\\LoginController','loginForm'],
@@ -105,36 +108,106 @@ $judge = [
     ['POST','sets/delete/{d}','Admin\\SetsController','delete',$d,['token']],
 
     // Clusters
-    ['GET', 'clusters/manage','Admin\\ClustersController','index'],
+    ['GET','clusters/manage','Admin\\ClustersController','index'],
 
     // Rulings
-    ['GET', 'rulings/manage','Admin\\RulingsController','index'],
-    ['GET', 'rulings/create','Admin\\RulingsController','createForm'],
-    ['POST','rulings/create','Admin\\RulingsController','create',null,['token']],
-    ['GET', 'rulings/update/{d}','Admin\\RulingsController','updateForm',$d],
-    ['POST','rulings/update/{d}','Admin\\RulingsController','update',$d,['token']],
-    ['GET', 'rulings/delete/{d}','Admin\\RulingsController','deleteForm',$d],
-    ['POST','rulings/delete/{d}','Admin\\RulingsController','delete',$d,['token']],
+    [
+        'GET','rulings/manage',
+        'Admin\\RulingsController','index'
+    ],
+    [
+        'GET','rulings/create',
+        'Admin\\RulingsController','createForm'
+    ],
+    [
+        'POST','rulings/create',
+        'Admin\\RulingsController','create',
+        null, ['token']
+    ],
+    [
+        'GET','rulings/update/{d}',
+        'Admin\\RulingsController','updateForm',
+        $d
+    ],
+    [
+        'POST','rulings/update/{d}',
+        'Admin\\RulingsController',
+        'update',
+        $d, ['token']
+    ],
+    [
+        'GET','rulings/delete/{d}',
+        'Admin\\RulingsController','deleteForm',
+        $d
+    ],
+    [
+        'POST','rulings/delete/{d}',
+        'Admin\\RulingsController','delete',
+        $d, ['token']
+    ],
 
-    ['POST','rulings/delete/{d}','Admin\\RulingsController','delete',$d,['token']],
+    // Banned and limited cards
+    [
+        'GET','restrictions/manage',
+        'Admin\\PlayRestrictionsController','index'
+    ],
+    [
+        'GET','restrictions/create',
+        'Admin\\PlayRestrictionsController','createForm'
+    ],
+    [
+        'POST','restrictions/create',
+        'Admin\\PlayRestrictionsController','create',
+        null, ['token']
+    ],
+    [
+        'GET','restrictions/update/{d}',
+        'Admin\\PlayRestrictionsController','updateForm',
+        $d
+    ],
+    [
+        'POST','restrictions/update/{d}',
+        'Admin\\PlayRestrictionsController','update',
+        $d, ['token']
+    ],
+    [
+        'GET','restrictions/delete/{d}',
+        'Admin\\PlayRestrictionsController','deleteForm',
+        $d
+    ],
+    [
+        'POST','restrictions/delete/{d}',
+        'Admin\\PlayRestrictionsController','delete',
+        $d,['token']
+    ],
 
     // API --------------------------------------------------------------------
 
     // Clusters
-    ['GET', 'api/clusters','Admin\\ClustersController','apiShowAll',null,
-        ['!auth', 'api-auth']
+    [
+        'GET','api/clusters',
+        'Admin\\ClustersController','apiShowAll',
+        null, ['!auth', 'api-auth']
     ],
-    ['GET', 'api/clusters/{d}','Admin\\ClustersController','apiShow',$d,
-        ['!auth', 'api-auth']
+    [
+        'GET','api/clusters/{d}',
+        'Admin\\ClustersController','apiShow',
+        $d, ['!auth', 'api-auth']
     ],
-    ['POST','api/clusters/create','Admin\\ClustersController','apiCreate',null,
-        ['!auth', 'api-auth', 'api-token']
+    [
+        'POST','api/clusters/create',
+        'Admin\\ClustersController','apiCreate',
+        null, ['!auth', 'api-auth', 'api-token']
     ],
-    ['POST','api/clusters/update/{d}','Admin\\ClustersController','apiUpdate',$d,
-        ['!auth', 'api-auth', 'api-token']
+    [
+        'POST','api/clusters/update/{d}',
+        'Admin\\ClustersController','apiUpdate',
+        $d, ['!auth', 'api-auth', 'api-token']
     ],
-    ['POST','api/clusters/delete/{d}','Admin\\ClustersController','apiDelete',$d,
-        ['!auth', 'api-auth', 'api-token']
+    [
+        'POST','api/clusters/delete/{d}',
+        'Admin\\ClustersController','apiDelete',
+        $d, ['!auth', 'api-auth', 'api-token']
     ],
 
 ];

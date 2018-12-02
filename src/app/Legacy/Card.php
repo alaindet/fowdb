@@ -2,7 +2,7 @@
 
 namespace App\Legacy;
 
-use App\Models\Ban;
+use App\Models\PlayRestriction;
 use App\Models\CardNarp;
 use App\Models\Card as Model;
 use App\Models\Ruling;
@@ -142,7 +142,7 @@ class Card
                 // Banned in these formats (can be empty, most of the times)
                 // Ex.: (assoc) [ [format_name, deck_name, copies_in_deck], .. ]
                 // $bannedFormats = Ban::formatsList($baseCardId);
-                $bannedFormats = Ban::getData('card', $baseCardId);
+                $bannedFormats = PlayRestriction::getData('card', $baseCardId);
 
                 // Is this banned?
                 if (!empty($bannedFormats)) {
