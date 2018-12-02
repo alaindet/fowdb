@@ -101,7 +101,7 @@ class RulingsController extends Controller
 
     public function createForm(Request $request): string
     {
-        $cardId = $request->input()->get('card-id');
+        $cardId = $request->input()->get('card');
 
         // User passed a card id (Ex.: from card page)
         if (isset($cardId)) {

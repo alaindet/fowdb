@@ -41,7 +41,7 @@
 				</a>
 				
         <a
-          href="<?=url('rulings/create', ['card-id' => $card['id']])?>"
+          href="<?=url('rulings/create', ['card' => $card['id']])?>"
           class="btn fd-btn-default"
         >
           Add ruling
