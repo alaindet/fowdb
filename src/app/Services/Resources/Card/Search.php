@@ -3,7 +3,7 @@
 namespace App\Services\Resources\Card;
 
 use App\Utils\Arrays;
-use App\Legacy\Database;
+use App\Services\Database\Database;
 
 class Search
 {
@@ -190,7 +190,7 @@ class Search
         }
 
         // Get results from db
-        $this->cards = $this->db->get($this->getSQL());
+        $this->cards = $this->db->rawSelect($this->getSQL());
 
         // Check if results are more than default limit
         if (count($this->cards) > config('db.results.limit')) {
@@ -225,7 +225,10 @@ class Search
         }
 
         // Get count from database
-        $this->cardsCount = $this->db->getCount('cards', $this->sqlPartials['filter']);
+        $this->cardsCount = $this->db->rawCount(
+            'cards',
+            $this->sqlPartials['filter']
+        );
 
         // Return cards count
         return $this->cardsCount;

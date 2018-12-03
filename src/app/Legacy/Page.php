@@ -2,7 +2,6 @@
 
 namespace App\Legacy;
 
-use App\Legacy\Database;
 use App\Views\TinyHtmlMinifier\TinyMinify;
 use App\Services\OpenGraphProtocol\OpenGraphProtocol;
 use App\Services\OpenGraphProtocol\OpenGraphProtocolImage;
