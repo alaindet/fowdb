@@ -6,5 +6,5 @@ use App\Base\Model;
 
 class CardCluster extends Model
 {
-    public $table = 'clusters';
+    public $table = 'game_clusters';
 }

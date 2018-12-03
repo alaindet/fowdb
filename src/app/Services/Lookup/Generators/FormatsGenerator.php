@@ -21,8 +21,8 @@ class FormatsGenerator implements Generatable
                     ])
                     ->from(
                         'game_formats f
-                        JOIN pivot_cluster_format cf ON f.id = cf.formats_id
-                        JOIN clusters c ON cf.clusters_id = c.id'
+                        INNER JOIN pivot_cluster_format cf ON f.id = cf.formats_id
+                        INNER JOIN game_clusters c ON cf.clusters_id = c.id'
                     )
                     ->orderBy([
                         'f.is_multi_cluster DESC',

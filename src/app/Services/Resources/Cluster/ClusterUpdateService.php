@@ -26,7 +26,7 @@ class ClusterUpdateService extends CrudService
         }
 
         $statement = statement('update')
-            ->table('clusters')
+            ->table('game_clusters')
             ->values($placeholders)
             ->where('id = :id');
 

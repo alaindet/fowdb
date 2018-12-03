@@ -19,7 +19,11 @@ class ClustersController extends Controller
     public function index(Request $request): string
     {
         $items = database()
-            ->select(statement('select')->from('clusters')->orderBy('id DESC'))
+            ->select(
+                statement('select')
+                    ->from('game_clusters')
+                    ->orderBy('id DESC')
+            )
             ->get();
 
         return (new Page)
@@ -38,7 +42,11 @@ class ClustersController extends Controller
     public function apiShowAll(Request $request): string
     {
         $items = database()
-            ->select(statement('select')->from('clusters')->orderBy('id DESC'))
+            ->select(
+                statement('select')
+                    ->from('game_clusters')
+                    ->orderBy('id DESC')
+            )
             ->get();
 
         return (new JsonResponse)->setData($items)->render();
@@ -93,7 +101,7 @@ class ClustersController extends Controller
     public function apiUpdate(Request $request, $id): string
     {
         $request->api()->validate('post', [
-            'id' => ['required','is:integer','except:0','exists:clusters,id'],
+            'id' => ['required','is:integer','except:0','exists:game_clusters,id'],
             'name' => ['required','except:'],
             'code' => ['required','except:']
         ]);

@@ -28,7 +28,7 @@ class ClusterCreateService extends CrudService
         database()
             ->insert(
                 statement('insert')
-                    ->table('clusters')
+                    ->table('game_clusters')
                     ->values($placeholders)
             )
             ->bind($bind)

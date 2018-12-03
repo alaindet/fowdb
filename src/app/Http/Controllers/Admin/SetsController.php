@@ -31,7 +31,7 @@ class SetsController extends Controller
                     ])
                     ->from(
                         'game_sets s
-                        INNER JOIN clusters c ON s.clusters_id = c.id'
+                        INNER JOIN game_clusters c ON s.clusters_id = c.id'
                     )
                     ->orderBy('s.id DESC')
             )
@@ -55,7 +55,7 @@ class SetsController extends Controller
         $clusters = database()
             ->select(
                 statement('select')
-                    ->from('clusters')
+                    ->from('game_clusters')
                     ->orderBy('id DESC')
             )
             ->get();
@@ -73,7 +73,7 @@ class SetsController extends Controller
     public function create(Request $request): string
     {
         $request->validate('post', [
-            'cluster-id' => ['required','is:integer','exists:clusters,id'],
+            'cluster-id' => ['required','is:integer','exists:game_clusters,id'],
             'id' => ['required','is:integer','!exists:game_sets,id'],
             'name' => ['required'],
             'code' => ['required','is:alphanumeric'],
@@ -98,7 +98,7 @@ class SetsController extends Controller
         $clusters = database()
             ->select(
                 statement('select')
-                    ->from('clusters')
+                    ->from('game_clusters')
                     ->orderBy('id DESC')
             )
             ->get();
@@ -117,7 +117,7 @@ class SetsController extends Controller
     public function update(Request $request, string $id): string
     {
         $request->validate('post', [
-            'cluster-id' => ['required','is:integer','exists:clusters,id'],
+            'cluster-id' => ['required','is:integer','exists:game_clusters,id'],
             'id' => ['required','is:integer','exists:game_sets,id'],
             'name' => ['required'],
             'code' => ['required','is:alphanumeric'],
@@ -155,7 +155,7 @@ class SetsController extends Controller
                     ])
                     ->from(
                         'game_sets s
-                        INNER JOIN clusters c ON s.clusters_id = c.id'
+                        INNER JOIN game_clusters c ON s.clusters_id = c.id'
                     )
                     ->where('s.id = :id')
             )

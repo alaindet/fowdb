@@ -17,7 +17,7 @@ class ClusterDeleteService extends CrudService
         database()
             ->delete(
                 statement('delete')
-                    ->table('clusters')
+                    ->table('game_clusters')
                     ->where('id = :id')
             )
             ->bind([':id' => $this->old['id']])

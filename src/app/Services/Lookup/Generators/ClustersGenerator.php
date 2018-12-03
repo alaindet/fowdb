@@ -25,7 +25,7 @@ class ClustersGenerator implements Generatable
                     ])
                     ->from(
                         'game_sets s
-                        INNER JOIN clusters c ON s.clusters_id = c.id'
+                        INNER JOIN game_clusters c ON s.clusters_id = c.id'
                     )
                     ->orderBy([
                         'c.id DESC',
