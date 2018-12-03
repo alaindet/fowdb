@@ -22,6 +22,10 @@
   <?=component('breadcrumb', [
     'Admin' => url('profile'),
     'Rulings' => url('rulings/manage'),
+    '(&larr; Card page)' => url_old(
+      'card',
+      ['code' => urlencode($card_code)]
+    ),
     'Update' => '#'
   ])?>
 </div>

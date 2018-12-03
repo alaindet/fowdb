@@ -44,7 +44,6 @@ class CardUpdateService extends CrudService
             }
         }
 
-        // Create a new card entity on the database
         database()
             ->update(
                 statement('update')

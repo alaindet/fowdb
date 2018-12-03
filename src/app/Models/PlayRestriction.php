@@ -1,10 +1,22 @@
 <?php
 
 namespace App\Models;
-use App\Exceptions\ModelException;
 
-class PlayRestriction
+use App\Exceptions\ModelException;
+use App\Base\Model;
+
+class PlayRestriction extends Model
 {
+    public $table = 'play_restrictions';
+
+    public $numeric = [
+        'id',
+        'cards_id',
+        'formats_id',
+        'deck',
+        'copies'
+    ];
+
     private static $pageFunctions = [
         'banlist' => 'getBanlistPageData',
         'card' => 'getCardPageData',

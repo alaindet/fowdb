@@ -25,7 +25,7 @@
       action="<?=url('rulings/create')?>"
       method="post"
       class="form-horizontal"
-      id="ruling-form"
+      id="validate-this-form"
     >
       <?=csrf_token()?>
 
@@ -77,10 +77,13 @@
               data-lightbox="cards"
               data-title="<?="{$card['name']} ({$card['code']})"?>"
             >
-              <img
-                src="<?=asset($card['image_path'])?>"
-                width="200px"
-              >
+              <span class="fd-zoomable-lg">
+                <img
+                  src="<?=asset($card['image_path'])?>"
+                  width="200px"
+                  class="img-responsive"
+                >
+              </span>
             </a>
 
             <!-- Link -->
