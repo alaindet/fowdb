@@ -1,7 +1,6 @@
 <?php
 
 // Imports
-use \App\Legacy\Database as LegacyDatabase;
 use \App\Services\Database\Database;
 use \App\Http\Request\Input;
 use \App\Services\Database\Statement\SqlStatement;
@@ -17,7 +16,6 @@ use \App\Legacy\Authorization as LegacyAuthorization;
  * auth
  * config
  * database // TO DO
- * database_old // LEGACY
  * dump
  * input
  * lookup
@@ -97,16 +95,6 @@ function auth(): LegacyAuthorization
 function config(string $name)
 {
 	return (\App\Services\ Config::getInstance())->get($name);
-}
-
-/**
- * LEGACY: Returns the database singleton
- *
- * @return LegacyDatabase
- */
-function database_old(): LegacyDatabase
-{
-    return LegacyDatabase::getInstance();
 }
 
 /**

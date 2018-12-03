@@ -1,9 +1,13 @@
 <?php
 
 // Get last inserted CRs from database
-$crs = database_old()->get(
-    "SELECT * FROM comprehensive_rules ORDER BY date_inserted DESC"
-);
+$crs = database()
+    ->select(
+        statement('select')
+            ->from('comprehensive_rules')
+            ->orderBy('date_inserted DESC')
+    )
+    ->get();
 
 // Assemble breadcrumbs
 echo \App\Legacy\AdminView::breadcrumbs([

@@ -13,16 +13,27 @@ if (!isset($_GET['term']) OR empty($_GET['term'])) {
 }
 
 // Sanitize name (preserve quotes)
-$name = htmlspecialchars($_GET['term'], ENT_QUOTES, 'UTF-8');
-$name = str_replace(['&#039;', '&quot;'], ['\'', "\\\""], $name);
+$name = str_replace(['&#039;', '&quot;'], ['\'', "\\\""], escape($_GET['term']));
 
-$cards = database_old()->get(
-	"SELECT id, name, code, image_path
-	FROM cards
-	WHERE name LIKE \"%{$name}%\" AND clusters_id > 1
-	ORDER BY sets_id DESC, num ASC
-	LIMIT 10"
-);
+$cards = database()
+	->select(
+		statement('select')
+			->fields([
+				'id',
+				'name',
+				'code',
+				'image_path'
+			])
+			->from('cards')
+			->where("name LIKE \"%{$name}%\"")
+			->where('clusters_id > 1')
+			->orderBy([
+				'sets_id DESC',
+				'num ASC',
+			])
+			->limit(10)
+	)
+	->get();
 
 // ERROR: No results found!
 if (empty($cards)) {

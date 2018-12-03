@@ -24,30 +24,34 @@ if (!isset($_GET['v'])) {
     return;
 }
 
-$path = database_old()->get(
-    "SELECT path FROM comprehensive_rules WHERE version = :v",
-    [':v' => $_GET['v']],
-    $first = true
-);
+$cr = database()
+    ->select(
+        statement('select')
+            ->fields('path')
+            ->from('comprehensive_rules')
+            ->where('version = :version')
+    )
+    ->bind([':version' => $_GET['v']])
+    ->first();
 
 // ERROR: Missing CR on database
-if (empty($path)) {
+if (empty($cr)) {
     alert('CR not found on database!', 'warning');
     redirect_old('resources/cr');
 }
 
 // LEGACY CODE ----------------------------------------------------------------
 
-$path['path'] = str_replace(
+$cr['path'] = str_replace(
     '/app/assets/',
     'documents/',
-    $path['path']
+    $cr['path']
 );
 
 // END LEGACY CODE ------------------------------------------------------------
 
 // Read the path and assemble the filename
-$path = $path['path'];
+$path = $cr['path'];
 
 // ERROR: Missing CR on filesystem
 if (!file_exists(path_root($path))) {

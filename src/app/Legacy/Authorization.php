@@ -72,11 +72,16 @@ class Authorization
         // ERROR: No admin hash stored into session
         if (!Session::exists(self::NAME)) return self::ROLE_PUBLIC;
 
-        $user = database_old()->get(
-            "SELECT roles_id FROM users WHERE remember_token = :hash LIMIT 1",
-            [':hash' => Session::get(self::NAME)],
-            $first = true
-        );
+        $user = database()
+            ->select(
+                statement('select')
+                    ->select('roles_id')
+                    ->from('users')
+                    ->where('remember_token = :hash')
+                    ->limit(1)
+            )
+            ->bind([':hash' => Session::get(self::NAME)])
+            ->first();
 
         // ERROR: Invalid hash stored into session
         if (empty($user)) return self::ROLE_PUBLIC;
@@ -102,7 +107,7 @@ class Authorization
         }
 
         $currentLevel = $this->level();
-        $aliases = $this->actsAs[$currentLevel];
+        $aliases = $this->actsAs[$currentLevel] ?? [];
         $currentLevels = array_merge([$currentLevel], $aliases);
         $requiredLevel = $this->roleToLevel[$role];
         

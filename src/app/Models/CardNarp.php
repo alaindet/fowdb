@@ -21,7 +21,7 @@ class CardNarp extends Model
 {
     public $table = 'card_narps';
 
-    public static $map = [
+    public static $id2name = [
         'Base Print',
         'Alternate art',
         'Reprint',
@@ -36,12 +36,19 @@ class CardNarp extends Model
      */
     public static function getBaseIdByName(string $name): int
     {
-        $cards = database_old()->get(
-            "SELECT id FROM cards WHERE narp = 0 AND name = :name LIMIT 1",
-            [':name' => $name]
-        );
+        $item = database()
+            ->select(
+                statement('select')
+                    ->select('id')
+                    ->from('cards')
+                    ->where('narp = 0')
+                    ->where('name = :name')
+                    ->limit(1)
+            )
+            ->bind([':name' => $name])
+            ->first();
 
-        return (int) $cards[0]['id'];
+        return (int) $item['id'];
     }
 
     /**
@@ -52,13 +59,19 @@ class CardNarp extends Model
      */
     public static function getBaseCode(string $name): string
     {
-        return database_old()->get(
-            "SELECT narp, code
-            FROM cards
-            WHERE narp = 0 AND name = :name
-            LIMIT 1",
-            [':name' => $name]
-        )[0]['code'];
+        $item = database()
+            ->select(
+                statement('select')
+                    ->select('code')
+                    ->from('cards')
+                    ->where('narp = 0')
+                    ->where('name = :name')
+                    ->limit(1)
+            )
+            ->bind([':name' => $name])
+            ->first();
+        
+        return $item['code'];
     }
 
     /**
@@ -76,20 +89,42 @@ class CardNarp extends Model
      */
     public static function getRelatedCards(string $name): array
     {
-        $cards = database_old()->get(
-            "SELECT narp, code
-            FROM cards
-            WHERE narp > 0 AND name = :name
-            ORDER BY clusters_id DESC, sets_id DESC, num DESC",
-            [':name' => $name]
-        );
+        $items = database()
+            ->select(
+                statement('select')
+                    ->select([
+                        'narp',
+                        'code'
+                    ])
+                    ->from('cards')
+                    ->where('narp > 0')
+                    ->where('name = :name')
+                    ->orderBy([
+                        'clusters_id DESC',
+                        'sets_id DESC',
+                        'num DESC'
+                    ])
 
-        return array_reduce($cards, function ($result, $card) {
-            $title = self::$map[$card['narp']].'s';
-            if (!isset($result[$title])) $result[$title] = [];
-            $result[$title][] = $card['code'];
-            return $result;
-        }, []);
+            )
+            ->bind([':name' => $name])
+            ->get();
+
+        $results = [];
+
+        foreach ($items as $item) {
+
+            // Ex.: Alternate arts
+            $title = self::$id2name[ $item['narp'] ] . 's';
+
+            // Initialize the list if needed
+            if (!isset($results[$title])) $results[$title] = [];
+
+            // Add this card to the list
+            $results[$title][] = $item['code'];
+
+        }
+
+        return $results;
     }
 
     /**

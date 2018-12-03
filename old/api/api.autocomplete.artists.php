@@ -13,16 +13,18 @@ if (!isset($_GET['term']) || empty($_GET['term'])) {
 }
 
 // Sanitize name (preserve quotes)
-$name = htmlspecialchars($_GET['term'], ENT_QUOTES, 'UTF-8');
-$name = str_replace(['&#039;', '&quot;'], ['\'', "\\\""], $name);
+$name = str_replace(['&#039;', '&quot;'], ['\'', "\\\""], escape($_GET['term']));
 
-$artists = database_old()->get(
-	"SELECT DISTINCT artist_name
-	FROM cards
-	WHERE artist_name LIKE \"%{$name}%\"
-	ORDER BY artist_name ASC
-	LIMIT 20"
-);
+$artists = database()
+	->select(
+		statement('select')
+			->fields('DISTINCT artist_name')
+			->from('cards')
+			->where("artist_name LIKE \"%{$name}%\"")
+			->orderBy('artist_name ASC')
+			->limit(20)
+	)
+	->get();
 
 // ERROR: No results found!
 if (empty($artists)) {

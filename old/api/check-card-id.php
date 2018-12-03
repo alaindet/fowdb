@@ -12,11 +12,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 	return;
 }
 
-$card = database_old()->get(
-	'SELECT id FROM cards WHERE id = :id LIMIT 1',
-	[':id' => $_GET['id']],
-	$first = true
-);
+$card = (new \App\Models\Card)->byId($_GET['id']);
 
 // ERROR: Card not found
 if (empty($card)) {
