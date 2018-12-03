@@ -12,11 +12,26 @@ $links = [
 		'url' => '',
 		'icon' => 'fa fa-file-text',
 		'dropdown' => [
-			['label' => 'Comprehensive Rules', 'url' => url_old('resources/cr')],
-			['label' => 'Banlists',            'url' => url_old('resources/ban')],
-			['label' => 'Errata',              'url' => url_old('resources/errata')],
-			['label' => 'Formats',             'url' => url_old('resources/formats')],
-			['label' => 'Races and Traits',    'url' => url_old('resources/races')],
+			[
+				'label' => 'Comprehensive Rules',
+				'url' => url('cr')
+			],
+			[
+				'label' => 'Banlists',
+				'url' => url_old('resources/ban')
+			],
+			[
+				'label' => 'Errata',
+				'url' => url_old('resources/errata')
+			],
+			[
+				'label' => 'Formats',
+				'url' => url_old('resources/formats')
+			],
+			[
+				'label' => 'Races and Traits',
+				'url' => url_old('resources/races')
+			],
 		]
 	],
 ];
