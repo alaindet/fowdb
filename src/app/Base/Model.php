@@ -7,6 +7,8 @@ use App\Exceptions\ModelException;
 
 abstract class Model extends Base
 {
+    protected $data = [];
+
     /**
      * Returns all the resources
      *
@@ -64,7 +66,8 @@ abstract class Model extends Base
             throw new ModelException('Missing table name for model');
         }
 
-        $resource = database()
+        // Store data into the model
+        $this->data = database()
             ->select(
                 statement('select')
                     ->select(isset($fields) ? implode(',', $fields) : '*')
@@ -76,13 +79,13 @@ abstract class Model extends Base
             ->first();
 
         // Return raw data (default)
-        if (empty($fieldsToRender)) return $resource;
+        if (empty($fieldsToRender)) return $this->data;
 
         // Render fields
         foreach ($fieldsToRender as $field) {
-            $resource[$field] = render($resource[$field]);
+            $this->data[$field] = render($this->data[$field]);
         }
 
-        return $resource;
+        return $this->data;
     }
 }
