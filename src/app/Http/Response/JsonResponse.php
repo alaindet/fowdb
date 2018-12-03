@@ -2,35 +2,37 @@
 
 namespace App\Http\Response;
 
-class JsonResponse
+use App\Http\Response\ResponseAbstract;
+
+class JsonResponse extends ResponseAbstract
 {
-    private $data;
-
-    public function setData(array $data): JsonResponse
+    /**
+     * Sets specific headers to allow cross-domain API calls
+     *
+     * @return ResponseAbstract
+     */
+    public function setCorsHeaders(): ResponseAbstract
     {
-        $this->data = $data;
+        $this->setHeaders([
+            'Access-Control-Allow-Origin' => '*',
+            'Access-Control-Allow-Methods' => 'POST, GET, OPTIONS',
+            'Access-Control-Max-Age' => '1000',
+            'Access-Control-Allow-Headers' => 'Content-Type',
+        ]);
 
         return $this;
     }
 
-    public function setCorsHeaders(): JsonResponse
-    {
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
-        header('Access-Control-Max-Age: 1000');
-        header('Access-Control-Allow-Headers: Content-Type');
-
-        return $this;
-    }
-
-    private function setJsonHeader(): void
-    {
-        header('Content-Type: application/json');
-    }
-
+    /**
+     * Returns the response as JSON
+     *
+     * @return string
+     */
     public function render(): string
     {
-        $this->setJsonHeader();
+        $this->setHeader('Content-Type', 'application/json');
+
+        $this->outputHeaders();
 
         return json_encode(
             $this->data,
