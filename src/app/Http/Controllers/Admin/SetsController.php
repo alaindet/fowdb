@@ -10,7 +10,7 @@ use App\Services\Resources\Set\SetCreateService;
 use App\Services\Resources\Set\SetDeleteService;
 use App\Services\Resources\Set\SetUpdateService;
 use App\Views\Page;
-use App\Models\CardSet;
+use App\Models\GameSet as Model;
 
 class SetsController extends Controller
 {
@@ -109,7 +109,7 @@ class SetsController extends Controller
             ->variables([
                 'previous' => $request->input()->previous(),
                 'clusters' => $clusters,
-                'item' => (new CardSet)->byId($id)
+                'item' => (new Model)->byId($id)
             ])
             ->render();
     }

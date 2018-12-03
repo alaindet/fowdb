@@ -3,13 +3,13 @@
 namespace App\Services\Lookup\Generators;
 
 use App\Services\Lookup\Generatable;
-use App\Models\CardSet;
+use App\Models\GameSet as Model;
 
 class SetsGenerator implements Generatable
 {
     public function generate(): array
     {
-        $items = (new CardSet)->all();
+        $items = (new Model)->all();
 
         $result = [
             'code2id'   => [],

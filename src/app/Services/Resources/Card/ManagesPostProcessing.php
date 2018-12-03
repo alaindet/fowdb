@@ -3,7 +3,7 @@
 namespace App\Services\Resources\Card;
 
 use App\Exceptions\CrudException;
-use App\Models\CardSet;
+use App\Models\GameSet;
 use App\Models\Card;
 
 /**
@@ -169,7 +169,7 @@ trait ManagesPostProcessing
      */
     public function calculateCluster(): void
     {
-        $set = (new CardSet)->byId($this->state['set-id'], ['clusters_id']);
+        $set = (new GameSet)->byId($this->state['set-id'], ['clusters_id']);
         $this->new['clusters_id'] = $set['clusters_id'];
     }
 

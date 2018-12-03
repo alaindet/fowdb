@@ -5,13 +5,13 @@ namespace App\Services\Resources\Set;
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
 use App\Services\Resources\Set\SetInputProcessor;
-use App\Models\CardSet;
+use App\Models\GameSet as Model;
 use App\Services\FileSystem;
 
 class SetUpdateService extends CrudService
 {
     public $inputProcessor = SetInputProcessor::class;
-    public $model = CardSet::class;
+    public $model = Model::class;
     public $lookup = ['clusters', 'sets', 'spoilers'];
 
     public function syncDatabase(): CrudServiceInterface
