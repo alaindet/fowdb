@@ -8,7 +8,10 @@ $items = database()
 			'r.date `date`',
 			'r.text `text`',
 		])
-		->from('rulings r INNER JOIN cards c ON r.cards_id = c.id')
+		->from(
+			'game_rulings r
+			INNER JOIN cards c ON r.cards_id = c.id'
+		)
 		->where('r.is_errata = 1')
 		->orderBy('r.date DESC')
 	)

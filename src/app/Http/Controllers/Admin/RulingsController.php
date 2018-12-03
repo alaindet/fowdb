@@ -68,7 +68,8 @@ class RulingsController extends Controller
                 'r.text as ruling_text'
             ])
             ->from(
-                'rulings r INNER JOIN cards c ON r.cards_id = c.id'
+                'game_rulings r
+                INNER JOIN cards c ON r.cards_id = c.id'
             )
             ->orderBy([
                 'r.date DESC',
@@ -169,7 +170,10 @@ class RulingsController extends Controller
                         'r.is_errata ruling_is_errata',
                         'r.text ruling_text',
                     ])
-                    ->from('rulings r INNER JOIN cards c ON r.cards_id = c.id')
+                    ->from(
+                        'game_rulings r
+                        INNER JOIN cards c ON r.cards_id = c.id'
+                    )
                     ->where('r.id = :id')
                     ->limit(1)
             )
@@ -224,7 +228,10 @@ class RulingsController extends Controller
                         'r.is_errata ruling_is_errata',
                         'r.text ruling_text',
                     ])
-                    ->from('rulings r INNER JOIN cards c ON r.cards_id = c.id')
+                    ->from(
+                        'game_rulings r
+                        INNER JOIN cards c ON r.cards_id = c.id'
+                    )
                     ->where('r.id = :id')
                     ->limit(1)
             )

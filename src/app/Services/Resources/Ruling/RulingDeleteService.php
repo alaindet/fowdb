@@ -15,7 +15,7 @@ class RulingDeleteService extends CrudService
     public function syncDatabase(): CrudServiceInterface
     {
         $statement = statement('delete')
-            ->table('rulings')
+            ->table('game_rulings')
             ->where('id = :id');
 
         $bind = [':id' => $this->old['id']];

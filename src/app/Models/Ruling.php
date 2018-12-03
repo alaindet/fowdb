@@ -6,7 +6,7 @@ use App\Base\Model;
 
 class Ruling extends Model
 {
-    public $table = 'rulings';
+    public $table = 'game_rulings';
 
     /**
      * Returns all rulings having the same card ID

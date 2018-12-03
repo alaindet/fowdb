@@ -64,7 +64,7 @@ class SelectSqlStatement extends SqlStatement
     }
 
     /**
-     * Sets the table_references expression ('cards', 'cards INNER JOIN rulings...')
+     * Sets the table_references expression ('cards', 'cards INNER JOIN game_rulings...')
      *
      * @param string $table
      * @return SelectSqlStatement

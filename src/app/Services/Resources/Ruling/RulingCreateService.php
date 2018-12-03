@@ -17,7 +17,7 @@ class RulingCreateService extends CrudService
         // Create ruling entity on the database
         database()
             ->insert(statement('insert')
-                ->table('rulings')
+                ->table('game_rulings')
                 ->values([
                     'cards_id' => ':cardid',
                     'date' => ':date',
