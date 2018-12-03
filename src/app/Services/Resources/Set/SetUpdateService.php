@@ -27,7 +27,7 @@ class SetUpdateService extends CrudService
         }
 
         $statement = statement('update')
-            ->table('sets')
+            ->table('game_sets')
             ->values($placeholders)
             ->where('id = :id');
 

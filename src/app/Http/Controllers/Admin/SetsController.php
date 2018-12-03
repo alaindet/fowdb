@@ -30,7 +30,8 @@ class SetsController extends Controller
                         'c.code cluster_code'
                     ])
                     ->from(
-                        'sets s INNER JOIN clusters c ON s.clusters_id = c.id'
+                        'game_sets s
+                        INNER JOIN clusters c ON s.clusters_id = c.id'
                     )
                     ->orderBy('s.id DESC')
             )
@@ -153,7 +154,8 @@ class SetsController extends Controller
                         's.is_spoiler is_spoiler'
                     ])
                     ->from(
-                        'sets s INNER JOIN clusters c ON s.clusters_id = c.id'
+                        'game_sets s
+                        INNER JOIN clusters c ON s.clusters_id = c.id'
                     )
                     ->where('s.id = :id')
             )

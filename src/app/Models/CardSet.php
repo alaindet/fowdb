@@ -6,5 +6,5 @@ use App\Base\Model;
 
 class CardSet extends Model
 {
-    public $table = 'sets';
+    public $table = 'game_sets';
 }

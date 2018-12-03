@@ -12,9 +12,9 @@ $results = database()
       ])
       ->from(
         'game_formats f
-        JOIN pivot_cluster_format cf ON f.id = cf.formats_id
-        JOIN clusters c ON cf.clusters_id = c.id
-        JOIN sets s ON c.id = s.clusters_id'
+        INNER JOIN pivot_cluster_format cf ON f.id = cf.formats_id
+        INNER JOIN clusters c ON cf.clusters_id = c.id
+        INNER JOIN game_sets s ON c.id = s.clusters_id'
       )
       ->orderBy([
         'f.is_multi_cluster DESC',

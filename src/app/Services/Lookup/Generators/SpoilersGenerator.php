@@ -11,7 +11,7 @@ class SpoilersGenerator implements Generatable
         $items = database()
             ->select(statement('select')
                 ->select(['id', 'code', 'name', 'count'])
-                ->from('sets')
+                ->from('game_sets')
                 ->where('is_spoiler = 1')
                 ->orderBy('id DESC')
             )

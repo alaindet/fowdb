@@ -44,7 +44,7 @@ trait ManagesPostProcessing
         $existing = database()
             ->select(
                 statement('select')
-                    ->from('sets')
+                    ->from('game_sets')
                     ->where('id = :id', 'OR')
                     ->where('name = :name', 'OR')
                     ->where('code = :code', 'OR')
@@ -79,7 +79,7 @@ trait ManagesPostProcessing
         $existing = database()
             ->select(
                 statement('select')
-                    ->from('sets')
+                    ->from('game_sets')
                     ->where('NOT(id = :id)')
                     ->where([
                         'name = :name',

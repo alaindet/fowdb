@@ -27,7 +27,7 @@ class SetCreateService extends CrudService
         database()
             ->insert(
                 statement('insert')
-                    ->table('sets')
+                    ->table('game_sets')
                     ->values($placeholders)
             )
             ->bind($bind)

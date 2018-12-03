@@ -18,7 +18,7 @@ class SetDeleteService extends CrudService
         database()
             ->delete(
                 statement('delete')
-                    ->table('sets')
+                    ->table('game_sets')
                     ->where('id = :id')
             )
             ->bind([':id' => $this->old['id']])

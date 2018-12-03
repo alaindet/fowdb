@@ -41,7 +41,7 @@ $set = database()
     ->select(
         statement('select')
             ->select(['name', 'code'])
-            ->from('sets')
+            ->from('game_sets')
             ->where('id = :id')
     )
     ->bind([':id' => $session['set']])
