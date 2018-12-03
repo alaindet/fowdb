@@ -42,6 +42,7 @@ $c = ['c' => '[A-Z0-9]+\-\d{3}\s[A-Z]+']; // C => card
  */
 $public = [
 
+    ['GET','','HomeController','show'],
     [
         'GET','cr/{version}',
         'GameRulesController','show',
@@ -182,6 +183,46 @@ $judge = [
         'POST','restrictions/delete/{d}',
         'Admin\\PlayRestrictionsController','delete',
         $d,['token']
+    ],
+
+    // Comprehensive Rules
+    [
+        'GET','cr/manage',
+        'Admin\\GameRulesController','index'
+    ],
+    [
+        'GET','cr/create',
+        'Admin\\GameRulesController','createForm'
+    ],
+    [
+        'POST','cr/create',
+        'Admin\\GameRulesController','create',
+        null, ['token']
+    ],
+    [
+        'GET','cr/update/{d}',
+        'Admin\\GameRulesController','updateForm',
+        $d
+    ],
+    [
+        'POST','cr/update/{d}',
+        'Admin\\GameRulesController','update',
+        $d, ['token']
+    ],
+    [
+        'GET','cr/delete/{d}',
+        'Admin\\GameRulesController','deleteForm',
+        $d
+    ],
+    [
+        'POST','cr/delete/{d}',
+        'Admin\\GameRulesController','delete',
+        $d, ['token']
+    ],
+    [
+        'GET','cr/file/{d}',
+        'Admin\\GameRulesController','showFile',
+        $d
     ],
 
     // API --------------------------------------------------------------------
