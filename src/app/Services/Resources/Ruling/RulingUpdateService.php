@@ -4,14 +4,14 @@ namespace App\Services\Resources\Ruling;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
-use App\Services\Resources\Ruling\RulingInputProcessor;
+use App\Services\Resources\Ruling\RulingInputProcessor as InputProcessor;
 use App\Models\Card;
-use App\Models\Ruling;
+use App\Models\GameRuling as Model;
 
 class RulingUpdateService extends CrudService
 {
-    public $inputProcessor = RulingInputProcessor::class;
-    public $model = Ruling::class;
+    public $inputProcessor = InputProcessor::class;
+    public $model = Model::class;
 
     public function syncDatabase(): CrudServiceInterface
     {

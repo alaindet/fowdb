@@ -4,13 +4,12 @@ namespace App\Services\Resources\Ruling;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
-use App\Services\Resources\Ruling\RulingInputProcessor;
 use App\Models\Card;
-use App\Models\Ruling;
+use App\Models\GameRuling as Model;
 
 class RulingDeleteService extends CrudService
 {
-    public $model = Ruling::class;
+    public $model = Model::class;
 
     public function syncDatabase(): CrudServiceInterface
     {

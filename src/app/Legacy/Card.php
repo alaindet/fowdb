@@ -5,7 +5,7 @@ namespace App\Legacy;
 use App\Models\PlayRestriction;
 use App\Models\CardNarp;
 use App\Models\Card as Model;
-use App\Models\Ruling;
+use App\Models\GameRuling;
 use App\Utils\Arrays;
 use App\Views\Card\Card as View;
 
@@ -190,7 +190,7 @@ class Card
             }
             
             // $rulings -------------------------------------------------------
-            $rulings = (new Ruling)->byCardId(
+            $rulings = (new GameRuling)->byCardId(
                 $baseCardId,
                 $fields = ['id', 'date', 'is_errata', 'text'],
                 $fieldsToRender = ['text']

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Base\Model;
 
-class Ruling extends Model
+class GameRuling extends Model
 {
     public $table = 'game_rulings';
 
