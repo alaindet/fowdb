@@ -3,71 +3,59 @@
 // http://db.fowtc.us/?p=cr - List all
 // http://db.fowtc.us/?p=cr&v=6.3a#1400 - Show specific paragraph
 
+use \App\Legacy\Redirect;
+use \App\Services\Alert;
+
 // Show all available CR versions
 if (!isset($_GET['v'])) {
-    
-    // Get all CRs from db
-    $items = database()
-        ->select(statement('select')
-            ->from('comprehensive_rules')
-            ->orderBy('date_validity DESC')
-        )
-        ->get();
-    
-    // Show page
     echo view_old(
         'Comprehensive Rules',
         'old/resources/cr/all.php',
-        null,
-        ['items' => $items]
+        $options = null,
+        $variables = [
+            'items' => database()
+                ->select(
+                    statement('select')
+                        ->from('game_rules')
+                        ->orderBy('date_validity DESC')
+                )
+                ->get()
+        ]
     );
     return;
 }
 
-$cr = database()
+$item = database()
     ->select(
         statement('select')
-            ->fields('path')
-            ->from('comprehensive_rules')
+            ->fields('file')
+            ->from('game_rules')
             ->where('version = :version')
     )
     ->bind([':version' => $_GET['v']])
     ->first();
 
 // ERROR: Missing CR on database
-if (empty($cr)) {
-    alert('CR not found on database!', 'warning');
-    redirect_old('resources/cr');
+if (empty($item)) {
+    Alert::add('CR not found on database!', 'warning');
+    Redirect::to('resources/cr');
 }
 
-// LEGACY CODE ----------------------------------------------------------------
-
-$cr['path'] = str_replace(
-    '/app/assets/',
-    'documents/',
-    $cr['path']
-);
-
-// END LEGACY CODE ------------------------------------------------------------
-
-// Read the path and assemble the filename
-$path = $cr['path'];
-
 // ERROR: Missing CR on filesystem
-if (!file_exists(path_root($path))) {
-    alert('CR not found on disk!', 'warning');
-    redirect_old('resources/cr');
+if (!file_exists(path_root($item['file']))) {
+    Alert::add('CR not found on disk!', 'warning');
+    Redirect::to('resources/cr');
 }
 
 // Show page
 echo view_old(
-    $title = 'Comprehensive Rules '.$_GET['v'],
-    $script = $path,
+    $title = "Comprehensive Rules {$_GET['v']}",
+    $document = $item['file'],
     $options = [
         'js' => [
             'public/cr'
         ]
     ],
-    $vars = null,
+    $variables = null,
     $minimize = false
 );

@@ -53,21 +53,21 @@ if (isset($_GET['p'])) {
             return;
 
         // Admin --------------------------------------------------------------
-        case 'admin/cr':
-            echo view_old(
-                'Admin - Comprehensive Rules',
-                'old/admin/cr/index.php'
-            );
-            return;
-        case 'admin/cr/action':
-            require path_root('old/admin/cr/actions.php');
-            return;
-        case 'admin/cr/raw':
-            echo view_old('Admin:CR:View', 'old/admin/cr/view-txt.php');
-            return;
-        case 'admin/hash':
-            echo view_old('Admin:Hash', 'old/admin/hash/index.php');
-            return;
+        // case 'admin/cr':
+        //     echo view_old(
+        //         'Admin - Comprehensive Rules',
+        //         'old/admin/cr/index.php'
+        //     );
+        //     return;
+        // case 'admin/cr/action':
+        //     require path_root('old/admin/cr/actions.php');
+        //     return;
+        // case 'admin/cr/raw':
+        //     echo view_old('Admin:CR:View', 'old/admin/cr/view-txt.php');
+        //     return;
+        // case 'admin/hash':
+        //     echo view_old('Admin:Hash', 'old/admin/hash/index.php');
+        //     return;
         case 'admin/trim-image':
             $method = $_SERVER['REQUEST_METHOD'];
             if ($method === 'GET') {
