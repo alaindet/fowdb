@@ -10,8 +10,9 @@ $crs = database()
     ->get();
 
 // Assemble breadcrumbs
-echo \App\Legacy\AdminView::breadcrumbs([
-    "Comprehensive Rules" => url_old('admin/cr')
+echo component('breadcrumb', [
+    'Admin' => url('profile'),
+    'Comprehensive Rules' => '#',
 ]);
 
 // Show list of CRs

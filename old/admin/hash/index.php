@@ -2,7 +2,6 @@
 
 use \App\Exceptions\CsrfTokenException;
 use \App\Http\Request\Input;
-use \App\Legacy\AdminView;
 use \App\Legacy\Authorization;
 use \App\Services\CsrfToken;
 
@@ -39,7 +38,7 @@ if ($input->has('toHash')) {
 
 <div class="page-header">
   <h1>Hashing tool</h1>
-  <?=AdminView::breadcrumbs($breadcrumbs)?>
+  <?=component('breadcrumb', $breadcrumbs)?>
 </div>
 
 <?php if (isset($hash)): // Results ?>

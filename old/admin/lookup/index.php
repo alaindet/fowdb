@@ -1,6 +1,5 @@
 <?php
 
-use \App\Legacy\AdminView as View;
 use \App\Services\Lookup\Lookup;
 use \App\Utils\Logger;
 use \App\Legacy\Authorization;
