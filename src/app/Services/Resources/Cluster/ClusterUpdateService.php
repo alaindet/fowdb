@@ -5,12 +5,12 @@ namespace App\Services\Resources\Cluster;
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
 use App\Services\Resources\Cluster\ClusterInputProcessor;
-use App\Models\CardCluster;
+use App\Models\GameCluster as Model;
 
 class ClusterUpdateService extends CrudService
 {
     public $inputProcessor = ClusterInputProcessor::class;
-    public $model = CardCluster::class;
+    public $model = Model::class;
     public $lookup = ['clusters', 'formats'];
 
     public function syncDatabase(): CrudServiceInterface

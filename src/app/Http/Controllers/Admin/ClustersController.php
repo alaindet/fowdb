@@ -7,7 +7,7 @@ use App\Base\Controller;
 use App\Exceptions\CrudException;
 use App\Http\Request\Request;
 use App\Http\Response\JsonResponse;
-use App\Models\CardCluster;
+use App\Models\GameCluster as Model;
 use App\Services\CsrfToken;
 use App\Services\Resources\Cluster\ClusterCreateService;
 use App\Services\Resources\Cluster\ClusterDeleteService;
@@ -55,7 +55,7 @@ class ClustersController extends Controller
     public function apiShow(Request $request, $id): string
     {
         // Read resource
-        $data = (new CardCluster)->byId($id);
+        $data = (new Model)->byId($id);
 
         // Build data
         if (empty($data)) {

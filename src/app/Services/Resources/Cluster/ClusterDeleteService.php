@@ -5,11 +5,11 @@ namespace App\Services\Resources\Cluster;
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
 use App\Services\FileSystem;
-use App\Models\CardCluster;
+use App\Models\GameCluster as Model;
 
 class ClusterDeleteService extends CrudService
 {
-    public $model = CardCluster::class;
+    public $model = Model::class;
     public $lookup = ['clusters', 'formats'];
 
     public function syncDatabase(): CrudServiceInterface

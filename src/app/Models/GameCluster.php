@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Base\Model;
 
-class CardCluster extends Model
+class GameCluster extends Model
 {
     public $table = 'game_clusters';
 }
