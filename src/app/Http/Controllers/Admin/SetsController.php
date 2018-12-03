@@ -74,7 +74,7 @@ class SetsController extends Controller
     {
         $request->validate('post', [
             'cluster-id' => ['required','is:integer','exists:clusters,id'],
-            'id' => ['required','is:integer','!exists:sets,id'],
+            'id' => ['required','is:integer','!exists:game_sets,id'],
             'name' => ['required'],
             'code' => ['required','is:alphanumeric'],
             'count' => ['required','is:integer','between:1,255'],
@@ -118,7 +118,7 @@ class SetsController extends Controller
     {
         $request->validate('post', [
             'cluster-id' => ['required','is:integer','exists:clusters,id'],
-            'id' => ['required','is:integer','exists:sets,id'],
+            'id' => ['required','is:integer','exists:game_sets,id'],
             'name' => ['required'],
             'code' => ['required','is:alphanumeric'],
             'count' => ['required','is:integer','between:1,255'],
