@@ -33,9 +33,9 @@ if (empty($items)) {
 
 <div class="row">
 	<div class="col-xs-12">
-		<div class="list-group f-list-group">
+		<div class="list-group fd-list-group">
 			<?php foreach ($items as $item): ?>
-			  <div class="list-group-item f-list-group-item">
+			  <div class="list-group-item">
 			    <h4 class="list-group-item-heading">
 			    	<em><?=$item['date']?></em>
 			    	<a
