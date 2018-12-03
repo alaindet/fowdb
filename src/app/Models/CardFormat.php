@@ -6,5 +6,5 @@ use App\Base\Model;
 
 class CardFormat extends Model
 {
-    public $table = 'formats';
+    public $table = 'game_formats';
 }

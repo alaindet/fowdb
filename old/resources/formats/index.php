@@ -11,7 +11,7 @@ $results = database()
         's.code scode',
       ])
       ->from(
-        'formats f
+        'game_formats f
         JOIN pivot_cluster_format cf ON f.id = cf.formats_id
         JOIN clusters c ON cf.clusters_id = c.id
         JOIN sets s ON c.id = s.clusters_id'

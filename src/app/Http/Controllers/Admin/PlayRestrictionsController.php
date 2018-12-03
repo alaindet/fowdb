@@ -77,7 +77,7 @@ class PlayRestrictionsController extends Controller
             ->from(
                 'play_restrictions r
                 INNER JOIN cards c ON r.cards_id = c.id
-                INNER JOIN formats f ON r.formats_id = f.id'
+                INNER JOIN game_formats f ON r.formats_id = f.id'
             )
             ->where('c.narp = 0') // Base prints only
             ->orderBy('r.id DESC');
@@ -172,7 +172,7 @@ class PlayRestrictionsController extends Controller
             ->from(
                 'play_restrictions r
                 INNER JOIN cards c ON r.cards_id = c.id
-                INNER JOIN formats f ON r.formats_id = f.id'
+                INNER JOIN game_formats f ON r.formats_id = f.id'
             )
             ->where('r.id = :id');
 
@@ -243,7 +243,7 @@ class PlayRestrictionsController extends Controller
             ->from(
                 'play_restrictions r
                 INNER JOIN cards c ON r.cards_id = c.id
-                INNER JOIN formats f ON r.formats_id = f.id'
+                INNER JOIN game_formats f ON r.formats_id = f.id'
             )
             ->where('r.id = :id');
 

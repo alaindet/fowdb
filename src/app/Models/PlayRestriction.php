@@ -72,7 +72,7 @@ class PlayRestriction extends Model
                     ->from(
                         'play_restrictions r
                         INNER JOIN cards c ON r.cards_id = c.id
-                        INNER JOIN formats f ON r.formats_id = f.id'        
+                        INNER JOIN game_formats f ON r.formats_id = f.id'        
                     )
                     ->where('c.narp = 0')
                     ->orderBy([
@@ -105,7 +105,7 @@ class PlayRestriction extends Model
                     ])
                     ->from('
                         play_restrictions r
-                        INNER JOIN formats f ON r.formats_id = f.id'
+                        INNER JOIN game_formats f ON r.formats_id = f.id'
                     )
                     ->where('cards_id = :id')
                     ->orderBy([
