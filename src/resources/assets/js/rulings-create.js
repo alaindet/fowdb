@@ -5,7 +5,7 @@ $(document).ready(function() {
             cardName: $('#card-name-autocomplete'),
             cardId: $('#card-id'),
             cardImage: $('#card-image'),
-            rulingForm: $('#ruling-form'),
+            form: $('#validate-this-form'),
         },
         url: {
             autocomplete: '/old/api/autocomplete-name-label.php',
@@ -49,11 +49,11 @@ $(document).ready(function() {
     });
 
     // Validate the form before submitting
-    app.el.rulingForm.on('submit', function (event) {
+    app.el.form.on('submit', function (event) {
         event.preventDefault();
         var id = { id: app.el.cardId.val() };
         $.getJSON(app.url.check, id, function (data) {
-            if (data.response) app.el.rulingForm.unbind().submit();
+            if (data.response) app.el.form.unbind().submit();
             else FoWDB.notify(data.message, 'danger');
         });
     });
