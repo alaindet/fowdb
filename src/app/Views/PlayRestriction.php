@@ -32,8 +32,8 @@ class PlayRestriction
                 ],
 
                 // Levels
-                Model::$copiesLabels[$item['ban_copies']],
-                Model::$decksLabels[$item['ban_deck']],
+                Model::$copiesLabels[$item['restriction_copies']],
+                Model::$decksLabels[$item['restriction_deck']],
                 $item['format_name']
 
             );
