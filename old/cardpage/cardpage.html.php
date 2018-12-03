@@ -47,6 +47,13 @@
           Add ruling
 				</a>
 
+				<a
+          href="<?=url('restrictions/create', ['card' => $card['id']])?>"
+          class="btn fd-btn-default"
+        >
+          Add restriction
+				</a>
+
 				<?php if ($hasRulings): ?>
 					<a
 						href="<?=url('rulings/manage', ['card' => $card['id']])?>"
