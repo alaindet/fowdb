@@ -396,8 +396,7 @@ function url_old(string $page = '', array $params = []): string
 }
 
 /**
- * TO DO: Call new Redirect library
- * TEMPORARY: Mimics url_old()
+ * Outputs an absolute URL
  *
  * @param string $page
  * @param array $params

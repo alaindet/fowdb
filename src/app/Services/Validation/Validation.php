@@ -13,6 +13,7 @@ class Validation
     private $skip = false;
     private $validators = [
         'between' => 'validateBetweenRule',
+        '!empty' => 'validateNotEmptyRule',
         'enum' => 'validateEnumRule',
         'equals' => 'validateEqualsRule',
         'except' => 'validateExceptRule',
@@ -79,6 +80,27 @@ class Validation
         }
 
         return true;
+    }
+
+    /**
+     * Rule: input must not be empty
+     *
+     * @param string $inputName
+     * @param string|array $value
+     * @return boolean
+     */
+    public function validateNotEmptyRule(string $inputName, $value = null): bool
+    {
+        $input = $this->input[$inputName];
+        
+        // String
+        if (is_string($input)) return $input !== '';
+
+        // Array
+        elseif (is_array($input)) return count($input) !== 0;
+
+        // Bypass any other type
+        else return true;
     }
 
     /**
