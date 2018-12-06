@@ -2,48 +2,66 @@
 
 namespace App\Services\Resources\GameRules;
 
-// Temporary?
-use App\Services\Resources\GameRules\DocumentBodyBuilderTrait;
-
 /**
  * DocumentConverter properties used
  * 
- * protected $bodyLines;
+ * protected $bodyLines; (from DocumentScannerTrait)
  * protected $css; (from DocumentBuilderTrait)
- * protected $level; (from DocumentBuilderTrait)
  */
 trait DocumentBodyBuilderTrait
 {
-    protected function bodyOpenSection(
-        object &$line,
-        object &$prev,
-        object &$next
-    ): string
+    /**
+     * Opens a generic new unit
+     * Calls specific "opener" function based on current line level
+     * 
+     * Openers are named like openBodyUnitLEVEL
+     * Ex.: openBodyUnit1, openBodyUnit2
+     *
+     * @param object $line Current Line
+     * @param object $prev Previous Line
+     * @return string HTML
+     */
+    protected function openBodyUnit(object &$prev, object &$line): string
     {
-        $opener = 'bodyOpenSection' . $line->level;
-        return $this->$opener($line, $prev, $next);
+        $opener = 'openBodyUnit' . $line->level;
+        return $this->$opener($prev, $line);
     }
 
-    protected function bodyCloseSections(object &$from, object &$to): string
+    /**
+     * Closes all units between two nesting levels in sequential steps
+     * Calls specific "closer" functions for each step
+     * 
+     * Closers are named like closeBodyUnitLEVEL
+     * Ex.: closeBodyUnit1, closeBodyUnit2
+     *
+     * @param object $from
+     * @param object $to
+     * @return string
+     */
+    protected function closeBodyUnits(object &$from, object &$to): string
     {
         $html = '';
 
         for ($level = $from->level; $level >= $to->level; $level--) {
-            $closer = 'bodyCloseSection' . $level;
+            $closer = 'closeBodyUnit' . $level;
             $html .= $this->$closer($level, max($level-1, $to->level));
         }
 
         return $html;
     }
 
-    protected function bodyOpenSection1(
-        object &$line,
-        object &$prev,
-        object &$next
-    ): string
+    /**
+     * Opens a level 1 body unit
+     *
+     * @param object $prev Previous line
+     * @param object $line Current line
+     * @return string HTML
+     */
+    private function openBodyUnit1(object &$prev, object &$line): string
     {
         $dTag = $line->dotlessTag;
         $hider = 'hide-cr-'.$dTag;
+        $top = $this->css['bdy.1.top'];
 
         return (
             '<div class="'.$this->css['bdy.1'].'">'.
@@ -53,16 +71,15 @@ trait DocumentBodyBuilderTrait
                     '<h3>'.
                         '<a name="'.$dTag.'" href="#'.$dTag.'">'
                             .$line->tag.
-                        '</a>'.
-                        '&nbsp;'.
+                        '</a> '.
                         '<span '.
                             'class="js-hider pointer" '.
                             'data-target="#'.$hider.'"'.
                         '>'.
-                            '<i class="fa fa-chevron-down"></i>'.
+                            '<i class="fa fa-chevron-down"></i> '.
                             $line->content.
-                        '</span>'.
-                        '<a href="#top">Top</a>'.
+                        '</span> '.
+                        '<a href="#toc" class="'.$top.'">&#129049;</a>'.
                     '</h3>'.
                 '</div>'.
 
@@ -76,20 +93,31 @@ trait DocumentBodyBuilderTrait
         );
     }
 
-    protected function bodyCloseSection1(int $from, int $to): string
+    /**
+     * Closes a level 1 body unit
+     *
+     * @param int $from Inner nesting
+     * @param int $to Outer nesting
+     * @return string HTML
+     */
+    private function closeBodyUnit1(int $from, int $to): string
     {
         return '</ul></div></div>';
     }
 
-    protected function bodyOpenSection2(
-        object &$line,
-        object &$prev,
-        object &$next
-    ): string
+    /**
+     * Opens a level 2 body unit
+     *
+     * @param object $prev Previous line
+     * @param object $line Current line
+     * @return string HTML
+     */
+    private function openBodyUnit2(object &$prev, object &$line): string
     {
         // Ex.: "1401" => 1400
         $dTag = intval($line->dotlessTag);
         $parent = intval( $dTag / 100 ) * 100;
+        $class = $this->css['bdy.2.top'];
 
         return (
             '<li class="'.$this->css['bdy.2'].'">'.
@@ -98,7 +126,7 @@ trait DocumentBodyBuilderTrait
                         $line->tag.
                     '</a>'.
                     ' '.$line->content.' '.
-                    '<a href="#'.$parent.'">&uarr;</a>'.
+                    '<a href="#'.$parent.'" class="'.$class.'">&#129049;</a>'.
                 '</span>'.
                 '<ul>'
                 // </ul>
@@ -106,7 +134,14 @@ trait DocumentBodyBuilderTrait
         );
     }
 
-    protected function bodyCloseSection2(int $from, int $to): string
+    /**
+     * Closes a level 2 body unit
+     *
+     * @param int $from Inner nesting
+     * @param int $to Outer nesting
+     * @return string HTML
+     */
+    private function closeBodyUnit2(int $from, int $to): string
     {
         return (
             '</ul>'.
@@ -119,11 +154,14 @@ trait DocumentBodyBuilderTrait
         );
     }
 
-    protected function bodyOpenSection3(
-        object &$line,
-        object &$prev,
-        object &$next
-    ): string
+    /**
+     * Opens a level 3 body unit
+     *
+     * @param object $prev Previous line
+     * @param object $line Current line
+     * @return string HTML
+     */
+    private function openBodyUnit3(object &$prev, object &$line): string
     {
         $dTag = &$line->dotlessTag;
         return (
@@ -134,16 +172,26 @@ trait DocumentBodyBuilderTrait
         );
     }
 
-    protected function bodyCloseSection3(int $from, int $to): string
+    /**
+     * Closes a level 3 body unit
+     *
+     * @param int $from Inner nesting
+     * @param int $to Outer nesting
+     * @return string HTML
+     */
+    private function closeBodyUnit3(int $from, int $to): string
     {
         return '</li>';
     }
 
-    protected function bodyOpenSection4(
-        object &$line,
-        object &$prev,
-        object &$next
-    ): string
+    /**
+     * Opens a level 4 body unit
+     *
+     * @param object $prev Previous line
+     * @param object $line Current line
+     * @return string HTML
+     */
+    private function openBodyUnit4(object &$prev, object &$line): string
     {
         $dTag = &$line->dotlessTag;
         return (
@@ -156,7 +204,14 @@ trait DocumentBodyBuilderTrait
         );
     }
 
-    protected function bodyCloseSection4(int $from, int $to): string
+    /**
+     * Closes a level 4 body unit
+     *
+     * @param int $from Inner nesting
+     * @param int $to Outer nesting
+     * @return string HTML
+     */
+    private function closeBodyUnit4(int $from, int $to): string
     {
         return (
             ($from > $to ? '</ul>' : '').
@@ -164,11 +219,14 @@ trait DocumentBodyBuilderTrait
         );
     }
 
-    protected function bodyOpenSection5(
-        object &$line,
-        object &$prev,
-        object &$next
-    ): string
+    /**
+     * Opens a level 5 body unit
+     *
+     * @param object $prev Previous line
+     * @param object $line Current line
+     * @return string HTML
+     */
+    private function openBodyUnit5(object &$prev, object &$line): string
     {
         $dTag = &$line->dotlessTag;
         return (
@@ -180,7 +238,14 @@ trait DocumentBodyBuilderTrait
         );
     }
 
-    protected function bodyCloseSection5(int $from, int $to): string
+    /**
+     * Closes a level 5 body unit
+     *
+     * @param int $from Inner nesting
+     * @param int $to Outer nesting
+     * @return string HTML
+     */
+    private function closeBodyUnit5(int $from, int $to): string
     {
         return (
             ($from > $to ? '</ul>' : '').

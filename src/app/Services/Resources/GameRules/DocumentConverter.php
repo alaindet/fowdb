@@ -4,11 +4,13 @@ namespace App\Services\Resources\GameRules;
 
 use App\Services\Resources\GameRules\DocumentScannerTrait;
 use App\Services\Resources\GameRules\DocumentBuilderTrait;
+use App\Services\Resources\GameRules\DocumentBodyBuilderTrait;
 use App\Services\FileSystem;
 
 /**
  * Converts a Force of Will Comprehensive Rules .txt file into .html
- * To convert the original .pdf to a processable .txt file, see /.dev/cr-convert
+ * To convert the original .pdf to a processable .txt file, see
+ * /.dev/_/cr-convert/README.md
  * 
  * Expected format
  * |---------------------------------------------------------------------------
@@ -31,6 +33,7 @@ use App\Services\FileSystem;
  * | ___101.1 Nesting level 3
  * | ____101.1a Nesting level 4
  * | _____101.1a-i Nesting level 5
+ * | ...
  * | EMPTY LINE
  * |---------------------------------------------------------------------------
  * 
@@ -57,9 +60,7 @@ class DocumentConverter
      * protected $css;
      * 
      * Methods (private not shown)
-     * protected function buildTitle(): string;
-     * protected function buildTableOfContents(): string;
-     * protected function buildBody(): string;
+     * protected function buildDocument(): string;
      */
     use DocumentBuilderTrait;
 
@@ -178,8 +179,7 @@ class DocumentConverter
      *
      * @return void
      */
-    // public function convert(): void
-    public function convert(): string
+    public function convert(): void
     {
         // Populates: $this->titleLines, $this->tocLines, $this->bodyLines
         $this->scanDocument();
@@ -188,9 +188,6 @@ class DocumentConverter
         $this->output = $this->buildDocument();
 
         // Store the HTML output
-        // FileSystem::saveFile($this->outputFilePath, $this->output);
-
-        // TEST
-        return $this->output;
+        FileSystem::saveFile($this->outputFilePath, $this->output);
     }
 }

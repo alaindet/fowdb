@@ -2,17 +2,27 @@
 
 namespace App\Services\Resources\GameRules;
 
-// Temporary?
 use App\Services\Resources\GameRules\DocumentBodyBuilderTrait;
 
 /**
  * DocumentConverter properties used
  * 
- * protected $titleLines;
- * protected $tocLines;
+ * protected $titleLines; (from DocumentScanerTrait)
+ * protected $tocLines; (from DocumentScanerTrait)
+ * protected $bodyLines; (from DocumentScanerTrait)
  */
 trait DocumentBuilderTrait
 {
+    /**
+     * DocumentBodyBuilderTrait
+     * 
+     * Properties (private not shown)
+     * ...
+     * 
+     * Methods (private not shown)
+     * protected function openBodyUnit(object &$prev, object &$line): string;
+     * protected function closeBodyUnits(object &$from, object &$to): string;
+     */
     use DocumentBodyBuilderTrait;
 
     /**
@@ -25,23 +35,25 @@ trait DocumentBuilderTrait
      * @var array
      */
     protected $css = [
-        'rot'       => 'fd-cr',          // Root component
-        'ttl'       => 'fd-cr-ttl',      // Title component
-        'toc'       => 'fd-cr-toc',      // Table of Contents (ToC)
-        'toc.ttl'   => 'fd-cr-toc__ttl', // ToC Title
-        'toc.bdy'   => 'fd-cr-toc__bdy', // ToC Body
-        'toc.itm'   => 'fd-cr-toc__itm', // ToC Item
-        'bdy'       => 'fd-cr-bdy',      // Body component
-        'bdy.1'     => 'fd-cr-bdy__1',
-        'bdy.1.ttl' => 'fd-cr-bdy__1__ttl',
-        'bdy.1.bdy' => 'fd-cr-bdy__1__bdy',
-        'bdy.2'     => 'fd-cr-bdy__2',
-        'bdy.2.ttl' => 'fd-cr-bdy__2__ttl',
-        'bdy.2.bdy' => 'fd-cr-bdy__2__bdy',
-        'bdy.3'     => 'fd-cr-bdy__3',
-        'bdy.4'     => 'fd-cr-bdy__4',
-        'bdy.5'     => 'fd-cr-bdy__5',
-        'hru'       => 'fd-cr-hru',      // Horizontal Rule
+        'rot'       => 'fd-cr',             // Root component
+        'ttl'       => 'fd-cr-ttl',         // Title component
+        'toc'       => 'fd-cr-toc',         // Table of Contents (ToC)
+        'toc.ttl'   => 'fd-cr-toc__ttl',    // ToC Title
+        'toc.bdy'   => 'fd-cr-toc__bdy',    // ToC Body
+        'toc.itm'   => 'fd-cr-toc__itm',    // ToC Item
+        'bdy'       => 'fd-cr-bdy',         // Body component
+        'bdy.1'     => 'fd-cr-bdy__1',      // Level 1 Subcomponent
+        'bdy.1.ttl' => 'fd-cr-bdy__1__ttl', // Level 1 Title Subcomponent
+        'bdy.1.top' => 'fd-cr-bdy__1__top', // Level 1 Top Subcomponent
+        'bdy.1.bdy' => 'fd-cr-bdy__1__bdy', // Level 1 Body Subcomponent
+        'bdy.2'     => 'fd-cr-bdy__2',      // Level 2 Subcomponent
+        'bdy.2.ttl' => 'fd-cr-bdy__2__ttl', // Level 2 Title Subcomponent
+        'bdy.2.top' => 'fd-cr-bdy__2__top', // Level 2 Top Subcomponent
+        'bdy.2.bdy' => 'fd-cr-bdy__2__bdy', // Level 2 Body Subcomponent
+        'bdy.3'     => 'fd-cr-bdy__3',      // Level 3 Subcomponent
+        'bdy.4'     => 'fd-cr-bdy__4',      // Level 4 Subcomponent
+        'bdy.5'     => 'fd-cr-bdy__5',      // Level 5 Subcomponent
+        'hru'       => 'fd-cr-hru',         // Horizontal Rule
     ];
 
     /**
@@ -65,7 +77,7 @@ trait DocumentBuilderTrait
      *
      * @return string
      */
-    protected function buildTitle(): string
+    private function buildTitle(): string
     {
         $titleLine = array_shift($this->titleLines);
 
@@ -87,10 +99,11 @@ trait DocumentBuilderTrait
      *
      * @return string
      */
-    protected function buildTableOfContents(): string
+    private function buildTableOfContents(): string
     {
         return (
             '<div class="'.$this->css['toc'].'">'.
+                '<a name="toc"></a>'.
                 $this->buildTableOfContentsTitle().
                 $this->buildTableOfContentsBody().
             '</div>'
@@ -106,10 +119,10 @@ trait DocumentBuilderTrait
     {
         return (
             '<h3 '.
-                'class="'.$this->css['toc'].' js-hider pointer"'.
+                'class="'.$this->css['toc.ttl'].' js-hider pointer"'.
                 'data-target="#hide-toc"'.
             '>'.
-                '<i class="fa fa-chevron-down"></i>'.
+                '<i class="fa fa-chevron-down"></i> '.
                 'Table of Contents'.
             '</h3>'
         );
@@ -125,10 +138,9 @@ trait DocumentBuilderTrait
         $list = '';
 
         foreach ($this->tocLines as $line) {
-            $class = $this->css['toc.itm'];
             $list .= (
-                '<li>'.
-                    '<a class="'.$class.'" href="#'.$line->dotlessTag.'">'.
+                '<li class="'.$this->css['toc.itm'].'">'.
+                    '<a href="#'.$line->dotlessTag.'">'.
                         $line->tag.' '.$line->content.
                     '</a>'.
                 '</li>'
@@ -136,8 +148,8 @@ trait DocumentBuilderTrait
         }
 
         return (
-            '<div class="'.$this->css['toc.ttl'].'" id="hide-toc">'.
-                '<ul class="'.$this->css['toc.bdy'].'">'.
+            '<div class="'.$this->css['toc.bdy'].'" id="hide-toc">'.
+                '<ul>'.
                     $list.
                 '</ul>'.
             '</div>'
@@ -165,7 +177,7 @@ trait DocumentBuilderTrait
      *
      * @return string
      */
-    protected function buildBody(): string
+    private function buildBody(): string
     {
         $html = '';
         $empty = (object) ['level' => 0];
@@ -175,18 +187,17 @@ trait DocumentBuilderTrait
 
             $prev = $this->bodyLines[$i-1] ?? $empty;
             $line = $this->bodyLines[$i];
-            $next = $this->bodyLines[$i+1] ?? $empty;
 
             // Close open sections before opening anything else
             if ($line->level - $prev->level <= 0) {
-                $html .= $this->bodyCloseSections($prev, $line);
+                $html .= $this->closeBodyUnits($prev, $line);
             }
 
-            $html .= $this->bodyOpenSection($line, $prev, $next);
+            $html .= $this->openBodyUnit($prev, $line);
 
         }
 
-        $html .= $this->bodyCloseSections($line, $last);
+        $html .= $this->closeBodyUnits($line, $last);
 
         return $html;
     }
