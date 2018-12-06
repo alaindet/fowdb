@@ -74,7 +74,7 @@ class CardsController extends Controller
         $service = new CardCreateService($input);
         $service->processInput();
         $service->syncDatabase();
-        $service->syncFilesystem();
+        $service->syncFileSystem();
 
         [$message, $uri] = $service->getFeedback();
 
@@ -138,7 +138,7 @@ class CardsController extends Controller
         $service = new CardUpdateService($input, $id);
         $service->processInput();
         $service->syncDatabase();
-        $service->syncFilesystem();
+        $service->syncFileSystem();
 
         [$message, $uri] = $service->getFeedback();
 

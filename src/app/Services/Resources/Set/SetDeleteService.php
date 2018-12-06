@@ -27,7 +27,7 @@ class SetDeleteService extends CrudService
         return $this;
     }
 
-    public function syncFilesystem(): CrudServiceInterface
+    public function syncFileSystem(): CrudServiceInterface
     {
         $partial = $this->old['clusters_id'] . '/' . $this->old['code'];
         $cardsDirectory =  path_root('images/cards/'  . $partial);

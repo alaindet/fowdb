@@ -146,7 +146,7 @@ abstract class CrudService implements CrudServiceInterface
      *
      * @return CrudServiceInterface
      */
-    public function syncFilesystem(): CrudServiceInterface
+    public function syncFileSystem(): CrudServiceInterface
     {
         return $this;
     }

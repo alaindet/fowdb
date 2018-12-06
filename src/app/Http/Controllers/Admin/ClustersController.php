@@ -81,7 +81,7 @@ class ClustersController extends Controller
             $service = new ClusterCreateService($request->input()->post());
             $service->processInput();
             $service->syncDatabase();
-            $service->syncFilesystem();
+            $service->syncFileSystem();
             $service->updateLookupData();
             [$message] = $service->getFeedback();
         } catch (CrudException $exception) {
@@ -131,7 +131,7 @@ class ClustersController extends Controller
         try {
             $service = new ClusterDeleteService(null, $id);
             $service->syncDatabase();
-            $service->syncFilesystem();
+            $service->syncFileSystem();
             $service->updateLookupData();
             [$message] = $service->getFeedback();
         } catch (CrudException $exception) {

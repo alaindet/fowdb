@@ -57,7 +57,7 @@ class CardUpdateService extends CrudService
         return $this;
     }
 
-    public function syncFilesystem(): CrudServiceInterface
+    public function syncFileSystem(): CrudServiceInterface
     {
         // No new image, no path changed
         if (!$this->didImageChange && !$this->didPathsChange) return $this;

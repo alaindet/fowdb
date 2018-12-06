@@ -36,7 +36,7 @@ class SetCreateService extends CrudService
         return $this;
     }
 
-    public function syncFilesystem(): CrudServiceInterface
+    public function syncFileSystem(): CrudServiceInterface
     {
         $partial = $this->new['clusters_id'] . '/' . $this->new['code'];
         $cardsDirectory =  path_root('images/cards/'  . $partial);

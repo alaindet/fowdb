@@ -38,7 +38,7 @@ class CardCreateService extends CrudService
         return $this;
     }
 
-    public function syncFilesystem(): CrudServiceInterface
+    public function syncFileSystem(): CrudServiceInterface
     {
         $image = $this->inputProcessorInstance->getInput('image');
 

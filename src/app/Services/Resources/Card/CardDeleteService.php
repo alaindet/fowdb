@@ -29,7 +29,7 @@ class CardDeleteService extends CrudService
         return $this;
     }
 
-    public function syncFilesystem(): CrudServiceInterface
+    public function syncFileSystem(): CrudServiceInterface
     {
         $paths = [
             $this->old['image_path'],

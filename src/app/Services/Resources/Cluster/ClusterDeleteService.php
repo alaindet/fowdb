@@ -26,7 +26,7 @@ class ClusterDeleteService extends CrudService
         return $this;
     }
 
-    public function syncFilesystem(): CrudServiceInterface
+    public function syncFileSystem(): CrudServiceInterface
     {
         $cardsDirectory =  path_root('images/cards/'.$this->old['id']);
         $thumbsDirectory = path_root('images/thumbs/'.$this->old['id']);

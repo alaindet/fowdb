@@ -39,7 +39,7 @@ class SetUpdateService extends CrudService
         return $this;
     }
 
-    public function syncFilesystem(): CrudServiceInterface
+    public function syncFileSystem(): CrudServiceInterface
     {
         $partialOld = $this->old['clusters_id'].'/'.$this->old['code'];
         $partialNew = $this->new['clusters_id'].'/'.$this->new['code'];

@@ -85,7 +85,7 @@ class SetsController extends Controller
         $service = new SetCreateService($request->input()->post());
         $service->processInput();
         $service->syncDatabase();
-        $service->syncFilesystem();
+        $service->syncFileSystem();
         $service->updateLookupData();
         [$message, $uri] = $service->getFeedback();
 
@@ -129,7 +129,7 @@ class SetsController extends Controller
         $service = new SetUpdateService($request->input()->post(), $id);
         $service->processInput();
         $service->syncDatabase();
-        $service->syncFilesystem();
+        $service->syncFileSystem();
         $service->updateLookupData();
         [$message, $uri] = $service->getFeedback();
         
@@ -168,10 +168,6 @@ class SetsController extends Controller
             ->variables([
                 'item' => $item
             ])
-
-            // TEST
-            ->minify(false)
-
             ->render();
     }
 
@@ -179,7 +175,7 @@ class SetsController extends Controller
     {
         $service = new SetDeleteService(null, $id);
         $service->syncDatabase();
-        $service->syncFilesystem();
+        $service->syncFileSystem();
         $service->updateLookupData();
         [$message, $uri] = $service->getFeedback();
         
