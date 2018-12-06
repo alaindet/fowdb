@@ -54,14 +54,17 @@ trait ValidationRulesTrait
     {
         $input = $this->input[$inputName];
         
-        // String
-        if (is_string($input)) return $input !== '';
+        if (
+            (is_string($input) && $input === '') ||
+            (is_array($input) && count($input) === 0)
+        ) {
+            $this->pushError(
+                "Input <strong>{$inputName}</strong> must not be empty"
+            );
+            return false;
+        }
 
-        // Array
-        elseif (is_array($input)) return count($input) !== 0;
-
-        // Bypass any other type
-        else return true;
+        return true;
     }
 
     /**
@@ -275,7 +278,15 @@ trait ValidationRulesTrait
     public function validateMatchRule(string $inputName, string $value): bool
     {
         $pattern = "~{$value}~";
-        return preg_match($pattern, $this->input[$inputName]);
+        if (!preg_match($pattern, $this->input[$inputName])) {
+            $this->pushError(
+                "Input <strong>{$inputName}</strong> ".
+                "must match pattern {$value}"
+            );
+            return false;
+        }
+
+        return true;
     }
 
     /**
