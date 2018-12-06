@@ -2,6 +2,11 @@
 
 namespace App\Base;
 
+/**
+ * This is a stack (LIFO) implementation or an error bag
+ * When added to any class, it provides methods to add multiple errors
+ * in a stack without halting the execution. Useful with validation rules
+ */
 trait Errorable
 {
     private $errors = [];
