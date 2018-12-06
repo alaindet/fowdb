@@ -51,7 +51,7 @@ class GameRulesController extends Controller
                 'path' => path_root($item['file'])
             ])
             ->options([
-                'js' => [
+                'scripts' => [
                     'public/cr'
                 ]
             ])
