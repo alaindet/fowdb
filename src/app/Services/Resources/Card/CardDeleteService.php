@@ -4,13 +4,13 @@ namespace App\Services\Resources\Card;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
-use App\Models\Card;
+use App\Models\Card as Model;
 use App\Services\Filesystem;
 use App\Utils\Uri;
 
 class CardDeleteService extends CrudService
 {
-    protected $model = Card::class; 
+    protected $model = Model::class; 
 
     public function syncDatabase(): CrudServiceInterface
     {

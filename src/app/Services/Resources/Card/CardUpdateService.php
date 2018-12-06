@@ -4,8 +4,8 @@ namespace App\Services\Resources\Card;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
-use App\Models\Card;
-use App\Services\Resources\Card\CardInputProcessor;
+use App\Models\Card as Model;
+use App\Services\Resources\Card\CardInputProcessor as InputProcessor;
 use Intervention\Image\ImageManager;
 use App\Services\Filesystem;
 use App\Utils\Arrays;
@@ -13,8 +13,8 @@ use App\Utils\Uri;
 
 class CardUpdateService extends CrudService
 {
-    protected $inputProcessor = CardInputProcessor::class;
-    protected $model = Card::class; 
+    protected $inputProcessor = InputProcessor::class;
+    protected $model = Model::class; 
 
     private $image;
     private $didImageChange = false;
