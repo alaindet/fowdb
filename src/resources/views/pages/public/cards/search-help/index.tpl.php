@@ -1,7 +1,7 @@
 <div class="page-header">
   <h1>Cards search help</h1>
   <?=component('breadcrumb', [
-    'Cards' => url_old('/'),
+    '&larr; Cards search' => url_old('/'),
     'Help' => '#'
   ])?>
 </div>
@@ -12,7 +12,7 @@
   </a>
 </h2>
 
-<?=include_view('pages/public/cards/includes/syntax-table')?>
+<?=include_view('pages/public/cards/search-help/syntax-table')?>
 
 <h2>
   <a href="#tips-tricks" name="tips-tricks" class="link-as-text link-hash">

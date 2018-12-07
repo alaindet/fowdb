@@ -12,10 +12,20 @@ use App\Views\Page;
  */
 class CardsController extends Controller
 {
+    public function searchForm(Request $request): string
+    {
+        return view_old(
+            'Search',
+            'old/search/search.php',
+            [ 'js' => [ 'public/search' ] ],
+            ['thereWereResults' => false]
+        );
+    }
+
     public function showSearchHelp(): string
     {
         return (new Page)
-            ->template('pages/public/cards/search-help')
+            ->template('pages/public/cards/search-help/index')
             ->title('Cards Search Help')
             ->render();
     }

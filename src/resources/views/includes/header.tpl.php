@@ -5,7 +5,7 @@ $links = [
 		'icon' => 'fa fa-search'
 	],
 	'Spoiler' => [
-		'url' => url_old('spoiler'),
+		'url' => url('spoiler'),
 		'icon' => 'fa fa-th-large'
 	],
 	'Resources' => [
@@ -18,7 +18,7 @@ $links = [
 			],
 			[
 				'label' => 'Banlists',
-				'url' => url_old('resources/ban')
+				'url' => url('banlist')
 			],
 			[
 				'label' => 'Errata',

@@ -16,8 +16,7 @@ require __DIR__ . '/src/bootstrap.php';
  | ----------------------------------------------------------------------------
  */
 if (isset($_GET['p']) || isset($_GET['do'])) {
-    (new \App\Legacy\Router\Router)->run();
-    return;
+    return (new \App\Legacy\Router\Router)->run();
 }
 
 // Generate HTTP request

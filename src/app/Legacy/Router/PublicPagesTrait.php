@@ -28,17 +28,7 @@ trait PublicPagesTrait
 
     public function buildSpoilerPage(): void
     {
-        echo view_old(
-            $title = 'Spoiler',
-            $template = 'old/spoiler/spoiler.php',
-            $options = [
-                'lightbox' => true,
-                'js' => [
-                    'public/search',
-                    'public/spoiler'
-                ]
-            ]
-        );
+        redirect('spoiler');
     }
 
     public function buildBanPage(): void

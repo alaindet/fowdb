@@ -22,15 +22,15 @@ class Router
         $this->do = $this->input->get('do');
     }
 
-    public function run(): void
+    public function run(): bool
     {
         // Public pages
         if ($this->do === 'search') $this->buildSearchResultsPage();
         elseif ($this->p === 'search')            $this->buildSearchPage();
         elseif ($this->p === 'card')              $this->buildCardPage();
-        elseif ($this->p === 'spoiler')           $this->buildSpoilerPage();
         
         // Redirects
+        elseif ($this->p === 'spoiler')           $this->buildSpoilerPage();
         elseif ($this->p === 'resources/ban')     $this->buildBanPage();
         elseif ($this->p === 'resources/cr')      $this->buildCrPage();
         elseif ($this->p === 'resources/errata')  $this->buildErrataPage();
@@ -52,5 +52,7 @@ class Router
         elseif ($this->p === 'admin/_artists/card') {
             $this->buildArtistCardPage();
         }
+
+        return true;
     }
 }

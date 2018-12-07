@@ -42,7 +42,10 @@ $c = ['c' => '[A-Z0-9]+\-\d{3}\s[A-Z]+']; // C => card
  */
 $public = [
 
-    ['GET', '','HomeController','show'],
+    ['GET', '','CardsController','searchForm'],
+    ['GET', 'search','CardsController','searchForm'], // Alias
+    ['GET', 'cards/search','CardsController','searchForm'], // Alias
+    ['GET', 'spoiler','SpoilersController','index'],
     ['GET', 'cr/{version}','GameRulesController','show',
         ['version' => '[0-9]+.[0-9]+[a-z]*']],
     ['GET', 'cr','GameRulesController','index'],
