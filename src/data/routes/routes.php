@@ -42,9 +42,6 @@ $c = ['c' => '[A-Z0-9]+\-\d{3}\s[A-Z]+']; // C => card
  */
 $public = [
 
-    // TEST
-    ['GET','test','TestController','convertCr'],
-
     ['GET','','HomeController','show'],
     [
         'GET','cr/{version}',

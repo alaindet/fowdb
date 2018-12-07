@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
+use App\Views\Page;
 
 use App\Services\FileSystem;
 use App\Http\Response\PlainTextResponse;
@@ -11,22 +12,53 @@ use App\Services\Resources\GameRules\DocumentConverter;
 
 class TestController extends Controller
 {
+    public function testVirtualAttributes(Request $request): string
+    {
+        $model = new \App\Models\GameRules;
+
+        $data = $model->byId(11, [
+            'id',
+            'date_validity',
+            'version',
+            '*source_path',
+        ]);
+
+        // $data = $model->all([
+        //     'id',
+        //     'date_validity',
+        //     'version',
+        //     '*source_path',
+        // ]);
+
+        return log_html($data);
+    }
+
     public function convertCr()
     {
-        $inputPath  = path_root('.dev/cr-convert/cr.txt');
-        $outputPath = path_root('.dev/cr-convert/cr.html');
+        $version = '8.01';
+        $inputPath  = path_root('.dev/cr-convert/'.$version.'.txt');
+        $outputPath = path_root('.dev/cr-convert/'.$version.'.html');
 
-        return (new DocumentConverter)
-            ->setInputFilePath($inputPath)
-            ->setOutputFilePath($outputPath)
-            ->convert();
+        // // Convert input .txt into output .html
+        // (new DocumentConverter)
+        //     ->setInputFilePath($inputPath)
+        //     ->setOutputFilePath($outputPath)
+        //     ->convert();
+
+        // Render the page
+        return (new Page)
+            ->template('test/cr-show')
+            ->title('CR testing')
+            ->variables([ 'document' => $outputPath ])
+            ->minify(false) // IMPORTANT
+            ->render();
 
         // // See it with Ctrl+U
-        // return FileSystem::readFile($inputPath);
+        // return FileSystem::readFile($outputPath);
 
         // // Download it
         // return (new PlainTextResponse)
-        //     ->setData(['path' => $inputPath])
+        //     ->setData(['path' => $outputPath])
         //     ->render();
     }
 }
