@@ -36,7 +36,7 @@ abstract class Model extends Base
             $all = array_keys($this->virtualAttributes);
 
             // Grab only the requested virtual attributes
-            $virtualAttributes = array_intersect($all, $fields);
+            $virtualAttributes = array_intersect($all, $fields ?? []);
 
             // Filter out virtual attributes before searching the database
             $fields = array_diff($fields, $virtualAttributes);
@@ -79,7 +79,7 @@ abstract class Model extends Base
      */
     public function byId(
         $id,
-        array $fields = [],
+        array $fields = null,
         array $fieldsToRender = []
     ): array
     {
@@ -90,7 +90,7 @@ abstract class Model extends Base
             $all = array_keys($this->virtualAttributes);
 
             // Grab only the requested virtual attributes
-            $virtualAttributes = array_intersect($all, $fields);
+            $virtualAttributes = array_intersect($all, $fields ?? []);
 
             // Filter out virtual attributes before searching the database
             $fields = array_diff($fields, $virtualAttributes);
@@ -125,7 +125,7 @@ abstract class Model extends Base
      * @param array $fields
      * @return array Results from the database
      */
-    private function fetchSingle($id, array $fields = []): array
+    private function fetchSingle($id, array $fields = null): array
     {
         return database()
             ->select(
