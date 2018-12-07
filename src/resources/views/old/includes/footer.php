@@ -7,7 +7,7 @@
     <!-- Admin -->
     |&nbsp;<a href="<?=url('login')?>" class="link-as-text menu-admin"><i class="fa fa-user"></i></a>
     |&nbsp;<a href="https://github.com/alaindet" style="font-size:1em;">alaindet</a>
-    |&nbsp;<a href="http://www.fowtcg.com/" target="_blank" style="font-size:1em;">Official website</a>
+    |&nbsp;<a href="http://www.fowtcg.com/" target="_blank" style="font-size:1em;">Go to official website</a>
   </div>
   <div class="footer-desc">
     <small>
