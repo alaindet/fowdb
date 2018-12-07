@@ -8,6 +8,11 @@ class GameRules extends Model
 {
     public $table = 'game_rules';
 
+    public $virtualAttributes = [
+        '*file_path' => 'getFilePathAttribute',
+        '*source_path' => 'getSourcePathAttribute',
+    ];
+
     /**
      * Returns the GameRules entity with given version
      *
@@ -44,12 +49,13 @@ class GameRules extends Model
         return $resource;
     }
 
-    public function getSourceFilePath(): string
+    protected function getFilePathAttribute(array &$resource): string
     {
-        $this->data['sourceFilePath'] = path_data(
-            "resources/cr/{$this->data['version']}.txt"
-        );
+        return path_root($resource['file']);
+    }
 
-        return $this->data['sourceFilePath'];
+    protected function getSourcePathAttribute(array &$resource): string
+    {
+        return path_data('resources/cr/'.$resource['version'].'.txt');
     }
 }
