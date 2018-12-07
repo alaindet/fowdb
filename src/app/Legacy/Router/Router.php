@@ -31,9 +31,9 @@ class Router
         elseif ($this->p === 'spoiler')           $this->buildSpoilerPage();
         elseif ($this->p === 'resources/ban')     $this->buildBanPage();
         elseif ($this->p === 'resources/cr')      $this->buildCrPage();
-        elseif ($this->p === 'resources/errata')  $this->buildErrataPage();
-
+        
         // Redirects
+        elseif ($this->p === 'resources/errata')  $this->buildErrataPage();
         elseif ($this->p === 'resources/formats') $this->buildFormatsPage();
         elseif ($this->p === 'resources/races')   $this->buildRacesPage();
 

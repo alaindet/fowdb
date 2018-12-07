@@ -22,7 +22,7 @@ $links = [
 			],
 			[
 				'label' => 'Errata',
-				'url' => url_old('resources/errata')
+				'url' => url('errata')
 			],
 			[
 				'label' => 'Formats',

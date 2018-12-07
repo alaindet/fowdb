@@ -2,6 +2,8 @@
 
 namespace App\Legacy\Router;
 
+use App\Http\Request\Input;
+
 trait PublicPagesTrait
 {
     public function buildSearchPage(): void
@@ -46,12 +48,16 @@ trait PublicPagesTrait
 
     public function buildCrPage(): void
     {
-        require path_root('old/resources/cr/index.php');
+        $version = Input::getInstance()->get('v');
+
+        isset($version)
+            ? redirect('cr/'.$version)
+            : redirect('cr');
     }
 
     public function buildErrataPage(): void
     {
-        echo view_old('Errata', 'old/resources/errata/errata.php');
+        redirect('errata');
     }
 
     public function buildFormatsPage(): void
