@@ -63,7 +63,7 @@ class GameRulesController extends Controller
 
         return (new Page)
             ->template('pages/admin/cr/index')
-            ->title('Play Restrictions,Manage')
+            ->title('Comprehensive Rules,Index')
             ->variables([
                 // paginate() must be called before paginationInfo()
                 'items' => $items,

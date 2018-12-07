@@ -19,14 +19,14 @@ trait AdminPagesTrait
         echo view_old('Admin:Clint', 'old/admin/clint/index.php');
     }
 
-    public function buildLookupPage(): void
-    {
-        echo view_old(
-            'Admin:Lookup',
-            'old/admin/lookup/index.php',
-            null, null, $minimize = false
-        );   
-    }
+    // public function buildLookupPage(): void
+    // {
+    //     echo view_old(
+    //         'Admin:Lookup',
+    //         'old/admin/lookup/index.php',
+    //         null, null, $minimize = false
+    //     );   
+    // }
 
     public function buildArtistSelectSetPage(): void
     {

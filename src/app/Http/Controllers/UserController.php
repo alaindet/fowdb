@@ -52,7 +52,7 @@ class UserController extends Controller
                 url_old('admin/trim-image') => 'Trim an image',
             ],
             'admin' => [
-                url_old('admin/lookup') => 'Lookup data',
+                url('lookup') => 'Lookup data',
                 url_old('admin/clint') => 'Clint commands',
                 url_old('admin/hash') => 'Hash a string',
                 url('phpinfo') => 'PHP info',

@@ -38,7 +38,7 @@ class Router
         // Admin pages
         elseif ($this->p === 'admin/trimg-image') $this->buildTrimImagePage();
         elseif ($this->p === 'admin/clint')       $this->buildClintPage();
-        elseif ($this->p === 'admin/lookup')      $this->buildLookupPage();
+        // elseif ($this->p === 'admin/lookup')      $this->buildLookupPage();
         elseif ($this->p === 'admin/hash')        $this->buildHashPage();
 
         // Temporary admin pages

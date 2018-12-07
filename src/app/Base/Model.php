@@ -145,7 +145,7 @@ abstract class Model extends Base
      * @param array $fields
      * @return array Results from the database
      */
-    private function fetchAll(array $fields = []): array
+    private function fetchAll(array $fields = null): array
     {
         return database()
             ->select(
