@@ -57,10 +57,21 @@ abstract class CrudService implements CrudServiceInterface
      */
     protected $lookup = null;
 
-    public function __construct(array $input = null, string $id = null)
+    /**
+     * Instantiates a new CRUD service
+     *
+     * @param array $input Input to be processed
+     * @param string $id ID of the old resource (on update and delete)
+     * @param array $fields Fields to be fetched from model (virtuals too)
+     */
+    public function __construct(
+        array $input = null,
+        string $id = null,
+        array $fields = null
+    )
     {
         // Set the old resource, if present (on updating or deleting)
-        $this->setOldResource($id);
+        $this->setOldResource($id, $fields);
 
         // Instantiate the input processor
         if (isset($input)) {
@@ -74,14 +85,18 @@ abstract class CrudService implements CrudServiceInterface
     /**
      * Sets the old resource
      *
-     * @param string $id
+     * @param string $id ID of the old resource
+     * @param array $fields Fields to be fetched from model (virtuals too)
      * @return CrudServiceInterface
      */
-    private function setOldResource(string $id = null): CrudServiceInterface
+    private function setOldResource(
+        string $id = null,
+        array $fields = null
+    ): CrudServiceInterface
     {
         if (isset($id) && isset($this->model)) {
             $model = new $this->model();
-            $this->old = $model->byId($id);
+            $this->old = $model->byId($id, $fields);
         }
 
         return $this;
