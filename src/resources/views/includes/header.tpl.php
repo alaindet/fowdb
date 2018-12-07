@@ -30,7 +30,7 @@ $links = [
 			],
 			[
 				'label' => 'Races and Traits',
-				'url' => url_old('resources/races')
+				'url' => url('races')
 			],
 		]
 	],

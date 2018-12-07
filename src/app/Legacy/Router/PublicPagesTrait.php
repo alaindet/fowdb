@@ -61,6 +61,6 @@ trait PublicPagesTrait
 
     public function buildRacesPage(): void
     {
-        echo view_old('Races and traits', 'old/resources/races/races.php');
+        redirect('races');
     }
 }

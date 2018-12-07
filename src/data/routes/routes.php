@@ -47,6 +47,7 @@ $public = [
         ['version' => '[0-9]+.[0-9]+[a-z]*']],
     ['GET','cr','GameRulesController','index'],
     ['GET', 'cards/search/help','CardsController','showSearchHelp'],
+    ['GET', 'races','RacesController','index'],
     ['GET', 'login','Auth\\LoginController','loginForm'],
     ['POST','login','Auth\\LoginController','login', null, ['token']],
     ['GET', 'logout','Auth\\LoginController','logout'],

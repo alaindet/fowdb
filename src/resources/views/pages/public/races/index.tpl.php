@@ -1,38 +1,8 @@
 <?php
 
-// RACES ----------------------------------------------------------------------
-$_races = database()
-	->select(statement('select')
-		->select('DISTINCT race')
-		->from('cards')
-		->where("type IN('Ruler', 'J-Ruler', 'Resonator')")
-	)
-	->get();
-$races = [];
-foreach ($_races as &$item) {
-	foreach (explode('/', $item['race']) as $race) {
-		if (!isset($races[$race])) $races[$race] = 1;
-	}
-}
-$races = array_keys($races);
-sort($races);
-
-// TRAITS ---------------------------------------------------------------------
-$_traits = database()
-	->select(statement('select')
-		->select('DISTINCT race')
-		->from('cards')
-		->where("NOT (type IN('Ruler','J-Ruler','Resonator'))")
-	)
-	->get();
-$traits = [];
-foreach ($_traits as &$item) {
-	foreach (explode('/', $item['race']) as $trait) {
-		if (!isset($traits[$trait])) $traits[$trait] = 1;
-	}
-}
-$traits = array_keys($traits);
-sort($traits);
+// VARIABLES
+// $races
+// $traits
 
 ?>
 <div class="page-header">
