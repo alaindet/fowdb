@@ -44,12 +44,12 @@
               Delete
             </a>
 
-            <!-- Source -->
+            <!-- Download source -->
             <a
               class="btn btn-xs fd-btn-default fd-btn-danger-hover"
               href="<?=url('cr/file/'.$item['id'])?>"
             >
-              <i class="fa fa-file-text"></i>
+              <i class="fa fa-download"></i>
               Source
             </a>
 
