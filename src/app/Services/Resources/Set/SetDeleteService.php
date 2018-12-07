@@ -24,6 +24,8 @@ class SetDeleteService extends CrudService
             ->bind([':id' => $this->old['id']])
             ->execute();
 
+        database()->resetAutoIncrement('game_sets');
+
         return $this;
     }
 

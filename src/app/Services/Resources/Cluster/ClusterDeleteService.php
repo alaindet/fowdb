@@ -23,6 +23,8 @@ class ClusterDeleteService extends CrudService
             ->bind([':id' => $this->old['id']])
             ->execute();
 
+        database()->resetAutoIncrement('game_clusters');
+
         return $this;
     }
 
