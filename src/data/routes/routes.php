@@ -48,6 +48,7 @@ $public = [
     ['GET','cr','GameRulesController','index'],
     ['GET', 'cards/search/help','CardsController','showSearchHelp'],
     ['GET', 'races','RacesController','index'],
+    ['GET', 'formats','FormatsController','index'],
     ['GET', 'login','Auth\\LoginController','loginForm'],
     ['POST','login','Auth\\LoginController','login', null, ['token']],
     ['GET', 'logout','Auth\\LoginController','logout'],

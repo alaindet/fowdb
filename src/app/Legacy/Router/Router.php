@@ -32,13 +32,14 @@ class Router
         elseif ($this->p === 'resources/ban')     $this->buildBanPage();
         elseif ($this->p === 'resources/cr')      $this->buildCrPage();
         elseif ($this->p === 'resources/errata')  $this->buildErrataPage();
+
+        // Redirects
         elseif ($this->p === 'resources/formats') $this->buildFormatsPage();
         elseif ($this->p === 'resources/races')   $this->buildRacesPage();
 
         // Admin pages
         elseif ($this->p === 'admin/trimg-image') $this->buildTrimImagePage();
         elseif ($this->p === 'admin/clint')       $this->buildClintPage();
-        // elseif ($this->p === 'admin/lookup')      $this->buildLookupPage();
         elseif ($this->p === 'admin/hash')        $this->buildHashPage();
 
         // Temporary admin pages

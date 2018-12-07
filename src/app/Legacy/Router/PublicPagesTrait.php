@@ -56,7 +56,7 @@ trait PublicPagesTrait
 
     public function buildFormatsPage(): void
     {
-        echo view_old('Formats', 'old/resources/formats/index.php');
+        redirect('formats');
     }
 
     public function buildRacesPage(): void

@@ -26,7 +26,7 @@ $links = [
 			],
 			[
 				'label' => 'Formats',
-				'url' => url_old('resources/formats')
+				'url' => url('formats')
 			],
 			[
 				'label' => 'Races and Traits',
