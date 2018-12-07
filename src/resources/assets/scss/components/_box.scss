@@ -39,10 +39,11 @@
   background-color: rgba(0,0,0,.05);  
 }
 
+// Variation: grey color
+.fd-box.--grey { background-color: #eee; }
+
 // Variation: darker color
-.fd-box.--darker {
-  background-color: rgba(0,0,0,.2);
-}
+.fd-box.--darker { background-color: rgba(0,0,0,.2); }
 .fd-box__title.--darker,
 .fd-box__footer.--darker {
   background-color: rgba(0,0,0,.05);
