@@ -7,6 +7,7 @@ use App\Http\Request\Request;
 use App\Views\Page;
 use App\Models\GameRules as Model;
 use App\Exceptions\ModelNotFoundException;
+use App\Http\Response\PlainTextResponse;
 
 class GameRulesController extends Controller
 {
@@ -31,6 +32,17 @@ class GameRulesController extends Controller
 
     public function show(Request $request, string $version): string
     {
+        // TEST
+        dump(
+            (new Model)->byId(11, [
+                'id',
+                'date_validity',
+                'version',
+                '*source_path',
+                '*file_path'
+            ])
+        );
+
         $item = (new Model)->byVersion($version);
 
         // ERROR: Missing model
