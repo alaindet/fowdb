@@ -8,6 +8,14 @@
 	<h1>Comprehensive Rules</h1>
 </div>
 
+<!-- Dislaimer -->
+<div class="fd-box font-110 p-100 mv-100 --grey">
+  Always check the official website for reference:
+  <a href="http://www.fowtcg.com/docs/rules" target="_blank">
+    http://www.fowtcg.com/docs/rules
+  </a>
+</div>
+
 <div class="list-group fd-list-group">
 	<?php foreach ($items as $item): ?>
   	<div class="list-group-item">
