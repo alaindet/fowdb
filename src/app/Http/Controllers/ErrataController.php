@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Views\Page;
-use App\Http\Response\Redirect;
-use App\Services\Alert;
 
 class ErrataController extends Controller
 {
@@ -39,7 +37,6 @@ class ErrataController extends Controller
                 'items' => $database->paginate(),
                 'pagination' => $database->paginationInfo()
             ])
-            ->minify(false)
             ->render();
     }
 }

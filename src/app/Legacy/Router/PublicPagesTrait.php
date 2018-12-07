@@ -43,7 +43,7 @@ trait PublicPagesTrait
 
     public function buildBanPage(): void
     {
-        echo view_old('Banlist', 'old/resources/ban/index.php');
+        redirect('banlist');
     }
 
     public function buildCrPage(): void
