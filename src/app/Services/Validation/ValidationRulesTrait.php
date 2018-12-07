@@ -162,8 +162,8 @@ trait ValidationRulesTrait
 
         if (!isset($column)) {
             $this->pushError(
-                "Missing database column for rule <strong>exists</strong> "
-                . "of input <strong>{$inputName}</strong>"
+                "Missing database column for rule <strong>exists</strong> ".
+                "of input <strong>{$inputName}</strong>"
             );
             return false;
         }
@@ -180,9 +180,10 @@ trait ValidationRulesTrait
 
         if (empty($exists)) {
             $this->pushError(
-                "Input <strong>{$inputName}</strong> does not exist "
-                . "into database table <strong>{$table}</strong> "
-                . "on the column <strong>{$column}</strong>"
+                "Input <strong>{$inputName}</strong> with value ".
+                "<strong>{$this->input[$inputName]}</strong> does not exist ".
+                "into database table <strong>{$table}</strong> ".
+                "on the column <strong>{$column}</strong>"
             );
             return false;
         }
@@ -206,8 +207,8 @@ trait ValidationRulesTrait
 
         if (!isset($column)) {
             $this->pushError(
-                "Missing database column for rule <strong>exists</strong> "
-                . "of input <strong>{$inputName}</strong>"
+                "Missing database column for rule <strong>exists</strong> ".
+                "of input <strong>{$inputName}</strong>"
             );
             return false;
         }
@@ -224,11 +225,10 @@ trait ValidationRulesTrait
 
         if (!empty($exists)) {
             $this->pushError(
-                collapse(
-                    "Input <strong>{$inputName}</strong> already exists ",
-                    "into database table <strong>{$table}</strong> ",
-                    "on the column <strong>{$column}</strong>"
-                )
+                "Input <strong>{$inputName}</strong> with value ".
+                "<strong>{$this->input[$inputName]}</strong> already exists ".
+                "into database table <strong>{$table}</strong> ".
+                "on the column <strong>{$column}</strong>"
             );
             return false;
         }
