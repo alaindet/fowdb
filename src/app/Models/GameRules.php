@@ -9,7 +9,7 @@ class GameRules extends Model
     public $table = 'game_rules';
 
     public $virtualAttributes = [
-        '*file_path' => 'getFilePathAttribute',
+        '*doc_path' => 'getDocPathAttribute',
         '*source_path' => 'getSourcePathAttribute',
     ];
 
@@ -49,9 +49,9 @@ class GameRules extends Model
         return $resource;
     }
 
-    protected function getFilePathAttribute(array &$resource): string
+    protected function getDocPathAttribute(array &$resource): string
     {
-        return path_root($resource['file']);
+        return path_root($resource['doc_path']);
     }
 
     protected function getSourcePathAttribute(array &$resource): string

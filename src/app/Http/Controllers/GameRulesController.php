@@ -17,7 +17,10 @@ class GameRulesController extends Controller
             ->select(
                 statement('select')
                     ->from('game_rules')
-                    ->orderBy('date_validity DESC')
+                    ->orderBy([
+                        'date_validity DESC',
+                        'id DESC'
+                    ])
             )
             ->get();
 
@@ -32,17 +35,6 @@ class GameRulesController extends Controller
 
     public function show(Request $request, string $version): string
     {
-        // TEST
-        dump(
-            (new Model)->byId(11, [
-                'id',
-                'date_validity',
-                'version',
-                '*source_path',
-                '*file_path'
-            ])
-        );
-
         $item = (new Model)->byVersion($version);
 
         // ERROR: Missing model
@@ -60,7 +52,7 @@ class GameRulesController extends Controller
             ->template('pages/public/cr/show')
             ->title("Comprehensive Rules v. {$version}")
             ->variables([
-                'path' => path_root($item['file'])
+                'path' => path_root($item['doc_path'])
             ])
             ->options([
                 'scripts' => [

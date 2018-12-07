@@ -16,12 +16,16 @@ class TestController extends Controller
     {
         $model = new \App\Models\GameRules;
 
-        $data = $model->byId(11, [
-            'id',
-            'date_validity',
-            'version',
+        $data = $model->byId(12, [
+            // 'id',
+            // 'date_validity',
+            // 'version',
             '*source_path',
         ]);
+
+        return (new \App\Http\Response\PlainTextResponse)
+            ->setData(['path' => $data['*source_path']])
+            ->render();
 
         // $data = $model->all([
         //     'id',

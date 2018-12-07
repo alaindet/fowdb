@@ -16,7 +16,7 @@
 <div class="fd-boxes">
 
   <!-- Form -->
-  <div class="fd-box --more-margin --darker-headings">
+  <div class="fd-box --more-margin">
     <div class="fd-box__content">
       <?=include_view('pages/admin/cards/includes/form', [
         'card' => null,
