@@ -1,21 +1,23 @@
 <?php
-  // VARIABLES
-  // $card_id
-  // $card_name
-  // $card_code
-  // $card_image
-  // $card_label
-  // $ruling_id
-  // $ruling_date
-  // $ruling_is_errata
-  // $ruling_text
 
-  // INPUT
-  // card-id
-  // card-name
-  // ruling-errata
-  // ruling-date
-  // ruling-text
+// VARIABLES
+// $card_id
+// $card_name
+// $card_code
+// $card_image
+// $card_label
+// $ruling_id
+// $ruling_date
+// $ruling_is_errata
+// $ruling_text
+
+// INPUT
+// card-id
+// card-name
+// ruling-errata
+// ruling-date
+// ruling-text
+
 ?>
 <div class="page-header">
   <h1>Update ruling</h1>
@@ -30,8 +32,8 @@
   ])?>
 </div>
 
-<div class="row">
-  <div class="col-xs-12 col-sm-9">
+<div class="fd-box --more-margin">
+  <div class="fd-box__content">
     <form
       action="<?=url("rulings/update/{$ruling_id}")?>"
       method="post"
@@ -39,7 +41,7 @@
     >
       <?=csrf_token()?>
 
-      <!-- Card Name -->
+      <!-- Card name ====================================================== -->
       <div class="form-group">
         <label class="col-sm-2 control-label">Card</label>
         <div class="col-sm-10">
@@ -49,7 +51,7 @@
         </div>
       </div>
 
-      <!-- Card image -->
+      <!-- Card image ===================================================== -->
       <div class="form-group">
         <label class="col-sm-2 control-label">Image</label>
         <div class="col-sm-10" id="card-image">
@@ -81,7 +83,7 @@
         </div>
       </div>
 
-      <!-- Ruling is errata -->
+      <!-- Errata? ======================================================== -->
       <?php
         $checked = $ruling_is_errata ? 'checked="true"' : '';
       ?>
@@ -106,7 +108,7 @@
 
       </div>
 
-      <!-- Ruling date -->
+      <!-- Date =========================================================== -->
       <div class="form-group">
         <label class="col-sm-2 control-label">Date</label>
         <div class="col-sm-10">
@@ -120,7 +122,7 @@
         </div>
       </div>
 
-      <!-- Ruling text -->
+      <!-- Text =========================================================== -->
       <div class="form-group">
         <label class="col-sm-2 control-label">Ruling</label>
         <div class="col-sm-10">
@@ -133,7 +135,7 @@
         </div>
       </div>
 
-      <!-- Submit -->
+      <!-- Submit ========================================================= -->
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <button

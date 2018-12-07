@@ -1,4 +1,5 @@
 <?php
+
 // VARIABLES
 // $card_label
 // $card_image
@@ -8,6 +9,7 @@
 
 // INPUT
 // (none)
+
 ?>
 <div class="page-header">
   <h1>Delete ruling</h1>
@@ -18,8 +20,8 @@
   ])?>
 </div>
 
-<div class="row">
-  <div class="col-xs-12 col-sm-9">
+<div class="fd-box --more-margin">
+  <div class="fd-box__content">
     <form
       action="<?=url("rulings/delete/{$ruling_id}")?>"
       method="post"

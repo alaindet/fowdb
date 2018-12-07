@@ -19,8 +19,8 @@
   ])?>
 </div>
 
-<div class="row">
-  <div class="col-xs-12 col-sm-9">
+<div class="fd-box --more-margin">
+  <div class="fd-box__content">
     <form
       action="<?=url('rulings/create')?>"
       method="post"

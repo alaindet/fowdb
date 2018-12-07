@@ -14,8 +14,8 @@
   ])?>
 </div>
 
-<div class="row">
-  <div class="col-xs-12 col-sm-9">
+<div class="fd-box --more-margin">
+  <div class="fd-box__content">
     <?=include_view('pages/admin/restrictions/includes/form', [
       'item' => null,
       'card' => $card ?? null,
