@@ -51,9 +51,7 @@
           <!-- Card -->
           <td>
             <a
-              href="<?=url_old('card', [
-                'code' => urlencode($item['card_code'])
-              ])?>"
+              href="<?=url('card/'.urlencode($item['card_code']))?>"
               class="btn btn-xs fd-btn-default"
               target="_blank"
             >

@@ -13,10 +13,7 @@
   <?=component('breadcrumb', [
     'Admin' => url('profile'),
     'Restrictions' => url('restrictions/manage'),
-    '(&larr; Card page)' => url_old(
-      'card',
-      ['code' => urlencode($item['card_code'])]
-    ),
+    '(&larr; Card page)' => url('card/'.urlencode($item['card_code'])),
     'Update' => '#'
   ])?>
 </div>

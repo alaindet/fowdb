@@ -66,18 +66,12 @@ class CardCreateService extends CrudService
      */
     public function getFeedback(): array
     {
-        $message = collapse(
-            "New card ",
-            "<strong>",
-                "<a href=\"",
-                    url_old('card', [
-                        'code' => urlencode($this->new['code'])
-                    ]),
-                "\">",
-                    "{$this->new['name']} ({$this->new['code']})",
-                "</a>",
-            "</strong> ",
-            "created."
+        $message = (
+            'New card <strong> '.
+                '<a href="'.url('card/'.urlencode($this->new['code'])).'">'.
+                    "{$this->new['name']} ({$this->new['code']})".
+                '</a>'.
+            '</strong> created.'
         );
 
         $uri = url('cards/create');

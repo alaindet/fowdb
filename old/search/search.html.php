@@ -49,7 +49,7 @@ $emptyGif = asset('images/icons/blank.gif');
 ?>
 <form
 	method="GET"
-	action="<?=url_old('/')?>"
+	action="<?=url('/')?>"
 	class="form"
 	id="form_search"
 >

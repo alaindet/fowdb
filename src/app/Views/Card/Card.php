@@ -76,11 +76,8 @@ class Card
             : $formats =& $input;
 
         return implode(', ', Arrays::map($formats, function ($format) {
-            return collapse(
-                "<a href=\"/?do=search&format={$format['code']}\">",
-                    $format['name'],
-                "</a>"
-            );
+            $link = url('cards', [ 'format' => [$format['code']] ]);
+            return "<a href=\"{$link}\">{$format['name']}</a>";
         }));
     }
 

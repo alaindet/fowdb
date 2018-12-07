@@ -10,7 +10,6 @@ use App\Services\FileSystem;
 class ClusterCreateService extends CrudService
 {
     public $inputProcessor = ClusterInputProcessor::class;
-    public $lookup = ['clusters', 'formats'];
 
     public function syncDatabase(): CrudServiceInterface
     {

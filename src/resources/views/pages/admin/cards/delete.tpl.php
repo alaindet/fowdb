@@ -56,10 +56,7 @@ $displayCsn = collapse(
   <?=component('breadcrumb', [
     'Admin' => url('profile'),
     'Cards' => url('cards/manage'),
-    '(&larr; Card page)' => url_old(
-      'card',
-      ['code' => urlencode($card['code'])]
-    ),
+    '(&larr; Card page)' => url('card/'.urlencode($card['code'])),
     'Delete' => '#'
   ])?>
 </div>

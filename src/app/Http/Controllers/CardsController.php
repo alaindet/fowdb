@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Views\Page;
+use App\Legacy\Card as LegacyCard;
+use App\Services\Resources\Card\Search;
 
 /**
  * Contains actions for PUBLIC routes only
@@ -22,11 +24,90 @@ class CardsController extends Controller
         );
     }
 
+    public function search(Request $request): string
+    {
+        $params = $request->input()->get();
+        $search = new Search;
+
+        $filters = $search->getFilters($params);
+        $search->processFilters($params);
+        $cards = $search->getCards();
+
+        // ERROR: Cards not found!
+        if (empty($cards)) {
+            alert(
+                'No results. Please try changing your searching criteria.',
+                'danger'
+            );
+            redirect('cards/search');
+        }
+
+        // Alias the filters
+        return view_old(
+            'Search',
+            'old/search/search.php',
+            [ 'js' => [ 'public/search' ] ],
+            [
+                'filters' => $filters,
+                'search' => $search,
+                'cards' => $cards,
+                'thereWereResults' => true
+            ]
+        );
+    }
+
     public function showSearchHelp(): string
     {
         return (new Page)
             ->template('pages/public/cards/search-help/index')
             ->title('Cards Search Help')
+            ->render();
+    }
+
+    /**
+     * Shows a single card page
+     * 
+     * Accepts literal codes (also URL encoded), as well as "partial" code
+     * (those who match the beginning of the code)
+     * 
+     * These codes are equivalent
+     * NDR-002%20R
+     * NDR-002+R
+     * NDR-002
+     *
+     * @param Request $request
+     * @param string $code The card's code
+     * @return string
+     */
+    public function show(Request $request, string $code): string
+    {
+        // Allows NDR-003+R
+        $code = urldecode($code);
+        
+        $cards = LegacyCard::getCardPageData($code);
+
+        // Build Open Graph Protocol data for this page
+        $card = &$cards[0];
+        $title = "{$card['name']} ({$card['code']}) ~ ".config('app.name');
+        $ogp = [
+            'title' => $title,
+            'url' => url('card/'.urlencode($card['code'])),
+            'image' => [
+                'url' => asset($card['thumb_path']),
+                'alt' => $title
+            ]
+        ];
+        
+        return (new Page)
+            ->template('pages/public/cards/show/index')
+            ->title($title)
+            ->variables([
+                'cards' => $cards,
+                'ogp' => $ogp,
+            ])
+            ->options([
+                'scripts' => [ 'public/card' ],
+            ])
             ->render();
     }
 }

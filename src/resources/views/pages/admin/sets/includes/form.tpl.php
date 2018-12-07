@@ -17,6 +17,7 @@
 $isItem = isset($item);
 $isPrev = isset($prev);
 $url = $isItem ? 'sets/update/'.$item['id'] : 'sets/create';
+$nextId = \App\Models\GameSet::nextAvailableId();
 
 ?>
 <form
@@ -60,7 +61,7 @@ $url = $isItem ? 'sets/update/'.$item['id'] : 'sets/create';
       <input
         type="number"
         name="id"
-        class="form-control"
+        class="form-control font-110"
         placeholder="Set ID (read below)..."
         value="<?php
           if ($isPrev) echo intval($prev['id']);
@@ -69,6 +70,10 @@ $url = $isItem ? 'sets/update/'.$item['id'] : 'sets/create';
         ?>"
         required
       >
+      <div class="well">
+        Recommended ID (next sequential available):
+        <strong><?=$nextId?></strong>
+      </div>
     </div>
   </div>
 

@@ -89,7 +89,7 @@
             <!-- Link -->
             <br>
             <a
-              href="<?=url_old('card', ['code' => urlencode($card['code'])])?>"
+              href="<?=url('card/'.urlencode($card['code']))?>"
               class="btn btn-link"
             >
               <i class="fa fa-external-link"></i>

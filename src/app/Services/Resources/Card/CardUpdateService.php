@@ -113,7 +113,7 @@ class CardUpdateService extends CrudService
      */
     public function getFeedback(): array
     {
-        $link = url_old('card', ['code' => urlencode($this->new['code'])]);
+        $link = $uri = url('card/'.urlencode($this->new['code']));
 
         $message = collapse(
             "Card ",

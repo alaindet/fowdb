@@ -11,9 +11,8 @@ use App\Views\Card\Card as View;
 
 class Card
 {
-    public static function getCardPageData(): array
+    public static function getCardPageData(string $code): array
     {
-        $code = htmlspecialchars($_GET['code'], ENT_QUOTES, 'UTF-8');
         $cardModel = new Model;
         $cardsDb = $cardModel->getByCode($code);
 
@@ -33,7 +32,7 @@ class Card
             
             // $type ----------------------------------------------------------
             $reminder = ($card['back_side'] === '2') ? ' (Shift)' : '';
-            $link = "/?do=search&type[]={$card['type']}";
+            $link = url('cards', [ 'type' => [$card['type']] ]);
             $type = "<a href=\"{$link}\">{$card['type']}</a>{$reminder}";
             
             // $freecost ------------------------------------------------------
@@ -72,13 +71,14 @@ class Card
                 $attributesMap = lookup('attributes.code2name');
                 $attributes = [];
                 foreach (explode('/', $card['attribute']) as $attribute) {
-                    $attributes[] = collapse(
-                        '<a href="/?do=search&attributes[]=',$attribute,'">',
-                            '<img ',
-                                'src="',asset('images/icons/blank.gif'),'" ',
-                                'class="fd-icon-',$attribute,'"',
-                            '>&nbsp;',
-                            $attributesMap[$attribute],
+                    $link = url('cards', ['attributes' => [$attribute]]);
+                    $attributes[] = (
+                        '<a href="'.$link.'">'.
+                            '<img '.
+                                'src="'.asset('images/icons/blank.gif').'" '.
+                                'class="fd-icon-'.$attribute.'"'.
+                            '>&nbsp;'.
+                            $attributesMap[$attribute].
                         '</a>'
                     );
                 }
@@ -94,7 +94,8 @@ class Card
             if (!empty($card['race'])) {
                 $raceValue = implode(' / ', array_map(
                     function ($race) {
-                        return "<a href=\"/?do=search&race={$race}\">{$race}</a>";
+                        $link = url('cards', [ 'race' => $race ]);
+                        return "<a href=\"{$link}\">{$race}</a>";
                     },
                     explode('/', $card['race'])
                 ));
@@ -104,20 +105,18 @@ class Card
             $setId =& $card['sets_id'];
             $setCode = lookup("sets.id2code.{$setId}");
             $setName = lookup("sets.id2name.{$setId}");
-            $set = collapse(
-                "<a href='/?do=search&set={$setCode}'>",
-                    strtoupper($setCode),' - ',$setName,
-                "</a>"
+            $link = url('cards', [ 'set' => $setCode ]);
+            $set = (
+                '<a href="'.$link.'">'.
+                    strtoupper($setCode).' - '.$setName.
+                '</a>'
             );
 
             // $artist --------------------------------------------------------
             $artist = null;
             if (isset($card['artist_name'])) {
-                $artist = collapse(
-                    "<a href='/?do=search&artist={$card['artist_name']}'>",
-                        $card['artist_name'],
-                    "</a>"
-                );
+                $link = url('cards', ['artist' => $card['artist_name']]);
+                $artist = "<a href=\"{$link}\">{$card['artist_name']}</a>";
             }
 
             // $baseCardId ----------------------------------------------------
@@ -207,9 +206,10 @@ class Card
             $rarityCode =& $card['rarity'];
             $rarityName = lookup("rarities.code2name.{$rarityCode}");
             if (isset($card['rarity'])) {
-                $rarity = collapse(
-                    '<a href="/?do=search&rarity[]=',$card['rarity'],'">',
-                        strtoupper($rarityCode),' - ',$rarityName,
+                $link = url('cards', [ 'rarity' => [$card['rarity']] ]);
+                $rarity = (
+                    '<a href="'.$link.'">'.
+                        strtoupper($rarityCode).' - '.$rarityName.
                     '</a>'
                 );
             }
@@ -217,9 +217,9 @@ class Card
             // $flavorText ----------------------------------------------------
             $flavorText = null;
             if (isset($card['flavor_text'])) {
-                $flavorText = collapse(
-                  '<span class="flavortext">',
-                        $card['flavor_text'],
+                $flavorText = (
+                    '<span class="flavortext">'.
+                        $card['flavor_text'].
                     '</span>'
                 );    
             }
@@ -252,7 +252,7 @@ class Card
                 'type' => $type,
                 $raceLabel => $raceValue,
                 'attribute' => $attribute,
-                'text' => render($card['text']),
+                'text' => !empty($card['text']) ? render($card['text']) : null,
                 'flavor_text' => $flavorText,
                 'code' => $card['code'],
                 'rarity' => $rarity,

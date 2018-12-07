@@ -55,6 +55,6 @@
     <p>
       As seen on <a href="<?=url('cards/search/help#syntax')?>">Cards search help</a>
     </p>
-    <?=include_view('pages/public/cards/includes/syntax-table')?>
+    <?=include_view('pages/public/cards/search-help/syntax-table')?>
   </div>
 </div>

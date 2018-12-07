@@ -49,7 +49,7 @@ $response = [];
 foreach ($cards as &$card) {
 
 	$label = "{$card['name']} ({$card['code']})";
-	$link = url_old('card', ['code' => urlencode($card['code'])]);
+	$link = url('card/'.urlencode($card['code']));
 
 	$response[] = [
 

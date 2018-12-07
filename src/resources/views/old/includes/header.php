@@ -1,14 +1,14 @@
 <?php
 $links = [
 	'Search' =>  [
-		'url' => url_old('search'),
+		'url' => url('cards/search'),
 		'icon' => 'fa fa-search'
 	],
 	'Spoiler' => [
 		'url' => url('spoiler'),
 		'icon' => 'fa fa-th-large'
 	],
-	'Resources' => [
+	'Game' => [
 		'url' => '',
 		'icon' => 'fa fa-file-text',
 		'dropdown' => [

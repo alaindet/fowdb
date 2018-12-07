@@ -11,7 +11,6 @@ use App\Services\FileSystem;
 class SetDeleteService extends CrudService
 {
     public $model = Model::class;
-    public $lookup = ['clusters', 'sets', 'spoilers'];
 
     public function syncDatabase(): CrudServiceInterface
     {

@@ -32,10 +32,11 @@ $spoilerIds = lookup('spoilers.ids');
 			<?php if(!empty($cards)): ?>
 				<?php foreach ($cards as &$card): ?>
 					<?php
-            $spoiled = in_array($card['sets_id'], $spoilerIds)
-              ? ' fdb-card-spoiled'
-              : '';
-						$link = url_old('card', [ 'code' => urlencode($card['code']) ]);
+            $link = url('card/'.urlencode($card['code']));
+            $spoiled = '';
+            if (in_array($card['sets_id'], $spoilerIds)) {
+              $spoiled = ' fdb-card-spoiled';
+            }
 					?>
 					--><!-- Card --><!--
 					--><div class="fdb-card<?=$spoiled?>"><!--

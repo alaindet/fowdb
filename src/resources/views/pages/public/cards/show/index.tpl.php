@@ -1,11 +1,12 @@
 <?php
 
-	// Variables
-	// $cards
+// VARIABLES
+// $cards
 
-	$counter = 0; // Ruling counter
-	foreach ($cards as &$card):
-		$hasRulings = !empty($card['rulings']);
+$counter = 0; // Ruling counter
+foreach ($cards as &$card):
+  $hasRulings = !empty($card['rulings']);
+
 ?>
 	<div class="row cardpage">
 
@@ -26,13 +27,16 @@
 		?>
 			<div class="col-xs-12 text-center sm-text-left">
 				
+				<!-- Update ======================================================= -->
         <a
           href="<?=url("cards/update/{$card['id']}")?>"
-          class="btn btn-warning"
+					class="btn btn-warning"
         >
           Update card
 				</a>
 
+
+				<!-- Delete ======================================================= -->
         <a
           href="<?=url("cards/delete/{$card['id']}")?>"
           class="btn btn-danger"
@@ -40,6 +44,7 @@
           Delete card
 				</a>
 				
+				<!-- Add ruling =================================================== -->
         <a
           href="<?=url('rulings/create', ['card' => $card['id']])?>"
           class="btn fd-btn-default"
@@ -47,13 +52,7 @@
           Add ruling
 				</a>
 
-				<a
-          href="<?=url('restrictions/create', ['card' => $card['id']])?>"
-          class="btn fd-btn-default"
-        >
-          Add restriction
-				</a>
-
+				<!-- Show rulings ================================================= -->
 				<?php if ($hasRulings): ?>
 					<a
 						href="<?=url('rulings/manage', ['card' => $card['id']])?>"
@@ -63,12 +62,21 @@
 					</a>
 				<?php endif; ?>
 
+				<!-- Add restriction ============================================== -->
+				<a
+          href="<?=url('restrictions/create', ['card' => $card['id']])?>"
+          class="btn fd-btn-default"
+        >
+          Add restriction
+				</a>
+
+				<!-- Show restrictions ============================================ -->
 				<?php if (isset($card['banned'])): ?>
 					<a
 						href="<?=url('restrictions/manage', ['card' => $card['id']])?>"
 						class="btn fd-btn-default"
 					>
-						Show banned
+						Show restrictions
 					</a>
 				<?php endif; ?>
 
@@ -119,7 +127,7 @@
 					<ul class="list-group">
 						<?php foreach ($cards as &$code): ?>
 					  	<li class="list-group-item">
-								<a href="<?=url_old('card', ['code' => urlencode($code)])?>">
+								<a href="<?=url('card/'.urlencode($code))?>">
 									<?=$code?>
 								</a>
 							</li>

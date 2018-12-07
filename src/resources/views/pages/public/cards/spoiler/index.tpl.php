@@ -87,9 +87,7 @@
                       data-id="<?=$card['id']?>"
                     >
                       <a
-                        href="<?=url_old('card', [
-                          'code' => urlencode($card['code'])
-                        ])?>"
+                        href="<?=url('card/'.urlencode($card['code']))?>"
                         target="_self"
                       >
                         <img

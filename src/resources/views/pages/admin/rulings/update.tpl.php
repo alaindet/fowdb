@@ -24,10 +24,7 @@
   <?=component('breadcrumb', [
     'Admin' => url('profile'),
     'Rulings' => url('rulings/manage'),
-    '(&larr; Card page)' => url_old(
-      'card',
-      ['code' => urlencode($card_code)]
-    ),
+    '(&larr; Card page)' => url('card/'.urlencode($card_code)),
     'Update' => '#'
   ])?>
 </div>
@@ -73,7 +70,7 @@
           <!-- Link -->
           <br>
           <a
-            href="<?=url_old('card', ['code' => urlencode($card_code)])?>"
+            href="<?=url('card/'.urlencode($card_code))?>"
             class="btn btn-link"
           >
             <i class="fa fa-external-link"></i>

@@ -33,7 +33,7 @@
  */
 $d = ['d' => '[0-9]+']; // I => id
 $h = ['h' => '[A-Za-z0-9]+']; // H => hash
-$c = ['c' => '[A-Z0-9]+\-\d{3}\s[A-Z]+']; // C => card
+$c = ['c' => '[A-Z0-9]+\-\d{3}[\s+]*[A-Z]*']; // C => card
 
 /**
  * Public routes --------------------------------------------------------------
@@ -45,7 +45,9 @@ $public = [
     ['GET', '','CardsController','searchForm'],
     ['GET', 'search','CardsController','searchForm'], // Alias
     ['GET', 'cards/search','CardsController','searchForm'], // Alias
+    ['GET', 'cards','CardsController','search'],
     ['GET', 'spoiler','SpoilersController','index'],
+    ['GET', 'card/{c}','CardsController','show',$c],
     ['GET', 'cr/{version}','GameRulesController','show',
         ['version' => '[0-9]+.[0-9]+[a-z]*']],
     ['GET', 'cr','GameRulesController','index'],

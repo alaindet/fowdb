@@ -6,24 +6,24 @@ use App\Http\Request\Input;
 
 trait PublicPagesTrait
 {
-    public function buildSearchPage(): void
+    public function buildSearchFormPage(): void
     {
-        echo view_old(
-            $title = 'Search',
-            $template = 'old/search/search.php',
-            $options = ['lightbox' => true, 'js' => [ 'public/search' ] ],
-            $variables = ['thereWereResults' => false]
-        );
+        redirect('cards/search');
     }
 
-    public function buildSearchResultsPage(): void
+    public function buildSearchPage(): void
     {
-        require path_root('old/search/search_retrievedb.php');
+        $get = Input::getInstance()->get();
+        unset($get['do']);
+
+        redirect('cards', $get);
     }
 
     public function buildCardPage(): void
     {
-        require path_root('/old/cardpage/cardpage.php');
+        $code = Input::getInstance()->get('code');
+
+        redirect('card/'.$code);
     }
 
     public function buildSpoilerPage(): void

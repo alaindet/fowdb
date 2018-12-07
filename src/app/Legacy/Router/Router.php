@@ -24,12 +24,10 @@ class Router
 
     public function run(): bool
     {
-        // Public pages
-        if ($this->do === 'search') $this->buildSearchResultsPage();
-        elseif ($this->p === 'search')            $this->buildSearchPage();
+        // Public pages (they all redirect to pretty URLs)
+        if ($this->do === 'search')               $this->buildSearchPage();
+        elseif ($this->p === 'search')            $this->buildSearchFormPage();
         elseif ($this->p === 'card')              $this->buildCardPage();
-        
-        // Redirects
         elseif ($this->p === 'spoiler')           $this->buildSpoilerPage();
         elseif ($this->p === 'resources/ban')     $this->buildBanPage();
         elseif ($this->p === 'resources/cr')      $this->buildCrPage();
@@ -38,7 +36,7 @@ class Router
         elseif ($this->p === 'resources/races')   $this->buildRacesPage();
 
         // Admin pages
-        elseif ($this->p === 'admin/trimg-image') $this->buildTrimImagePage();
+        elseif ($this->p === 'admin/trim-image') $this->buildTrimImagePage();
         elseif ($this->p === 'admin/clint')       $this->buildClintPage();
         elseif ($this->p === 'admin/hash')        $this->buildHashPage();
 

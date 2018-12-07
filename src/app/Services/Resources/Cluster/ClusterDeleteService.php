@@ -10,7 +10,6 @@ use App\Models\GameCluster as Model;
 class ClusterDeleteService extends CrudService
 {
     public $model = Model::class;
-    public $lookup = ['clusters', 'formats'];
 
     public function syncDatabase(): CrudServiceInterface
     {

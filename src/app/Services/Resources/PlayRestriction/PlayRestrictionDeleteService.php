@@ -45,7 +45,7 @@ class PlayRestrictionDeleteService extends CrudService
             '</strong> page.'
         );
 
-        $uri = url_old('card', ['code' => urlencode($card['code'])]);
+        $uri = url('card/'.urlencode($card['code']));
 
         return [$message, $uri];
     }

@@ -11,7 +11,6 @@ class ClusterUpdateService extends CrudService
 {
     public $inputProcessor = ClusterInputProcessor::class;
     public $model = Model::class;
-    public $lookup = ['clusters', 'formats'];
 
     public function syncDatabase(): CrudServiceInterface
     {

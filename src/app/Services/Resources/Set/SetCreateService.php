@@ -10,7 +10,6 @@ use App\Services\FileSystem;
 class SetCreateService extends CrudService
 {
     public $inputProcessor = SetInputProcessor::class;
-    public $lookup = ['clusters', 'sets', 'spoilers'];
     
     public function syncDatabase(): CrudServiceInterface
     {

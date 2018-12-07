@@ -12,7 +12,6 @@ class SetUpdateService extends CrudService
 {
     public $inputProcessor = SetInputProcessor::class;
     public $model = Model::class;
-    public $lookup = ['clusters', 'sets', 'spoilers'];
 
     public function syncDatabase(): CrudServiceInterface
     {

@@ -39,7 +39,7 @@ abstract class Model extends Base
             $virtualAttributes = array_intersect($all, $fields ?? []);
 
             // Filter out virtual attributes before searching the database
-            $fields = array_diff($fields, $virtualAttributes);
+            $fields = array_diff($fields ?? [], $virtualAttributes);
 
         }
 
@@ -93,7 +93,7 @@ abstract class Model extends Base
             $virtualAttributes = array_intersect($all, $fields ?? []);
 
             // Filter out virtual attributes before searching the database
-            $fields = array_diff($fields, $virtualAttributes);
+            $fields = array_diff($fields ?? [], $virtualAttributes);
 
         }
 
