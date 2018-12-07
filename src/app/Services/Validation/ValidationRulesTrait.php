@@ -259,7 +259,7 @@ trait ValidationRulesTrait
                 !preg_match('/^[a-zA-Z0-9]+$/', $input)
             ) ||
             ($value === 'file' && $input['error'] !== UPLOAD_ERR_OK) ||
-            ($value === 'boolean' && !in_array($input, ['0', '1']))
+            ($value === 'boolean' && $value !== '0' && $value !== '1')
         ) {
             $this->pushError("Input <strong>{$inputName}</strong> must be of type {$value}");
             return false;
@@ -280,8 +280,8 @@ trait ValidationRulesTrait
         $pattern = "~{$value}~";
         if (!preg_match($pattern, $this->input[$inputName])) {
             $this->pushError(
-                "Input <strong>{$inputName}</strong> ".
-                "must match pattern {$value}"
+                "Input <strong>{$inputName}</strong> must match pattern ".
+                "<span class=\"text-monospace text-bold\">{$value}</span>"
             );
             return false;
         }
