@@ -35,6 +35,8 @@ class Router
         // Redirects
         elseif ($this->p === 'resources/errata')  $this->buildErrataPage();
         elseif ($this->p === 'resources/formats') $this->buildFormatsPage();
+
+        // Redirects
         elseif ($this->p === 'resources/races')   $this->buildRacesPage();
 
         // Admin pages
