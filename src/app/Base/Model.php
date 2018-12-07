@@ -9,6 +9,14 @@ abstract class Model extends Base
 {
     protected $data = [];
 
+    public function __construct()
+    {
+        // ERROR: Missing table name
+        if (!isset($this->table)) {
+            throw new ModelException('Missing table name for model');
+        }
+    }
+
     /**
      * Returns all the resources
      *
@@ -21,30 +29,44 @@ abstract class Model extends Base
         array $fieldsToRender = []
     ): array
     {
-        // ERROR: Missing table name
-        if (!isset($this->table)) {
-            throw new ModelException('Missing table name for model');
+        // Check for virtual attributes
+        if (isset($this->virtualAttributes)) {
+
+            // Read all available virtual attributes
+            $all = array_keys($this->virtualAttributes);
+
+            // Grab only the requested virtual attributes
+            $virtualAttributes = array_intersect($all, $fields);
+
+            // Filter out virtual attributes before searching the database
+            $fields = array_diff($fields, $virtualAttributes);
+
         }
 
-        $resources = database()
-            ->select(
-                statement('select')
-                    ->select(isset($fields) ? implode(',', $fields) : '*')
-                    ->from($this->table)
-            )
-            ->get();
+        $this->data = $this->fetchAll($fields);
 
-        // Return raw data (default)
-        if (empty($fieldsToRender)) return $resources;
+        // Render fields (this MUST have a reference!)
+        if (!empty($fieldsToRender)) {
+            foreach ($this->data as &$resource) {
+                foreach ($fieldsToRender as $field) {
+                    $resource[$field] = render($resource[$field]);
+                }
+            }    
+        }
 
-        // Render fields
-        foreach ($resources as &$resource) {
-            foreach ($fieldsToRender as $field) {
-                $resource[$field] = render($resource[$field]);
+        // Call specific getters and add virtual attributes to the model
+        if (isset($virtualAttributes)) {
+            // This MUST have a reference!
+            foreach ($this->data as &$resource) {
+                foreach ($virtualAttributes as $attribute) {
+                    $getter = $this->virtualAttributes[$attribute];
+                    $resource[$attribute] = $this->$getter($resource);
+                }
             }
         }
 
-        return $resources;
+
+        return $this->data;
     }
 
     /**
@@ -57,35 +79,80 @@ abstract class Model extends Base
      */
     public function byId(
         $id,
-        array $fields = null,
+        array $fields = [],
         array $fieldsToRender = []
     ): array
     {
-        // ERROR: Missing table name
-        if (!isset($this->table)) {
-            throw new ModelException('Missing table name for model');
+        // Check for virtual attributes
+        if (isset($this->virtualAttributes)) {
+            
+            // Read all available virtual attributes
+            $all = array_keys($this->virtualAttributes);
+
+            // Grab only the requested virtual attributes
+            $virtualAttributes = array_intersect($all, $fields);
+
+            // Filter out virtual attributes before searching the database
+            $fields = array_diff($fields, $virtualAttributes);
+
         }
 
-        // Store data into the model
-        $this->data = database()
+        // Store fetched data into the model
+        $this->data = $this->fetchSingle($id, $fields);
+
+        // Render fields
+        if (!empty($fieldsToRender)) {
+            foreach ($fieldsToRender as $field) {
+                $this->data[$field] = render($this->data[$field]);
+            }
+        }
+
+        // Call specific getters and add virtual attributes to the model
+        if (isset($virtualAttributes)) {
+            foreach ($virtualAttributes as $attribute) {
+                $getter = $this->virtualAttributes[$attribute];
+                $this->data[$attribute] = $this->$getter($this->data);
+            }
+        }
+
+        return $this->data;
+    }
+
+    /**
+     * Fetches data from a single row from the database
+     *
+     * @param string|int $id
+     * @param array $fields
+     * @return array Results from the database
+     */
+    private function fetchSingle($id, array $fields = []): array
+    {
+        return database()
             ->select(
                 statement('select')
-                    ->select(isset($fields) ? implode(',', $fields) : '*')
+                    ->select(!empty($fields) ? implode(',', $fields) : '*')
                     ->from($this->table)
                     ->where('id = :id')
                     ->limit(1)
             )
-            ->bind([':id' => intval($id)])
+            ->bind([':id' => $id])
             ->first();
+    }
 
-        // Return raw data (default)
-        if (empty($fieldsToRender)) return $this->data;
-
-        // Render fields
-        foreach ($fieldsToRender as $field) {
-            $this->data[$field] = render($this->data[$field]);
-        }
-
-        return $this->data;
+    /**
+     * Fetches all data from this model's table from the database
+     *
+     * @param array $fields
+     * @return array Results from the database
+     */
+    private function fetchAll(array $fields = []): array
+    {
+        return database()
+            ->select(
+                statement('select')
+                    ->select(!empty($fields) ? implode(',', $fields) : '*')
+                    ->from($this->table)
+            )
+            ->get();
     }
 }
