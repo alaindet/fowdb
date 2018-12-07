@@ -6,6 +6,7 @@ vendor/
 /.backup/
 /.dev/
 /src/data/cache/
+/src/data/resources/cr
 
 # Public assets and files
 /js/
