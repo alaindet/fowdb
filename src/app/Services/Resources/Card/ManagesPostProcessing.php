@@ -44,11 +44,13 @@ trait ManagesPostProcessing
             ->from('cards')
             ->where('sets_id = :set')
             ->where('num = :num')
+            ->where('back_side = :backside')
             ->limit(1);
 
         $bind = [
             ':set' => $this->state['set-id'],
-            ':num' => $this->new['num']
+            ':num' => $this->new['num'],
+            ':backside' => $this->new['back_side']
         ];
 
         if (!empty($this->old)) {
