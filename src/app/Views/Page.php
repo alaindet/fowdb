@@ -172,15 +172,14 @@ class Page
             $this->variables
         );
         
-        // Variables must have a prefix to make them "unguessable"
-        // And avoid variable names conflicts
+        // Prefixed variable names should be be altered by client script
         $defaultOptions = [
+            'dependencies' => [],
             'fowdb_content' => $content,
-            'fowdb_dependencies' => [],
             'fowdb_ogp' => $this->openGraphProtocol(),
-            'fowdb_scripts' => [],
-            'fowdb_state' => [],
-            'fowdb_title' => $this->title,
+            'scripts' => [],
+            'state' => [],
+            'title' => $this->title,
         ];
 
         $this->options = array_merge($defaultOptions, $this->options);

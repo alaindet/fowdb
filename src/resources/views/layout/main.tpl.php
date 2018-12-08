@@ -2,12 +2,12 @@
 
 // VARIABLES
 // $fowdb_content
-// $fowdb_dependencies: jqueryui, lightbox
 // $fowdb_ogp
-// $fowdb_scripts
-// $fowdb_state
-// $fowdb_title
+// $scripts
+// $state
+// $title
 // $token
+// dependencies: jqueryui, lightbox
 
 ?>
 <!DOCTYPE html>
@@ -43,7 +43,7 @@
 	<link rel="shortcut icon" href="<?=asset('favicon.ico', 'png')?>">
 
   <!-- Title -->
-	<title><?=$fowdb_title?></title>
+	<title><?=$title?></title>
 </head>
 
 <body>
@@ -59,7 +59,7 @@
 
   <?php
     // Dependency: jQuery UI 1.11.4
-    if (isset($fowdb_dependencies['jqueryui'])):
+    if (isset($dependencies['jqueryui'])):
   ?>
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.min.css" defer>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" defer></script>
@@ -67,7 +67,7 @@
 
   <?php
     // Dependency: Lightbox 2.10.0
-    if (isset($fowdb_dependencies['lightbox'])):
+    if (isset($dependencies['lightbox'])):
   ?>
 		<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.10.0/css/lightbox.min.css' defer>
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.10.0/js/lightbox.min.js' defer></script>
@@ -79,7 +79,7 @@
   <!-- Application initial state -->
   <script>
     window.INIITIAL_STATE = <?=json_encode(
-      $fowdb_state,
+      $state,
       JSON_FORCE_OBJECT | JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES
     )?>;
     window.BASE_URL = "<?=config('app.url')?>";
@@ -87,7 +87,7 @@
 
   <!-- My scripts -->
   <script src="<?=asset('js/public/common.min.js', 'js')?>" defer></script>
-  <?php foreach ($fowdb_scripts as $script): ?>
+  <?php foreach ($scripts as $script): ?>
     <script src="<?=asset("js/{$script}.min.js", 'js')?>" defer></script>
   <?php endforeach; ?>
 </body>

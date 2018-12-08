@@ -466,8 +466,8 @@ if ($isCard) {
         rows="6"
         placeholder="Text..."
       ><?php
-        if ($isPrev) echo escape($prev['text']);
-        elseif ($isCard) echo escape($card['text']);
+        if ($isPrev) echo trim(escape($prev['text']));
+        elseif ($isCard) echo trim(escape($card['text']));
         else echo null;
       ?></textarea>
     </div>
@@ -483,8 +483,8 @@ if ($isCard) {
         rows="3"
         placeholder="Flavor text..."
       ><?php
-        if ($isPrev) echo $prev['flavor-text'];
-        elseif ($isCard) echo $card['flavor_text'];
+        if ($isPrev) echo trim(escape($prev['flavor-text']));
+        elseif ($isCard) echo trim(escape($card['flavor_text']));
         else echo null;
       ?></textarea>
     </div>
