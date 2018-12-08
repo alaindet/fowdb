@@ -81,8 +81,9 @@ class CardsController extends Controller
      */
     public function show(Request $request, string $code): string
     {
-        // Allows NDR-003+R
-        $code = urldecode($code);
+        // Validate and process input
+        // Ex.: ABC-001+C => ABC-001C
+        $code = str_replace(' ', '', urldecode($code));
         
         $cards = LegacyCard::getCardPageData($code);
 
