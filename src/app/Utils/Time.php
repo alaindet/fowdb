@@ -4,13 +4,19 @@ namespace App\Utils;
 
 class Time
 {
-    public static function yyyymmdd(): string
+    public static function date(): string
     {
         return date('Y-m-d');
     }
 
-    public static function date(): string
+    public static function timestamp(string $format = 'default'): string
     {
-        return self::yyyymmdd();
+        $formats = [
+            'default' => 'Y-m-d H:i:s',
+            'file' => 'Ymd_His',
+            'file-nospace' => 'YmdHis',
+        ];
+
+        return date($formats[$format]);
     }
 }
