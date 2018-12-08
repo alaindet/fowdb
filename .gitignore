@@ -18,8 +18,8 @@ vendor/
 .env.production
 .env.development
 .pdf
-/sitemap.xml
-/sitemap.xml.gz
+sitemap.xml
+sitemap.xml.gz
 
 # Not these
 !.env.example
