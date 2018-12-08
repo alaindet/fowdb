@@ -152,7 +152,7 @@ class Page
 		}
 
         // Load and render page template as a string
-        ob_start();
+        ob_start("ob_gzhandler");
         require $template;
         return ob_get_clean();
     }

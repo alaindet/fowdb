@@ -66,8 +66,8 @@ class Page
 		// Starting and stopping buffering needs to be done in order to
 		// let the script add notifications and/or redirect the user
 
-		// Start output buffering
-		ob_start();
+		// Start output buffering and enable gzip compression
+		ob_start("ob_gzhandler");
 
 		// Bind variables to templates
 		if (!empty($vars)) {
