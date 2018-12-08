@@ -38,7 +38,7 @@ class OpenGraphProtocol
     {
         if (isset($value)) {
             $this->props['og:title'] = $value;
-            return $this;    
+            return $this;
         }
 
         return $this->props['og:title'];

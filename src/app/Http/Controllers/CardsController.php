@@ -104,9 +104,9 @@ class CardsController extends Controller
             ->title($title)
             ->variables([
                 'cards' => $cards,
-                'ogp' => $ogp,
             ])
             ->options([
+                'ogp' => $ogp,
                 'scripts' => [ 'public/card' ],
             ])
             ->render();

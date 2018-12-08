@@ -107,6 +107,9 @@ class Page
     {
         $ogp = OpenGraphProtocol::getInstance();
 
+        // Use current title by default
+        $ogp->title($this->title);
+
         // Set custom ogp:* tags
         if (isset($this->options['ogp'])) {
 
@@ -169,13 +172,15 @@ class Page
             $this->variables
         );
         
+        // Variables must have a prefix to make them "unguessable"
+        // And avoid variable names conflicts
         $defaultOptions = [
-            'title' => $this->title,
-            'ogp' => $this->openGraphProtocol(),
-            'content' => $content,
-            'dependencies' => [],
-            'scripts' => [],
-            'state' => []
+            'fowdb_content' => $content,
+            'fowdb_dependencies' => [],
+            'fowdb_ogp' => $this->openGraphProtocol(),
+            'fowdb_scripts' => [],
+            'fowdb_state' => [],
+            'fowdb_title' => $this->title,
         ];
 
         $this->options = array_merge($defaultOptions, $this->options);

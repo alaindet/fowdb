@@ -1,21 +1,21 @@
 <?php
 
 // VARIABLES
-// $ogp
-// $title
-// $content
-// $dependencies: jqueryui, lightbox
-// $scripts
-// $state
+// $fowdb_content
+// $fowdb_dependencies: jqueryui, lightbox
+// $fowdb_ogp
+// $fowdb_scripts
+// $fowdb_state
+// $fowdb_title
 // $token
 
 ?>
 <!DOCTYPE html>
-<html lang="en" prefix="<?=$ogp->getHtmlPrefix()?>">
+<html lang="en" prefix="<?=$fowdb_ogp->getHtmlPrefix()?>">
 <head>
 
   <!-- Meta tags -->
-	<?=$ogp->toHtml()?>
+	<?=$fowdb_ogp->toHtml()?>
 	<meta property="fb:app_id" content="<?=config('facebook.id')?>">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,14 +43,14 @@
 	<link rel="shortcut icon" href="<?=asset('favicon.ico', 'png')?>">
 
   <!-- Title -->
-	<title><?=$title?></title>
+	<title><?=$fowdb_title?></title>
 </head>
 
 <body>
 	<a name="top"></a>
 	<div class="container-fluid" id="page-wrapper">
 		<?=include_view('includes/header')?>
-		<?=$content?>
+		<?=$fowdb_content?>
 	</div>
 	<?=include_view('includes/footer')?>
 
@@ -59,7 +59,7 @@
 
   <?php
     // Dependency: jQuery UI 1.11.4
-    if (isset($dependencies['jqueryui'])):
+    if (isset($fowdb_dependencies['jqueryui'])):
   ?>
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.min.css" defer>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" defer></script>
@@ -67,7 +67,7 @@
 
   <?php
     // Dependency: Lightbox 2.10.0
-    if (isset($dependencies['lightbox'])):
+    if (isset($fowdb_dependencies['lightbox'])):
   ?>
 		<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.10.0/css/lightbox.min.css' defer>
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.10.0/js/lightbox.min.js' defer></script>
@@ -79,7 +79,7 @@
   <!-- Application initial state -->
   <script>
     window.INIITIAL_STATE = <?=json_encode(
-      $state,
+      $fowdb_state,
       JSON_FORCE_OBJECT | JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES
     )?>;
     window.BASE_URL = "<?=config('app.url')?>";
@@ -87,7 +87,7 @@
 
   <!-- My scripts -->
   <script src="<?=asset('js/public/common.min.js', 'js')?>" defer></script>
-  <?php foreach ($scripts as $script): ?>
+  <?php foreach ($fowdb_scripts as $script): ?>
     <script src="<?=asset("js/{$script}.min.js", 'js')?>" defer></script>
   <?php endforeach; ?>
 </body>
