@@ -97,7 +97,7 @@ foreach ($cards as &$card):
 		<!-- Card info -->
 		<div class="col-xs-12 col-sm-7 box card-props">
 			<?php foreach ($card['display'] as $prop): ?>
-        <div class="row card-prop">
+        <div class="row card-prop font-105">
 
           <!-- Property label -->
           <div class="col-xs-3 col-sm-3 prop-label">
