@@ -32,6 +32,10 @@ $commands = [
     'label' => 'Cache lookup data',
     'name' => 'lookup:cache'
   ],
+  'sitemap-make' => [
+    'label' => 'Regenerate sitemap.xml',
+    'name' => 'sitemap:make'
+  ],
 ];
 
 // Execute Clint command

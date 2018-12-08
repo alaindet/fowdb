@@ -3,6 +3,7 @@
 namespace App\Clint\Commands;
 
 use App\Clint\Commands\Command;
+use App\Services\Lookup\Lookup;
 
 class LookupCacheCommand extends Command
 {
@@ -10,8 +11,7 @@ class LookupCacheCommand extends Command
 
     public function run(array $options, array $arguments): void
     {
-        $lookup = \App\Services\Lookup\Lookup::getInstance();
-        $lookup->generateAll()->cache();
+        (Lookup::getInstance())->generateAll()->cache();
 
         $this->message = 'Lookup data successfully cached';
     }

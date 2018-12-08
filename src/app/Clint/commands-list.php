@@ -10,5 +10,6 @@ return [
     'env:get' => \App\Clint\Commands\GetEnvironmentCommand::class,
     'env:switch' => \App\Clint\Commands\SwitchEnvironmentCommand::class,
     'lookup:cache' => \App\Clint\Commands\LookupCacheCommand::class,
+    'sitemap:make' => \App\Clint\Commands\SitemapMakeCommand::class,
 
 ];
