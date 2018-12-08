@@ -21,11 +21,11 @@
   var data_modalContent = '';
   var data_modalSubmit = '';
   var data_modalTitle = '';
-  var data_urlClusterCreate = '/api/clusters/create';
-  var data_urlClusterDelete = '/api/clusters/delete/{id}';
-  var data_urlClusterRead = '/api/clusters/{id}';
-  var data_urlClusterUpdate = '/api/clusters/update/{id}';
-  var data_urlClustersRead = '/api/clusters/';
+  var data_urlClusterCreate = window.BASE_URL + '/api/clusters/create';
+  var data_urlClusterDelete = window.BASE_URL + '/api/clusters/delete/{id}';
+  var data_urlClusterRead   = window.BASE_URL + '/api/clusters/{id}';
+  var data_urlClusterUpdate = window.BASE_URL + '/api/clusters/update/{id}';
+  var data_urlClustersRead  = window.BASE_URL + '/api/clusters/';
 
   // Bootstrap ----------------------------------------------------------------
   function bootstrap() {
