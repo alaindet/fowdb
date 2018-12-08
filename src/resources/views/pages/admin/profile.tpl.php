@@ -1,15 +1,18 @@
 <?php
+
 // VARIABLES
 // $links
+
 ?>
 <div class="page-header">
   <h1>Admin profile</h1>
 </div>
 
-<ul>
+
+<ul class="fd-list --spaced font-110">
   <?php foreach($links as $link => $label): ?>
-    <li class="separate">
-      <a href="<?=$link?>" class="btn btn-lg btn-link">
+    <li>
+      <a href="<?=$link?>">
         <?=$label?>
       </a>
     </li>
