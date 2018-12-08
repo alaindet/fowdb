@@ -7,6 +7,8 @@ namespace App\Services\Resources\GameRules;
  * 
  * protected $bodyLines; (from DocumentScannerTrait)
  * protected $css; (from DocumentBuilderTrait)
+ * 
+ * NOTE: object type hint doesn't work on the server yet (PHP 7.1.15)
  */
 trait DocumentBodyBuilderTrait
 {
@@ -21,7 +23,8 @@ trait DocumentBodyBuilderTrait
      * @param object $prev Previous Line
      * @return string HTML
      */
-    protected function openBodyUnit(object &$prev, object &$line): string
+    // protected function openBodyUnit(object &$prev, object &$line): string
+    protected function openBodyUnit(&$prev, &$line): string
     {
         $opener = 'openBodyUnit' . $line->level;
         return $this->$opener($prev, $line);
@@ -38,7 +41,8 @@ trait DocumentBodyBuilderTrait
      * @param object $to
      * @return string
      */
-    protected function closeBodyUnits(object &$from, object &$to): string
+    // protected function closeBodyUnits(object &$from, object &$to): string
+    protected function closeBodyUnits(&$from, &$to): string
     {
         $html = '';
 
@@ -57,7 +61,8 @@ trait DocumentBodyBuilderTrait
      * @param object $line Current line
      * @return string HTML
      */
-    private function openBodyUnit1(object &$prev, object &$line): string
+    // private function openBodyUnit1(object &$prev, object &$line): string
+    private function openBodyUnit1(&$prev, &$line): string
     {
         $dTag = $line->dotlessTag;
         $hider = 'hide-cr-'.$dTag;
@@ -112,7 +117,8 @@ trait DocumentBodyBuilderTrait
      * @param object $line Current line
      * @return string HTML
      */
-    private function openBodyUnit2(object &$prev, object &$line): string
+    // private function openBodyUnit2(object &$prev, object &$line): string
+    private function openBodyUnit2(&$prev, &$line): string
     {
         // Ex.: "1401" => 1400
         $dTag = intval($line->dotlessTag);
@@ -161,7 +167,8 @@ trait DocumentBodyBuilderTrait
      * @param object $line Current line
      * @return string HTML
      */
-    private function openBodyUnit3(object &$prev, object &$line): string
+    // private function openBodyUnit3(object &$prev, object &$line): string
+    private function openBodyUnit3(&$prev, &$line): string
     {
         $dTag = &$line->dotlessTag;
         return (
@@ -191,7 +198,8 @@ trait DocumentBodyBuilderTrait
      * @param object $line Current line
      * @return string HTML
      */
-    private function openBodyUnit4(object &$prev, object &$line): string
+    // private function openBodyUnit4(object &$prev, object &$line): string
+    private function openBodyUnit4(&$prev, &$line): string
     {
         $dTag = &$line->dotlessTag;
         return (
@@ -226,7 +234,8 @@ trait DocumentBodyBuilderTrait
      * @param object $line Current line
      * @return string HTML
      */
-    private function openBodyUnit5(object &$prev, object &$line): string
+    // private function openBodyUnit5(object &$prev, object &$line): string
+    private function openBodyUnit5(&$prev, &$line): string
     {
         $dTag = &$line->dotlessTag;
         return (
