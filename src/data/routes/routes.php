@@ -32,8 +32,7 @@
  * c => card code specific ex.: NDR-001 U
  */
 $d = ['d' => '[0-9]+']; // I => id
-$h = ['h' => '[A-Za-z0-9]+']; // H => hash
-$c = ['c' => '[A-Z0-9]+\-\d{3}[\s+]*[A-Z]*']; // C => card
+// $h = ['h' => '[A-Za-z0-9]+']; // H => hash
 
 /**
  * Public routes --------------------------------------------------------------
@@ -42,12 +41,15 @@ $c = ['c' => '[A-Z0-9]+\-\d{3}[\s+]*[A-Z]*']; // C => card
  */
 $public = [
 
+    // ['GET', 'test', 'TestController', 'testMethod'],
+
     ['GET', '','CardsController','searchForm'],
     ['GET', 'search','CardsController','searchForm'], // Alias
     ['GET', 'cards/search','CardsController','searchForm'], // Alias
     ['GET', 'cards','CardsController','search'],
     ['GET', 'spoiler','SpoilersController','index'],
-    ['GET', 'card/{c}','CardsController','show',$c],
+    ['GET', 'card/{code}','CardsController','show',
+        ['code' => '[A-Z0-9]+\-\d{3}[\s+]*[A-Z]*']],
     ['GET', 'cr/{version}','GameRulesController','show',
         ['version' => '[0-9]+.[0-9]+[a-z]*']],
     ['GET', 'cr','GameRulesController','index'],
@@ -55,6 +57,7 @@ $public = [
     ['GET', 'formats','FormatsController','index'],
     ['GET', 'errata','ErrataController','index'],
     ['GET', 'banlist','PlayRestrictionsController','index'],
+    ['GET', 'restrictions','PlayRestrictionsController','index'], // Alias
     ['GET', 'cards/search/help','CardsController','showSearchHelp'],
     ['GET', 'login','Auth\\LoginController','loginForm'],
     ['POST','login','Auth\\LoginController','login', null, ['token']],
