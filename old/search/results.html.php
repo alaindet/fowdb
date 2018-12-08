@@ -60,7 +60,7 @@ $spoilerIds = lookup('spoilers.ids');
 									<i class="fa fa-2x fa-refresh"></i>
 									<br><strong>Load</strong>
 								</span>
-								<img src="images/in-pages/search/more.jpg">
+								<img src="<?=asset('images/in-pages/search/more.jpg')?>">
 							</button>
 						</form>
 					</div><!--
