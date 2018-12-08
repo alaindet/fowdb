@@ -2,11 +2,12 @@
 node_modules/
 vendor/
 
-# App and development
+# App and development directories
 /.backup/
 /.dev/
 /src/data/cache/
 /src/data/resources/cr
+/src/data/backup
 
 # Public assets and files
 /js/
