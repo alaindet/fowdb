@@ -156,7 +156,8 @@ trait ManagesPostProcessing
         // Ex.: "NDR-001 U"
         if ($this->new['rarity'] !== null) {
             $rarity = strtoupper($this->new['rarity']);
-            $code .= " {$rarity}";
+            // $code .= " {$rarity}"; // Old code with whitespace
+            $code .= $rarity; // No whitespace!
         }
 
         $this->new['code'] = $code;
