@@ -62,11 +62,12 @@ class Config
             $this->data = FileSystem::loadFile($this->cachePath);
         }
 
-        // Load .env file and parse it
+        // Load .env file, parse it, then store it
         catch (FileSystemException $exception) {
             $envFileContent = FileSystem::readFile($this->normalPath);
             $this->data = $this->envToArray($envFileContent);
             $this->data = array_merge($this->data, $this->runtimeVariables());
+            $this->cache();
         }
     }
 
