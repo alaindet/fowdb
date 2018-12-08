@@ -289,7 +289,7 @@ class CardInputProcessor extends InputProcessor
         }
 
         elseif ($value !== null && $value !== '') {
-            $this->new['text'] = $value;
+            $this->new['text'] = trim($value);
         }
     }
 
@@ -301,7 +301,7 @@ class CardInputProcessor extends InputProcessor
         }
 
         elseif ($value !== null && $value !== '') {
-            $this->new['flavor_text'] = $value;
+            $this->new['flavor_text'] = trim($value);
         }
     }
 
