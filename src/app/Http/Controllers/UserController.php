@@ -48,7 +48,6 @@ class UserController extends Controller
                 url('clusters/manage') => 'Clusters',
                 url('restrictions/manage') => 'Banned and Limited cards',
                 url('rulings/manage') => 'Rulings',
-                url('cr/manage') => 'Comprehensive Rules',
                 url_old('admin/trim-image') => 'Trim an image',
             ],
             'admin' => [
