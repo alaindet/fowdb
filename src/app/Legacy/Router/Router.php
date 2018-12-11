@@ -35,9 +35,6 @@ class Router
         elseif ($this->p === 'resources/formats') $this->buildFormatsPage();
         elseif ($this->p === 'resources/races')   $this->buildRacesPage();
 
-        // Admin pages
-        elseif ($this->p === 'admin/clint')       $this->buildClintPage();
-
         // Temporary admin pages
         elseif ($this->p === 'admin/_artists/select-set') {
             $this->buildArtistSelectSetPage();

@@ -4,11 +4,6 @@ namespace App\Legacy\Router;
 
 trait AdminPagesTrait
 {
-    public function buildClintPage(): void
-    {
-        echo view_old('Admin:Clint', 'old/admin/clint/index.php');
-    }
-
     public function buildArtistSelectSetPage(): void
     {
         echo view_old(

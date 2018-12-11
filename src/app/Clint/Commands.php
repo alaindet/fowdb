@@ -11,9 +11,7 @@ class Commands
 
     public function __construct()
     {
-        $this->list = FileSystem::loadFile(
-            path_src('app/Clint/commands-list.php')
-        );
+        $this->list = FileSystem::loadFile(path_data('app/clint.php'));
     }
 
     public function exists(string $name): bool

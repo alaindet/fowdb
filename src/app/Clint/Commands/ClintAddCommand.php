@@ -30,7 +30,7 @@ class ClintAddCommand extends Command
         // Build and save the description file
         $this->descriptionFile();
 
-        // Update commands-list.php
+        // Update commands list
         $this->updateCommandsListFile();
 
         // Update descriptions/_all.md
@@ -115,7 +115,7 @@ class ClintAddCommand extends Command
 
     private function updateCommandsListFile(): void
     {
-        $path = $this->path('commands-list.php');
+        $path = path_data('app/clint.php');
         $content = FileSystem::readFile($path);
 
         $target = "\n\n];";
