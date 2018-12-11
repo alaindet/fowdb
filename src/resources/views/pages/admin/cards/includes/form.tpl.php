@@ -412,7 +412,7 @@ if ($isCard) {
             Leave <strong>empty</strong> for automatic generation (recommended) or enter a custom code
           </li>
           <li>
-            Automatic code pattern: <code>{SETCODE}{dash}{NUMBER}{RARITY}</code>, ex.: NDR-001R
+            Automatic code pattern: <code>{SETCODE}{dash}{NUMBER}{RARITY}</code>, ex.: NDR-001U
           </li>
         </ul>
       </div>

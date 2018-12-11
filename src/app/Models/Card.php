@@ -87,12 +87,12 @@ class Card extends Model
             ->select(statement('select')
                 ->select($fields)
                 ->from($this->table)
-                // ->where('code = :code')
-                ->where('code LIKE :code')
+                ->where('code = :code')
+                // ->where('code LIKE :code')
                 ->limit(3)
             )
-            // ->bind([':code' => $code])
-            ->bind([':code' => "{$code}%"])
+            ->bind([':code' => $code])
+            // ->bind([':code' => "{$code}%"])
             ->get();
 
         // Return raw data (default)
