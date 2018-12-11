@@ -27,41 +27,4 @@ class ImagesController extends Controller
 
         return;
     }
-
-    public function buildAll(): string
-    {
-        $this->lookup->generateAll()->cache();
-        Alert::add('Lookup data cache regenerated.');
-        Redirect::to('lookup/read');
-    }
-
-    public function read(Request $request, string $feature = null): string
-    {
-        // Read single feature
-        if (isset($feature)) {
-            $data = $this->lookup->get($feature);
-        }
-        
-        // Read all data
-        else {
-            $data = $this->lookup->getAll($feature);
-            $feature = 'all';
-        }
-
-        return (new Page)
-            ->template('pages/admin/lookup/index')
-            ->title('Lookup,Read')
-            ->variables([
-                'feature' => $feature,
-                'features' => $this->lookup->features(),
-                'log' => log_html($data, 'Lookup data: '.$feature),
-                'breadcrumb' => [
-                    'Admin' => url('profile'),
-                    'Lookup' => url('lookup'),
-                    'Read: '.$feature => '#'
-                ]
-            ])
-            ->minify(false)
-            ->render();
-    }
 }

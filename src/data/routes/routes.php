@@ -125,6 +125,10 @@ $admin = [
     ['GET', 'images/trim','Admin\\ImagesController','trimForm'],
     ['POST','images/trim','Admin\\ImagesController','trim'],
 
+    // Hash a string
+    ['GET', 'hash', 'Admin\\HashController','hashForm'],
+    ['POST','hash', 'Admin\\HashController','hash'],
+
 ];
 
 /**

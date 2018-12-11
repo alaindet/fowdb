@@ -37,7 +37,6 @@ class Router
 
         // Admin pages
         elseif ($this->p === 'admin/clint')       $this->buildClintPage();
-        elseif ($this->p === 'admin/hash')        $this->buildHashPage();
 
         // Temporary admin pages
         elseif ($this->p === 'admin/_artists/select-set') {

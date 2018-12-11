@@ -37,9 +37,4 @@ trait AdminPagesTrait
                 ]
             );
     }
-
-    public function buildHashPage(): void
-    {
-        echo view_old('Admin:Hash', 'old/admin/hash/index.php');
-    }
 }

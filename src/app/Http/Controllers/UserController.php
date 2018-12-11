@@ -54,7 +54,7 @@ class UserController extends Controller
             'admin' => [
                 url('lookup') => 'Lookup data',
                 url_old('admin/clint') => 'Clint commands',
-                url_old('admin/hash') => 'Hash a string',
+                url('hash') => 'Hash a string',
                 url('phpinfo') => 'PHP info',
                 url_old('admin/_artists/select-set') => 'Artists (temporary)',
             ],
