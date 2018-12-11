@@ -84,7 +84,7 @@ trait DocumentBodyBuilderTrait
                             '<i class="fa fa-chevron-down"></i> '.
                             $line->content.
                         '</span> '.
-                        '<a href="#toc" class="'.$top.'">&#129049;</a>'.
+                        '<a href="#toc" class="'.$top.'">Top</a>'.
                     '</h3>'.
                 '</div>'.
 
@@ -132,7 +132,7 @@ trait DocumentBodyBuilderTrait
                         $line->tag.
                     '</a>'.
                     ' '.$line->content.' '.
-                    '<a href="#'.$parent.'" class="'.$class.'">&#129049;</a>'.
+                    '<a href="#'.$parent.'" class="'.$class.'">Top</a>'.
                 '</span>'.
                 '<ul>'
                 // </ul>

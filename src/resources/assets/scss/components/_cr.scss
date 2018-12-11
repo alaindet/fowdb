@@ -93,3 +93,16 @@
 .fd-cr-highlight {
   background-color: #a0ffa0;
 }
+
+// To top anchor must be small and must have an arrow symbol to its left
+.fd-cr-bdy__1__top::after,
+.fd-cr-bdy__2__top::after {
+  content: "\2191";
+}
+
+.fd-cr-bdy__1__top,
+.fd-cr-bdy__2__top {
+  font-size: initial;
+  font-weight: initial;
+  font-style: italic;
+}
