@@ -35,13 +35,20 @@ $(document).ready(function() {
     // Get opening and closing icons, if any
     var openIcon = $(this).data("open-icon") || "fa-chevron-down";
     var closedIcon = $(this).data("closed-icon") || "fa-chevron-right";
+    var target = $(this).data("target");
+    var targetElement = $(target);
+    var isOpen = !targetElement.hasClass('hidden');
+    var toRemove = isOpen ? openIcon : closedIcon;
+    var toAdd = isOpen ? closedIcon : openIcon;
 
-    // Change this button's icon if it has it
-    $("i.fa", $(this))
-      .toggleClass(openIcon+' '+closedIcon);
+    $("[data-target='"+target+"']").each(function () {
+      $('i.fa', $(this))
+        .removeClass(toRemove)
+        .addClass(toAdd)
+    });
 
     // Toggle target element's visibility
-    $($(this).data("target")).toggleClass("hidden");
+    targetElement.toggleClass("hidden");
   });
 
   // LEGACY CODE

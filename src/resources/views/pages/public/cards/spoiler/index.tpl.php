@@ -24,17 +24,19 @@
         <h3>
           <i class="fa fa-th-large"></i>
           Spoiler
+
+          <!-- Show options -->
           <button
             type="button"
-            class="btn btn-link js-hider js-panel-toggle"
+            class="btn fd-btn-default js-hider js-panel-toggle js-panel-toggle-options"
             data-target="#hide-options"
             data-open-icon="fa-times"
             data-closed-icon="fa-plus"
-            id="js-panel-toggle-options"
           >
             <i class="fa fa-plus"></i>
             Options
           </button>
+
         </h3>
       </div>
 

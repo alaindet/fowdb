@@ -123,11 +123,10 @@ $emptyGif = asset('images/icons/blank.gif');
 				<div class="btn-group" role="group">
 					<button
 						type="button"
-						class="btn font-105 fd-btn-default js-hider js-panel-toggle"
+						class="btn font-105 fd-btn-default js-hider js-panel-toggle js-panel-toggle-options"
 						data-target="#hide-options"
 						data-open-icon="fa-times"
 						data-closed-icon="fa-plus"
-						id="js-panel-toggle-options"
 					>
 						<i class="fa fa-plus text-muted"></i>
 						Options
@@ -154,12 +153,26 @@ $emptyGif = asset('images/icons/blank.gif');
   			<h3>
           <i class="fa fa-filter"></i>
 					Filters
-					<button
-						type="button"
-						class="btn btn-link btn-xs form-reset"
-					>
+
+					<!-- Close button -->
+					<?php if ($thereWereResults): ?>
+						<button
+							type="button"
+							class="btn btn-xs fd-btn-default js-hider js-panel-toggle"
+							data-target="#hide-filters"
+							data-open-icon="fa-times"
+							data-closed-icon="fa-plus"
+						>
+							<i class="fa fa-plus"></i>
+							Close
+						</button>
+					<?php endif ;?>
+
+					<!-- Reset -->
+					<button type="button" class="btn btn-link btn-xs form-reset">
 						Reset
 					</button>
+
   			</h3>
   		</div>
   		

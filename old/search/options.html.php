@@ -1,4 +1,5 @@
 <?php
+
 // VARIABLES
 // $cards
 // $filters
@@ -6,13 +7,29 @@
 // $search
 // $spoilers (Optional)
 // $thereWereResults
+
 ?>
 <aside class="col-xs-12 hidden" id="hide-options">
 	<div class="panel panel-default">
 
 		<!-- OPTIONS header -->
 		<div class="panel-heading">
-			<h3><i class="fa fa-sliders"></i>&nbsp;Options</h3>
+			<h3>
+        <i class="fa fa-sliders"></i>
+        Options
+
+        <button
+          type="button"
+          class="btn btn-xs fd-btn-default js-hider js-panel-toggle js-panel-toggle-options"
+          data-target="#hide-options"
+          data-open-icon="fa-times"
+          data-closed-icon="fa-plus"
+        >
+          <i class="fa fa-plus"></i>
+          Close
+        </button>
+
+      </h3>
 		</div>
 
 		<!-- OPTIONS content -->
