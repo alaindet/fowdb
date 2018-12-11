@@ -59,7 +59,16 @@ if ($hasFilters && $hasItems) {
 
   <!-- Show set filters -->
   <?php if ($hasFilters): ?>
-    <div class="col-xs-12">
+    <div class="col-xs-12 fd-box --info-background">
+      <h2>
+        Filters
+        <a
+          href="<?=url('restrictions/manage')?>"
+          class="font-100 text-italic"
+        >
+          (Reset)
+        </a>
+      </h2>
       <ul class="fd-list">
         <?php foreach($filters as $name => $value): ?>
           <li>
