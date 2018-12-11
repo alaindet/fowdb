@@ -49,7 +49,7 @@ class UserController extends Controller
                 url('cr/manage') => 'Comprehensive Rules',
                 url('restrictions/manage') => 'Banned and Limited cards',
                 url('rulings/manage') => 'Rulings',
-                url_old('admin/trim-image') => 'Trim an image',
+                url('images/trim') => 'Trim an image',
             ],
             'admin' => [
                 url('lookup') => 'Lookup data',

@@ -121,6 +121,10 @@ $admin = [
     ['GET', 'lookup/read/{feature}','Admin\\LookupController','read',
         ['feature' => '[a-z]+']],
 
+    // Trim an image
+    ['GET', 'images/trim','Admin\\ImagesController','trimForm'],
+    ['POST','images/trim','Admin\\ImagesController','trim'],
+
 ];
 
 /**

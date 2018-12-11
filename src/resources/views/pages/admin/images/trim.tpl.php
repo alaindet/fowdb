@@ -1,13 +1,21 @@
+<?php
+
+// VARIABLES
+// (none)
+
+?>
 <div class="page-header">
-	<h2>Trim single image</h2>
+	<h1>Image trimmer</h1>
 </div>
 
 <div class="well well-lg">
 	<form
-    action="<?=url_old('admin/trim-image')?>"
+    action="<?=url('images/trim')?>"
     method="post"
     enctype="multipart/form-data"
   >
+    <?=csrf_token()?>
+
 		<!-- Browse -->
 		<div class="form-group">
 			<label for="image">Upload card image, max 2Mb</label>
@@ -31,5 +39,6 @@
         Trim Image
       </button>
 		</div>
+
 	</form>
 </div>

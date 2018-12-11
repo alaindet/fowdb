@@ -4,16 +4,6 @@ namespace App\Legacy\Router;
 
 trait AdminPagesTrait
 {
-    public function buildTrimImagePage(): void
-    {
-        $method = $_SERVER['REQUEST_METHOD'];
-        if ($method === 'GET') {
-            echo view_old('Admin:Trim image', 'old/admin/image-trim/form.php');
-        } elseif ($method === 'POST') {
-            require path_root('old/admin/image-trim/process.php');
-        }
-    }
-
     public function buildClintPage(): void
     {
         echo view_old('Admin:Clint', 'old/admin/clint/index.php');
