@@ -129,6 +129,11 @@ $admin = [
     ['GET', 'hash', 'Admin\\HashController','hashForm'],
     ['POST','hash', 'Admin\\HashController','hash'],
 
+    // Clint CLI commands
+    ['GET', 'clint', 'Admin\\ClintController','showForm'],
+    ['GET', 'clint/{command}', 'Admin\\ClintController','executeCommand',
+        ['command' => '[A-Za-z-]+']],
+
 ];
 
 /**
