@@ -58,6 +58,10 @@ class ClintController extends Controller
             'name' => 'config:timestamp',
             'arguments' => ['generic']
         ],
+        'cards-sort' => [
+            'label' => 'Regenerate all cards \'sorted_id\'',
+            'name' => 'cards:sort',
+        ],
     ];
     
     public function showForm(): string
