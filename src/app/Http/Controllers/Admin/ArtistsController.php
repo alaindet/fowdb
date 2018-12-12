@@ -70,7 +70,11 @@ class ArtistsController extends Controller
             ])
             ->options([
                 'dependencies' => [
-                    'lightbox' => true
+                    'lightbox' => true,
+                    'jqueryui' => true
+                ],
+                'scripts' => [
+                    'admin/artists/show-card'
                 ]
             ])
             ->render();
@@ -85,7 +89,8 @@ class ArtistsController extends Controller
         ]);
 
         // Fetch card data
-        $card = (new Card)->byId($request->input()->post('card-id'));
+        $model = new Card();
+        $card = $model->byId($request->input()->post('card-id'));
 
         // Update card data
         database()
