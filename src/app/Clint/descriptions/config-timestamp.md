@@ -1,11 +1,9 @@
 Description:
-  1
+  Bump one or more timestamps (to bust the cache)
 
 Usage
-  config:timestamp [options] <arguments>
+  config:timestamp <timestamp>
 
 Arguments
-  example  Enter an argument description here...
-
-Options
-  --example Enter an option description here...
+  timestamp The name of the timestamp to update. Possible values are:
+    generic, css, js, img. No arguments defaults to all timestamps.

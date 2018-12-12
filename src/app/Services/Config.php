@@ -27,6 +27,7 @@ class Config
         $this->srcPath = dirname(dirname(__DIR__));
         $this->cachePath = $this->srcPath . '/data/cache/config/env.php';
         $this->normalPath = $this->srcPath . '/.env';
+        $this->timestampsPath = $this->srcPath . '/data/app/timestamps.php';
 
         $this->load();
     }
@@ -66,7 +67,11 @@ class Config
         catch (FileSystemException $exception) {
             $envFileContent = FileSystem::readFile($this->normalPath);
             $this->data = $this->envToArray($envFileContent);
-            $this->data = array_merge($this->data, $this->runtimeVariables());
+            $this->data = array_merge(
+                $this->data,
+                $this->timestampsVariables(),
+                $this->runtimeVariables()
+            );
             $this->cache();
         }
     }
@@ -79,6 +84,42 @@ class Config
      */
     private function runtimeVariables(bool $dotNotation = true): array
     {
+        $runtime = [
+
+            // Directories
+            'DIR_ROOT' => dirname($this->srcPath),
+            'DIR_SRC' => $this->srcPath,
+            'DIR_APP' => $this->srcPath.'/app',
+            'DIR_VIEWS' => $this->srcPath.'/resources/views',
+            'DIR_DATA' => $this->srcPath.'/data',
+            'DIR_CACHE' => $this->srcPath.'/data/cache',
+
+        ];
+
+        // Convert keys to dot-notation
+        if ($dotNotation) {
+            $result = [];
+            foreach ($runtime as $key => $value) {
+                $key = strtolower(str_replace('_','.',$key));
+                $result[$key] = $value;
+            }
+            $runtime = $result;
+        }
+
+        return $runtime;
+    }
+
+    /**
+     * Adds timestamps variables to the configuration data,
+     * used to bust the cache on views
+     *
+     * @param bool $dotNotation Turns the keys to dot-notation
+     * @return array
+     */
+    private function timestampsVariables(bool $dotNotation = true): array
+    {
+        $variables = FileSystem::loadFile($this->timestampsPath);
+
         $runtime = [
 
             // Directories

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * The list of all available Clint commands
+ * 
+ * NAME => CLASS
+ */
 return [
 
     'list' => \App\Clint\Commands\ListCommand::class,
@@ -11,5 +16,6 @@ return [
     'env:switch' => \App\Clint\Commands\SwitchEnvironmentCommand::class,
     'lookup:cache' => \App\Clint\Commands\LookupCacheCommand::class,
     'sitemap:make' => \App\Clint\Commands\SitemapMakeCommand::class,
+    'config:timestamp' => \App\Clint\Commands\ConfigTimestampCommand::class,
 
 ];

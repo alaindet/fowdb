@@ -38,6 +38,26 @@ class ClintController extends Controller
             'label' => 'Regenerate sitemap.xml',
             'name' => 'sitemap:make'
         ],
+        'timestamp-js' => [
+            'label' => 'Update Timestamp: JS',
+            'name' => 'config:timestamp',
+            'arguments' => ['js']
+        ],
+        'timestamp-css' => [
+            'label' => 'Update Timestamp: CSS',
+            'name' => 'config:timestamp',
+            'arguments' => ['css']
+        ],
+        'timestamp-img' => [
+            'label' => 'Update Timestamp: Image',
+            'name' => 'config:timestamp',
+            'arguments' => ['img']
+        ],
+        'timestamp-generic' => [
+            'label' => 'Update Timestamp: Generic',
+            'name' => 'config:timestamp',
+            'arguments' => ['generic']
+        ],
     ];
     
     public function showForm(): string
