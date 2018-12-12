@@ -153,4 +153,22 @@ class Card extends Model
         $bits = explode(' ', $resource['code'], 2);
         return $bits[0];
     }
+
+    /**
+     * Returns data of the "next" resource based on the 'sorted_id' attribute
+     * of the "previous" resource
+     *
+     * @param integer|string $previousSortedId The base sorted ID
+     * @return array Next card's data
+     */
+    public function getNext(
+        $previousSortedId,
+        array $fields = [],
+        array $fieldsToRender = []
+    ): array
+    {
+        $sortedId = intval($previousSortedId) + 1;
+
+        return $this->byField('sorted_id', $sortedId, $fields, $fieldsToRender);
+    }
 }

@@ -134,6 +134,15 @@ $admin = [
     ['GET', 'clint/{command}', 'Admin\\ClintController','executeCommand',
         ['command' => '[A-Za-z-]+']],
 
+    // Artists tool
+    ['GET', 'artists','Admin\\ArtistsController','selectSetForm'],
+    ['GET', 'artists/set/{set}','Admin\\ArtistsController','selectCardForm',
+        ['set' => '[0-9]+']],
+    ['GET', 'artists/card/{card}',
+        'Admin\\ArtistsController','cardForm',
+        ['set' => '[0-9]+', 'card' => '[0-9]+']],
+    ['POST','artists/store','Admin\\ArtistsController','store'],
+
 ];
 
 /**

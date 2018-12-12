@@ -56,7 +56,7 @@ class UserController extends Controller
                 url('clint') => 'Clint commands',
                 url('hash') => 'Hash a string',
                 url('phpinfo') => 'PHP info',
-                url_old('admin/_artists/select-set') => 'Artists (temporary)',
+                url('artists') => 'Artists',
             ],
         ];
 

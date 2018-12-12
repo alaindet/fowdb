@@ -98,7 +98,7 @@ abstract class Model extends Base
         }
 
         // Store fetched data into the model
-        $this->data = $this->fetchSingle($id, $fields);
+        $this->data = $this->fetchSingle('id', $id, $fields);
 
         // Render fields
         if (!empty($fieldsToRender)) {
@@ -119,23 +119,80 @@ abstract class Model extends Base
     }
 
     /**
-     * Fetches data from a single row from the database
+     * Returns one specific resource by the value of a unique field
+     * If field is not unique, only the first value is returned (lowest ID)
      *
-     * @param string|int $id
+     * @param string $field The unique field to search on
+     * @param string|integer|null $value The value of unique field to search on
+     * @param array $fields Fields to select
+     * @param array $fieldsToRender Fields to render via render()
+     * @return array
+     */
+    public function byField(
+        string $field,
+        $value, // string|integer|null
+        array $fields = null,
+        array $fieldsToRender = []
+    ): array
+    {
+        // Check for virtual attributes
+        if (isset($this->virtualAttributes)) {
+            
+            // Read all available virtual attributes
+            $all = array_keys($this->virtualAttributes);
+
+            // Grab only the requested virtual attributes
+            $virtualAttributes = array_intersect($all, $fields ?? []);
+
+            // Filter out virtual attributes before searching the database
+            $fields = array_diff($fields ?? [], $virtualAttributes);
+
+        }
+
+        // Store fetched data into the model
+        $this->data = $this->fetchSingle($field, $value, $fields);
+
+        // Render fields
+        if (!empty($fieldsToRender)) {
+            foreach ($fieldsToRender as $field) {
+                $this->data[$field] = render($this->data[$field]);
+            }
+        }
+
+        // Call specific getters and add virtual attributes to the model
+        if (isset($virtualAttributes)) {
+            foreach ($virtualAttributes as $attribute) {
+                $getter = $this->virtualAttributes[$attribute];
+                $this->data[$attribute] = $this->$getter($this->data);
+            }
+        }
+
+        return $this->data;
+    }
+
+    /**
+     * Fetches data from a single row from the database filtered by custom field
+     *
+     * @param string $field
+     * @param string|integer|null $value
      * @param array $fields
      * @return array Results from the database
      */
-    private function fetchSingle($id, array $fields = null): array
+    private function fetchSingle(
+        string $field,
+        $value, // string|integer|null
+        array $fields = null
+    ): array
     {
         return database()
             ->select(
                 statement('select')
                     ->select(!empty($fields) ? implode(',', $fields) : '*')
                     ->from($this->table)
-                    ->where('id = :id')
+                    ->where("{$field} = :value")
                     ->limit(1)
             )
-            ->bind([':id' => $id])
+            ->bind([':value' => $value])
             ->first();
     }
 

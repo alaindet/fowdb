@@ -4,12 +4,10 @@ namespace App\Legacy\Router;
 
 use App\Http\Request\Input;
 use App\Legacy\Router\PublicPagesTrait;
-use App\Legacy\Router\AdminPagesTrait;
 
 class Router
 {
     use PublicPagesTrait;
-    use AdminPagesTrait;
 
     private $input;
     private $p = '';
@@ -24,7 +22,7 @@ class Router
 
     public function run(): bool
     {
-        // Public pages (they all redirect to pretty URLs)
+        // Public pages (they all redirected to pretty URLs)
         if    ($this->do === 'search')            $this->buildSearchPage();
         elseif ($this->p === 'search')            $this->buildSearchFormPage();
         elseif ($this->p === 'card')              $this->buildCardPage();
@@ -34,17 +32,6 @@ class Router
         elseif ($this->p === 'resources/errata')  $this->buildErrataPage();
         elseif ($this->p === 'resources/formats') $this->buildFormatsPage();
         elseif ($this->p === 'resources/races')   $this->buildRacesPage();
-
-        // Temporary admin pages
-        elseif ($this->p === 'admin/_artists/select-set') {
-            $this->buildArtistSelectSetPage();
-        }
-        elseif ($this->p === 'admin/_artists/select-card') {
-            $this->buildArtistSelectCardPage();
-        }
-        elseif ($this->p === 'admin/_artists/card') {
-            $this->buildArtistCardPage();
-        }
 
         return true;
     }

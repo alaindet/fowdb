@@ -1,18 +1,7 @@
 <?php
 
-// Check authorization and bounce back intruders
-auth()->allow([\App\Legacy\Authorization::ROLE_ADMIN]);
-
-// Set selected!
-if (isset($_GET['set'])) {
-    redirect_old(
-        'admin/_artists/select-card',
-        ['set' => $_GET['set']]
-    );
-}
-
-// Select a set
 $clusters = lookup('clusters.list');
+$setsCode2Id = lookup('sets.code2id');
 
 ?>
 <div class="page-header">
@@ -23,27 +12,26 @@ $clusters = lookup('clusters.list');
   ])?>
 </div>
 
-<h2>Select a set</h2>
-
 <div class="row">
   <div class="col-xs-12">
-    <form class="form form-inline" method="GET">
-
-      <!-- Page -->
-      <input type="hidden" name="p" value="admin/_artists/select-set">
-
+    <form
+      class="form form-inline"
+      method="GET"
+    >
       <select
-        class="form-control"
+        class="form-control input-lg"
         name="set"
-        onchange="this.form.submit()"
+        id="js-select-set"
       >
         <!-- Default -->
         <option value=0>Select a set...</option>
 
         <?php foreach ($clusters as $cluster_code => $cluster): ?>
           <optgroup label="<?=$cluster['name']?>">
-            <?php foreach($cluster['sets'] as $setcode => $setname): ?>
-              <option value="<?=$setcode?>">
+            <?php foreach($cluster['sets'] as $setcode => $setname):
+              $setid = $setsCode2Id[$setcode];
+            ?>
+              <option value="<?=$setid?>">
                 <?=$setname?> - (<?=strtoupper($setcode)?>)
               </option>;
             <?php endforeach; ?>
