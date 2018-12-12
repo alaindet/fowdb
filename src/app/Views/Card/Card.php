@@ -19,7 +19,8 @@ class Card
         'narp',
         'image_path',
         'thumb_path',
-        'rulings'
+        'rulings',
+        'sorted_id',
     ];
 
     /**

@@ -58,20 +58,9 @@ class Config
      */
     private function load()
     {
-        // Load .php file from cache
-        try {
+        if (file_exists($this->cachePath)) {
             $this->data = FileSystem::loadFile($this->cachePath);
-        }
-
-        // Load .env file, parse it, then store it
-        catch (FileSystemException $exception) {
-            $envFileContent = FileSystem::readFile($this->normalPath);
-            $this->data = $this->envToArray($envFileContent);
-            $this->data = array_merge(
-                $this->data,
-                $this->timestampsVariables(),
-                $this->runtimeVariables()
-            );
+        } else {
             $this->cache();
         }
     }
@@ -120,29 +109,17 @@ class Config
     {
         $variables = FileSystem::loadFile($this->timestampsPath);
 
-        $runtime = [
-
-            // Directories
-            'DIR_ROOT' => dirname($this->srcPath),
-            'DIR_SRC' => $this->srcPath,
-            'DIR_APP' => $this->srcPath.'/app',
-            'DIR_VIEWS' => $this->srcPath.'/resources/views',
-            'DIR_DATA' => $this->srcPath.'/data',
-            'DIR_CACHE' => $this->srcPath.'/data/cache',
-
-        ];
-
         // Convert keys to dot-notation
         if ($dotNotation) {
             $result = [];
-            foreach ($runtime as $key => $value) {
+            foreach ($variables as $key => $value) {
                 $key = strtolower(str_replace('_','.',$key));
                 $result[$key] = $value;
             }
-            $runtime = $result;
+            $variables = $result;
         }
 
-        return $runtime;
+        return $variables;
     }
 
     /**
@@ -155,15 +132,17 @@ class Config
         // Load .env file
         $envFileContent = FileSystem::readFile($this->normalPath);
 
-        // Parse it as an array
-        $data = $this->envToArray($envFileContent);
-
-        // Add runtime variables
-        $data = array_merge($data, $this->runtimeVariables());
-
+        $this->data = array_merge(
+            $this->envToArray($envFileContent),
+            $this->timestampsVariables(),
+            $this->runtimeVariables()
+        );
+        
         // Build the .php file with the data array
         $temp = [];
-        foreach ($data as $key => $val) $temp[] = "'{$key}'=>'{$val}'";
+        foreach ($this->data as $key => $val) {
+            $temp[] = "'{$key}'=>'{$val}'";
+        }
         $temp = implode(',', $temp);
         $content = "<?php return [{$temp}];\n";
 

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Http\Response\Redirect;
-use App\Models\Card;
+use App\Models\Card as Model;
 use App\Services\Alert;
 use App\Services\Resources\Card\CardCreateService;
 use App\Services\Resources\Card\CardDeleteService;
@@ -89,7 +89,7 @@ class CardsController extends Controller
             ->title('Cards,Update')
             ->variables([
                 'previous' => $request->input()->previous(),
-                'card' => (new Card)->byId($id)
+                'card' => (new Model)->byId($id)
             ])
             ->options([
                 'dependencies' => [
@@ -148,7 +148,7 @@ class CardsController extends Controller
 
     public function deleteForm(Request $request, string $id): string
     {
-        $card = (new Card)->byId($id, null, ['text']);
+        $card = (new Model)->byId($id, null, ['text']);
 
         return (new Page)
             ->template('pages/admin/cards/delete')

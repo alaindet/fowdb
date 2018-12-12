@@ -2,12 +2,20 @@
 
 // VARIABLES
 // $cards
+// $next_card
 
-$counter = 0; // Ruling counter
-foreach ($cards as &$card):
-  $hasRulings = !empty($card['rulings']);
+$rulingsCounter = 0; // Ruling counter
+$cardsCounter = 0;
+$cardsCount = count($cards);
 
+foreach ($cards as $card):
+	$hasRulings = !empty($card['rulings']);
+	$cardsCounter++;
+	$isFirst = ($cardsCounter) === 1;
+	$isLast = ($cardsCounter === $cardsCount);
 ?>
+	<?=!$isFirst ? '<hr class="fd-cr-hru">' : ''?>
+
 	<div class="row cardpage">
 
     <!-- Card name -->
@@ -15,6 +23,7 @@ foreach ($cards as &$card):
 			<div class="page-header" style="margin-top:0">
 				<h1 class="text-center sm-text-left">
 					<?=$card['name']?>
+					<span class="visible-xs"><p></p></span>
 					<span class="font-100 text-muted text-italic">
 						<?=$card['code']?>
 					</span>
@@ -113,6 +122,20 @@ foreach ($cards as &$card):
 			<?php endforeach; ?>
 		</div>
 
+		<?php // Next card --------------------------------------------------------
+			if ($isLast && !empty($next_card)):
+		?>
+			<div class="col-xs-12 text-center sm-text-right">
+				<a
+					href="<?=url("card/{$next_card['code']}")?>"
+					class="btn btn-lg fd-btn-default"
+				>
+					<i class="fa fa-arrow-right"></i>
+					<strong>Next</strong> <em>(<?=$next_card['code']?>)</em>
+				</a>
+			</div>
+		<?php endif; ?>
+
 		<?php // Narp -------------------------------------------------------------
 			if ($card['narp']['flag'] > 0):
 		?>
@@ -125,9 +148,9 @@ foreach ($cards as &$card):
 					</h3>
 
 					<ul class="list-group">
-						<?php foreach ($cards as &$code): ?>
+						<?php foreach ($cards as $code): ?>
 					  	<li class="list-group-item">
-								<a href="<?=url('card/'.urlencode($code))?>">
+								<a href="<?=url('card/'.$code)?>">
 									<?=$code?>
 								</a>
 							</li>
@@ -151,7 +174,7 @@ foreach ($cards as &$card):
 				</h2>
 
 				<div class="list-group f-rulings-list">
-					<?php foreach ($card['rulings'] as $item): $counter++; ?>
+					<?php foreach ($card['rulings'] as $item): $rulingsCounter++; ?>
 					  <div class="list-group-item f-rulings-item">
 					    <h4 class="list-group-item-heading">
 					    	<?php if ($item['is_errata']): ?>
@@ -161,8 +184,8 @@ foreach ($cards as &$card):
 					    	<div class="f-rulings-buttons">
 					    		
 									<a
-										href="#ruling<?=$counter?>"
-										name="ruling<?=$counter?>"
+										href="#ruling<?=$rulingsCounter?>"
+										name="ruling<?=$rulingsCounter?>"
 										class="btn btn-sm btn-link"
 									>
 										Share

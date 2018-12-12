@@ -263,6 +263,7 @@ class Card
 
                 // Extra info
                 'id' => $card['id'],
+                'sorted_id' => $card['sorted_id'],
                 'back_side' => $card['back_side'],
                 'narp' => $narp,
                 'image_path' => $card['image_path'],

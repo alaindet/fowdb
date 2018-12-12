@@ -25,9 +25,9 @@
 
 // (From 786px up)
 @media (min-width: $breakpoint-xs) {
-  .sm-text-left {
-    text-align: left;
-  }
+  .sm-text-left { text-align: left; }
+  .sm-text-center { text-align: left; }
+  .sm-text-right { text-align: right; }
 }
 
 // Vertical in-block separator

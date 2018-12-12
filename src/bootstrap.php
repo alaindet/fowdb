@@ -5,9 +5,13 @@ use \App\Services\OpenGraphProtocol\OpenGraphProtocolImage;
 use \App\Services\CsrfToken;
 use \App\Services\Session;
 use \App\Legacy\Authorization;
+use \App\Services\Config;
 
 // Load required files
 require __DIR__ . '/vendor/autoload.php';
+
+Config::getInstance();
+
 require __DIR__ . '/app/functions/helpers.php';
 
 // Global exception handling

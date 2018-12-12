@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
-use App\Views\Page;
 use App\Legacy\Card as LegacyCard;
+use App\Models\Card as Model;
 use App\Services\Resources\Card\Search;
+use App\Views\Page;
 
 /**
  * Contains actions for PUBLIC routes only
@@ -98,12 +99,17 @@ class CardsController extends Controller
                 'alt' => $title
             ]
         ];
+
+        // Calculate next card
+        $lastCard = &$cards[count($cards)-1];
+        $nextCard = (new Model)->getNext($lastCard['sorted_id']);
         
         return (new Page)
             ->template('pages/public/cards/show/index')
             ->title($title)
             ->variables([
                 'cards' => $cards,
+                'next_card' => $nextCard
             ])
             ->options([
                 'ogp' => $ogp,

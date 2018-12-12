@@ -172,6 +172,11 @@ class Card extends Model
         return $this->byField('sorted_id', $sortedId, $fields, $fieldsToRender);
     }
 
+    /**
+     * Regenerates cards.sorted_id field for all cards
+     *
+     * @return void
+     */
     public static function buildAllSortId(): void
     {
         database()->rawStatement(

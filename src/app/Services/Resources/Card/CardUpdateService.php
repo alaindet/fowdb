@@ -54,6 +54,9 @@ class CardUpdateService extends CrudService
             ->bind($bind)
             ->execute();
 
+        // Regenerate cards.sorted_id
+        Model::buildAllSortId();
+
         return $this;
     }
 
