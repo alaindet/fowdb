@@ -387,8 +387,7 @@ $emptyGif = asset('images/icons/blank.gif');
   									}
   								?>
 										<label
-											class="btn btn-xs font-105 fd-btn-default<?=$active?>"
-											style="margin-top:2px;margin-bottom:2px;"
+											class="btn btn-xs font-105 mv-10 fd-btn-default<?=$active?>"
 										>
 											<input
 												type="checkbox"
@@ -418,8 +417,7 @@ $emptyGif = asset('images/icons/blank.gif');
   										: [$active, $checked] = ['', ''];
   								?>
 										<label
-											class="btn btn-xs font-105 fd-btn-default<?=$active?>"
-											style="margin-top:2px;margin-bottom:2px;"
+											class="btn btn-xs font-105 mv-10 fd-btn-default<?=$active?>"
 										>
 											<input
 												type="checkbox"
@@ -435,7 +433,7 @@ $emptyGif = asset('images/icons/blank.gif');
 
   					</div>
 
-            <!-- BACKSIDE ================================================= -->
+            <!-- BACK SIDE ================================================ -->
             <div class="row filter">
               <div class="col-xs-12 filter-header">Back Side</div>
               <div class="col-xs-12">
@@ -448,7 +446,9 @@ $emptyGif = asset('images/icons/blank.gif');
                       ? [$active, $checked] = [' active', 'checked']
                       : [$active, $checked] = ['', ''];
                   ?>
-                    <label class="btn btn-xs font-105 fd-btn-default<?=$active?>">
+                    <label
+											class="btn btn-xs font-105 mv-10 fd-btn-default<?=$active?>"
+										>
                       <input
                         type="checkbox"
                         name="backside[]"
