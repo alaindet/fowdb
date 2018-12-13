@@ -7,6 +7,7 @@
 $rulingsCounter = 0; // Ruling counter
 $cardsCounter = 0;
 $cardsCount = count($cards);
+$auth_levels = ['judge'];
 
 foreach ($cards as $card):
 	$hasRulings = !empty($card['rulings']);
@@ -32,7 +33,7 @@ foreach ($cards as $card):
 		</div>
 
 		<?php // Admin buttons ----------------------------------------------------
-			if (admin_level() > 0):
+			if (auth()->check($auth_levels)):
 		?>
 			<div class="col-xs-12 text-center sm-text-left">
 				
@@ -191,7 +192,7 @@ foreach ($cards as $card):
 										Share
 									</a>
 
-					    		<?php if (admin_level() > 0): ?>
+					    		<?php if (auth()->check($auth_levels)): ?>
 						    		
 										<!-- Edit -->
 										<a

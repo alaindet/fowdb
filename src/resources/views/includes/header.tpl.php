@@ -73,7 +73,7 @@ $links = [
 							$page = isset($_GET['p']) ? ucfirst($_GET['p']) : ucfirst($_GET['do']);
 						}
 					?>
-					<?php if (admin_level() > 0): ?>
+					<?php if (auth()->check('user') > 0): ?>
 						<li>
 							<a href="<?=url('profile')?>">
 								<i class="fa fa-user"></i>

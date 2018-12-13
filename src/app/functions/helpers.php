@@ -11,7 +11,6 @@ use \App\Legacy\Authorization as LegacyAuthorization;
  * 
  * SERVICES
  * ========
- * admin_level // LEGACY
  * alert
  * auth
  * config
@@ -48,20 +47,6 @@ use \App\Legacy\Authorization as LegacyAuthorization;
 
 
 // SERVICES -------------------------------------------------------------------
-
-/**
- * LEGACY: Checks the authorization level of current user
- * 
- * 0: public (not logged)
- * 1: super admin
- * 2: judge
- *
- * @return int
- */
-function admin_level(): int
-{
-	return (LegacyAuthorization::getInstance())->level();
-}
 
 /**
  * Adds an alert to be shown. If redirect is used after this, it's shown

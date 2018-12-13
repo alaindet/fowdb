@@ -93,25 +93,39 @@ class Authorization
     /**
      * Checks if current user's level matches given role's level
      *
-     * @param string $role Role to check
+     * @param string|string[] $role Role to check
      * @return boolean TRUE if logged user is authorized for given role
      */
-    // public function check(string $role): bool
-    public function check(string $role)
+    public function check($roles): bool
     {
-        // ERROR: Invalid role
-        if (!isset($this->roleToLevel[$role])) {
-            throw new AuthorizationException(
-                "Role <strong>{$role}</strong> does not exist on FoWDB."
-            );
+        // Normalize input as an array of strings (role names)
+        if (is_string($roles)) $roles = [$roles];
+
+        $requiredLevels = [];
+
+        foreach ($roles as $role) {
+
+            // ERROR: Invalid role
+            if (!isset($this->roleToLevel[$role])) {
+                throw new AuthorizationException(
+                    "Role <strong>{$role}</strong> does not exist on FoWDB."
+                );
+            }
+
+            $requiredLevels[] = $this->roleToLevel[$role];
+
         }
 
         $currentLevel = $this->level();
         $aliases = $this->actsAs[$currentLevel] ?? [];
         $currentLevels = array_merge([$currentLevel], $aliases);
-        $requiredLevel = $this->roleToLevel[$role];
-        
-        return in_array($requiredLevel, $currentLevels);
+
+        // Loop on each current level (including aliases)
+        foreach ($currentLevels as $currentLevel) {
+            if (in_array($currentLevel, $requiredLevels)) return true;
+        }
+
+        return false;
     }
 
     /**
