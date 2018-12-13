@@ -6,7 +6,7 @@ use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Legacy\Card as LegacyCard;
 use App\Models\Card as Model;
-use App\Services\Resources\Card\Search;
+use App\Legacy\CardSearch as Search;
 use App\Views\Page;
 
 /**

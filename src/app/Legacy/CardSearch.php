@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services\Resources\Card;
+namespace App\Legacy;
 
 use App\Utils\Arrays;
 use App\Services\Database\Database;
 
-class Search
+class CardSearch
 {
     private $db;           // Database connection
     private $sqlPartials;  // Strings to be assembled into final SQL
