@@ -15,7 +15,7 @@ foreach ($cards as $card):
 	$isFirst = ($cardsCounter) === 1;
 	$isLast = ($cardsCounter === $cardsCount);
 ?>
-	<?=!$isFirst ? '<hr class="fd-cr-hru">' : ''?>
+	<?=!$isFirst ? '<hr class="fd-hr">' : ''?>
 
 	<div class="row cardpage">
 

@@ -4,15 +4,15 @@
 // $formats
 
 ?>
+<div class="page-header">
+  <h1>Formats</h1>
+</div>
 <?php foreach ($formats as $fcode => $f): ?>
   <div class="fdb-format">
     <h2>
       <a
         class=" link-as-text"
-        href="<?=url_old('', [
-          'do' => 'search',
-          'format[]' => $f['code']
-        ])?>"
+        href="<?=url('cards', ['format' => [$f['code']]])?>"
       >
         <?=$f['name']?>
       </a>
@@ -23,10 +23,7 @@
           <h4>
             <a
               class=" link-as-text"
-              href="<?=url_old('', [
-                'do' => 'search',
-                'format[]' => $c['code']
-              ])?>"
+              href="<?=url('cards', ['format' => [$c['code']]])?>"
             >
               <?=$c['name']?>
             </a>
@@ -37,12 +34,7 @@
                   <div class="fdb-formats-label">
                     <?=strtoupper($scode)?>
                   </div>
-                  <a
-                    href="<?=url_old('', [
-                      'do' => 'search',
-                      'set' => $scode
-                    ])?>"
-                  >
+                  <a href="<?=url('cards', ['set' => $scode])?>">
                     <?=$sname?>
                   </a>
                 </li>

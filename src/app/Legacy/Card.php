@@ -22,7 +22,7 @@ class Card
                 "No card found with code <strong>{$code}</strong>",
                 'warning'
             );
-            redirect_old('/');
+            redirect('/');
         }
 
         $results = true;

@@ -33,7 +33,7 @@ $setsCode2Id = lookup('sets.code2id');
             ?>
               <option value="<?=$setid?>">
                 <?=$setname?> - (<?=strtoupper($setcode)?>)
-              </option>;
+              </option>
             <?php endforeach; ?>
           </optgroup>
         <?php endforeach; ?>    

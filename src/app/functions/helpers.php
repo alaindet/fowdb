@@ -14,12 +14,11 @@ use \App\Legacy\Authorization as LegacyAuthorization;
  * alert
  * auth
  * config
- * database // TO DO
+ * database
  * dump
  * input
  * lookup
- * redirect // TO DO
- * redirect_old // LEGACY
+ * redirect
  * statement
  * 
  * DIRECTORIES
@@ -40,8 +39,7 @@ use \App\Legacy\Authorization as LegacyAuthorization;
  * escape
  * log_html
  * render
- * url_old // LEGACY
- * url // TO DO
+ * url
  * view_old // LEGACY
  */
 
@@ -124,18 +122,6 @@ function input(): Input
 function lookup(string $path = null)
 {
     return (\App\Services\Lookup\Lookup::getInstance())->get($path);
-} 
-
-/**
- * Redirects to another URL, accepts array to parse as querystring
- *
- * @param string $to
- * @param array $params
- * @return void
- */
-function redirect_old(string $to = null, array $params = []): void
-{
-    \App\Legacy\Redirect::to($to, $params);
 }
 
 /**
@@ -366,18 +352,6 @@ function log_html($data, string $title = null): string
 function render(string $toRender): string
 {
 	return \App\Views\Card\CardText::render($toRender);
-}
-
-/**
- * LEGACY: Builds a URL and returns it
- *
- * @param string $page
- * @param array $params
- * @return string
- */
-function url_old(string $page = '', array $params = []): string
-{
-	return \App\Legacy\Redirect::url($page, $params);
 }
 
 /**

@@ -17,8 +17,8 @@ trait Stringable
         'VALUES' => 'valuesClauseToString',
         'DELETE FROM' => 'deleteFromClauseToString',
         'WHERE' => 'whereClauseToString',
-        // 'GROUP BY' => 'groupByToString',
-        // 'HAVING' => 'havingClauseToString',
+        'GROUP BY' => 'groupByClauseToString',
+        'HAVING' => 'havingClauseToString',
         'ORDER BY' => 'orderByClauseToString',
         'LIMIT' => 'limitClauseToString',
         'OFFSET' => 'offsetClauseToString',
@@ -174,8 +174,52 @@ trait Stringable
 
         for ($i = 0, $len = count($values); $i < $len; $i++) {
 
-            $operator =& $values[$i][0];
-            $condition =& $values[$i][1];
+            $operator = &$values[$i][0];
+            $condition = &$values[$i][1];
+
+            if ($i > 0) $value .= " {$operator} {$condition}";
+            else $value .= "{$condition}";
+
+        }
+
+        return "{$name} {$value}";
+    }
+
+    /**
+     * Optional clause
+     *
+     * @param string $name GROUP BY
+     * @param array $values Any set of valid GROUP BY expressions
+     * @return string
+     */
+    private function groupByClauseToString(string $name, array $values): string
+    {
+        // Optional clause
+        if (empty($values)) return '';
+
+        $value = implode(', ', $values);
+        return "{$name} {$value}";
+    }
+
+    /**
+     * Optional clause
+     * Identical to WHERE, but it's used to filter grouped values by GROUP BY
+     *
+     * @param string $name HAVING
+     * @param array $values Any set of valid HAVING expressions
+     * @return string
+     */
+    private function havingClauseToString(string $name, array $values): string
+    {
+        // Optional clause
+        if (empty($values)) return '';
+
+        // A for loop is faster than any other loop in PHP
+        $value = '';
+        for ($i = 0, $len = count($values); $i < $len; $i++) {
+
+            $operator = &$values[$i][0];
+            $condition = &$values[$i][1];
 
             if ($i > 0) $value .= " {$operator} {$condition}";
             else $value .= "{$condition}";

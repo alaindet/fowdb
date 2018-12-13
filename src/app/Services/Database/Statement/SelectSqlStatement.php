@@ -15,8 +15,8 @@ class SelectSqlStatement extends SqlStatement
         'SELECT' => [],
         'FROM' => '',
         'WHERE' => [],
-        // 'GROUP BY' => [],
-        // 'HAVING' => [],
+        'GROUP BY' => [],
+        'HAVING' => [],
         'ORDER BY' => [],
         'LIMIT' => -1,
         'OFFSET' => -1,
@@ -27,7 +27,7 @@ class SelectSqlStatement extends SqlStatement
      * A select expression can be as simple as 'id' or
      * More complex like 'cards.name as c_name'
      * 
-     * @param string|array $expressions The select expression(s)
+     * @param string|string[] $expressions The select expression(s)
      * @return SelectSqlStatement
      */
     public function select($expressions): SelectSqlStatement
@@ -43,7 +43,7 @@ class SelectSqlStatement extends SqlStatement
     /**
      * Alias for SelectSqlStatament::select()
      *
-     * @param string|array $expressions The select expression(s)
+     * @param string|string[] $expressions The select expression(s)
      * @return SelectSqlStatement
      */
     public function fields($expressions): SelectSqlStatement
@@ -86,7 +86,7 @@ class SelectSqlStatement extends SqlStatement
      * 
      * If $condition is a string, $operator1 glues it to the previous conditions
      * 
-     * @param string|array $conditions
+     * @param string|string[] $conditions
      * @param $operator1 Possible values: 'AND', 'OR'
      * @param $operator2 Possible values: 'AND', 'OR'
      * @return SelectSqlStatement
@@ -105,6 +105,57 @@ class SelectSqlStatement extends SqlStatement
         } else {
 
             $this->clauses['WHERE'][] = [$operator1, $conditions];
+
+        }
+
+        return $this;
+    }
+
+    /**
+     * Appens an expression to the GROUP BY clause
+     * 
+     * @param string|string[] $expressions The select expression(s)
+     * @return SelectSqlStatement
+     */
+    public function groupBy($expressions): SelectSqlStatement
+    {
+        $clause =& $this->clauses['GROUP BY'];
+
+        if (!is_array($expressions)) $clause[] = $expressions;
+        else $clause = array_merge($clause, $expressions);
+
+        return $this;
+    }
+
+    /**
+     * Adds a filtering condition to the HAVING clause
+     * By default, this condition is chained to the previous, if existing,  via
+     * an AND operator. Possible operators: and, or
+     * 
+     * If $conditions is an array, $operator1 glues conditions together in a
+     * string and $operator2 glues that string to the previous conditions
+     * 
+     * If $condition is a string, $operator1 glues it to the previous conditions
+     * 
+     * @param string|string[] $conditions
+     * @param $operator1 Possible values: 'AND', 'OR'
+     * @param $operator2 Possible values: 'AND', 'OR'
+     * @return SelectSqlStatement
+     */
+    public function having(
+        $conditions,
+        string $operator1 = 'AND',
+        string $operator2 = 'AND'
+    ): SelectSqlStatement
+    {
+        if (is_array($conditions)) {
+
+            $conditions = '('.implode(' '.$operator1.' ', $conditions).')';
+            $this->clauses['HAVING'][] = [$operator2, $conditions];
+
+        } else {
+
+            $this->clauses['HAVING'][] = [$operator1, $conditions];
 
         }
 
