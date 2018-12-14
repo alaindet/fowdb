@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Services\Resources\Card;
+namespace App\Services\Resources\Card\Crud;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
 use App\Models\Card as Model;
-use App\Services\Resources\Card\CardInputProcessor as InputProcessor;
+use App\Services\Resources\Card\Crud\InputProcessor;
 use Intervention\Image\ImageManager;
 
-class CardCreateService extends CrudService
+class CreateService extends CrudService
 {
     protected $inputProcessor = InputProcessor::class;
     protected $model = Model::class;

@@ -571,7 +571,7 @@ class CardSearch
             )).")";
         }
 
-        // FILTER --- BACKSIDE ------------------------------------------------
+        // FILTER --- DIVINITY ------------------------------------------------
         if (isset($this->f['divinity'])) {
             $_sql_f[] = "(divinity = "
                       . implode(" OR divinity = ", $this->f['divinity'])

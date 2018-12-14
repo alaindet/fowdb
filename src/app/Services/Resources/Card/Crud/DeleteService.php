@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Resources\Card;
+namespace App\Services\Resources\Card\Crud;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
@@ -8,7 +8,7 @@ use App\Models\Card as Model;
 use App\Services\Filesystem;
 use App\Utils\Uri;
 
-class CardDeleteService extends CrudService
+class DeleteService extends CrudService
 {
     protected $model = Model::class; 
 

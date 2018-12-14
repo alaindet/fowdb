@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Resources\Card;
+namespace App\Services\Resources\Card\Crud;
 
 use App\Exceptions\CrudException;
 use App\Models\GameSet;
@@ -10,7 +10,7 @@ use App\Models\Card;
  * This trait manipulates data after all Card input processors executed
  * Accesses these properties: $old, $new, $state
  */
-trait ManagesPostProcessing
+trait PostProcessingTrait
 {
     /**
      * Overrides App\Base\InputProcessor::afterProcessing

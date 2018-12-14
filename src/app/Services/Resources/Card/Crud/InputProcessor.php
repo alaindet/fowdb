@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Services\Resources\Card;
+namespace App\Services\Resources\Card\Crud;
 
-use App\Base\InputProcessor;
+use App\Base\InputProcessor as BaseInputProcessor;
 use App\Exceptions\CrudException;
-use App\Services\Resources\Card\ManagesPostProcessing;
+use App\Services\Resources\Card\Crud\PostProcessingTrait;
 
-class CardInputProcessor extends InputProcessor
+class InputProcessor extends BaseInputProcessor
 {
-    use ManagesPostProcessing;
+    use PostProcessingTrait;
 
     /**
      * Maps the input name to its processor function. Order is important

@@ -7,9 +7,9 @@ use App\Http\Request\Request;
 use App\Http\Response\Redirect;
 use App\Models\Card as Model;
 use App\Services\Alert;
-use App\Services\Resources\Card\CardCreateService;
-use App\Services\Resources\Card\CardDeleteService;
-use App\Services\Resources\Card\CardUpdateService;
+use App\Services\Resources\Card\Crud\CreateService;
+use App\Services\Resources\Card\Crud\DeleteService;
+use App\Services\Resources\Card\Crud\UpdateService;
 use App\Views\Page;
 
 /**
@@ -71,7 +71,7 @@ class CardsController extends Controller
 
         ], $input);
 
-        $service = new CardCreateService($input);
+        $service = new CreateService($input);
         $service->processInput();
         $service->syncDatabase();
         $service->syncFileSystem();
@@ -135,7 +135,7 @@ class CardsController extends Controller
 
         ], $input);
 
-        $service = new CardUpdateService($input, $id);
+        $service = new UpdateService($input, $id);
         $service->processInput();
         $service->syncDatabase();
         $service->syncFileSystem();
@@ -164,7 +164,7 @@ class CardsController extends Controller
 
     public function delete(Request $request, string $id): string
     {
-        $service = new CardDeleteService(null, $id);
+        $service = new DeleteService(null, $id);
         $service->syncFileSystem();
         $service->syncDatabase();
         [$message, $uri] = $service->getFeedback();
