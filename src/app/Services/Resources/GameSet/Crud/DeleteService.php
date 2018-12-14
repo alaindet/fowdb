@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Services\Resources\Set;
+namespace App\Services\Resources\GameSet\Crud;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
-use App\Services\Resources\Set\SetInputProcessor;
 use App\Models\GameSet as Model;
 use App\Services\FileSystem;
 
-class SetDeleteService extends CrudService
+class DeleteService extends CrudService
 {
     public $model = Model::class;
 

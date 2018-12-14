@@ -6,13 +6,13 @@ use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Http\Response\Redirect;
 use App\Services\Alert;
-use App\Services\Resources\Set\SetCreateService;
-use App\Services\Resources\Set\SetDeleteService;
-use App\Services\Resources\Set\SetUpdateService;
 use App\Views\Page;
 use App\Models\GameSet as Model;
+use App\Services\Resources\GameSet\Crud\CreateService;
+use App\Services\Resources\GameSet\Crud\DeleteService;
+use App\Services\Resources\GameSet\Crud\UpdateService;
 
-class SetsController extends Controller
+class GameSetsController extends Controller
 {
     public function index(Request $request): string
     {
@@ -82,7 +82,7 @@ class SetsController extends Controller
             'is-spoiler' => ['required:0','is:boolean'],
         ]);
 
-        $service = new SetCreateService($request->input()->post());
+        $service = new CreateService($request->input()->post());
         $service->processInput();
         $service->syncDatabase();
         $service->syncFileSystem();
@@ -126,7 +126,7 @@ class SetsController extends Controller
             'is-spoiler' => ['required:0','is:boolean'],
         ]);
 
-        $service = new SetUpdateService($request->input()->post(), $id);
+        $service = new UpdateService($request->input()->post(), $id);
         $service->processInput();
         $service->syncDatabase();
         $service->syncFileSystem();
@@ -173,7 +173,7 @@ class SetsController extends Controller
 
     public function delete(Request $request, string $id): string
     {
-        $service = new SetDeleteService(null, $id);
+        $service = new DeleteService(null, $id);
         $service->syncDatabase();
         $service->syncFileSystem();
         $service->updateLookupData();

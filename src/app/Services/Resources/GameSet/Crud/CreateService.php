@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Services\Resources\Set;
+namespace App\Services\Resources\GameSet\Crud;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
-use App\Services\Resources\Set\SetInputProcessor;
+use App\Services\Resources\GameSet\Crud\InputProcessor;
 use App\Services\FileSystem;
 
-class SetCreateService extends CrudService
+class CreateService extends CrudService
 {
-    public $inputProcessor = SetInputProcessor::class;
+    public $inputProcessor = InputProcessor::class;
     
     public function syncDatabase(): CrudServiceInterface
     {

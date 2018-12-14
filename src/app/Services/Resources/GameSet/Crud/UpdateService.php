@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Services\Resources\Set;
+namespace App\Services\Resources\GameSet\Crud;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
-use App\Services\Resources\Set\SetInputProcessor;
+use App\Services\Resources\GameSet\Crud\InputProcessor;
 use App\Models\GameSet as Model;
 use App\Services\FileSystem;
 
-class SetUpdateService extends CrudService
+class UpdateService extends CrudService
 {
-    public $inputProcessor = SetInputProcessor::class;
+    public $inputProcessor = InputProcessor::class;
     public $model = Model::class;
 
     public function syncDatabase(): CrudServiceInterface
@@ -74,11 +74,11 @@ class SetUpdateService extends CrudService
     {
         $message = collapse(
             "Set <strong> ",
-            "#{$this->old['id']} ",
-            "{$this->old['name']} ({$this->old['code']})",
+                "#{$this->old['id']} ",
+                "{$this->old['name']} ({$this->old['code']})",
             "</strong> updated to <strong>",
-            "#{$this->old['id']} ",
-            "{$this->new['name']} ({$this->new['code']})
+                "#{$this->old['id']} ",
+                "{$this->new['name']} ({$this->new['code']})
             </strong>."
         );
 

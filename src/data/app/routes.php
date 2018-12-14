@@ -166,13 +166,13 @@ $judge = [
     ['POST','cards/delete/{d}','Admin\\CardsController','delete',$d,['token']],
 
     // Sets
-    ['GET', 'sets/manage','Admin\\SetsController','index'],
-    ['GET', 'sets/create','Admin\\SetsController','createForm'],
-    ['POST','sets/create','Admin\\SetsController','create',null,['token']],
-    ['GET', 'sets/update/{d}','Admin\\SetsController','updateForm',$d],
-    ['POST','sets/update/{d}','Admin\\SetsController','update',$d,['token']],
-    ['GET', 'sets/delete/{d}','Admin\\SetsController','deleteForm',$d],
-    ['POST','sets/delete/{d}','Admin\\SetsController','delete',$d,['token']],
+    ['GET', 'sets/manage','Admin\\GameSetsController','index'],
+    ['GET', 'sets/create','Admin\\GameSetsController','createForm'],
+    ['POST','sets/create','Admin\\GameSetsController','create',null,['token']],
+    ['GET', 'sets/update/{d}','Admin\\GameSetsController','updateForm',$d],
+    ['POST','sets/update/{d}','Admin\\GameSetsController','update',$d,['token']],
+    ['GET', 'sets/delete/{d}','Admin\\GameSetsController','deleteForm',$d],
+    ['POST','sets/delete/{d}','Admin\\GameSetsController','delete',$d,['token']],
 
     // Clusters
     ['GET','clusters/manage','Admin\\GameClustersController','index'],

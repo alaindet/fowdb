@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Services\Resources\Set;
+namespace App\Services\Resources\GameSet\Crud;
 
-use App\Base\InputProcessor;
+use App\Base\InputProcessor as BaseInputProcessor;
 use App\Exceptions\CrudException;
-use App\Services\Resources\Set\ManagesPostProcessing;
+use App\Services\Resources\GameSet\Crud\PostProcessingTrait;
 
-class SetInputProcessor extends InputProcessor
+class InputProcessor extends BaseInputProcessor
 {
-    use ManagesPostProcessing;
+    use PostProcessingTrait;
 
     protected $functions = [
         'cluster-id' => 'processClusterIdInput',

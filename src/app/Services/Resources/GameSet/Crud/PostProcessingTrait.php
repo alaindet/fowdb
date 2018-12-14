@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Resources\Set;
+namespace App\Services\Resources\GameSet\Crud;
 
 use App\Exceptions\CrudException;
 
@@ -8,7 +8,7 @@ use App\Exceptions\CrudException;
  * This trait manipulates data after all Cluster input processors executed
  * Accesses these properties: $old, $new, $state
  */
-trait ManagesPostProcessing
+trait PostProcessingTrait
 {
     /**
      * Overrides App\Base\InputProcessor::afterProcessing
