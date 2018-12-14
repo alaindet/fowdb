@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Services\Resources\Ruling;
+namespace App\Services\Resources\GameRuling\Crud;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
-use App\Services\Resources\Ruling\RulingInputProcessor as InputProcessor;
 use App\Models\Card;
 use App\Models\GameRuling as Model;
+use App\Services\Resources\GameRuling\Crud\InputProcessor;
 
-class RulingUpdateService extends CrudService
+class UpdateService extends CrudService
 {
     public $inputProcessor = InputProcessor::class;
     public $model = Model::class;

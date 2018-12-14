@@ -43,20 +43,20 @@ class UserController extends Controller
     {
         $links = [
             'judge' => [
-                url('cards/manage') => 'Cards',
-                url('sets/manage') => 'Sets',
-                url('clusters/manage') => 'Clusters',
-                url('cr/manage') => 'Comprehensive Rules',
-                url('restrictions/manage') => 'Banned and Limited cards',
-                url('rulings/manage') => 'Rulings',
-                url('images/trim') => 'Trim an image',
+                url('cards/manage') => 'Game: Cards',
+                url('sets/manage') => 'Game: Sets',
+                url('clusters/manage') => 'Game: Clusters',
+                url('rulings/manage') => 'Game: Rulings',
+                url('restrictions/manage') => 'Play: Banned and Limited cards',
+                url('cr/manage') => 'Play: Comprehensive Rules',
+                url('images/trim') => 'Tool: Trim an image',
             ],
             'admin' => [
-                url('lookup') => 'Lookup data',
-                url('clint') => 'Clint commands',
-                url('hash') => 'Hash a string',
-                url('phpinfo') => 'PHP info',
-                url('artists') => 'Artists',
+                url('artists') => 'Tool: Artists',
+                url('lookup') => 'Admin: Lookup data',
+                url('clint') => 'Admin: Clint commands',
+                url('hash') => 'Admin: Hash a string',
+                url('phpinfo') => 'Admin: PHP info',
             ],
         ];
 

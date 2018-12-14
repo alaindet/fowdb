@@ -72,14 +72,14 @@ class UpdateService extends CrudService
      */
     public function getFeedback(): array
     {
-        $message = collapse(
-            "Set <strong> ",
-                "#{$this->old['id']} ",
-                "{$this->old['name']} ({$this->old['code']})",
-            "</strong> updated to <strong>",
-                "#{$this->old['id']} ",
-                "{$this->new['name']} ({$this->new['code']})
-            </strong>."
+        $message = (
+            "Set <strong> ".
+                "#{$this->old['id']} ".
+                "{$this->old['name']} ({$this->old['code']})".
+            "</strong> updated to <strong>".
+                "#{$this->old['id']} ".
+                "{$this->new['name']} ({$this->new['code']})".
+            "</strong>."
         );
 
         $uri = url('sets/manage');

@@ -90,12 +90,8 @@ $admin = [
     ['GET', 'phpinfo', 'Admin\\PhpInfoController','showPhpInfo'],
 
     // Comprehensive Rules
-    ['GET', 'cr/manage',
-        'Admin\\GameRulesController','index'],
-
-    ['GET', 'cr/create',
-        'Admin\\GameRulesController','createForm'],
-
+    ['GET', 'cr/manage','Admin\\GameRulesController','index'],
+    ['GET', 'cr/create','Admin\\GameRulesController','createForm'],
     ['POST','cr/create',
         'Admin\\GameRulesController','create',null, ['token']],
 
@@ -114,34 +110,40 @@ $admin = [
     ['GET', 'cr/file/{d}',
         'Admin\\GameRulesController','showFile',$d],
 
+
     // Lookup
     ['GET', 'lookup','Admin\\LookupController','index'],
     ['GET', 'lookup/build','Admin\\LookupController','buildAll'],
     ['GET', 'lookup/read','Admin\\LookupController','read'],
-    ['GET', 'lookup/read/{feature}','Admin\\LookupController','read',
-        ['feature' => '[a-z]+']],
+    ['GET', 'lookup/read/{feature}',
+        'Admin\\LookupController','read',['feature' => '[a-z]+']],
 
     // Trim an image
     ['GET', 'images/trim','Admin\\ImagesController','trimForm'],
-    ['POST','images/trim','Admin\\ImagesController','trim'],
+    ['POST','images/trim','Admin\\ImagesController','trim',null, ['token']],
 
     // Hash a string
     ['GET', 'hash', 'Admin\\HashController','hashForm'],
-    ['POST','hash', 'Admin\\HashController','hash'],
+    ['POST','hash', 'Admin\\HashController','hash',null, ['token']],
 
     // Clint CLI commands
     ['GET', 'clint', 'Admin\\ClintController','showForm'],
-    ['GET', 'clint/{command}', 'Admin\\ClintController','executeCommand',
-        ['command' => '[A-Za-z-]+']],
+    ['GET', 'clint/{command}',
+        'Admin\\ClintController','executeCommand',['command' => '[A-Za-z-]+']],
 
     // Artists tool
-    ['GET', 'artists','Admin\\ArtistsController','selectSetForm'],
-    ['GET', 'artists/set/{set}','Admin\\ArtistsController','selectCardForm',
-        ['set' => '[0-9]+']],
+    ['GET', 'artists',
+        'Admin\\ArtistsController','selectSetForm'],
+
+    ['GET', 'artists/set/{set}',
+        'Admin\\ArtistsController','selectCardForm',['set' => '[0-9]+']],
+
     ['GET', 'artists/card/{card}',
         'Admin\\ArtistsController','cardForm',
         ['set' => '[0-9]+', 'card' => '[0-9]+']],
-    ['POST','artists/store','Admin\\ArtistsController','store'],
+
+    ['POST','artists/store',
+        'Admin\\ArtistsController','store',null, ['token']],
 
 ];
 
@@ -166,38 +168,51 @@ $judge = [
     ['POST','cards/delete/{d}','Admin\\CardsController','delete',$d,['token']],
 
     // Sets
-    ['GET', 'sets/manage','Admin\\GameSetsController','index'],
-    ['GET', 'sets/create','Admin\\GameSetsController','createForm'],
-    ['POST','sets/create','Admin\\GameSetsController','create',null,['token']],
-    ['GET', 'sets/update/{d}','Admin\\GameSetsController','updateForm',$d],
-    ['POST','sets/update/{d}','Admin\\GameSetsController','update',$d,['token']],
-    ['GET', 'sets/delete/{d}','Admin\\GameSetsController','deleteForm',$d],
-    ['POST','sets/delete/{d}','Admin\\GameSetsController','delete',$d,['token']],
+    ['GET', 'sets/manage',
+        'Admin\\GameSetsController','index'],
+
+    ['GET', 'sets/create',
+        'Admin\\GameSetsController','createForm'],
+
+    ['POST','sets/create',
+        'Admin\\GameSetsController','create',null,['token']],
+
+    ['GET', 'sets/update/{d}',
+        'Admin\\GameSetsController','updateForm',$d],
+
+    ['POST','sets/update/{d}',
+        'Admin\\GameSetsController','update',$d,['token']],
+
+    ['GET', 'sets/delete/{d}',
+        'Admin\\GameSetsController','deleteForm',$d],
+
+    ['POST','sets/delete/{d}',
+        'Admin\\GameSetsController','delete',$d,['token']],
 
     // Clusters
     ['GET','clusters/manage','Admin\\GameClustersController','index'],
 
     // Rulings
     ['GET', 'rulings/manage',
-        'Admin\\RulingsController','index'],
+        'Admin\\GameRulingsController','index'],
     
     ['GET', 'rulings/create',
-        'Admin\\RulingsController','createForm'],
+        'Admin\\GameRulingsController','createForm'],
     
     ['POST','rulings/create',
-        'Admin\\RulingsController','create',null, ['token']],
+        'Admin\\GameRulingsController','create',null, ['token']],
     
     ['GET', 'rulings/update/{d}',
-        'Admin\\RulingsController','updateForm',$d],
+        'Admin\\GameRulingsController','updateForm',$d],
     
     ['POST','rulings/update/{d}',
-        'Admin\\RulingsController','update',$d, ['token']],
+        'Admin\\GameRulingsController','update',$d, ['token']],
     
     ['GET','rulings/delete/{d}',
-        'Admin\\RulingsController','deleteForm',$d],
+        'Admin\\GameRulingsController','deleteForm',$d],
     
     ['POST','rulings/delete/{d}',
-        'Admin\\RulingsController','delete',$d, ['token']],
+        'Admin\\GameRulingsController','delete',$d, ['token']],
 
     // Banned and limited cards
     ['GET', 'restrictions/manage',
@@ -225,19 +240,24 @@ $judge = [
     // API --------------------------------------------------------------------
 
     // Clusters
-    ['GET', 'api/clusters','Admin\\GameClustersController','apiShowAll',
+    ['GET', 'api/clusters',
+        'Admin\\GameClustersController','apiShowAll',
         null, ['!auth', 'api-auth']],
 
-    ['GET', 'api/clusters/{d}','Admin\\GameClustersController','apiShow',
+    ['GET', 'api/clusters/{d}',
+        'Admin\\GameClustersController','apiShow',
         $d, ['!auth', 'api-auth']],
 
-    ['POST','api/clusters/create','Admin\\GameClustersController','apiCreate',
+    ['POST','api/clusters/create',
+        'Admin\\GameClustersController','apiCreate',
         null, ['!auth', 'api-auth', 'api-token']],
 
-    ['POST','api/clusters/update/{d}','Admin\\GameClustersController','apiUpdate',
+    ['POST','api/clusters/update/{d}',
+        'Admin\\GameClustersController','apiUpdate',
         $d, ['!auth', 'api-auth', 'api-token']],
 
-    ['POST','api/clusters/delete/{d}','Admin\\GameClustersController','apiDelete',
+    ['POST','api/clusters/delete/{d}',
+        'Admin\\GameClustersController','apiDelete',
         $d, ['!auth', 'api-auth', 'api-token']],
 
 ];

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Resources\Ruling;
+namespace App\Services\Resources\GameRuling\Crud;
 
-use App\Base\InputProcessor;
+use App\Base\InputProcessor as BaseInputProcessor;
 
-class RulingInputProcessor extends InputProcessor
+class InputProcessor extends BaseInputProcessor
 {
     protected $functions = [
         'card-id' => 'processCardIdInput',

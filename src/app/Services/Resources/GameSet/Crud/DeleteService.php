@@ -46,10 +46,10 @@ class DeleteService extends CrudService
      */
     public function getFeedback(): array
     {
-        $message = collapse(
-            "Set <strong> ",
-            "#{$this->old['id']} ",
-            "{$this->old['name']} ({$this->old['code']})",
+        $message = (
+            "Set <strong> ".
+                "#{$this->old['id']} ".
+                "{$this->old['name']} ({$this->old['code']})".
             "</strong> deleted."
         );
 

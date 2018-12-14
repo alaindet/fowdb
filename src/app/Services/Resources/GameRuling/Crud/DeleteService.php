@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services\Resources\Ruling;
+namespace App\Services\Resources\GameRuling\Crud;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
 use App\Models\Card;
 use App\Models\GameRuling as Model;
 
-class RulingDeleteService extends CrudService
+class DeleteService extends CrudService
 {
     public $model = Model::class;
 

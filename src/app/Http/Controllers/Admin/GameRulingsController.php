@@ -6,13 +6,13 @@ use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Http\Response\Redirect;
 use App\Services\Alert;
-use App\Services\Resources\Ruling\RulingCreateService;
-use App\Services\Resources\Ruling\RulingDeleteService;
-use App\Services\Resources\Ruling\RulingUpdateService;
+use App\Services\Resources\GameRuling\Crud\CreateService;
+use App\Services\Resources\GameRuling\Crud\DeleteService;
+use App\Services\Resources\GameRuling\Crud\UpdateService;
 use App\Views\Page;
 use App\Services\Database\Statement\SqlStatement;
 
-class RulingsController extends Controller
+class GameRulingsController extends Controller
 {
     /**
      * Acquires specific GET parameters,
@@ -146,7 +146,7 @@ class RulingsController extends Controller
             'ruling-text' => ['required'],
         ]);
 
-        $service = new RulingCreateService($request->input()->post());
+        $service = new CreateService($request->input()->post());
         $service->processInput();
         $service->syncDatabase();
         [$message, $uri] = $service->getFeedback();
@@ -204,7 +204,7 @@ class RulingsController extends Controller
             'ruling-text' => ['required'],
         ]);
 
-        $service = new RulingUpdateService($request->input()->post(), $id);
+        $service = new UpdateService($request->input()->post(), $id);
         $service->processInput();
         $service->syncDatabase();
         [$message, $uri] = $service->getFeedback();
@@ -257,7 +257,7 @@ class RulingsController extends Controller
 
     public function delete(Request $request, string $id): string
     {
-        $service = new RulingDeleteService(null, $id);
+        $service = new DeleteService(null, $id);
         $service->syncDatabase();
         [$message, $uri] = $service->getFeedback();
         

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services\Resources\Ruling;
+namespace App\Services\Resources\GameRuling\Crud;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
-use App\Services\Resources\Ruling\RulingInputProcessor as InputProcessor;
+use App\Services\Resources\GameRuling\Crud\InputProcessor;
 use App\Models\Card;
 
-class RulingCreateService extends CrudService
+class CreateService extends CrudService
 {
     public $inputProcessor = InputProcessor::class;
 
@@ -50,8 +50,8 @@ class RulingCreateService extends CrudService
         $label = "{$card['name']} ({$card['code']})";
         $link = '<a href="'.url('rulings/manage').'">Rulings</a>';
 
-        $message = collapse(
-            "New ruling for card <strong>{$label}</strong> added. ",
+        $message = (
+            "New ruling for card <strong>{$label}</strong> added. ".
             "Go back to the <strong>{$link}</strong> page."
         );
 
