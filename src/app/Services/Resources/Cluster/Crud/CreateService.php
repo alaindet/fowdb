@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Services\Resources\Cluster;
+namespace App\Services\Resources\Cluster\Crud;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
-use App\Services\Resources\Cluster\ClusterInputProcessor;
+use App\Services\Resources\Cluster\Crud\InputProcessor;
 use App\Services\FileSystem;
 
-class ClusterCreateService extends CrudService
+class CreateService extends CrudService
 {
-    public $inputProcessor = ClusterInputProcessor::class;
+    public $inputProcessor = InputProcessor::class;
 
     public function syncDatabase(): CrudServiceInterface
     {
@@ -54,10 +54,10 @@ class ClusterCreateService extends CrudService
      */
     public function getFeedback(): array
     {
-        $message = collapse(
-            "New cluster <strong> ",
-            "#{$this->new['id']} ",
-            "{$this->new['name']} ({$this->new['code']})",
+        $message = (
+            "New cluster <strong> ".
+                "#{$this->new['id']} ".
+                "{$this->new['name']} ({$this->new['code']})".
             "</strong> created."
         );
 

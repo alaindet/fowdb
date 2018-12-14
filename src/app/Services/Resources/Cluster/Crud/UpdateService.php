@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Services\Resources\Cluster;
+namespace App\Services\Resources\Cluster\Crud;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
-use App\Services\Resources\Cluster\ClusterInputProcessor;
+use App\Services\Resources\Cluster\Crud\InputProcessor;
 use App\Models\GameCluster as Model;
 
-class ClusterUpdateService extends CrudService
+class UpdateService extends CrudService
 {
-    public $inputProcessor = ClusterInputProcessor::class;
+    public $inputProcessor = InputProcessor::class;
     public $model = Model::class;
 
     public function syncDatabase(): CrudServiceInterface

@@ -9,9 +9,9 @@ use App\Http\Request\Request;
 use App\Http\Response\JsonResponse;
 use App\Models\GameCluster as Model;
 use App\Services\CsrfToken;
-use App\Services\Resources\Cluster\ClusterCreateService;
-use App\Services\Resources\Cluster\ClusterDeleteService;
-use App\Services\Resources\Cluster\ClusterUpdateService;
+use App\Services\Resources\Cluster\Crud\CreateService;
+use App\Services\Resources\Cluster\Crud\DeleteService;
+use App\Services\Resources\Cluster\Crud\UpdateService;
 use App\Views\Page;
 
 class ClustersController extends Controller
@@ -78,7 +78,7 @@ class ClustersController extends Controller
         ]);
 
         try {
-            $service = new ClusterCreateService($request->input()->post());
+            $service = new CreateService($request->input()->post());
             $service->processInput();
             $service->syncDatabase();
             $service->syncFileSystem();
@@ -107,7 +107,7 @@ class ClustersController extends Controller
         ]);
 
         try {
-            $service = new ClusterUpdateService($request->input()->post(), $id);
+            $service = new UpdateService($request->input()->post(), $id);
             $service->processInput();
             $service->syncDatabase();
             $service->updateLookupData();
@@ -129,7 +129,7 @@ class ClustersController extends Controller
     public function apiDelete(Request $request, $id): string
     {
         try {
-            $service = new ClusterDeleteService(null, $id);
+            $service = new DeleteService(null, $id);
             $service->syncDatabase();
             $service->syncFileSystem();
             $service->updateLookupData();

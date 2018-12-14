@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services\Resources\Cluster;
+namespace App\Services\Resources\Cluster\Crud;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
 use App\Services\FileSystem;
 use App\Models\GameCluster as Model;
 
-class ClusterDeleteService extends CrudService
+class DeleteService extends CrudService
 {
     public $model = Model::class;
 

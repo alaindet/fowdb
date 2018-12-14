@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Services\Resources\Cluster;
+namespace App\Services\Resources\Cluster\Crud;
 
-use App\Base\InputProcessor;
+use App\Base\InputProcessor as BaseInputProcessor;
 use App\Exceptions\CrudException;
-use App\Services\Resources\Cluster\ManagesPostProcessing;
+use App\Services\Resources\Cluster\Crud\PostProcessingTrait;
 
-class ClusterInputProcessor extends InputProcessor
+class InputProcessor extends BaseInputProcessor
 {
-    use ManagesPostProcessing;
+    use PostProcessingTrait;
 
     protected $functions = [
         'id' => 'processIdInput',
