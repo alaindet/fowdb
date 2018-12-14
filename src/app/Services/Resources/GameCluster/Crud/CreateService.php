@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Resources\Cluster\Crud;
+namespace App\Services\Resources\GameCluster\Crud;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
-use App\Services\Resources\Cluster\Crud\InputProcessor;
+use App\Services\Resources\GameCluster\Crud\InputProcessor;
 use App\Services\FileSystem;
 
 class CreateService extends CrudService

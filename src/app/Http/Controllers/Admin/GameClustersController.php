@@ -9,12 +9,12 @@ use App\Http\Request\Request;
 use App\Http\Response\JsonResponse;
 use App\Models\GameCluster as Model;
 use App\Services\CsrfToken;
-use App\Services\Resources\Cluster\Crud\CreateService;
-use App\Services\Resources\Cluster\Crud\DeleteService;
-use App\Services\Resources\Cluster\Crud\UpdateService;
+use App\Services\Resources\GameCluster\Crud\CreateService;
+use App\Services\Resources\GameCluster\Crud\DeleteService;
+use App\Services\Resources\GameCluster\Crud\UpdateService;
 use App\Views\Page;
 
-class ClustersController extends Controller
+class GameClustersController extends Controller
 {
     public function index(Request $request): string
     {

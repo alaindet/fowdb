@@ -175,7 +175,7 @@ $judge = [
     ['POST','sets/delete/{d}','Admin\\SetsController','delete',$d,['token']],
 
     // Clusters
-    ['GET','clusters/manage','Admin\\ClustersController','index'],
+    ['GET','clusters/manage','Admin\\GameClustersController','index'],
 
     // Rulings
     ['GET', 'rulings/manage',
@@ -225,19 +225,19 @@ $judge = [
     // API --------------------------------------------------------------------
 
     // Clusters
-    ['GET', 'api/clusters','Admin\\ClustersController','apiShowAll',
+    ['GET', 'api/clusters','Admin\\GameClustersController','apiShowAll',
         null, ['!auth', 'api-auth']],
 
-    ['GET', 'api/clusters/{d}','Admin\\ClustersController','apiShow',
+    ['GET', 'api/clusters/{d}','Admin\\GameClustersController','apiShow',
         $d, ['!auth', 'api-auth']],
 
-    ['POST','api/clusters/create','Admin\\ClustersController','apiCreate',
+    ['POST','api/clusters/create','Admin\\GameClustersController','apiCreate',
         null, ['!auth', 'api-auth', 'api-token']],
 
-    ['POST','api/clusters/update/{d}','Admin\\ClustersController','apiUpdate',
+    ['POST','api/clusters/update/{d}','Admin\\GameClustersController','apiUpdate',
         $d, ['!auth', 'api-auth', 'api-token']],
 
-    ['POST','api/clusters/delete/{d}','Admin\\ClustersController','apiDelete',
+    ['POST','api/clusters/delete/{d}','Admin\\GameClustersController','apiDelete',
         $d, ['!auth', 'api-auth', 'api-token']],
 
 ];

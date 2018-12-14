@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Resources\Cluster\Crud;
+namespace App\Services\Resources\GameCluster\Crud;
 
 use App\Exceptions\CrudException;
 
