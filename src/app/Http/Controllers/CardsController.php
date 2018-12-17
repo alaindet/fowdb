@@ -27,12 +27,16 @@ class CardsController extends Controller
 
     public function search(Request $request): string
     {
-        $params = $request->input()->get();
         $search = new Search;
 
-        $filters = $search->getFilters($params);
-        $search->processFilters($params);
-        $cards = $search->getCards();
+        // Read the raw input
+        $input = $request->input()->get();
+
+        // Filter out unwanted input
+        $filters = $search->getFilters($input);
+
+        // Get the results
+        $cards = $search->processFilters($input)->getCards();
 
         // ERROR: Cards not found!
         if (empty($cards)) {
