@@ -147,6 +147,9 @@ $admin = [
     ['POST','artists/store',
         'Admin\\ArtistsController','store',null, ['token']],
 
+    ['GET', 'api/artists/autocomplete',
+        'Api\\ArtistsController','autocomplete',null, ['!auth', 'api-auth']],
+
 ];
 
 /**

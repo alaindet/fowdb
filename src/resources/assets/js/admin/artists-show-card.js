@@ -4,7 +4,7 @@
   var css_autocompleteInput = '#the-autocomplete';
 
   // Application data ---------------------------------------------------------
-  var data_apiUrl = window.BASE_URL + '/old/api/api.autocomplete.artists.php';
+  var data_apiUrl = window.BASE_URL + '/api/artists/autocomplete';
 
 
   // Bootstrap ----------------------------------------------------------------
