@@ -15,7 +15,7 @@ class CardsController extends Controller
     public function search(Request $request): string
     {
         $search = new Search;
-        $search->processFilters($request->input()->get());
+        $search->processFilters($request->input()->post());
 
         $data = [
             'response' => true,
