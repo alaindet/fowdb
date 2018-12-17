@@ -265,6 +265,13 @@ $judge = [
         'Admin\\GameClustersController','apiDelete',
         $d, ['!auth', 'api-auth', 'api-token']],
 
+    // Cards
+    ['GET', 'api/cards/autocomplete/names',
+        'Api\\CardsController','autocompleteNames',null,['!auth', 'api-auth']],
+
+    ['GET', 'api/cards/check/{d}',
+        'Api\\CardsController','checkId',$d,['!auth', 'api-auth']],
+
 ];
 
 /**
