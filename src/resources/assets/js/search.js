@@ -216,8 +216,10 @@ $(document).ready(function () {
             + "&page=" + FoWDB.search.page;
 
         $.ajax({
-            url: '/old/api/search/load.php',
-            method: 'POST',
+            // url: '/old/api/search/load.php',
+            url: '/api/cards',
+            // method: 'POST',
+            method: 'GET',
             data: filters,
             dataType: 'json',
             cache: false,
@@ -265,7 +267,7 @@ $(document).ready(function () {
                 $("#cards-counter").html(FoWDB.search.cardsCounter);
 
                 // Check if no more pagination is needed
-                if (!data.nextPagination) {
+                if (!data.nextPage) {
 
                     // Replace Load More button with an horizontal line
                     thisElement.remove();

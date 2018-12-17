@@ -63,6 +63,8 @@ $public = [
     ['POST','login','Auth\\LoginController','login', null, ['token']],
     ['GET', 'logout','Auth\\LoginController','logout'],
 
+    ['GET', 'api/cards','Api\\CardsController','search']
+
 ];
 
 /**

@@ -103,28 +103,22 @@ class CardSearch
     public function getFilters($inputs = null)
     {
         // Return stored value if any
-        if (!empty($this->f)) {
-            return $this->f;
-        }
+        if (!empty($this->f)) return $this->f;
 
         // ERROR: No inputs are passed
-        if (empty($inputs)) {
-            return [];
-        }
+        if (empty($inputs)) return [];
 
         // Get allowed filters
         $allowed = array_intersect(array_keys($inputs), $this->allowed);
 
         // ERROR: No inputs after whitelisting
-        if (empty($allowed)) {
-            return [];
-        }
+        if (empty($allowed)) return [];
 
         // Escape HTML code for every filter
-        foreach ($allowed as &$key) {
+        foreach ($allowed as $key) {
 
             // Alias input value
-            $value =& $inputs[$key];
+            $value = &$inputs[$key];
 
             // Array parameter
             if (is_array($value)) {
@@ -148,7 +142,6 @@ class CardSearch
             }
         }
 
-        // Return filters
         return $this->f;
     }
 
@@ -239,19 +232,15 @@ class CardSearch
      * Ex.: ['fields' => .., 'where' => .., 'orderby' => ..]
      *
      * @param array $inputs Search filters
-     * @return array SQL array containing partials of SQL statement
+     * @return CardSearch
      */
-    public function processFilters($inputs = null) {
-
+    public function processFilters($inputs = null): CardSearch
+    {
         // ERROR: No inputs provided!
-        if (!isset($inputs)) {
-            return false;
-        }
+        if (!isset($inputs)) return false;
 
         // Sanitize and parse filters (if not already)
-        if (empty($this->f)) {
-            $this->getFilters($inputs);
-        }
+        if (empty($this->f)) $this->getFilters($inputs);
 
         // SEARCH BAR =========================================================
 
@@ -702,7 +691,6 @@ class CardSearch
         // Set the final WHERE clause
         $this->sqlPartials['filter'] = "{$sql_f} AND {$sql_q}";
 
-        // Return complete SQL array to be turned into a statement
-        return $this->sqlPartials;
+        return $this;
     }
 }
