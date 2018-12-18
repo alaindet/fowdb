@@ -5,13 +5,19 @@ namespace App\Utils;
 class Logger
 {
     /**
-     * Logs content of $x using internal print_r($x,true) function and <pre> tag
+     * Logs content of $data using internal print_r($data,true) function
+     * And <pre> tag
      *
+     * @param any $data
      * @param string $title of the log
-     * @param mixed $x object or array to log
+     * @param bool $wrap Whether to wrap text or not
      * @return string HTML content to be output
      */
-    public static function html($data, string $title = null): string
+    public static function html(
+        $data,
+        string $title = null,
+        bool $wrap = false
+    ): string
     {
         // Line
         $line = '';
@@ -25,8 +31,11 @@ class Logger
         elseif (is_string($data)) $content = $data;
         else $content = print_r($data, true);
 
+        // Wrap?
+        $style = ($wrap) ? ' style="white-space: pre-wrap;"' : '';
+
         // Return log
-        return "<pre>{$title}{$line}{$content}</pre>";
+        return "<pre{$style}>{$title}{$line}{$content}</pre>";
     }
 
     /**
