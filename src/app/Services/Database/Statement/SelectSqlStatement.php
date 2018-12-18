@@ -5,9 +5,7 @@ namespace App\Services\Database\Statement;
 use App\Services\Database\Statement\SqlStatement;
 
 /**
- * TO DO: groupBy(), having()
- * 
- * Reference: https://dev.mysql.com/doc/refman/8.0/en/select.html
+ * https://dev.mysql.com/doc/refman/8.0/en/select.html
  */
 class SelectSqlStatement extends SqlStatement
 {
