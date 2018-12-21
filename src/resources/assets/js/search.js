@@ -244,15 +244,16 @@ $(document).ready(function () {
                 for (var i = 0, len = data.cardsData.length; i < len; i++) {
 
                     var c = data.cardsData[i]; // Current card's data
-                    var spoilerClass = c.is_spoiler ? " fdb-card-spoiled" : ""; // Spoiler?
+                    var spoilerClass = c.is_spoiler ? " fdb-card-spoiled" : "";
+                    var cardLink = window.BASE_URL+'/card/'+c.code;
 
                     // Card HTML content
                     cardsHTML.push([
-                        '<div class="', cardClass, spoilerClass, '">',
-                        '<a href="/?p=card&code=', c.code, '" target="_self">',
-                        '<img src="', c.thumb_path, '" alt="', c.name, '">',
+                      '<div class="', cardClass, spoilerClass, '">',
+                        '<a href="',cardLink,'" target="_self">',
+                          '<img src="', c.thumb_path, '" alt="', c.name, '">',
                         '</a>',
-                        '</div>'
+                      '</div>'
                     ].join(''));
                 }
 
