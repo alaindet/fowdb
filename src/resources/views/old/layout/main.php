@@ -60,6 +60,17 @@
   <!-- Bootstrap -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" defer></script>
 
+  <!-- Application initial state -->
+  <script>
+    <?php if (isset($state)): ?>
+      window.INIITIAL_STATE = <?=json_encode(
+        $state,
+        JSON_FORCE_OBJECT | JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES
+      )?>
+    <?php endif; ?>
+    window.BASE_URL = "<?=config('app.url')?>";
+  </script>
+
   <!-- Common script -->
   <script src="<?=asset('js/public/common.min.js', 'js')?>" defer></script>
 
