@@ -37,6 +37,10 @@
    ```
    ./node_modules/.bin/uglifyjs js/FOO.js -o ../../../js/FOO.min.js -cm
    ```
+   or this
+   ```
+   npx uglifyjs js/FOO.js -cmo ../../../js/FOO.min.js
+   ```
 - `c` flag: compress (use defaults)
 - `m` flag: mangle (use defaults)
 - Documentation here: https://www.npmjs.com/package/uglify-js
