@@ -744,7 +744,7 @@ $emptyGif = asset('images/icons/blank.gif');
 
 							<!-- Attack ================================================= -->
 							<div class="col-xs-12 col-sm-6">
-								<div class="col-xs-12 filter-header">Attack</div>
+								<div class="col-xs-12 filter-header pl-0">Attack</div>
 
   							<!-- Hidden input -->
 								<input
@@ -800,7 +800,7 @@ $emptyGif = asset('images/icons/blank.gif');
   						
   						<!-- Defense ================================================ -->
 							<div class="col-xs-12 col-sm-6">
-								<div class="col-xs-12 filter-header">Defense</div>
+								<div class="col-xs-12 filter-header pl-0">Defense</div>
 
   							<!-- Hidden input -->
 								<input
