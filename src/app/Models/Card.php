@@ -28,18 +28,18 @@ class Card extends Model
         'def'
     ];
 
-    public $removables = [
+    private $removables = [
         'no-cost' => [
             'Ruler',
             'J-Ruler',
-            'Magic Stone',
+            'Basic Magic Stone',
             'Special Magic Stone',
-            'Special Magic Stone/True Magic Stone'
+            'True Magic Stone'
         ],
         'no-attribute' => [
-            'Magic Stone',
+            'Basic Magic Stone',
             'Special Magic Stone',
-            'Special Magic Stone/True Magic Stone'
+            'True Magic Stone'
         ],
         'can-battle' => [
             'J-Ruler',
@@ -70,11 +70,19 @@ class Card extends Model
         return $card;
     }
 
-    public function getRemovableFields(string $feature = null): array
+    public function getRemovableFields(): array
     {
-        if (isset($feature)) return $this->removables[$feature];
+        $result = [];
+        $name2bitValue = lookup('types.display');
 
-        return $this->removables;
+        foreach ($this->removables as $label => $displayTypes) {
+            $result[$label] = [];
+            foreach ($displayTypes as $displayType) {
+                $result[$label][] = $name2bitValue[$displayType];
+            }
+        }
+        
+        return $result;
     }
 
     public function getByCode(

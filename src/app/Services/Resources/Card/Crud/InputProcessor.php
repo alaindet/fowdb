@@ -5,6 +5,7 @@ namespace App\Services\Resources\Card\Crud;
 use App\Base\InputProcessor as BaseInputProcessor;
 use App\Exceptions\CrudException;
 use App\Services\Resources\Card\Crud\PostProcessingTrait;
+use App\Utils\Bitmask;
 
 class InputProcessor extends BaseInputProcessor
 {
@@ -156,10 +157,10 @@ class InputProcessor extends BaseInputProcessor
      * @param string $value
      * @return void
      */
-    public function processTypeInput(string $value = null): void
+    public function processTypeInput(array $value = null): void
     {
-        $this->state['type'] = $value;
-        $this->new['type'] = $value;
+        $bitmask = (new Bitmask)->addBitValues($value)->getMask();
+        $this->new['type_bit'] = $bitmask;
     }
 
     /**

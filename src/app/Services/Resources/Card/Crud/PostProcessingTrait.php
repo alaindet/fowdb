@@ -5,6 +5,7 @@ namespace App\Services\Resources\Card\Crud;
 use App\Exceptions\CrudException;
 use App\Models\GameSet;
 use App\Models\Card;
+use App\Utils\Bitmask;
 
 /**
  * This trait manipulates data after all Card input processors executed
@@ -230,33 +231,43 @@ trait PostProcessingTrait
     private function removeIllegalFields(): void
     {
         $removables = (new Card)->getRemovableFields();
+        $bitmask = (new Bitmask)->setMask($this->new['type_bit']);
 
         // Remove costs
-        if (in_array($this->new['type'], $removables['no-cost'])) {
+        foreach ($removables['no-cost'] as $type) {
+            if (!$bitmask->hasBitValue($type)) continue;
             $this->new['attribute_cost'] = null;
             $this->new['free_cost'] = null;
             $this->new['total_cost'] = null;
+            break;
         }
 
         // Remove attribute
-        if (in_array($this->new['type'], $removables['no-attribute'])) {
+        foreach ($removables['no-attribute'] as $type) {
+            if (!$bitmask->hasBitValue($type)) continue;
             $this->new['attribute'] = null;
+            break;
         }
 
         // Remove ATK and DEF
-        if (!in_array($this->new['type'], $removables['can-battle'])) {
+        $canBattle = false;
+        foreach ($removables['can-battle'] as $type) {
+            if ($bitmask->hasBitValue($type)) $canBattle = true;
+        }
+        if (!$canBattle) {
             $this->new['atk'] = null;
             $this->new['def'] = null;
         }
 
-        // A resonator must have ATK and DEF values!
+        // Block any resonator without ATK and DEF values!
         if (
-            $this->new['type'] === 'Resonator' &&
+            $bitmask->hasBitValue(lookup('types.display.Resonator')) &&
             !isset($this->new['atk']) &&
             !isset($this->new['def'])
         ) {
             throw new CrudException(
-                "A card with type \"Resonator\" must have ATK and DEF values"
+                'A card with type <strong>"Resonator"</strong> '.
+                'must have ATK and DEF values'
             );
         }
     }

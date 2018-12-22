@@ -5,6 +5,7 @@ namespace App\Legacy;
 use App\Models\PlayRestriction;
 use App\Models\CardNarp;
 use App\Models\Card as Model;
+use App\Models\CardType;
 use App\Models\GameRuling;
 use App\Utils\Arrays;
 use App\Views\Card\Card as View;
@@ -31,9 +32,14 @@ class Card
         foreach ($cardsDb as &$card) {
             
             // $type ----------------------------------------------------------
-            $reminder = ($card['back_side'] === '2') ? ' (Shift)' : '';
-            $link = url('cards', [ 'type' => [$card['type']] ]);
-            $type = "<a href=\"{$link}\">{$card['type']}</a>{$reminder}";
+            $_type = [];
+            $typeLabels = View::buildTypeLabels(intval($card['type_bit']));
+            foreach ($typeLabels as $typeLabel) {
+                $link = url('cards', ['type' => [$typeLabel]]);
+                $_type[] = "<a href=\"{$link}\">{$typeLabel}</a>";
+            }
+            $type = implode(' / ', $_type);
+            if ($card['back_side'] === '2') $type .= ' (Shift)';
             
             // $freecost ------------------------------------------------------
             $freecost = '';
@@ -61,6 +67,10 @@ class Card
             
             // $cost ----------------------------------------------------------
             $cost = empty($card['total_cost']) ? '0' : $attributecost . $freecost;
+
+            // $totalCost -----------------------------------------------------
+            $link = url('cards', ['total_cost' => [$card['total_cost']]]);
+            $totalCost = "<a href=\"{$link}\">{$card['total_cost']}</a>";
             
             // $attribute -----------------------------------------------------
             $attribute = '';
@@ -86,8 +96,11 @@ class Card
             }
             
             // $raceLabel -----------------------------------------------------
-            $raceTypes = ['Ruler', 'J-Ruler', 'Resonator'];
-            $raceLabel = in_array($card['type'], $raceTypes) ? 'race' : 'trait';
+
+            $raceTypeLabels = CardType::$withRace;
+            (empty(array_diff($raceTypeLabels, $typeLabels)))
+                ? $raceLabel = 'race'
+                : $raceLabel = 'trait';
 
             // $raceValue -----------------------------------------------------
             $raceValue = '<em>(None)</em>';
@@ -237,6 +250,10 @@ class Card
                 );
             }
 
+            // $divinity ------------------------------------------------------
+            $link = url('cards', ['divinity' => [$card['divinity']]]);
+            $divinity = "<a href=\"{$link}\">{$card['divinity']}</a>";
+
             // $card ----------------------------------------------------------
             // Backup card type before overwriting $cards
             $_type = $card['type'];
@@ -245,11 +262,11 @@ class Card
 
                 // Shown info (side panel)
                 'name' => $card['name'],
-                'cost' => $cost,
-                'total_cost' => $card['total_cost'],
-                'atk_def' => $atkDef,
-                'divinity' => $card['divinity'],
                 'type' => $type,
+                'cost' => $cost,
+                'total_cost' => $totalCost,
+                'atk_def' => $atkDef,
+                'divinity' => $divinity,
                 $raceLabel => $raceValue,
                 'attribute' => $attribute,
                 'text' => !empty($card['text']) ? render($card['text']) : null,

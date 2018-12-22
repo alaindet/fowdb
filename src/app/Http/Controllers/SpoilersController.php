@@ -24,7 +24,7 @@ class SpoilersController extends Controller
                     'code',
                     'num',
                     'name',
-                    'type',
+                    'type_bit',
                     'image_path',
                     'thumb_path'
                 ])

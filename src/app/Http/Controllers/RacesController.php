@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Views\Page;
+use App\Utils\Bitmask;
 
 /**
  * RACES::amount
@@ -45,17 +46,14 @@ class RacesController extends Controller
      */
     private function getItems(string $what, string $sort): array
     {
-        $filter = [
-            'races' => "type IN('Ruler', 'J-Ruler', 'Resonator')",
-            'traits' => "NOT (type IN('Ruler','J-Ruler','Resonator'))"
-        ][$what];
+        $filter = $this->buildRaceFilter($what === 'races');
 
         $data = database()
             ->select(
                 statement('select')
-                    ->select('race')
-                    ->select('count(id) amount')
-                    ->select('type')
+                    ->fields('race')
+                    ->fields('count(id) amount')
+                    ->fields('type_bit')
                     ->from('cards')
                     ->groupBy('race')
                     ->having('race IS NOT NULL')
@@ -78,6 +76,20 @@ class RacesController extends Controller
         elseif ($sort === 'alphabetically') ksort($items);
 
         return $items;
+    }
+
+    private function buildRaceFilter(bool $matchFields = true): string
+    {
+        $types = ['Ruler', 'J-Ruler', 'Resonator'];
+        $map = lookup('types.display');
+
+        $bitmask = new Bitmask;
+        foreach ($types as $type) $bitmask->addBitValue($map[$type]);
+        $typeValue = $bitmask->getMask();
+
+        $operator = ($matchFields) ? '>' : '=';
+
+        return "type_bit & {$typeValue} {$operator} 0";
     }
 
     public function index(Request $request): string

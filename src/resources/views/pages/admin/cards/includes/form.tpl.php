@@ -36,11 +36,15 @@ $setMap = &$lookup['sets']['id2code'];
 $rarities = &$lookup['rarities']['code2name'];
 $attributes = &$lookup['attributes']['display'];
 $backsides = &$lookup['backsides']['id2name'];
-$types = &$lookup['types']['display'];
+$types = &$lookup['types']['name2bit'];
 
 // Further process
 $backsides = array_merge(['0' => '(Basic)'], $backsides);
 $attributes = array_merge(['no' => 'No'], $attributes);
+$types = \App\Utils\Arrays::map($types, function ($bitpos) {
+  return 1 << $bitpos;
+});
+$bitmask = new \App\Utils\Bitmask();
 
 if ($isCard) {
   if ($card['attribute'] === null) $card['attribute'] = 'no';
@@ -263,26 +267,37 @@ if ($isCard) {
 
   <!-- Type =============================================================== -->
   <?php
-    $cardType = $isPrev ? $prev['type'] : $isCard ? $card['type'] : null;
+    $cardType = 0;
+    if ($isPrev) {
+      $cardType = $bitmask->setMask(0)->addBitValues($prev['type'])->getMask();
+    } elseif ($isCard) {
+      $cardType = intval($card['type_bit']);
+    }
   ?>
   <div class="form-group">
     <label class="col-sm-2 control-label">Type</label>
     <div class="col-sm-10">
-      <select name="type" class="form-control" required>
-        <option value="0">Choose a type...</option>
-        <?php foreach ($types as $type):
-          ($cardType === $type)
-            ? $checked = 'selected'
-            : $checked = '';
+
+      <div class="btg-group" data-toggle="buttons">
+        <?php foreach ($types as $name => $bitval):
+          (($cardType & $bitval) === $bitval)
+            ? [$active, $checked] = [' active', 'checked=true']
+            : [$active, $checked] = ['', ''];
         ?>
-          <option
-            value="<?=$type?>"
-            <?=$checked?>
+          <label
+            class="btn font-105 m-25 fd-btn-default<?=$active?>"
           >
-            <?=$type?>
-          </option>
+            <input
+              type="checkbox"
+              name="type[]"
+              value="<?=$bitval?>"
+              <?=$checked?>
+            >
+            <span class="pointer"><?=$name?></span>
+          </label>
         <?php endforeach; ?>
-      </select>
+      </div>
+
     </div>
   </div>
 
@@ -409,10 +424,13 @@ if ($isCard) {
       <div class="well well-sm">
         <ul class="fd-list">
           <li>
-            Leave <strong>empty</strong> for automatic generation (recommended) or enter a custom code
+            Leave <strong>empty</strong> for automatic generation (recommended)
+            or enter a custom code
           </li>
           <li>
-            Automatic code pattern: <code>{SETCODE}{dash}{NUMBER}{RARITY}</code>, ex.: NDR-001U
+            Automatic code pattern:
+            <code>{SETCODE}{dash}{NUMBER}{RARITY}</code>,
+            ex.: NDR-001U
           </li>
         </ul>
       </div>
@@ -446,8 +464,8 @@ if ($isCard) {
         type="text"
         name="race"
         value="<?php
-          if ($isPrev) echo $prev['race'];
-          elseif ($isCard) echo $card['race'];
+          if ($isPrev) echo $prev['race'] ?? '';
+          elseif ($isCard) echo $card['race'] ?? '';
           else echo null;
         ?>"
         class="form-control"
@@ -466,8 +484,8 @@ if ($isCard) {
         rows="6"
         placeholder="Text..."
       ><?php
-        if ($isPrev) echo trim(escape($prev['text']));
-        elseif ($isCard) echo trim(escape($card['text']));
+        if ($isPrev) echo trim(escape($prev['text'] ?? ''));
+        elseif ($isCard) echo trim(escape($card['text'] ?? ''));
         else echo null;
       ?></textarea>
     </div>
@@ -483,8 +501,8 @@ if ($isCard) {
         rows="3"
         placeholder="Flavor text..."
       ><?php
-        if ($isPrev) echo trim(escape($prev['flavor-text']));
-        elseif ($isCard) echo trim(escape($card['flavor_text']));
+        if ($isPrev) echo trim(escape($prev['flavor-text'] ?? ''));
+        elseif ($isCard) echo trim(escape($card['flavor_text'] ?? ''));
         else echo null;
       ?></textarea>
     </div>
@@ -498,8 +516,8 @@ if ($isCard) {
         type="text"
         name="artist-name"
         value="<?php
-          if ($isPrev) echo $prev['artist-name'];
-          elseif ($isCard) echo $card['artist_name'];
+          if ($isPrev) echo $prev['artist-name'] ?? '';
+          elseif ($isCard) echo $card['artist_name'] ?? '';
           else echo null;
         ?>"
         placeholder="Artist name..."

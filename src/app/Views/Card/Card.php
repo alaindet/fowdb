@@ -5,6 +5,8 @@ namespace App\Views\Card;
 use App\Legacy\Helpers;
 use App\Utils\Arrays;
 use App\Utils\Strings;
+use App\Models\Card as Model;
+use App\Utils\Bitmask;
 
 class Card
 {
@@ -113,36 +115,44 @@ class Card
         string $type
     ): array
     {
-        $toRemove = [
-            'Ruler' => [ 'cost', 'total_cost', 'atk_def' ],
-            'J-Ruler' => [ 'cost', 'total_cost' ],
-            'Resonator' => [],
-            'Master Rune' => [ 'atk_def' ],
-            'Chant' => [ 'atk_def' ],
-            'Chant/Rune' => [ 'atk_def' ],
-            'Addition' => [ 'atk_def' ],
-            'Regalia' => [ 'atk_def' ],
-            'Rune' => [ 'atk_def' ],
-            'Magic Stone' => [ 'cost', 'total_cost', 'atk_def', 'attribute' ],
-            'Special Magic Stone' => [
-                'cost', 'total_cost', 'atk_def', 'attribute'
-            ],
-            'Special Magic Stone/True Magic Stone' => [
-                'cost', 'total_cost', 'atk_def', 'attribute'
-            ],
-            'Spell:Chant' => [ 'atk_def' ],
-            'Spell:Chant-Instant' => [ 'atk_def' ],
-            'Spell:Chant-Standby' => [ 'atk_def' ],
-            'Addition:Field' => [ 'atk_def' ],
-            'Addition:J/Resonator' => [ 'atk_def' ],
-            'Addition:Resonator' => [ 'atk_def' ],
-            'Addition:Ruler/J-Ruler' => [ 'atk_def' ]
-        ][$type];
+        $removables = (new Model)->getRemovableFields();
+        $bitmask = (new Bitmask)->setMask(intval($type));
 
-        foreach ($card as $prop => &$value) {
-            if (in_array($prop, $toRemove)) unset($card[$prop]);
+        // Remove costs
+        foreach ($removables['no-cost'] as $type) {
+            if (!$bitmask->hasBitValue($type)) continue;
+            unset($card['cost']);
+            unset($card['total_cost']);
+            unset($card['attribute_cost']);
+            break;
+        }
+
+        // Remove attribute
+        foreach ($removables['no-attribute'] as $type) {
+            if (!$bitmask->hasBitValue($type)) continue;
+            unset($card['attribute']);
+            break;
+        }
+
+        // Remove ATK and DEF
+        foreach ($removables['can-battle'] as $type) {
+            if ($bitmask->hasBitValue($type)) continue;
+            unset($card['atk_def']);
+            break;
         }
 
         return $card;
+    }
+
+    public static function buildTypeLabels(int $typeMask)
+    {
+        $bitmask = (new Bitmask)->setMask($typeMask);
+        $labels = [];
+
+        foreach (lookup('types.display') as $label => $bitval) {
+            if ($bitmask->hasBitValue($bitval)) $labels[] = $label;
+        }
+
+        return $labels;
     }
 }

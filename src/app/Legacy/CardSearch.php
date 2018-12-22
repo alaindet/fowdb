@@ -4,6 +4,7 @@ namespace App\Legacy;
 
 use App\Utils\Arrays;
 use App\Services\Database\Database;
+use App\Utils\Bitmask;
 
 class CardSearch
 {
@@ -53,6 +54,7 @@ class CardSearch
             'sortdir',
             'total_cost',
             'type',
+            'type_selected',
             'xcost',
             
             'page', // Pagination-related
@@ -63,13 +65,13 @@ class CardSearch
 
         // Fields to return
         $this->fields = [
-            'cards.code',
-            'cards.id',
-            'cards.image_path',
-            'cards.name',
-            'cards.num',
-            'cards.sets_id',
-            'cards.thumb_path'
+            'id',
+            'sets_id',
+            'num',
+            'code',
+            'name',
+            'image_path',
+            'thumb_path'
         ];
 
         // Define default values for SQL partials
@@ -130,7 +132,8 @@ class CardSearch
                 foreach ($value as $subkey => &$subvalue) {
 
                     // Store subvalues into temp array
-                    $value_array[$subkey] = trim(htmlspecialchars($subvalue, ENT_QUOTES, 'UTF-8'));
+                    $escaped = htmlspecialchars($subvalue, ENT_QUOTES, 'UTF-8');
+                    $value_array[$subkey] = trim($escaped);
                 }
 
                 // Store value array
@@ -138,7 +141,8 @@ class CardSearch
 
             // Single value parameter
             } else {
-                $this->f[$key] = trim(htmlspecialchars($value, ENT_QUOTES, 'UTF-8'));
+                $escaped = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+                $this->f[$key] = trim($escaped);
             }
         }
 
@@ -290,7 +294,7 @@ class CardSearch
 
                     // Initialize empty fields
                     foreach ($this->f['infields'] as &$val) {
-                        $q_fields["cards." . $val] = '';
+                        $q_fields[$val] = '';
                     }
                 }
             }
@@ -298,10 +302,10 @@ class CardSearch
             // No infields restriction, initialize ALL (default)
             else {
                 $q_fields = array(
-                    'cards.name' => '',
-                    'cards.code' => '',
-                    'cards.text' => '',
-                    'cards.race' => '',
+                    'name' => '',
+                    'code' => '',
+                    'text' => '',
+                    'race' => '',
                 );
             }
 
@@ -385,7 +389,7 @@ class CardSearch
             $clusters = array_unique($clusters);
 
             // Add all clusters for this format
-            $_sql_f[] = 'cards.clusters_id IN('.implode(',', $clusters).')';
+            $_sql_f[] = 'clusters_id IN('.implode(',', $clusters).')';
         }
 
         // FILTER --- EXCLUDE -------------------------------------------------
@@ -494,46 +498,28 @@ class CardSearch
         // FILTER --- TYPE ----------------------------------------------------
         if (isset($this->f['type'])) {
 
-            // Game-specific: Chant will add also Spell:Chant-* old types to search results
-            if (in_array("Addition", $this->f['type'])) {
-                $this->f['type'] = Arrays::union(
-                    $this->f['type'], [
-                        "Addition:Resonator",
-                        "Addition:J/Resonator",
-                        "Addition:Ruler/J-Ruler",
-                        "Addition:Field"
-                    ]
-                );
+            $map = lookup('types.display'); // TYPE_NAME => TYPE_BITMASK
+
+            // Must have ALL selected types
+            if (isset($this->f['type_selected'])) {
+                $bitmask = new Bitmask;
+                foreach ($this->f['type'] as $type) {
+                    $bitmask->addBitValue($map[$type]);
+                }
+                $bitval = $bitmask->getMask();
+                $_sql_f[] = "type_bit & {$bitval} = {$bitval}";
             }
 
-            // Game-specific: Rune are Chant/Rune as well
-            if (in_array("Rune", $this->f['type'])) {
-                $this->f['type'] = Arrays::union(
-                    $this->f['type'], [
-                        "Chant/Rune",
-                        "Rune"
-                    ]
-                );
+            // Must match AT LEAST ONE of the selected types
+            else {
+                $_filter = [];
+                foreach ($this->f['type'] as $type) {
+                    $bitmask = $map[$type];
+                    $_filter[] = "type_bit & {$bitmask} = {$bitmask}";
+                }
+                $_sql_f[] = implode(' OR ', $_filter);
             }
-
-            // Game-specific: Chant will add also Spell:Chant-* old types to search results
-            if (in_array("Chant", $this->f['type'])) {
-                $this->f['type'] = Arrays::union(
-                    $this->f['type'], [
-                        "Spell:Chant",
-                        "Spell:Chant-Instant",
-                        "Spell:Chant-Standby",
-                        "Chant/Rune"
-                    ]
-                );
-            }
-
-            // Add to SQL   
-            $_sql_f[] = "(type = \""
-                      . implode("\" OR type = \"", $this->f['type'])
-                      . "\")";
         }
-
 
         // FILTER --- BACKSIDE ------------------------------------------------
         if (isset($this->f['backside'])) {
@@ -629,7 +615,7 @@ class CardSearch
                 isset($this->f['rarity'])
             )
         ) {
-            $_sql_f[] = "NOT(type = \"Magic Stone\")";
+            $_sql_f[] = "NOT(type_bit & 2 = 2)";
         }
 
 
@@ -641,52 +627,50 @@ class CardSearch
 
         // FILTER --- LIMIT and OFFSET ----------------------------------------
         if (isset($this->f['page'])) {
-            $p = (int) $this->f['page'];
-            $this->sqlPartials['offset'] = ($p - 1) * config('db.results.limit');
+            $page = intval($this->f['page']);
+            $offset = ($page - 1) * config('db.results.limit');
+            $this->sqlPartials['offset'] = $offset;
         }
 
 
         // SORTING ============================================================
-        if (
-            isset($this->f['sort']) &&
-            in_array(
-                $this->f['sort'],
-                array_keys(lookup('sortables.cards'))
-            ) &&
-            $this->f['sort'] !== 'default'
-        ) {
-            // Get sorting direction
-            $sortDir = (isset($this->f['sortdir']) && $this->f['sortdir'] == 'desc') ? 'DESC' : 'ASC';
+        if (isset($this->f['sort']) && $this->f['sort'] !== 'default') {
 
-            switch ($this->f['sort']) {
-                
-                case 'attribute':
-                    $sortField = "FIELD(attribute,'w','r','u','g','b','v')";
-                    break;
+            $sortables = array_keys(lookup('sortables.cards'));
+            if (in_array($this->f['sort'], $sortables)) {
 
-                case 'rarity':
-                    $sortField = "FIELD(rarity,'c','u','r','sr','pr','s')";
-                    break;
+                // Get sorting direction
+                (isset($this->f['sortdir']) && $this->f['sortdir'] == 'desc')
+                    ? $sortDir = 'DESC'
+                    : $sortDir = 'ASC';
 
-                case 'type':
-                    $typesList = implode("','", lookup('types.bit2name'));
-                    $sortField = "FIELD(type,'{$typesList}')";
-                    break;
+                switch ($this->f['sort']) {
                     
-                default: // No custom sorting for other inputs
-                    $sortField = $this->f['sort'];
-                    break;
+                    case 'attribute':
+                        $sortField = "FIELD(attribute,'w','r','u','g','b','v')";
+                        break;
+
+                    case 'rarity':
+                        $sortField = "FIELD(rarity,'c','u','r','sr','pr','s')";
+                        break;
+                        
+                    default: // No custom sorting for other inputs
+                        $sortField = $this->f['sort'];
+                        break;
+                }
+
+                // Get default sorting
+                $default = $this->sqlPartials['sorting'];
+
+                // Set a new sorting
+                $sorting = "{$sortField} {$sortDir}, {$default}";
+                $this->sqlPartials['sorting'] = $sorting;
+
             }
-
-            // Get default sorting
-            $default = $this->sqlPartials['sorting'];
-
-            // Set a new sorting
-            $this->sqlPartials['sorting'] = "{$sortField} {$sortDir}, {$default}";
         }
 
         // Build final Filters query (if no filter set, bypass it with TRUE)
-        $sql_f = empty($_sql_f) ? 'TRUE' : implode(" AND ", $_sql_f);
+        $sql_f = empty($_sql_f) ? 'TRUE' : implode(' AND ', $_sql_f);
 
         // Set the final WHERE clause
         $this->sqlPartials['filter'] = "{$sql_f} AND {$sql_q}";

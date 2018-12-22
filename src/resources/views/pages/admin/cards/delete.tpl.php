@@ -36,6 +36,10 @@ if (isset($card['attribute'])) {
   $displayAttribute = '(No attribute)';
 }
 
+// Type -----------------------------------------------------------------------
+$typeLabels = \App\Views\Card\Card::buildTypeLabels($card['type_bit']);
+$cardType = implode(' / ', $typeLabels);
+
 // ATK / DEF ------------------------------------------------------------------
 if (isset($card['atk']) && isset($card['def'])) {
   $displayBattleValues = "{$card['atk']} / {$card['def']}";
@@ -113,7 +117,7 @@ $displayCsn = collapse(
       <label class="col-sm-2 control-label">Type</label>
       <div class="col-sm-10">
         <p class="fd-text-form-horizontal font-110">
-          <?=$card['type']?>
+          <?=$cardType?>
         </p>
       </div>
     </div>
