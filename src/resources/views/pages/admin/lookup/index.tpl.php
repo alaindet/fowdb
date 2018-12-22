@@ -51,6 +51,8 @@
 
 <!-- Data log -->
 <?php if (isset($log)): ?>
-  <div class="col-xs-12 col-sm-9"><?=$log?></div>
-  <?=component('top-anchor')?>
+  <div class="col-xs-12 col-sm-9">
+    <?=$log?>
+    <?=component('top-anchor')?>
+  </div>
 <?php endif; ?>
