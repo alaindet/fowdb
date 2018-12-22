@@ -30,4 +30,10 @@ class CardType extends Model
             'Chant/Rune',
         ]
     ];
+
+    public static $withRace = [
+        'Ruler',
+        'J-Ruler',
+        'Resonator'
+    ];
 }
