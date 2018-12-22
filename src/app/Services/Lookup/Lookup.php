@@ -6,6 +6,18 @@ use App\Base\Singleton;
 use App\Exceptions\FileSystemException;
 use App\Exceptions\LookupException;
 use App\Services\FileSystem;
+use App\Services\Lookup\Generators\AttributesGenerator;
+use App\Services\Lookup\Generators\BackSidesGenerator;
+use App\Services\Lookup\Generators\ClustersGenerator;
+use App\Services\Lookup\Generators\CostsGenerator;
+use App\Services\Lookup\Generators\DivinitiesGenerator;
+use App\Services\Lookup\Generators\FormatsGenerator;
+use App\Services\Lookup\Generators\NarpsGenerator;
+use App\Services\Lookup\Generators\RaritiesGenerator;
+use App\Services\Lookup\Generators\SetsGenerator;
+use App\Services\Lookup\Generators\SortablesGenerator;
+use App\Services\Lookup\Generators\SpoilersGenerator;
+use App\Services\Lookup\Generators\TypesGenerator;
 
 /**
  * This library generates, reads and stores domain-specific data
@@ -42,18 +54,18 @@ class Lookup
      * @var array
      */
     public $features = [
-        'attributes' => \App\Services\Lookup\Generators\AttributesGenerator::class,
-        'backsides'  => \App\Services\Lookup\Generators\BackSidesGenerator::class,
-        'clusters'   => \App\Services\Lookup\Generators\ClustersGenerator::class,
-        'costs'      => \App\Services\Lookup\Generators\CostsGenerator::class,
-        'divinities' => \App\Services\Lookup\Generators\DivinitiesGenerator::class,
-        'formats'    => \App\Services\Lookup\Generators\FormatsGenerator::class,
-        'narps'      => \App\Services\Lookup\Generators\NarpsGenerator::class,
-        'rarities'   => \App\Services\Lookup\Generators\RaritiesGenerator::class,
-        'sets'       => \App\Services\Lookup\Generators\SetsGenerator::class,
-        'sortables'  => \App\Services\Lookup\Generators\SortablesGenerator::class,
-        'spoilers'   => \App\Services\Lookup\Generators\SpoilersGenerator::class,
-        'types'      => \App\Services\Lookup\Generators\TypesGenerator::class,
+        'attributes' => AttributesGenerator::class,
+        'backsides'  => BackSidesGenerator::class,
+        'clusters'   => ClustersGenerator::class,
+        'costs'      => CostsGenerator::class,
+        'divinities' => DivinitiesGenerator::class,
+        'formats'    => FormatsGenerator::class,
+        'narps'      => NarpsGenerator::class,
+        'rarities'   => RaritiesGenerator::class,
+        'sets'       => SetsGenerator::class,
+        'sortables'  => SortablesGenerator::class,
+        'spoilers'   => SpoilersGenerator::class,
+        'types'      => TypesGenerator::class,
     ];
 
     /**
