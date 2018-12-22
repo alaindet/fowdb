@@ -16,7 +16,6 @@ class SortablesGenerator implements Generatable
                 'attribute' => 'Attribute',
                 'total_cost' => 'Total Cost',
                 'rarity' => 'Rarity',
-                'type' => 'Type',
                 'atk' => 'ATK',
                 'def' => 'DEF'
             ]
