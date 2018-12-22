@@ -294,13 +294,13 @@
 
     return [
       '<div class="row">',
-      '<div class="col-xs-12">',
-      '<form class="form-horizontal">',
-      idFormSection,
-      nameFormSection,
-      codeFormSection,
-      '</form>',
-      '</div>',
+        '<div class="col-xs-12">',
+          '<form class="form-horizontal">',
+            idFormSection,
+            nameFormSection,
+            codeFormSection,
+          '</form>',
+        '</div>',
       '</div>'
     ].join('');
   }
@@ -313,11 +313,11 @@
     var inputElement = function (input) {
       return [
         '<input ',
-        'type="', input.type, '" ',
-        'id="', input.id, '" ',
-        'class="form-control font-110"',
-        input.placeholder ? 'placeholder="' + input.placeholder + '" ' : '',
-        input.value ? 'value="' + input.value + '"' : '',
+          'type="', input.type, '" ',
+          'id="', input.id, '" ',
+          'class="form-control font-110"',
+          input.placeholder ? 'placeholder="' + input.placeholder + '" ' : '',
+          input.value ? 'value="' + input.value + '"' : '',
         '>'
 
       ].join('');
@@ -326,20 +326,20 @@
     var paragraphElement = function (input) {
       return [
         '<p ',
-        'class="fd-text-form-horizontal font-110" ',
-        'id="', input.id, '"',
+          'class="fd-text-form-horizontal font-110" ',
+          'id="', input.id, '"',
         '>',
-        input.value,
+          input.value,
         '</p>'
       ].join('');
     }
 
     return [
       '<div class="form-group">',
-      '<div class="col-sm-2 control-label">', input.label, '</div>',
-      '<div class="col-sm-10">',
-      input.readonly ? paragraphElement(input) : inputElement(input),
-      '</div>',
+        '<div class="col-sm-2 control-label">', input.label, '</div>',
+        '<div class="col-sm-10">',
+          input.readonly ? paragraphElement(input) : inputElement(input),
+        '</div>',
       '</div>'
     ].join('');
   }
@@ -385,34 +385,32 @@
 
     return [
       '<tr>',
-      '<td>', cluster.id, '</td>',
-      '<td>',
+        '<td>', cluster.id, '</td>',
 
-      // Update button
-      '<button ',
-      'type="button" ',
-      'class="', updateClasses, '" ',
-      'data-fd-action="update"',
-      'data-fd-id="', cluster.id, '"',
-      '>',
-      '<i class="fa fa-pencil"></i>&nbsp;',
-      'Update',
-      '</button>&nbsp;',
-
-      // Delete button
-      '<button ',
-      'type="button" ',
-      'class="', deleteClasses, '" ',
-      'data-fd-action="delete"',
-      'data-fd-id="', cluster.id, '"',
-      '>',
-      '<i class="fa fa-trash"></i>&nbsp;',
-      'Delete',
-      '</button>',
-
-      '</td>',
-      '<td>', label, '&nbsp;', cluster.name, '</td>',
-      '<td>', cluster.code, '</td>',
+        // Action buttons
+        '<td>',
+          '<button ', // Update
+            'type="button" ',
+            'class="', updateClasses, '" ',
+            'data-fd-action="update"',
+            'data-fd-id="', cluster.id, '"',
+          '>',
+            '<i class="fa fa-pencil"></i>&nbsp;',
+            'Update',
+          '</button>&nbsp;',
+          '<button ', // Delete
+            'type="button" ',
+            'class="', deleteClasses, '" ',
+            'data-fd-action="delete"',
+            'data-fd-id="', cluster.id, '"',
+          '>',
+            '<i class="fa fa-trash"></i>&nbsp;',
+            'Delete',
+          '</button>',
+        '</td>',
+        
+        '<td>', label, '&nbsp;', cluster.name, '</td>',
+        '<td>', cluster.code, '</td>',
       '</tr>'
     ].join('');
   }
