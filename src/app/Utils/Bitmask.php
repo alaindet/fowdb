@@ -67,26 +67,51 @@ class Bitmask
     /**
      * Returns the bit value (powers or 2) by its 0-based bit position
      *
-     * @param int $pos
+     * @param int $position
      * @return int
      */
-    private function getBitValue(int $pos): int
+    private function getBitValue(int $position): int
     {
-        return 1 << $pos;
+        return 1 << $position;
+    }
+
+    /**
+     * Activates a single bit value on the mask
+     *
+     * @param int $value
+     * @return Bitmask
+     */
+    public function addBitValue(int $value): Bitmask
+    {
+        $this->mask |= $value;
+
+        return $this;
+    }
+
+    /**
+     * Activates a list of bit values on the mask
+     *
+     * @param array $values
+     * @return Bitmask
+     */
+    public function addBitValues(array $values): Bitmask
+    {
+        foreach ($values as $value) {
+            $this->addBitValue($value);
+        }
+
+        return $this;
     }
 
     /**
      * Activates (turns into 1) a single bit position to the mask
      *
-     * @param int $pos
+     * @param int $position
      * @return Bitmask
      */
-    public function addBit(int $pos): Bitmask
+    public function addBit(int $position): Bitmask
     {
-        $value = $this->getBitValue($pos);
-        $this->mask |= $value;
-
-        return $this;
+        return $this->addBitValue($this->getBitValue($position));
     }
 
     /**
@@ -97,15 +122,15 @@ class Bitmask
      */
     public function addBits(array $positions): Bitmask
     {
-        foreach ($positions as $pos) {
-            $this->addBit($pos);
+        foreach ($positions as $position) {
+            $this->addBit($position);
         }
 
         return $this;
     }
 
     /**
-     * Checks if a bitmask has a bit position
+     * Checks if a bitmask has a bit value
      * 
      * Examples:
      * 
@@ -115,14 +140,53 @@ class Bitmask
      * -------------- | --------------
      * RSLT 001000    | RSLT 000000
      *
-     * @param int $pos The bit position to test
+     * @param int $value The bit value to test
      * @return bool
      */
-    public function hasBit(int $pos): bool
+    public function hasBitValue(int $value): bool
     {
-        $value = $this->getBitValue($pos);
-
         return ($this->mask & $value) === $value;
+    }
+
+    /**
+     * Checks if the mask has ALL passed bit values
+     *
+     * @param array $values
+     * @return bool
+     */
+    public function hasBitValues(array $values): bool
+    {
+        foreach ($values as $value) {
+            if (!$this->hasBitValue($value)) return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks if the mask has AT LEAST ONE bit value in the list
+     *
+     * @param array $values
+     * @return bool
+     */
+    public function hasAnyBitValue(array $values): bool
+    {
+        foreach ($values as $value) {
+            if ($this->hasBitValue($value)) return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if a bitmask has a bit position
+     * 
+     * @param int $position The bit position to test
+     * @return bool
+     */
+    public function hasBit(int $position): bool
+    {
+        return $this->hasBitValue($this->getBitValue($position));
     }
 
     /**
@@ -133,8 +197,8 @@ class Bitmask
      */
     public function hasBits(array $positions): bool
     {
-        foreach ($positions as $pos) {
-            if (!$this->hasBit($pos)) return false;
+        foreach ($positions as $position) {
+            if (!$this->hasBit($position)) return false;
         }
 
         return true;
@@ -148,25 +212,50 @@ class Bitmask
      */
     public function hasAnyBit(array $positions): bool
     {
-        foreach ($positions as $pos) {
-            if ($this->hasBit($pos)) return true;
+        foreach ($positions as $position) {
+            if ($this->hasBit($position)) return true;
         }
 
         return false;
     }
 
     /**
-     * Removes a bit position from the mask
+     * Removes a bit value from the mask
      *
-     * @param int $pos
+     * @param int $value
      * @return Bitmask
      */
-    public function removeBit(int $pos): Bitmask
+    public function removeBitValue(int $value): Bitmask
     {
-        $value = $this->getBitValue($pos);
         $this->mask = $this->mask & (~$value);
 
         return $this;
+    }
+
+    /**
+     * Removes a list of bit values from the mask
+     *
+     * @param array $values
+     * @return Bitmask
+     */
+    public function removeBitValues(array $values): Bitmask
+    {
+        foreach ($values as $value) {
+            $this->removeBitValue($value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Removes a bit position from the mask
+     *
+     * @param int $position
+     * @return Bitmask
+     */
+    public function removeBit(int $position): Bitmask
+    {
+        return $this->removeBitValue($this->getBitValue($position));
     }
 
     /**
@@ -177,8 +266,8 @@ class Bitmask
      */
     public function removeBits(array $positions): Bitmask
     {
-        foreach ($positions as $pos) {
-            $this->removeBit($pos);
+        foreach ($positions as $position) {
+            $this->removeBit($position);
         }
 
         return $this;
@@ -187,24 +276,28 @@ class Bitmask
     /**
      * Reads all active bit positions, returns an array of each active position
      *
+     * @param bool $returnValues Returns bit values instead of bit positions
      * @return array
      */
-    public function readBits(): array
+    public function readBits(bool $returnValues = false): array
     {
-        $positions = [];
+        $result = [];
 
-        for ($pos = 0, $max = $this->maxBits; $pos < $max; $pos++) {
+        for ($position = 0, $max = $this->maxBits; $position < $max; $position++) {
 
             // Read the bit value of this bit position
-            $value = $this->getBitValue($pos);
+            $value = $this->getBitValue($position);
 
             // No need to loop on all 32 flags if they're not set
             if ($value > $this->mask) break;
 
             // Check if mask has this position
-            if (($this->mask & $value) === $value) $positions[] = $pos;
+            if (($this->mask & $value) === $value) {
+                if ($returnValues) $result[] = $value;
+                else $result[] = $position;
+            }
         }
 
-        return $positions;
+        return $result;
     }
 }

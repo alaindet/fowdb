@@ -19,6 +19,12 @@ class BitmaskFlags extends Bitmask
      */
     private $flagsMap = [];
 
+    /**
+     * Sets the $flagsMap property
+     *
+     * @param array $flags
+     * @return BitmaskFlags
+     */
     public function setFlagsMap(array $flags = []): BitmaskFlags
     {
         $this->flagsMap = $flags;
