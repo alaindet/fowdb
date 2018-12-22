@@ -38,6 +38,9 @@ class CardsController extends Controller
         // Get the results
         $cards = $search->processFilters($input)->getCards();
 
+        // TEST: SQL statement
+        // dump($search->getSQL());
+
         // ERROR: Cards not found!
         if (empty($cards)) {
             alert(
