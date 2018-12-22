@@ -13,6 +13,7 @@
 // sortdir
 // format[]
 // type[]
+// type_selected
 // backside[]
 // divinity[]
 // set[]?
@@ -361,7 +362,8 @@ $emptyGif = asset('images/icons/blank.gif');
                     <!-- Order direction button -->
 										<button
 											type="button"
-											class="btn fd-btn-default btn-sm<?=$active?>" id="sortdir_handle"
+											class="btn fd-btn-default btn-sm<?=$active?>"
+                      id="sortdir_handle"
 										>
                       Descending
                     </button>
@@ -408,8 +410,9 @@ $emptyGif = asset('images/icons/blank.gif');
   					<div class="row filter">
   						<div class="col-xs-12 filter-header">Type</div>
   						<div class="col-xs-12">
+
   							<div class="btg-group" data-toggle="buttons">
-  								<?php foreach ($types as $value):
+  								<?php foreach ($types as $value => $bitmask):
 										// Sticky values
 										$filter =& $filters['type'];
   									(isset($filter) && in_array($value, $filter))
@@ -429,129 +432,37 @@ $emptyGif = asset('images/icons/blank.gif');
 										</label>
   								<?php endforeach; ?>
   							</div>
-  						</div>
 
-  					</div>
+								<!-- Vertical separator -->
+                <hr class="fd-hr mv-25">
 
-            <!-- BACK SIDE ================================================ -->
-            <div class="row filter">
-              <div class="col-xs-12 filter-header">Back Side</div>
-              <div class="col-xs-12">
-                <div class="btg-group" data-toggle="buttons">
-                  <?php foreach ($backsides as $code => $name):
-                    (
-											isset($filters['backside']) &&
-											$filters['backside'] == $code
-                    )
+                <!-- Multi-attribute and must contain selected switches -->
+                <div
+									class="btg-group btn-group-xs fd-btn-group --separate"
+									data-toggle="buttons"
+								>
+                  <!-- Must have all selected types -->
+                  <?php
+                    isset($filters['type_selected'])
                       ? [$active, $checked] = [' active', 'checked']
                       : [$active, $checked] = ['', ''];
                   ?>
-                    <label
-											class="btn btn-xs font-105 mv-10 fd-btn-default<?=$active?>"
+                  <label class="btn fd-btn-default<?=$active?>">
+										<input
+											type="checkbox"
+											name="type_selected"
+											value="1"
+											<?=$checked?>
 										>
-                      <input
-                        type="checkbox"
-                        name="backside[]"
-                        value="<?=$code?>"<?=$checked?>
-                      >
-                      <span class="pointer"><?=$name?></span>
-                    </label>
-                  <?php endforeach; ?>
+                    <span class="pointer">Must have all selected</span>
+                  </label>
                 </div>
-              </div>
-            </div>
 
-						<!-- DIVINITY ================================================= -->
-  					<div class="row filter">
-							<div class="col-xs-12 filter-header">Divinity</div>
-  						<div class="col-xs-12">
-  							<div
-									class="btn-group fd-btn-group --separate"
-									data-toggle="buttons"
-								>
-  								<?php foreach ($divinities as $value):
-										// Sticky values
-										$filter =& $filters['divinity'];
-  									(isset($filter) && in_array($value, $filter))
-                      ? [$active, $checked] = [' active', 'checked']
-                      : [$active, $checked] = ['', ''];
-  								?>
-  									<label class="btn fd-btn-default font-110<?=$active?>">
-											<input
-												type="checkbox"
-												name="divinity[]"
-												value="<?=$value?>"
-												<?=$checked?>
-											>
-  										<?=$value?>
-  									</label>
-  								<?php endforeach; ?>
-  							</div>
   						</div>
+
   					</div>
 
-  				</div><!-- /Left panel -->
-  				
-          <!-- Filters body: right -->
-  				<div class="col-sm-12 col-md-6">
-  				
-  					<!-- SET ====================================================== -->
-  					<div class="row filter">
-
-  						<!-- Label -->
-  						<div class="col-xs-12 filter-header">
-  							Set
-								<button
-									type="button"
-									class="btn btn-link btn-xs"
-									id="setcode-multiple"
-								>
-									Multiple
-								</button>
-  						</div>
-
-  						<!-- Control -->
-  						<div class="col-xs-12">
-  							<?php
-									// Sticky values
-									if (isset($filters['set'])) {
-										if (is_array($filters['set'])) {
-											[$multiple, $brackets, $size] = ['multiple', '[]', 'size10'];
-										} else {
-											[$multiple, $brackets, $size] = ['', '', ''];
-											$filters['set'] = [ $filters['set'] ];
-										}
-									} else {
-										[$multiple, $brackets, $size] = ['', '', ''];
-									}
-  							?>
-								<select
-									id="setcode"
-									class="form-control"
-									name="set<?=$brackets?>"
-									<?=$multiple?>
-									<?=$size?>
-								>
-  								<option name="set_default" value=0>Choose a set..</option>
-  								<?php foreach ($clusters as $clusterCode => $cluster): ?>
-  									<optgroup label="<?=$cluster['name']?>">
-  									  <?php foreach ($cluster['sets'] as $setCode => $setName): ?>
-											<?php // Sticky values
-												(isset($filters['set']) && in_array($setCode, $filters['set']))
-													? $checked = ' selected'
-													: $checked = '';
-											?>
-											<option value="<?=$setCode?>"<?=$checked?>>
-                        <?=$setName?> - (<?=strtoupper($setCode)?>)
-                      </option>
-  									 <?php endforeach; ?>
-  									</optgroup>
-  								<?php endforeach; ?>
-  							</select>
-  						</div>
-  					</div>
-
-  					<!-- ATTRIBUTES =============================================== -->
+            <!-- ATTRIBUTES =============================================== -->
   					<div class="row filter">
   						<div class="col-xs-12 filter-header">Attributes</div>
   						<div class="col-xs-12">
@@ -584,7 +495,7 @@ $emptyGif = asset('images/icons/blank.gif');
   							</div>
 
                 <!-- Vertical separator -->
-                <p></p>
+                <hr class="fd-hr mv-25">
 
                 <!-- Multi-attribute and must contain selected switches -->
                 <div
@@ -648,9 +559,8 @@ $emptyGif = asset('images/icons/blank.gif');
                 </div>
   						</div>
   					</div>
-  					
-  					
-  					<!-- TOTAL COST =============================================== -->
+
+            <!-- TOTAL COST =============================================== -->
   					<div class="row filter">
   						<div class="col-xs-12 filter-header">Total Cost</div>
   						<div class="col-xs-12">
@@ -692,6 +602,67 @@ $emptyGif = asset('images/icons/blank.gif');
 										>X
                   </label>
   							</div>
+  						</div>
+  					</div>
+
+  				</div><!-- /Left panel -->
+  				
+          <!-- Filters body: right -->
+  				<div class="col-sm-12 col-md-6">
+  				
+  					<!-- SET ====================================================== -->
+  					<div class="row filter">
+
+  						<!-- Label -->
+  						<div class="col-xs-12 filter-header">
+  							Set
+								<button
+									type="button"
+									class="btn btn-link btn-xs"
+									id="setcode-multiple"
+								>
+									Multiple
+								</button>
+  						</div>
+
+  						<!-- Control -->
+  						<div class="col-xs-12">
+  							<?php
+									// Sticky values
+									if (isset($filters['set'])) {
+										if (is_array($filters['set'])) {
+											[$multiple, $brackets, $size] = ['multiple', '[]', 'size10'];
+										} else {
+											[$multiple, $brackets, $size] = ['', '', ''];
+											$filters['set'] = [ $filters['set'] ];
+										}
+									} else {
+										[$multiple, $brackets, $size] = ['', '', ''];
+									}
+  							?>
+								<select
+									id="setcode"
+									class="form-control"
+									name="set<?=$brackets?>"
+									<?=$multiple?>
+									<?=$size?>
+								>
+  								<option name="set_default" value=0>Choose a set..</option>
+  								<?php foreach ($clusters as $clusterCode => $cluster): ?>
+  									<optgroup label="<?=$cluster['name']?>">
+  									  <?php foreach ($cluster['sets'] as $setCode => $setName): ?>
+											<?php // Sticky values
+												(isset($filters['set']) && in_array($setCode, $filters['set']))
+													? $checked = ' selected'
+													: $checked = '';
+											?>
+											<option value="<?=$setCode?>"<?=$checked?>>
+                        <?=$setName?> - (<?=strtoupper($setCode)?>)
+                      </option>
+  									 <?php endforeach; ?>
+  									</optgroup>
+  								<?php endforeach; ?>
+  							</select>
   						</div>
   					</div>
   					
@@ -884,6 +855,64 @@ $emptyGif = asset('images/icons/blank.gif');
 							</div>
 
   					</div>
+
+            <!-- BACK SIDE ================================================ -->
+            <div class="row filter">
+              <div class="col-xs-12 filter-header">Back Side</div>
+              <div class="col-xs-12">
+                <div class="btg-group" data-toggle="buttons">
+                  <?php foreach ($backsides as $code => $name):
+                    (
+											isset($filters['backside']) &&
+											$filters['backside'] == $code
+                    )
+                      ? [$active, $checked] = [' active', 'checked']
+                      : [$active, $checked] = ['', ''];
+                  ?>
+                    <label
+											class="btn btn-xs font-105 mv-10 fd-btn-default<?=$active?>"
+										>
+                      <input
+                        type="checkbox"
+                        name="backside[]"
+                        value="<?=$code?>"<?=$checked?>
+                      >
+                      <span class="pointer"><?=$name?></span>
+                    </label>
+                  <?php endforeach; ?>
+                </div>
+              </div>
+            </div>
+
+						<!-- DIVINITY ================================================= -->
+  					<div class="row filter">
+							<div class="col-xs-12 filter-header">Divinity</div>
+  						<div class="col-xs-12">
+  							<div
+									class="btn-group fd-btn-group --separate"
+									data-toggle="buttons"
+								>
+  								<?php foreach ($divinities as $value):
+										// Sticky values
+										$filter =& $filters['divinity'];
+  									(isset($filter) && in_array($value, $filter))
+                      ? [$active, $checked] = [' active', 'checked']
+                      : [$active, $checked] = ['', ''];
+  								?>
+  									<label class="btn fd-btn-default font-110<?=$active?>">
+											<input
+												type="checkbox"
+												name="divinity[]"
+												value="<?=$value?>"
+												<?=$checked?>
+											>
+  										<?=$value?>
+  									</label>
+  								<?php endforeach; ?>
+  							</div>
+  						</div>
+  					</div>
+
   				</div>	
   			</div>
   		</div>
