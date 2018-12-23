@@ -126,9 +126,9 @@ if ($isCard) {
 
   <!-- Set ================================================================ -->
   <?php
+    $cardSet = null;
     if ($isPrev) $cardSet = $prev['set'];
     elseif ($isCard) $cardSet = $setMap[$card['sets_id']];
-    else $cardSet = null;
   ?>
   <div class="form-group">
     <label class="col-sm-2 control-label">Set</label>
@@ -138,7 +138,7 @@ if ($isCard) {
         <?php foreach($clusters as $clusterCode => $cluster): ?>
           <optgroup label="<?=$cluster['name']?>">
           <?php foreach ($cluster['sets'] as $setCode => $setName):
-            ($cardSet === $setCode)
+            ($cardSet == $setCode)
               ? $checked = 'selected'
               : $checked = '';
           ?>
@@ -205,7 +205,7 @@ if ($isCard) {
     if ($isPrev) {
       $cardAttributes = $bitmask
         ->setMask(0)
-        ->addBitValues($prev['attributes'])
+        ->addBitValues($prev['attribute'])
         ->getMask();
     } elseif ($isCard) {
       $cardAttributes = intval($card['attribute_bit']);
