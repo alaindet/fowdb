@@ -70,7 +70,7 @@ class Bitmask
      * @param int $position
      * @return int
      */
-    private function getBitValue(int $position): int
+    public function getBitValue(int $position): int
     {
         return 1 << $position;
     }
@@ -221,13 +221,16 @@ class Bitmask
 
     /**
      * Removes a bit value from the mask
+     * 
+     * Thanks to
+     * https://stackoverflow.com/a/18754317/5653974
      *
      * @param int $value
      * @return Bitmask
      */
     public function removeBitValue(int $value): Bitmask
     {
-        $this->mask = $this->mask & (~$value);
+        $this->mask = $this->mask & bindec(decbin(~$value));
 
         return $this;
     }

@@ -6,6 +6,7 @@
 .fd-icon-b,
 .fd-icon-m,
 .fd-icon-v,
+.fd-icon-no,
 .fd-icon-t,
 .fd-icon-rest {
   background: url(../images/icons/sprites.png?1) no-repeat!important;
@@ -18,14 +19,15 @@
 }
 
 // Sprite positions for will icons
-.fd-icon-w { background-position: 0 0!important; }
-.fd-icon-r { background-position: -17px 0!important; }
-.fd-icon-u { background-position: -33px 0!important; }
-.fd-icon-g { background-position: -50px 0!important; }
-.fd-icon-b { background-position: -66px 0!important; }
-.fd-icon-v { background-position: -82px 0!important; }
-.fd-icon-m { background-position: -98px 0!important; }
-.fd-icon-t { background-position: -132px 0!important; }
+.fd-icon-w  { background-position: 0 0!important; }
+.fd-icon-r  { background-position: -17px 0!important; }
+.fd-icon-u  { background-position: -33px 0!important; }
+.fd-icon-g  { background-position: -50px 0!important; }
+.fd-icon-b  { background-position: -66px 0!important; }
+.fd-icon-v  { background-position: -82px 0!important; }
+.fd-icon-no { background-position: -82px 0!important; }
+.fd-icon-m  { background-position: -98px 0!important; }
+.fd-icon-t  { background-position: -132px 0!important; }
 .fd-icon-rest {
   background-position: -114px 0!important;
   width: 18px!important;
@@ -38,7 +40,8 @@
 .fd-icon-u.--bigger,
 .fd-icon-g.--bigger,
 .fd-icon-b.--bigger,
-.fd-icon-v.--bigger {
+.fd-icon-v.--bigger,
+.fd-icon-no.--bigger {
   background: url(../images/icons/bigger-sprites.png?1) no-repeat!important;
   width: 34px!important;
   height: 34px!important;
@@ -46,12 +49,13 @@
   min-width: 34px
 }
 
-.fd-icon-w.--bigger { background-position: 0 0!important; }
-.fd-icon-u.--bigger { background-position: -34px 0!important; }
-.fd-icon-r.--bigger { background-position: -68px 0!important; }
-.fd-icon-g.--bigger { background-position: -102px 0!important; }
-.fd-icon-b.--bigger { background-position: -136px 0!important; }
-.fd-icon-v.--bigger { background-position: -170px 0!important; }
+.fd-icon-w.--bigger  { background-position: 0 0!important; }
+.fd-icon-u.--bigger  { background-position: -34px 0!important; }
+.fd-icon-r.--bigger  { background-position: -68px 0!important; }
+.fd-icon-g.--bigger  { background-position: -102px 0!important; }
+.fd-icon-b.--bigger  { background-position: -136px 0!important; }
+.fd-icon-v.--bigger  { background-position: -170px 0!important; }
+.fd-icon-no.--bigger { background-position: -170px 0!important; }
 
 // Free icons styling
 .fd-icon-free {

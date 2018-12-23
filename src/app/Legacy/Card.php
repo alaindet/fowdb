@@ -78,7 +78,7 @@ class Card
                 $attributesMap = lookup('attributes.code2name');
                 $attributes = [];
                 foreach (explode('/', $card['attribute']) as $attribute) {
-                    $link = url('cards', ['attributes' => [$attribute]]);
+                    $link = url('cards', ['attribute' => [$attribute]]);
                     $attributes[] = (
                         '<a href="'.$link.'">'.
                             '<img '.

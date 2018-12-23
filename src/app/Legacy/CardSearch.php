@@ -5,9 +5,12 @@ namespace App\Legacy;
 use App\Utils\Arrays;
 use App\Services\Database\Database;
 use App\Utils\Bitmask;
+use App\Legacy\CardSearchProcessorsTrait;
 
 class CardSearch
 {
+    use CardSearchProcessorsTrait;
+
     private $db;           // Database connection
     private $sqlPartials;  // Strings to be assembled into final SQL
     private $sqlStatement; // Complete SQL statement as string
@@ -35,7 +38,7 @@ class CardSearch
             'atk-operator',
             'attribute_multi',
             'attribute_selected',
-            'attributes',
+            'attribute',
             'backside',
             'def',
             'def-operator',
@@ -61,6 +64,7 @@ class CardSearch
             'do', // LEGACY
             'attrmulti', // LEGACY
             'attrselected', // LEGACY
+            'attributes', // LEGACY
             'setcode', // LEGACY
         ];
 
@@ -467,33 +471,25 @@ class CardSearch
 
 
         // FILTER ---  ATTRIBUTE ----------------------------------------------
-        if (isset($this->f['attributes'])) {
-
-            // Include only selected attributes
-            if (isset($this->f['attrselected']) || isset($this->f['attribute_selected'])) {
-                $_sql_f[] = "((attribute LIKE \"%"
-                          . implode("%\" AND attribute LIKE \"%", $this->f['attributes'])
-                          . "%\") OR attribute = \""
-                          . implode("\" OR attribute = \"", $this->f['attributes'])
-                          ."\")";
+        if (
+            isset($this->f['attribute']) ||
+            isset($this->f['attributes']) // Legacy
+        ) {
+            $flags = [];
+            $inputs = [
+                'attribute_selected',
+                'attribute_multi',
+                'no_attribute_multi',
+            ];
+            foreach ($inputs as $input) {
+                $flags[$input] = isset($this->f[$input]);
             }
 
-            // Include unselected attributes (includes other multi-attribute cards if attrmulti is set)
-            else {
-                $_sql_f[] = "(attribute LIKE \"%"
-                          . implode("%\" OR attribute LIKE \"%", $this->f['attributes'])
-                          . "%\")";
-            }
-        }
-
-        // FILTER --- ONLY MULTI-ATTRIBUTE ------------------------------------
-        if (isset($this->f['attribute_multi']) || isset($this->f['attrmulti'])) {
-            $_sql_f[] = "attribute LIKE \"%/%\"";
-        }
-
-        // FILTER --- NO MULTI-ATTRIBUTE --------------------------------------
-        if (isset($this->f['no_attribute_multi'])) {
-            $_sql_f[] = "attribute NOT LIKE \"%/%\"";
+            $this->processAttributeInput(
+                $this->f['attribute'] ?? $this->f['attributes'],
+                $flags,
+                $_sql_f
+            );
         }
 
         // FILTER --- TYPE ----------------------------------------------------

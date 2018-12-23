@@ -9,7 +9,7 @@
 // atk-operator
 // attribute_multi
 // attribute_selected
-// attributes[]
+// attribute[]
 // backside[]
 // def
 // def-operator
@@ -469,10 +469,9 @@ $emptyGif = asset('images/icons/blank.gif');
 									data-toggle="buttons"
 								>
   								<?php foreach ($attributes as $code => $name):
-										// Sticky values
-										(
-											isset($filters['attributes']) &&
-											in_array($code, $filters['attributes'])
+										( // Sticky values
+											isset($filters['attribute']) &&
+											in_array($code, $filters['attribute'])
 										)
 											? [$active, $checked] = [' active', 'checked']
                       : [$active, $checked] = ['', ''];
@@ -480,7 +479,7 @@ $emptyGif = asset('images/icons/blank.gif');
   									<label class="btn fd-btn-default<?=$active?>">
   										<input
 												type="checkbox"
-												name="attributes[]"
+												name="attribute[]"
 												value="<?=$code?>"
 												<?=$checked?>												
 											>
@@ -915,27 +914,25 @@ $emptyGif = asset('images/icons/blank.gif');
             <div class="row filter">
               <div class="col-xs-12 filter-header">Additional flags</div>
 
-                <!-- Quickcast ============================================ -->
-                <div class="col-xs-12">
+							<!-- Quickcast ============================================ -->
+							<div class="col-xs-12">
+								<?php // Sticky values
+									(isset($filters) && !isset($filters['quickcast']))
+										? [$active, $checked] = ['', '']
+										: [$active, $checked] = [' active', 'checked'];
+								?>
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn font-105 mv-10 fd-btn-default<?=$active?>">
+										<input
+											type="checkbox"
+											name="quickcast"
+											value="1"
+											<?=$checked?>
+										>
+										<span class="pointer">Has Quickast</span>
+									</label>
+								</div>
 
-                  <?php // Sticky values
-                    (isset($filters) && !isset($filters['quickcast']))
-                      ? [$active, $checked] = ['', '']
-                      : [$active, $checked] = [' active', 'checked'];
-         					?>
-                  <div class="btn-group" data-toggle="buttons">
-                    <label class="btn font-105 mv-10 fd-btn-default<?=$active?>">
-											<input
-												type="checkbox"
-												name="quickcast"
-												value="1"
-												<?=$checked?>
-											>
-                      <span class="pointer">Has Quickast</span>
-                    </label>
-                  </div>
-
-                </div>
 							</div>
 						</div>
 
