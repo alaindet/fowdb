@@ -26,7 +26,12 @@
           href="<?=url("artists/card/{$card['id']}")?>"
           target="_self"
         >
-          <img src="<?=asset($card['image_path'])?>">
+          <img
+            src="<?=asset($card['image_path'])?>"
+            <?php if (!isset($card['artist_name'])): ?>
+              style="border:2px solid red!important;"
+            <?php endif; ?>
+          >
         </a>
       </div>
     <?php endforeach; ?>

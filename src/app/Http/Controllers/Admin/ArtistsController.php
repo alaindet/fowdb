@@ -34,7 +34,7 @@ class ArtistsController extends Controller
         $cards = database()
             ->select(
                 statement('select')
-                ->select(['id','image_path',])
+                ->select(['id','image_path','artist_name'])
                 ->from('cards')
                 ->where('sets_id = :setid')
                 ->orderBy('num')
