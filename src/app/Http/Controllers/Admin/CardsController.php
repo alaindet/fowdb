@@ -32,6 +32,12 @@ class CardsController extends Controller
             ->template('pages/admin/cards/create')
             ->title('Cards,Create')
             ->variables([ 'previous' => $request->input()->previous() ])
+            ->options([
+                'scripts' => ['admin/cards/form'],
+                'dependencies' => [
+                    'jqueryui' => true
+                ],
+            ])
             ->render();
     }
 
@@ -92,8 +98,10 @@ class CardsController extends Controller
                 'card' => (new Model)->byId($id)
             ])
             ->options([
+                'scripts' => ['admin/cards/form'],
                 'dependencies' => [
                     'lightbox' => true,
+                    'jqueryui' => true
                 ],
             ])
             ->render();

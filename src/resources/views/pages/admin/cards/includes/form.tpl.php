@@ -528,6 +528,7 @@ if ($isCard) {
         ?>"
         placeholder="Artist name..."
         class="form-control"
+        id="artist-autocomplete"
       >
     </div>
   </div>
