@@ -315,8 +315,8 @@ if ($isCard) {
             name="attribute-cost"
             value="<?php
               if ($isPrev) echo $prev['attribute-cost'];
-              elseif ($isCard) echo $card['attribute_cost'];
-              else echo '';
+              elseif ($isCard) echo $card['attribute_cost'] ?? '-1';
+              else echo null;
             ?>"
             placeholder="Attribute cost (w,r,u,g,b)..."
             class="form-control"
@@ -334,7 +334,7 @@ if ($isCard) {
             name="free-cost"
             value="<?php
               if ($isPrev) echo intval($prev['free-cost']);
-              elseif ($isCard) echo $card['free_cost'];
+              elseif ($isCard) echo $card['free_cost'] ?? '-1';
               else echo null;
             ?>"
             placeholder="Free cost..."
@@ -355,7 +355,7 @@ if ($isCard) {
         name="divinity-cost"
         value="<?php
           if ($isPrev) echo intval($prev['divinity-cost']);
-          elseif ($isCard) echo $card['divinity'];
+          elseif ($isCard) echo $card['divinity'] ?? '-1';
           else echo null;
         ?>"
         placeholder="Divinity (-1 to delete existing value)..."
@@ -378,7 +378,7 @@ if ($isCard) {
             name="atk"
             value="<?php
               if ($isPrev) echo intval($prev['atk']);
-              elseif ($isCard) echo $card['atk'];
+              elseif ($isCard) echo $card['atk'] ?? '-1';
               else echo null;
             ?>"
             placeholder="ATK..."
@@ -394,7 +394,7 @@ if ($isCard) {
             name="def"
             value="<?php
               if ($isPrev) echo intval($prev['def']);
-              elseif ($isCard) echo $card['def'];
+              elseif ($isCard) echo $card['def'] ?? '-1';
               else echo null;
             ?>"
             placeholder="DEF..."
@@ -415,7 +415,7 @@ if ($isCard) {
         name="code"
         value="<?php
           if ($isPrev) echo $prev['code'];
-          elseif ($isCard) echo $card['code'];
+          elseif ($isCard) echo $card['code'] ?? '-1';
           else echo null;
         ?>"
         placeholder="Code (Read below)..."
@@ -464,8 +464,8 @@ if ($isCard) {
         type="text"
         name="race"
         value="<?php
-          if ($isPrev) echo $prev['race'] ?? '';
-          elseif ($isCard) echo $card['race'] ?? '';
+          if ($isPrev) echo $prev['race'] ?? '-1';
+          elseif ($isCard) echo $card['race'] ?? '-1';
           else echo null;
         ?>"
         class="form-control"
@@ -484,8 +484,8 @@ if ($isCard) {
         rows="6"
         placeholder="Text..."
       ><?php
-        if ($isPrev) echo trim(escape($prev['text'] ?? ''));
-        elseif ($isCard) echo trim(escape($card['text'] ?? ''));
+        if ($isPrev) echo trim(escape($prev['text'] ?? '-1'));
+        elseif ($isCard) echo trim(escape($card['text'] ?? '-1'));
         else echo null;
       ?></textarea>
     </div>
@@ -501,8 +501,8 @@ if ($isCard) {
         rows="3"
         placeholder="Flavor text..."
       ><?php
-        if ($isPrev) echo trim(escape($prev['flavor-text'] ?? ''));
-        elseif ($isCard) echo trim(escape($card['flavor_text'] ?? ''));
+        if ($isPrev) echo trim(escape($prev['flavor-text'] ?? '-1'));
+        elseif ($isCard) echo trim(escape($card['flavor_text'] ?? '-1'));
         else echo null;
       ?></textarea>
     </div>
@@ -516,8 +516,8 @@ if ($isCard) {
         type="text"
         name="artist-name"
         value="<?php
-          if ($isPrev) echo $prev['artist-name'] ?? '';
-          elseif ($isCard) echo $card['artist_name'] ?? '';
+          if ($isPrev) echo $prev['artist-name'] ?? '-1';
+          elseif ($isCard) echo $card['artist_name'] ?? '-1';
           else echo null;
         ?>"
         placeholder="Artist name..."
