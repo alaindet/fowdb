@@ -19,10 +19,7 @@ class Card
 
         // ERROR: No card with that code!
         if (empty($cardsDb)) {
-            alert(
-                "No card found with code <strong>{$code}</strong>",
-                'warning'
-            );
+            alert("No card found with code <strong>{$code}</strong>",'warning');
             redirect('/');
         }
 
@@ -30,7 +27,7 @@ class Card
         $cards = [];
 
         foreach ($cardsDb as &$card) {
-            
+
             // $type ----------------------------------------------------------
             $_type = [];
             $typeLabels = View::buildTypeLabels(intval($card['type_bit']));
@@ -239,8 +236,8 @@ class Card
 
             // $atkDef --------------------------------------------------------
 
-            // Rare case of a J-Ruler with no printed ATK and DEF
-            if ($card['type'] === 'J-Ruler' && !isset($card['def'])) {
+            // No battle values
+            if (!isset($card['atk']) && !isset($card['def'])) {
                 $atkDef = '<em>(No battle values)</em>';
             } else {
                 $atkDef = collapse(
@@ -251,12 +248,15 @@ class Card
             }
 
             // $divinity ------------------------------------------------------
-            $link = url('cards', ['divinity' => [$card['divinity']]]);
-            $divinity = "<a href=\"{$link}\">{$card['divinity']}</a>";
+            $divinity = null;
+            if (isset($card['divinity'])) {
+                $link = url('cards', ['divinity' => [$card['divinity']]]);
+                $divinity = "<a href=\"{$link}\">{$card['divinity']}</a>";
+            }
 
             // $card ----------------------------------------------------------
             // Backup card type before overwriting $cards
-            $_type = $card['type'];
+            $_type = $card['type_bit'];
 
             $card = [
 
@@ -296,6 +296,7 @@ class Card
 
             // Filter out some props based on card type
             $cards[] = View::removeIllegalProps($card, $_type);
+            // $cards[] = $card;
         }
 
         // Add the display property on each card

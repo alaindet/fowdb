@@ -135,11 +135,11 @@ class Card
         }
 
         // Remove ATK and DEF
+        $removeAtkDef = true;
         foreach ($removables['can-battle'] as $type) {
-            if ($bitmask->hasBitValue($type)) continue;
-            unset($card['atk_def']);
-            break;
+            if ($bitmask->hasBitValue($type)) $removeAtkDef = false;
         }
+        if ($removeAtkDef) unset($card['atk_def']);
 
         return $card;
     }
