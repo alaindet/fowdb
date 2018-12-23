@@ -9,6 +9,7 @@ use App\Models\CardType;
 use App\Models\GameRuling;
 use App\Utils\Arrays;
 use App\Views\Card\Card as View;
+use App\Utils\BitmaskFlags;
 
 class Card
 {
@@ -71,25 +72,28 @@ class Card
             
             // $attribute -----------------------------------------------------
             $attribute = '';
-            if (!empty($card['attribute'])) {
+            if ($card['attribute_bit'] > 0) {
 
-                // Build attribute html
-                // Ex.: [ICON] Fire, [ICON] Dark
-                $attributesMap = lookup('attributes.code2name');
-                $attributes = [];
-                foreach (explode('/', $card['attribute']) as $attribute) {
-                    $link = url('cards', ['attribute' => [$attribute]]);
-                    $attributes[] = (
+                $bitmask = (new BitmaskFlags)->setMask($card['attribute_bit']);
+                $name2bit = lookup('attributes.name2bit');
+                $code2bit = lookup('attributes.code2bit');
+                $names = $bitmask->setFlagsMap($name2bit)->readFlags();
+                $codes = $bitmask->setFlagsMap($code2bit)->readFlags();
+
+                $temp = [];
+                for ($i = 0, $ii = count($names); $i < $ii; $i++) {
+                    $link = url('cards', ['attribute' => [$codes[$i]]]);
+                    $temp[] = (
                         '<a href="'.$link.'">'.
                             '<img '.
                                 'src="'.asset('images/icons/blank.gif').'" '.
-                                'class="fd-icon-'.$attribute.'"'.
+                                'class="fd-icon-'.$codes[$i].'"'.
                             '>&nbsp;'.
-                            $attributesMap[$attribute].
+                            $names[$i].
                         '</a>'
                     );
                 }
-                $attribute = implode(', ', $attributes);
+                $attribute = implode(', ', $temp);
             }
             
             // $raceLabel -----------------------------------------------------

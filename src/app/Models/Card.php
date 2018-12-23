@@ -9,10 +9,6 @@ class Card extends Model
 {
     public $table = 'cards';
 
-    public $virtualAttributes = [
-        '*short_code' => 'getShortCodeAttribute',
-    ];
-
     public $numeric = [
         'id',
         'sorted_id',
@@ -158,12 +154,6 @@ class Card extends Model
         }
 
         return (int) $baseCard['id'];
-    }
-
-    protected function getShortCodeAttribute(array &$resource): string
-    {
-        $bits = explode(' ', $resource['code'], 2);
-        return $bits[0];
     }
 
     /**

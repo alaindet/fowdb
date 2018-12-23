@@ -245,7 +245,7 @@ trait PostProcessingTrait
         // Remove attribute
         foreach ($removables['no-attribute'] as $type) {
             if (!$bitmask->hasBitValue($type)) continue;
-            $this->new['attribute'] = null;
+            $this->new['attribute_bit'] = 0;
             break;
         }
 

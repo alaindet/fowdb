@@ -118,7 +118,7 @@ class CardsController extends Controller
             'name' => ['required','except:'],
             'type' => ['required','except:0'],
             'rarity' => ['required','enum:0,c,u,r,sr,s,ar'],
-            'attribute' => ['required','is:array','enum:no,w,r,u,g,b,v'],
+            'attribute' => ['required','is:array'],
 
             // Optional fields
             'image' => ['required:0','is:file'],

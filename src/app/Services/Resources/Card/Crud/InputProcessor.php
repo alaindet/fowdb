@@ -142,12 +142,14 @@ class InputProcessor extends BaseInputProcessor
     public function processAttributeInput(array $value = null): void
     {
         // Reset
-        if (in_array('no', $value)) {
-            $this->new['attribute'] = null;
+        if (in_array('32', $value)) {
+            $this->new['attribute_bit'] = 0;
         }
         
         else {
-            $this->new['attribute'] = implode('/', $value);
+            $this->new['attribute_bit'] = (new Bitmask)
+                ->addBitValues($value)
+                ->getMask();
         }
     }
 
@@ -159,8 +161,9 @@ class InputProcessor extends BaseInputProcessor
      */
     public function processTypeInput(array $value = null): void
     {
-        $bitmask = (new Bitmask)->addBitValues($value)->getMask();
-        $this->new['type_bit'] = $bitmask;
+        $this->new['type_bit'] = (new Bitmask)
+            ->addBitValues($value)
+            ->getMask();
     }
 
     /**

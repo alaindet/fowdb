@@ -28,7 +28,14 @@
         Optional fields
         <ul class="fd-list">
           <li>Rarity (Reset: <code>(None)</code>)</li>
-          <li>Attribute (Reset: Select only <code>(NO)</code>)</li>
+          <li>
+            Attribute (Reset: Select
+              <img
+                src="<?=asset('images/icons/blank.gif')?>"
+                class="fd-icon-no --bigger"
+              >
+            )
+          </li>
           <li>Backside (Reset: <code>(Basic)</code>)</li>
           <li>Attribute cost (Reset: <code>-1</code>)</li>
           <li>Free cost (Reset: <code>-1</code>)</li>

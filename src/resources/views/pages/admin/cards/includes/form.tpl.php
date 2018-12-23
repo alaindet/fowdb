@@ -34,20 +34,32 @@ $narps = &$lookup['narps']['id2name'];
 $clusters = &$lookup['clusters']['list'];
 $setMap = &$lookup['sets']['id2code'];
 $rarities = &$lookup['rarities']['code2name'];
-$attributes = &$lookup['attributes']['display'];
 $backsides = &$lookup['backsides']['id2name'];
 $types = &$lookup['types']['name2bit'];
 
 // Further process
 $backsides = array_merge(['0' => '(Basic)'], $backsides);
-$attributes = array_merge(['no' => 'No'], $attributes);
 $types = \App\Utils\Arrays::map($types, function ($bitpos) {
   return 1 << $bitpos;
 });
 $bitmask = new \App\Utils\Bitmask();
 
+// Attributes custom lookup data ----------------------------------------------
+$attrDisplay = &$lookup['attributes']['display'];
+$map = &$lookup['attributes']['name2bit'];
+$attributes = array_reduce(
+  $attrDisplay,
+  function ($result, $attr) use (&$map, &$bitmask) {
+    $result[$attr] = $bitmask->getBitValue($map[$attr]);
+    return $result;
+  },
+  []
+);
+
+// Manipulate the card resource
 if ($isCard) {
-  if ($card['attribute'] === null) $card['attribute'] = 'no';
+  $card['attribute_bit'] = intval($card['attribute_bit']);
+  if ($card['attribute_bit'] === 0) $card['attribute_bit'] = 32; // HACK!
   if ($card['free_cost'] < 0) {
     $card['free_cost'] = str_repeat('x', -1 * $card['free_cost']);
   }  
@@ -189,9 +201,15 @@ if ($isCard) {
 
   <!-- Attribute ========================================================== -->
   <?php
-    if ($isPrev) $cardAttributes = $prev['attribute'];
-    elseif ($isCard) $cardAttributes = explode('/', $card['attribute']);
-    else $cardAttributes = [];
+    $cardAttributes = 0;
+    if ($isPrev) {
+      $cardAttributes = $bitmask
+        ->setMask(0)
+        ->addBitValues($prev['attributes'])
+        ->getMask();
+    } elseif ($isCard) {
+      $cardAttributes = intval($card['attribute_bit']);
+    }
   ?>
   <div class="form-group">
     <label for="attribute" class="col-sm-2 control-label">Attribute</label>
@@ -200,36 +218,24 @@ if ($isCard) {
         class="btn-group fd-btn-group --separate fd-grid-items"
         data-toggle="buttons"
       >
-        <?php foreach ($attributes as $code => $name):
-          (in_array($code, $cardAttributes))
+        <?php foreach ($attributes as $name => $bitval):
+          (($cardAttributes & $bitval) === $bitval)
             ? [$active, $checked] = [' active', 'checked']
             : [$active, $checked] = ['', ''];
         ?>
-          <?php if ($code === 'no'): ?>
-            <label class="btn font-110 fd-btn-default<?=$active?>">
-              <input
-                type="checkbox"
-                name="attribute[]"
-                value="no"
-                <?=$checked?>
-              >
-              (NO)
-            </label>
-          <?php else: ?>
-            <label class="btn fd-btn-default<?=$active?>">
-              <input
-                type="checkbox"
-                name="attribute[]"
-                value="<?=$code?>"
-                <?=$checked?>
-              >
-              <img
-                src="<?=asset('images/icons/blank.gif')?>"
-                class="fd-icon-<?=$code?> --bigger"
-                alt="<?=$name?>"
-              >
-            </label>
-          <?php endif; ?>
+          <label class="btn fd-btn-default<?=$active?>">
+            <input
+              type="checkbox"
+              name="attribute[]"
+              value="<?=$bitval?>"
+              <?=$checked?>
+            >
+            <img
+              src="<?=asset('images/icons/blank.gif')?>"
+              class="fd-icon-<?=$lookup['attributes']['name2code'][$name]?> --bigger"
+              alt="<?=$name?>"
+            >
+          </label>
         <?php endforeach; ?>
       </div>
     </div>

@@ -130,7 +130,7 @@ class Card
         // Remove attribute
         foreach ($removables['no-attribute'] as $type) {
             if (!$bitmask->hasBitValue($type)) continue;
-            unset($card['attribute']);
+            unset($card['attribute_bit']);
             break;
         }
 
