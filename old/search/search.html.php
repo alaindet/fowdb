@@ -462,7 +462,7 @@ $emptyGif = asset('images/icons/blank.gif');
 
             <!-- ATTRIBUTES =============================================== -->
   					<div class="row filter">
-  						<div class="col-xs-12 filter-header">Attributes</div>
+  						<div class="col-xs-12 filter-header">Attribute</div>
   						<div class="col-xs-12">
   							<div
 									class="btn-group fd-btn-group --separate"

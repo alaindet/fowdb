@@ -134,6 +134,13 @@ class Card
             break;
         }
 
+        // Remove divinity
+        $removeDivinity = false;
+        foreach ($removables['can-divinity'] as $type) {
+            if ($bitmask->hasBitValue($type)) $removeDivinity = false;
+        }
+        if ($removeDivinity) unset($card['divinity']);
+
         // Remove ATK and DEF
         $removeAtkDef = true;
         foreach ($removables['can-battle'] as $type) {

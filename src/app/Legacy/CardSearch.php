@@ -514,7 +514,7 @@ class CardSearch
                     $bitmask = $map[$type];
                     $_filter[] = "type_bit & {$bitmask} = {$bitmask}";
                 }
-                $_sql_f[] = implode(' OR ', $_filter);
+                $_sql_f[] = '('.implode(' OR ', $_filter).')';
             }
         }
 

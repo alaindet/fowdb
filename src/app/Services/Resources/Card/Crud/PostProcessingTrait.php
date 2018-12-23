@@ -249,12 +249,21 @@ trait PostProcessingTrait
             break;
         }
 
-        // Remove ATK and DEF
-        $canBattle = false;
-        foreach ($removables['can-battle'] as $type) {
-            if ($bitmask->hasBitValue($type)) $canBattle = true;
+        // Remove divinity
+        $removeDivinity = true;
+        foreach ($removables['can-divinity'] as $type) {
+            if ($bitmask->hasBitValue($type)) $removeDivinity = false;
         }
-        if (!$canBattle) {
+        if ($removeDivinity) {
+            $this->new['divinity'] = null;
+        }
+
+        // Remove ATK and DEF
+        $removeBattleStats = true;
+        foreach ($removables['can-battle'] as $type) {
+            if ($bitmask->hasBitValue($type)) $removeBattleStats = false;
+        }
+        if ($removeBattleStats) {
             $this->new['atk'] = null;
             $this->new['def'] = null;
         }

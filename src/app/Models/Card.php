@@ -41,6 +41,10 @@ class Card extends Model
             'Special Magic Stone',
             'True Magic Stone'
         ],
+        'can-divinity' => [
+            'Rune',
+            'Master Rune',
+        ],
         'can-battle' => [
             'J-Ruler',
             'Resonator'
