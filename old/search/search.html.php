@@ -4,33 +4,33 @@
 // $thereWereResults
 
 // INPUTS
-// do
-// q
-// exact
-// infields[]
-// exclude[]
-// sort
-// sortdir
-// format[]
-// type[]
-// type_selected
-// backside[]
-// divinity[]
-// set[]?
-// set_default
-// attributes[]
-// no_attributes_multi
+// artist
+// atk
+// atk-operator
 // attribute_multi
 // attribute_selected
-// total_cost[]
-// xcost
-// rarity[]
-// race
-// artist
-// atk-operator
-// atk
-// def-operator
+// attributes[]
+// backside[]
 // def
+// def-operator
+// divinity[]
+// exact
+// exclude[]
+// format[]
+// infields[]
+// no_attributes_multi
+// q
+// quickcast
+// race
+// rarity[]
+// set[]?
+// set_default
+// sort
+// sortdir
+// total_cost[]
+// type[]
+// type_selected
+// xcost
 
 // New lookup data
 $lookup = (App\Services\Lookup\Lookup::getInstance())->getAll();
@@ -50,16 +50,10 @@ $emptyGif = asset('images/icons/blank.gif');
 ?>
 <form
 	method="GET"
-	action="<?=url('/')?>"
+	action="<?=url('cards')?>"
 	class="form"
 	id="form_search"
->
-	<input
-		type="hidden"
-		name="do"
-		value="search"
-	>
-	
+>	
 	<!-- Searchbar ========================================================== -->
 	<div class="col-xs-12">
 		<div id="searchbar">
@@ -189,10 +183,10 @@ $emptyGif = asset('images/icons/blank.gif');
               <div class="col-xs-12 filter-header">Search options</div>
 
                 <!-- EXACT MATCH ========================================== -->
-                <div class="col-xs-12 filter-subcontrol">
+                <div class="col-xs-12">
 
                   <?php // Sticky values
-                    (isset($filters) AND !isset($filters['exact']))
+                    (isset($filters) && !isset($filters['exact']))
                       ? [$active, $checked] = ['', '']
                       : [$active, $checked] = [' active', ' checked'];
          					?>
@@ -214,7 +208,7 @@ $emptyGif = asset('images/icons/blank.gif');
                 </div>
 
                 <!-- SEARCH ONLY IN.. ===================================== -->
-                <div class="col-xs-12 filter-subcontrol">
+                <div class="col-xs-12">
 
                   <!-- Description -->
                   <span class="filter-desc">Search only in.. </span>
@@ -232,8 +226,10 @@ $emptyGif = asset('images/icons/blank.gif');
                       'race' => 'Races',
 											'flavor_text' => 'Flavor',
                     ] as $field => $label):
-                      // Sticky values
-                      (isset($filters['infields']) AND in_array($field, $filters['infields']))
+                      ( // Sticky values
+												isset($filters['infields']) &&
+												in_array($field, $filters['infields'])
+											)
                         ? [$active, $checked] = [' active', 'checked']
                         : [$active, $checked] = ['', ''];
                     ?>
@@ -252,7 +248,7 @@ $emptyGif = asset('images/icons/blank.gif');
                 </div>
 
                 <!-- EXCLUDE ============================================== -->
-                <div class="col-xs-12 filter-subcontrol">
+                <div class="col-xs-12">
 
                   <!-- Description -->
                   <span class="filter-desc">Exclude..</span>
@@ -268,8 +264,10 @@ $emptyGif = asset('images/icons/blank.gif');
 											'alternates',
 											'reprints'
 										] as $field):
-                      // Sticky values
-                      (isset($filters['exclude']) AND in_array($field, $filters['exclude']))
+                      ( // Sticky values
+												isset($filters['exclude']) &&
+												in_array($field, $filters['exclude'])
+											)
                         ? [$active, $checked] = [' active', 'checked']
                         : [$active, $checked] = ['', ''];
                     ?>
@@ -287,7 +285,7 @@ $emptyGif = asset('images/icons/blank.gif');
                 </div>
 
                 <!-- SORT BY ============================================== -->
-                <div class="col-xs-12 filter-subcontrol">
+                <div class="col-xs-12">
                     
 									<?php // Sticky values
 										$sort = $filters['sort'] ?? 'default';
@@ -912,6 +910,34 @@ $emptyGif = asset('images/icons/blank.gif');
   							</div>
   						</div>
   					</div>
+
+						<!-- FLAGS ==================================================== -->
+            <div class="row filter">
+              <div class="col-xs-12 filter-header">Additional flags</div>
+
+                <!-- Quickcast ============================================ -->
+                <div class="col-xs-12">
+
+                  <?php // Sticky values
+                    (isset($filters) && !isset($filters['quickcast']))
+                      ? [$active, $checked] = ['', '']
+                      : [$active, $checked] = [' active', 'checked'];
+         					?>
+                  <div class="btn-group" data-toggle="buttons">
+                    <label class="btn font-105 mv-10 fd-btn-default<?=$active?>">
+											<input
+												type="checkbox"
+												name="quickcast"
+												value="1"
+												<?=$checked?>
+											>
+                      <span class="pointer">Has Quickast</span>
+                    </label>
+                  </div>
+
+                </div>
+							</div>
+						</div>
 
   				</div>	
   			</div>

@@ -40,13 +40,13 @@ class CardSearch
             'def',
             'def-operator',
             'divinity',
-            'do',
             'exact',
             'exclude',
             'format',
             'infields',
             'no_attribute_multi',
             'q',
+            'quickcast',
             'race',
             'rarity',
             'set',
@@ -58,6 +58,7 @@ class CardSearch
             'xcost',
             
             'page', // Pagination-related
+            'do', // LEGACY
             'attrmulti', // LEGACY
             'attrselected', // LEGACY
             'setcode', // LEGACY
@@ -632,6 +633,11 @@ class CardSearch
             $this->sqlPartials['offset'] = $offset;
         }
 
+        // FILTER --- FLAG: QUICKCAST -----------------------------------------
+        if (isset($this->f['quickcast'])) {
+            $bitval = 1 << lookup('types.name2bit.Has Quickcast');
+            $_sql_f[] = "type_bit & {$bitval} = {$bitval}";
+        }
 
         // SORTING ============================================================
         if (isset($this->f['sort']) && $this->f['sort'] !== 'default') {
@@ -647,7 +653,7 @@ class CardSearch
                 switch ($this->f['sort']) {
                     
                     case 'attribute':
-                        $sortField = "FIELD(attribute,'w','r','u','g','b','v')";
+                        $sortField = "attribute_bit";
                         break;
 
                     case 'rarity':
