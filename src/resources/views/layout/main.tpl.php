@@ -83,10 +83,10 @@
       JSON_FORCE_OBJECT | JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES
     )?>;
     window.BASE_URL = "<?=config('app.url')?>";
+    window.APP = {};
   </script>
 
   <!-- My scripts -->
-  <script src="<?=asset('js/public/common.min.js', 'js')?>" defer></script>
   <?php foreach ($scripts as $script): ?>
     <script src="<?=asset("js/{$script}.min.js", 'js')?>" defer></script>
   <?php endforeach; ?>

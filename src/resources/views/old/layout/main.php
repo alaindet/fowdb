@@ -68,17 +68,15 @@
         JSON_FORCE_OBJECT | JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES
       )?>
     <?php endif; ?>
-    window.BASE_URL = "<?=config('app.url')?>";
+	window.BASE_URL = "<?=config('app.url')?>";
+	window.APP = {};
   </script>
 
-  <!-- Common script -->
-  <script src="<?=asset('js/public/common.min.js', 'js')?>" defer></script>
-
-	<!-- Optional scripts -->
-	<?php if (isset($options['js'])): ?>
-		<?php foreach ($options['js'] as &$link): ?>
-			<script src="<?=asset("js/{$link}.min.js", 'js')?>" defer></script>
-		<?php endforeach; ?>
-	<?php endif; ?>
+  <!-- Optional scripts -->
+  <?php if (isset($options['js'])): ?>
+    <?php foreach ($options['js'] as &$link): ?>
+      <script src="<?=asset("js/{$link}.min.js", 'js')?>" defer></script>
+    <?php endforeach; ?>
+  <?php endif; ?>
 </body>
 </html>
