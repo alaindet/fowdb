@@ -22,6 +22,16 @@ class TestController extends Controller
             ->render();
     }
 
+    public function testSelectMultiple(Request $request): string
+    {
+        return (new Page)
+            ->template('test/select-multiple')
+            ->title('Test: &lt;select&gt; multiple')
+            ->options(['scripts' => ['test/select-multiple']])
+            ->minify(false)
+            ->render();
+    }
+
     public function testVirtualAttributes(Request $request): string
     {
         $model = new \App\Models\GameRules;
