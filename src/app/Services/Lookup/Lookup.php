@@ -157,9 +157,7 @@ class Lookup
     public function get(string $path = null)
     {
         // ERROR: Missing name
-        if (!isset($path)) {
-            throw new LookupException('Not path provided');
-        }
+        if (!isset($path)) return $this->getAll();
 
         // Directly return data (not-nested data)
         if (false === strpos($path, '.')) return $this->cache[$path];
