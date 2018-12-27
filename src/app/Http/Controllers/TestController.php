@@ -12,6 +12,16 @@ use App\Services\Resources\GameRules\DocumentConverter;
 
 class TestController extends Controller
 {
+    public function testInputDropdown(Request $request): string
+    {
+        return (new Page)
+            ->template('test/input-dropdown')
+            ->title('Test: &lt;input&gt; dropdown')
+            ->options(['scripts' => ['test/input-dropdown']])
+            ->minify(false)
+            ->render();
+    }
+
     public function testVirtualAttributes(Request $request): string
     {
         $model = new \App\Models\GameRules;
