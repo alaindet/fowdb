@@ -1,16 +1,16 @@
 /* EXAMPLE USAGE
 
 <div class="input-group js-input-dropdown">
-
-  <!-- Hidden input -->
-  <input
-    type="hidden"
-    name="THE_NAME"
-    class="js-input-dropdown-hidden"
-    value="THE_VALUE"
-  >
-
   <div class="input-group-btn">
+
+    <!-- Dropdown input -->
+    <input
+      type="hidden"
+      name="THE_NAME"
+      class="js-input-dropdown-hidden"
+      value="THE_DEFAULT_VALUE"
+      data-default="THE_DEFAULT_VALUE"
+    >
   
     <!-- Dropdown face -->
     <button
@@ -18,8 +18,11 @@
       class="btn btn-default dropdown-toggle"
       data-toggle="dropdown"
     >
-      <span class="js-input-dropdown-face">
-        THE_FACE
+      <span
+        class="js-input-dropdown-face"
+        data-default="THE_DEFAULT_FACE"
+      >
+        THE_DEFAULT_FACE
       </span>
     </button>
 
@@ -37,7 +40,6 @@
     </ul>
 
   </div>
-
 </div>
 
 */
@@ -47,7 +49,7 @@
   var css_inputDropdown = '.js-input-dropdown';
   var css_inputDropdownFace = '.js-input-dropdown-face';
   var css_inputDropdownItem = '.js-input-dropdown-item';
-  var css_inputDropdownHidden = '.js-input-dropdown-hidden';
+  var css_inputDropdownInput = '.js-input-dropdown-hidden';
 
 
   // Bootstrap ----------------------------------------------------------------
@@ -61,7 +63,8 @@
       })
 
       // Custom events
-      .on('fd:select-dropdown-item', handleSelectItemEvent)
+      .on('fd:input-dropdown:select-item', handleSelectItemEvent)
+      .on('fd:input-dropdown:reset', handleResetEvent)
 
   }
 
@@ -69,21 +72,47 @@
   // Controller functions -----------------------------------------------------
 
   function handleDropdownItemClick(target) {
-    $(document).trigger('fd:select-dropdown-item', [target]);
+    $(document).trigger('fd:input-dropdown:select-item', [target]);
   }
 
   function handleSelectItemEvent(event, item) {
-
-    // Select container element
     var container = item.parents(css_inputDropdown);
-
-    // Update hidden input value
-    $(css_inputDropdownHidden, container).val(item.data('value'));
-
-    // Update dropdown face
-    $(css_inputDropdownFace, container).text(item.data('face'));
-
+    view_updateInput(container, item.data('value'));
+    view_updateFace(container, item.data('face'));
   }
+
+  function handleResetEvent(event) {
+    $(css_inputDropdown).each(function () {
+      var container = $(this);
+      view_updateInput(container);
+      view_updateFace(container);
+    });
+  }
+
+
+  // Model functions ----------------------------------------------------------
+
+  // ...
+
+
+  // View functions -----------------------------------------------------------
+
+  function view_updateInput(container, value) {
+    var element = $(css_inputDropdownInput, container);
+    if (typeof value === 'undefined') value = element.data('default');
+    element.val(value);
+  }
+
+  function view_updateFace(container, value) {
+    var element = $(css_inputDropdownFace, container);
+    if (typeof value === 'undefined') value = element.data('default');
+    element.html(value);
+  }
+
+
+  // Utility functions --------------------------------------------------------
+
+  // ...
 
 
   // Go! ----------------------------------------------------------------------

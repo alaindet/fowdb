@@ -17,6 +17,7 @@ $items = [
       name="THE_NAME"
       class="js-input-dropdown-hidden"
       value="THE_VALUE"
+      data-default="THE_DEFAULT_VALUE"
     >
 
     <div class="input-group-btn">
@@ -27,7 +28,10 @@ $items = [
         class="btn btn-default dropdown-toggle"
         data-toggle="dropdown"
       >
-        <span class="js-input-dropdown-face">
+        <span
+          class="js-input-dropdown-face"
+          data-default="THE_DEFAULT_VALUE"
+        >
           THE_FACE
         </span>
       </button>
