@@ -51,10 +51,11 @@ $(document).ready(function() {
     targetElement.toggleClass("hidden");
   });
 
-  // LEGACY CODE
-  // Hider component (new) ---------------------------------------------------
-  $(".hider").on("click", function () {
-    $($(this).data("target"))
-      .toggleClass("hidden");
-  });
+  // // LEGACY CODE
+  // // Hider component (new) ---------------------------
+  // $(".hider").on("click", function () {
+  //   $($(this).data("target"))
+  //     .toggleClass("hidden");
+  // });
+
 });
