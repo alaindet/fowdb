@@ -14,13 +14,16 @@
 
         // Highlight stuff
         if (hash && hash.substr(-2) !== '00') {
-            $('a[href="' + hash + '"]').closest('li').addClass(css_highlight_class);
+            $('a[href="' + hash + '"]')
+                .closest('li')
+                .addClass(css_highlight_class);
         }
 
     }
 
     function deselectItem() {
-        $([css_chapter, css_highlight].join(' ')).removeClass('highlight');
+        $([css_chapter, css_highlight].join(' '))
+            .removeClass(css_highlight_class);
     }
 
     $(document).ready(selectItem);

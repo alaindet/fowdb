@@ -54,11 +54,7 @@ class GameRulesController extends Controller
             ->variables([
                 'path' => path_root($item['doc_path'])
             ])
-            ->options([
-                'scripts' => [
-                    'public/cr'
-                ]
-            ])
+            ->options([ 'scripts' => [ 'public/game-rules' ] ])
             ->minify(false)
             ->render();
     }
