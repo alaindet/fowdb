@@ -1,16 +1,16 @@
 (function () {
 
-    var css_chapter = '.fd-cr-bdy__1';
-    var css_highlight = '.fd-cr-highlight';
-    var css_highlight_class = css_highlight.substr(1);
+    const css_chapter = '.fd-cr-bdy__1';
+    const css_highlight = '.fd-cr-highlight';
+    const css_highlight_class = css_highlight.substr(1);
 
-    function selectItem() {
+    const selectItem = () => {
 
         // Deselect previously selected item
         deselectItem();
 
         // Read current hash
-        var hash = window.location.hash;
+        const hash = window.location.hash;
 
         // Highlight stuff
         if (hash && hash.substr(-2) !== '00') {
@@ -21,7 +21,7 @@
 
     }
 
-    function deselectItem() {
+    const deselectItem = () => {
         $([css_chapter, css_highlight].join(' '))
             .removeClass(css_highlight_class);
     }

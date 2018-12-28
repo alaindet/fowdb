@@ -2,9 +2,10 @@
 
 const app = {
   dependencies: {
+    babel: require('@babel/core'),
     fs: require('fs'),
     path: require('path'),
-    uglifyjs: require('uglify-js'),
+    uglifyjs: require('uglify-es'),
     yargs: require('yargs')
   },
   args: {},
@@ -36,11 +37,24 @@ catch (error) {
 
 // Load all files in sequence and glue them together in a single string
 app.code.toMinify = (app.config.dependencies || [])
+
+  // Build dependencies absolute file paths
   .map(file => `${app.dirs.dev}/dependencies/${file}.js`)
+
+  // Add the page script absolute file path
   .concat([app.dirs.script])
+
+  // Validate all paths
   .map(file => validatePath(file))
+
+  // Read all files as strings in an array
   .map(file => app.dependencies.fs.readFileSync(file, 'utf-8'))
+
+  // Glue all files together
   .join('');
+
+// Transpile all code with Babel
+app.code.toMinify = app.dependencies.babel.transform(app.code.toMinify).code;
 
 // Minify the code
 app.code.minified = app.dependencies.uglifyjs.minify(
