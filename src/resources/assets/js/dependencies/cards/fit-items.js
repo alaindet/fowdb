@@ -1,6 +1,6 @@
 /**
- * IMPORTS
- * window.APP.isInteger
+ * REQUIRES
+ * dependencies/utils/is-integer
  * 
  * EXPORTS
  * window.APP.fitItems
