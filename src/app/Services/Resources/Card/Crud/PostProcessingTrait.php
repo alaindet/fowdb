@@ -6,6 +6,7 @@ use App\Exceptions\CrudException;
 use App\Models\GameSet;
 use App\Models\Card;
 use App\Utils\Bitmask;
+use App\Utils\Uri;
 
 /**
  * This trait manipulates data after all Card input processors executed
@@ -208,7 +209,8 @@ trait PostProcessingTrait
         $imageChanged = isset($image) && $image['error'] === UPLOAD_ERR_OK;
 
         // Check if image paths have changed
-        $pathsChanged = $this->old['thumb_path'] !== $this->new['thumb_path'];
+        $oldThumbPath = Uri::removeQueryString($this->old['thumb_path']);
+        $pathsChanged = $oldThumbPath !== $this->new['thumb_path'];
 
         // Set some flags as "extra props" (starting with underscore)
         $this->new['_image-changed'] = $imageChanged ? 1 : 0;

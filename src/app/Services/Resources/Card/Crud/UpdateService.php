@@ -76,7 +76,7 @@ class UpdateService extends CrudService
         });
 
         // Update this card's image paths
-        if ($this->didPathsChange) {
+        if ($this->didPathsChange === 1) {
             
             // Rename old images
             FileSystem::renameFile($paths['old-image'], $paths['new-image']);
@@ -85,22 +85,22 @@ class UpdateService extends CrudService
         }
 
         // Store new images for this card
-        elseif ($this->didImageChange) {
-        
+        elseif ($this->didImageChange === 1) {
+
             // Remove old images
             FileSystem::deleteFile($paths['old-image']);
             FileSystem::deleteFile($paths['old-thumb']);
 
             // Store HQ image (apply watermark)
             (new ImageManager)
-                ->make($image['tmp_name'])
+                ->make($this->image['tmp_name'])
                 ->resize(480, 670)
                 ->insert(path_root('images/watermark/watermark480.png'))
                 ->save($paths['new-image'], 80);
 
             // Store LQ image (apply watermark)
             (new ImageManager)
-                ->make($image['tmp_name'])
+                ->make($this->image['tmp_name'])
                 ->resize(280, 391)
                 ->insert(path_root('images/watermark/watermark280.png'))
                 ->save($paths['new-thumb'], 80);
