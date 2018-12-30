@@ -1,18 +1,22 @@
 #!/usr/bin/env node
 
+// Define app container
 const app = {
-  dependencies: {
-    babel: require('@babel/core'),
-    fs: require('fs'),
-    path: require('path'),
-    uglifyjs: require('uglify-es'),
-    yargs: require('yargs')
-  },
   args: {},
-  config: {},
-  dirs: {},
-  code: {},
-  directorySeparator: '/'
+  build: {},
+  paths: {},
+  dependencies: [],
+  output: {},
+  directorySeparator: ''
+};
+
+// Load all dependencies
+app.dependencies = {
+  babel: require('@babel/core'),
+  fs: require('fs'),
+  path: require('path'),
+  uglifyjs: require('uglify-es'),
+  yargs: require('yargs')
 };
 
 // Read CLI arguments
@@ -22,12 +26,23 @@ app.args = app.dependencies.yargs.argv;
 if (!app.args.page) return console.log('ERROR: Missing --page argument');
 
 // Define dir separator (\ for Windows, / for all else), dirs and files
-app.dirSeparator = app.args.windows ? '\\' : '/';
-app.dirs = defineDirectoriesAndFiles(__dirname, app.args.page);
+app.directorySeparator = app.args.windows ? '\\' : '/';
+
+// Define all folders
+const dev = sanitizePath(__dirname, '/'); // Temporary dir separator: Unix
+const prod = dev.replace('/src/resources/assets/js', '/js');
+app.paths = {
+  dev: sanitizePath(dev),
+  prod: sanitizePath(prod),
+  build: sanitizePath(`${dev}/pages/${app.args.page}.build.json`),
+  main: sanitizePath(`${dev}/pages/${app.args.page}.js`),
+  output: '' // Defined later
+};
 
 // Load *.build.json file for this script
 try {
-  app.config = loadBuildFile(app.dirs.build, app.dependencies.fs);
+  app.build = loadFileAsJson(app.paths.build);
+  app.paths.output = sanitizePath(`${prod}/${app.build.output}.min.js`)
 }
 
 // ERROR: This page does not exist
@@ -35,110 +50,111 @@ catch (error) {
   return console.log(`ERROR: The page "${app.args.page}" does not exist!`);
 }
 
-// Load all files in sequence and glue them together in a single string
-app.code.toMinify = (app.config.dependencies || [])
+// Build all dependencies as a single string
+app.output.raw = (app.build.dependencies || [])
+.map(file => loadFileAsString(`${app.paths.dev}/dependencies/${file}.js`))
+.join('');
 
-  // Build dependencies absolute file paths
-  .map(file => `${app.dirs.dev}/dependencies/${file}.js`)
+// Load page script
+let main = loadFileAsString(app.paths.main);
 
-  // Add the page script absolute file path
-  .concat([app.dirs.script])
+// Further process partial files
+if (app.build.partials) {
+  app.build.partials.forEach(partial => {
+    const partialPlaceholder = `// PARTIAL: ${partial}\n`;
+    const partialPath = `${app.paths.dev}/pages/${partial}.partial.js`;
+    const partialString = loadFileAsString(partialPath);
+    main = main.replace(partialPlaceholder, partialString);
+  })
+}
 
-  // Validate all paths
-  .map(file => validatePath(file))
-
-  // Read all files as strings in an array
-  .map(file => app.dependencies.fs.readFileSync(file, 'utf-8'))
-
-  // Glue all files together
-  .join('');
+// Glue all the code to be later minify
+app.output.raw += main;
 
 // Transpile all code with Babel
-app.code.toMinify = app.dependencies.babel.transform(app.code.toMinify).code;
+app.output.raw = app.dependencies.babel.transform(app.output.raw).code;
 
-// Minify the code
-app.code.minified = app.dependencies.uglifyjs.minify(
-  app.code.toMinify,
-  {
-    warnings: true,
-    compress: {
-      keep_fargs: false,
-      passes: 1 // Try 2
-    },
-    mangle: {
-      toplevel: true // Mangles top-level function names
-    }
-  }
-).code;
-
-// Define output file, create directories if needed then store
-saveOutput(
-  app.code.minified,
-  validatePath(`${app.dirs.prod}/${app.config.output}.min.js`),
-  app.dependencies.path,
-  app.dependencies.fs
-);
-
-function saveOutput(output, outputFile, _path, _fs) {
-  buildPath(outputFile, _path, _fs);
-  _fs.writeFile(outputFile, output, (error) => {
-    console.log(error || `File saved:\n${outputFile}`);
-  });
+// --dev flag: do not minify
+if (app.args.dev) {
+  app.output.minified = app.output.raw;
 }
+
+// Minify the raw code
+else {
+  app.output.minified = app.dependencies.uglifyjs.minify(
+    app.output.raw,
+    {
+      warnings: true,
+      compress: {
+        keep_fargs: false,
+        passes: 1
+      },
+      mangle: {
+        toplevel: true // Mangles top-level function names
+      }
+    }
+  ).code;
+}
+
+// Build non-existing directories, if needed
+makeDirectories(app.paths.output);
+
+// Save output file
+app.dependencies.fs.writeFile(
+  app.paths.output,
+  app.output.minified,
+  error => console.log(error || `File saved:\n${app.paths.output}`)
+);
 
 // FUNCTIONS ------------------------------------------------------------------
 
 /**
- * Sanitizes filenames to all Windows (\) or all Unix (/) directory separators
+ * Sanitizes file paths by using Windows or Unix folder separator exclusively
+ * Windows => \
+ * Unix    => /
  * 
- * @param string filename Filename to check
- * @param string (optional) Separator to use
- * @return string The sanitized filename
+ * @param string filePath File path to sanitize
+ * @param string sep (optional) Separator to use
+ * @return string The sanitized file path
  */
-function validatePath(filename, sep) {
-  const yes = (typeof sep !== 'undefined') ? sep : app.dirSeparator;
+function sanitizePath(filePath, sep) {
+  const _sep = app.directorySeparator;
+  const yes = (typeof sep !== 'undefined') ? sep : _sep;
   const no = new RegExp((yes === '\\' ? '/' : '\\\\'), 'g');
-  return filename.replace(no, yes);
+  return filePath.replace(no, yes);
 }
 
 /**
- * Defines directories to be used by the builder script
+ * Reads a file and returns it as a string
  * 
- * @param string current Current folder (builder.js folder)
- * @return object The directories object
+ * @param string filePath File to read
+ * @return string Read file as string
  */
-function defineDirectoriesAndFiles(dev, page) {
-
-  dev = validatePath(dev, '/');
-  const prod = dev.replace('/src/resources/assets/js', '/js');
-
-  return {
-    dev: validatePath(dev),
-    prod: validatePath(prod),
-    build: validatePath(`${dev}/pages/${page}.build.json`),
-    script: validatePath(`${dev}/pages/${page}.js`)
-  };
-
+function loadFileAsString(filePath) {
+  const _fs = app.dependencies.fs;
+  return _fs.readFileSync(sanitizePath(filePath), 'utf-8');
 }
 
 /**
- * Loads the *.build.json configuration file and returns it parsed as JSON
+ * Reads a JSON file and returns it parsed as JSON
  * 
- * @param string page The selected page script to build
- * @param objcet fs Filesystem dependency
+ * @param string filePath File to read
+ * @return object JSON parsed object
  */
-function loadBuildFile(filename, fs) {
-  return JSON.parse(fs.readFileSync(filename, 'utf8'));
+function loadFileAsJson(filePath) {
+  return JSON.parse(loadFileAsString(filePath));
 }
 
 /**
- * Checks given directory exists, creates the full path otherwise (recursion)
+ * Accepts a file path and builds directories recursively up to that file
  * 
- * @param string filename 
+ * @param string filePath
  */
-function buildPath(filename, path, fs) {
-  const dirName = path.dirname(filename);
-  if (fs.existsSync(dirName)) return true;
-  buildPath(dirName, path, fs);
-  fs.mkdirSync(dirName);
+function makeDirectories(filePath) {
+  const _fs = app.dependencies.fs;
+  const _path = app.dependencies.path;
+  const dir = _path.dirname(filePath);
+  if (_fs.existsSync(dir)) return true;
+  makeDirectories(dir, path);
+  _fs.mkdirSync(dir);
 }

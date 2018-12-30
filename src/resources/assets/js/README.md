@@ -54,11 +54,14 @@ npm run watch-build-js -- --page=foo
 
 2. Create a companion `*.build.json` file (ex.: `/pages/foo/bar.build.json`), following these rules
    1. It must be located into the same folder as `/pages/foo/bar.js`
-   2. It can have only two properties
+   2. It can have only three properties
       - `output` required
-      - `dependendencies` optional
+      - `dependencies` optional
+      - `partials` optional
    3. `output` *(string)* filename of the output file (relative to the **prod** directory, without extension)
-   4. `dependencies` *(array of strings)* filenames of the dependencies to load before the page script (relative to the **dev** directory, without extension, order is important)
+   4. `dependencies` *(string[])* filepaths of the dependencies to load before the page script (relative to **dev**`/dependencies` directory, without extension, order is important)
+   5. `partials` *(string[])* filepaths of the partials to load inside the page script (relative to the **dev** directory, without extension, order is important)
+     - Please see **Partials** below
 
 3. Run
    ```
@@ -76,6 +79,15 @@ npm run watch-build-js -- --page=foo
    ```
    Please mind that, even on Windows, page names always use forward slashes when called from the terminal, like `--page=foo/bar`. The `build.js` script uses forward slashes internally and translates them to backslashes only when passing the `--windows` flag.
 
+## Partials
+
+- Page scripts may get quite big and unmanageable, that's why you can use fake imports called *partials*.
+- A partial is a `*.partial.js` file from the same directory where the page script is.
+- This file is copied as a string while building the output file and then it's simply pasted inside the page script, on a specific target line: a comment line like `// PARTIAL: $PARTIAL_PATH` where `$PARTIAL_PATH` is the partial's path, relative to **dev**, without `.partial.js`
+- Example:
+  - Comment on page script: `// PARTIAL: pages/public/cards/search/bootstrap`
+  - Partial file:  **dev**`/pages/public/cards/search/bootstrap.partial.js`
+
 ## Example
 
 ```
@@ -86,6 +98,11 @@ npm run watch-build-js -- --page=foo
         "vendor/bootstrap",
         "functions/numbers/parse-integer",
         "components/dropdown-input"
+    ],
+    "partials": [
+        "pages/foo/bar/state", // pages/foo/bar/state.partial.js
+        "pages/foo/bar/controller", // pages/foo/bar/controller.partial.js
+        "pages/foo/bar/bootstrap", // pages/foo/bar/bootstrap.partial.js
     ]
 }
 ```

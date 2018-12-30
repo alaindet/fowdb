@@ -6,7 +6,7 @@
   "scripts": {
     "build-css": "node-sass --output-style=compressed scss/app.scss ../../../css/app.min.css",
     "build-js": "node ./js/build.js",
-    "watch-build-js": "nodemon ./js/build.js"
+    "watch-build-js": "nodemon ./js/build.js --dev"
   },
   "author": {
     "name": "Alain D'Ettorre",
@@ -19,7 +19,6 @@
     "@babel/preset-env": "^7.2.3",
     "node-sass": "^4.11.0",
     "uglify-es": "^3.3.9",
-    "uglify-js": "^3.4.9",
     "yargs": "^12.0.5"
   },
   "dependencies": {
