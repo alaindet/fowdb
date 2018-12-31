@@ -3,11 +3,12 @@
 @import 'variables/space';
 
 @import 'components/alert';
-@import 'components/cr';
 @import 'components/box';
 @import 'components/button';
 @import 'components/card-text';
+@import 'components/cr';
 @import 'components/forms/text-form-horizontal';
+@import 'components/hr';
 @import 'components/list';
 @import 'components/list-group';
 @import 'components/pagination';
@@ -19,7 +20,7 @@
 @import 'layout/link';
 @import 'layout/table';
 
-@import 'utilities/hr';
+@import 'utilities/display';
 @import 'utilities/margin';
 @import 'utilities/padding';
 @import 'utilities/typography';
