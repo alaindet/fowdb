@@ -48,6 +48,10 @@ class FormatsGenerator implements Generatable
                 $o['code2id'][$i['f_code']] = $i['f_id'];
                 $o['code2name'][$i['f_code']] = $i['f_name'];
 
+                if ($i['f_is_multi_cluster']) {
+                    $o['display'][$i['f_code']] = $i['f_name'];
+                }
+
                 if (!isset($o['code2clusters'][$i['f_code']])) {
                     $o['code2clusters'][$i['f_code']] = [];
                 }
@@ -67,6 +71,7 @@ class FormatsGenerator implements Generatable
                 'code2clusters' => [],
                 'id2code' => [],
                 'id2name' => [],
+                'display' => [],
             ]
 
         );
