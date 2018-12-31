@@ -1,45 +1,43 @@
 /* EXAMPLE USAGE
 
-<div class="input-group js-input-dropdown">
-  <div class="input-group-btn">
+<div class="btn-group js-input-dropdown">
 
-    <!-- Dropdown input -->
-    <input
-      type="hidden"
-      name="THE_NAME"
-      class="js-input-dropdown-hidden"
-      value="THE_DEFAULT_VALUE"
-      data-default="THE_DEFAULT_VALUE"
+  <!-- Dropdown input -->
+  <input
+    type="hidden"
+    name="THE_NAME"
+    class="js-input-dropdown-hidden"
+    value="THE_DEFAULT_VALUE"
+    data-default="THE_DEFAULT_VALUE"
+  >
+
+  <!-- Dropdown face -->
+  <button
+    type="button"
+    class="btn btn-default dropdown-toggle"
+    data-toggle="dropdown"
+  >
+    <span
+      class="js-input-dropdown-face"
+      data-default="THE_DEFAULT_FACE"
     >
-  
-    <!-- Dropdown face -->
-    <button
-      type="button"
-      class="btn btn-default dropdown-toggle"
-      data-toggle="dropdown"
-    >
-      <span
-        class="js-input-dropdown-face"
-        data-default="THE_DEFAULT_FACE"
+      THE_DEFAULT_FACE
+    </span>
+  </button>
+
+  <!-- Dropdown items -->
+  <ul class="dropdown-menu">
+    <li>
+      <a
+        class="js-input-dropdown-item pointer"
+        data-face="ITEM_FACE"
+        data-value="ITEM_VALUE"
       >
-        THE_DEFAULT_FACE
-      </span>
-    </button>
-
-    <!-- Dropdown items -->
-    <ul class="dropdown-menu">
-      <li>
-        <a
-          class="js-input-dropdown-item pointer"
-          data-face="ITEM_FACE"
-          data-value="ITEM_VALUE"
-        >
-          AN_ITEM
-        </a>
-      </li>
-    </ul>
-
-  </div>
+        AN_ITEM
+      </a>
+    </li>
+  </ul>
+  
 </div>
 
 */
