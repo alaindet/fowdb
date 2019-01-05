@@ -303,12 +303,15 @@ function csrf_token(): string
  * @param string $path
  * @return string
  */
-function include_view(string $path, array $variables = null): string
+function include_view(string $path, array $__variables = null): string
 {
 	// Bind variables to this template only
-	if (!empty($variables)) {
-		foreach ($variables as $name => $value) {
-			$$name = $value;
+	if (!empty($__variables)) {
+		foreach ($__variables as $__name => $__value) {
+			if (strpos($__name, '-')) {
+                $__name = Strings::kebabToSnake($__name);
+            }
+			$$__name = $__value;
 		}
 	}
 

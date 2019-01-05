@@ -13,10 +13,6 @@
 // instead of default behavior
 // $items = [ value => label, ... ]
 
-echo log_html([
-  'name' => $name,
-]);
-
 $containerCss = '';
 $buttonCss = '';
 
