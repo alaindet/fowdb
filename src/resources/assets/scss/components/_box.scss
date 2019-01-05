@@ -89,7 +89,16 @@
 .fd-box.--less-padding .fd-box__title,
 .fd-box.--less-padding .fd-box__content,
 .fd-box.--less-padding .fd-box__footer {
-  padding: .5rem;;
+  padding: .5rem;
+}
+
+// Variation: less padding for screens < 768 px
+@media (max-width: $breakpoint-xs) {
+  .fd-box.--xs-less-padding .fd-box__title,
+  .fd-box.--xs-less-padding .fd-box__content,
+  .fd-box.--xs-less-padding .fd-box__footer {
+    padding: .5rem;
+  }
 }
 
 // Variations: margins and paddings
