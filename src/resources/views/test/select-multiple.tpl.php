@@ -15,6 +15,11 @@ $items = $items['data'];
 
 ?>
 
+<?=component('breadcrumb', [
+  'Test' => url('test'),
+  'select-multiple' => '#'
+])?>
+
 <!-- The handle -->
 <button
   class="btn btn-lg fd-btn-default js-select-multiple"

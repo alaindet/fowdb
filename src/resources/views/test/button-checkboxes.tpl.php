@@ -11,21 +11,18 @@ $items = [
 
 <?=component('breadcrumb', [
   'Test' => url('test'),
-  'button-dropdown' => '#'
+  'button-checkboxes' => '#'
 ])?>
 
-<form action="<?=url('test/button-dropdown')?>" method="get">
+<form action="<?=url('test/button-checkboxes')?>" method="get">
   
   <!-- component -->
-  <?=component('form/button-dropdown', [
-    'default' => [
-      'face' => 'DEFAULT_FACE',
-      'value' => 'DEFAULT_VALUE'
-    ],
+  <?=component('form/button-checkboxes', [
     'name' => 'INPUT_NAME',
-    'size' => 'lg',
-    'state' => 2, // Should appear "bbb" selected
-    'items' => $items
+    'items' => $items,
+    'css' => [
+      'button' => ['mv-10', 'fd-btn-default']
+    ]
   ])?>
 
   <!-- submit -->

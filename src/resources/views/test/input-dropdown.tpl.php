@@ -13,6 +13,12 @@ $state = [
 ];
 
 ?>
+
+<?=component('breadcrumb', [
+  'Test' => url('test'),
+  'input-dropdown' => '#'
+])?>
+
 <form action="<?=url('test/input-dropdown')?>" method="get">
   
   <!-- component -->
