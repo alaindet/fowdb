@@ -47,7 +47,7 @@ abstract class Component
         // Declare scoped variables
         foreach ($variables as $name => $value) {
             if (strpos($name, '-')) {
-                $name = Strings::kebabToPascal($name);
+                $name = Strings::kebabToSnake($name);
             }
             $$name = $value;
         }

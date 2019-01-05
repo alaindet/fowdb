@@ -8,8 +8,11 @@ class Components
 
     public static $components = [
         'breadcrumb' => \App\Views\Components\Breadcrumb::class,
+        'form/button-dropdown' => self::SIMPLE_COMPONENT,
         'form/input-clear' => self::SIMPLE_COMPONENT,
-        'form/input-dropdown' => self::SIMPLE_COMPONENT,
+        'form/input-dropdown' => \App\Views\Components\InputDropdown::class,
+        'form/select-multiple-handle' => self::SIMPLE_COMPONENT,
+        'form/select-multiple-items' => self::SIMPLE_COMPONENT,
         'form/select-submit' => self::SIMPLE_COMPONENT,
         'logout' => self::SIMPLE_COMPONENT,
         'pagination' => \App\Views\Components\Pagination::class,

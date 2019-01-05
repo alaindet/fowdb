@@ -22,6 +22,16 @@ class TestController extends Controller
             ->render();
     }
 
+    public function testButtonDropdown(Request $request): string
+    {
+        return (new Page)
+            ->template('test/button-dropdown')
+            ->title('Test: &lt;button&gt; dropdown')
+            ->options(['scripts' => ['test/button-dropdown']])
+            ->minify(false)
+            ->render();
+    }
+
     public function testSelectMultiple(Request $request): string
     {
         return (new Page)

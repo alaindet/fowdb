@@ -1,61 +1,44 @@
 <?php
 
 $items = [
-  'aaa' => 1,
-  'bbb' => 2,
-  'ccc' => 3,
-  'ddd' => 4,
+  'item1' => 'aaa',
+  'item2' => 'bbb',
+  'item3' => 'ccc',
+  'item4' => 'ddd',
+];
+
+$state = [
+  'input' => 'Hello, World!',
+  'dropdown' => 'item3',
 ];
 
 ?>
 <form action="<?=url('test/input-dropdown')?>" method="get">
-  <div class="input-group js-input-dropdown">
+  
+  <!-- component -->
+  <?=component('form/input-dropdown', [
 
-    <!-- Hidden input -->
-    <input
-      type="hidden"
-      name="THE_NAME"
-      class="js-input-dropdown-hidden"
-      value="THE_VALUE"
-      data-default="THE_DEFAULT_VALUE"
-    >
+    'size' => 'lg',
 
-    <div class="input-group-btn">
-    
-      <!-- Dropdown face -->
-      <button
-        type="button"
-        class="btn btn-default dropdown-toggle"
-        data-toggle="dropdown"
-      >
-        <span
-          class="js-input-dropdown-face"
-          data-default="THE_DEFAULT_VALUE"
-        >
-          THE_FACE
-        </span>
-      </button>
+    'input' => [
+      'name' => 'THE_INPUT',
+      'state' => $state['input'],
+    ],
 
-      <!-- Dropdown items -->
-      <ul class="dropdown-menu">
-        <?php foreach ($items as $face => $value): ?>
-          <li>
-            <a
-              class="js-input-dropdown-item pointer"
-              data-face="<?=$face?>"
-              data-value="<?=$value?>"
-            >
-              <?=$face?>
-            </a>
-          </li>
-        <?php endforeach; ?>
-      </ul>
+    'dropdown' => [
+      'name' => 'THE_DROPDOWN',
+      'state' => $state['dropdown'],
+      'items' => $items,
+      'default' => [
+        'face' => 'DEFAULT_FACE',
+        'value' => 'DEFAULT_VALUE',
+      ]
+    ],
 
-    </div>
-
-  </div>
+  ])?>
 
   <!-- submit -->
   <hr class="fd-hr">
   <button type="submit" class="btn btn-lg btn-primary">SUBMIT</button>
+
 </form>

@@ -1,43 +1,62 @@
 /* EXAMPLE USAGE
 
-<div class="btn-group js-input-dropdown">
+<div class="js-input-dropdown">
 
   <!-- Dropdown input -->
   <input
     type="hidden"
-    name="THE_NAME"
+    name="DROPDOWN_NAME"
     class="js-input-dropdown-hidden"
-    value="THE_DEFAULT_VALUE"
-    data-default="THE_DEFAULT_VALUE"
+    value="DROPDOWN_VALUE"
+    data-default="DROPDOWN_DEFAULT_VALUE"
   >
 
-  <!-- Dropdown face -->
-  <button
-    type="button"
-    class="btn btn-default dropdown-toggle"
-    data-toggle="dropdown"
-  >
-    <span
-      class="js-input-dropdown-face"
-      data-default="THE_DEFAULT_FACE"
-    >
-      THE_DEFAULT_FACE
-    </span>
-  </button>
+  <div class="input-group">
+    <div class="input-group-btn">
 
-  <!-- Dropdown items -->
-  <ul class="dropdown-menu">
-    <li>
-      <a
-        class="js-input-dropdown-item pointer"
-        data-face="ITEM_FACE"
-        data-value="ITEM_VALUE"
+      <!-- Dropdown button -->
+      <button
+        type="button"
+        class="dropdown-toggle btn fd-btn-default"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
       >
-        AN_ITEM
-      </a>
-    </li>
-  </ul>
-  
+        <span
+          class="js-input-dropdown-face"
+          data-default="DROPDOWN_DEFAULT_FACE"
+        >
+          DROPDOWN_FACE
+        </span>
+        <span class="caret"></span>
+      </button>
+
+      <!-- Dropdown items -->
+      <ul class="dropdown-menu">
+        <li>
+          <a
+            class="js-input-dropdown-item pointer"
+            data-face="DROPDOWN_ITEM_FACE"
+            data-value="DROPDOWN_ITEM_VALUE"
+          >
+            DROPDOWN_ITEM_FACE
+          </a>
+        </li>
+        ...
+      </ul>
+
+    </div>
+
+    <!-- Input -->
+    <input
+      type="text"
+      name="INPUT_NAME"
+      class="form-control"
+      value="INPUT_VALUE"
+    >
+
+  </div>
+
 </div>
 
 */
