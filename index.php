@@ -31,6 +31,7 @@ $request = (new \App\Http\Request\Request)
     ->queryString($_SERVER['QUERY_STRING']);
 
 // Read the routes
+// $routes = \App\Services\FileSystem::loadFile(path_data('test/routes.php'));
 $routes = \App\Services\FileSystem::loadFile(path_data('app/routes.php'));
 
 // Map request to its route
