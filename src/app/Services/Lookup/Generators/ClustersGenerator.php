@@ -44,8 +44,11 @@ class ClustersGenerator implements Generatable
              */
             function ($result, $item) use (&$current) {
 
-                // Store id => name mapping
+                // Populate id => name map
                 $result['id2name'][$item['c_id']] = $item['c_name'];
+
+                // Populate code => id map
+                $result['code2id'][$item['c_code']] = $item['c_id'];
 
                 // Break the cached value
                 if ($current !== $item['c_code']) {
@@ -71,6 +74,7 @@ class ClustersGenerator implements Generatable
             [
                 'list' => [],
                 'id2name' => [],
+                'code2id' => [],
             ]
         );
     }
