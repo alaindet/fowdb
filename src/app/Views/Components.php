@@ -8,6 +8,7 @@ class Components
 
     public static $components = [
         'breadcrumb' => \App\Views\Components\Breadcrumb::class,
+        'form/button-checkbox' => self::SIMPLE_COMPONENT,
         'form/button-checkboxes' => self::SIMPLE_COMPONENT,
         'form/button-dropdown' => self::SIMPLE_COMPONENT,
         'form/input-clear' => self::SIMPLE_COMPONENT,

@@ -38,6 +38,7 @@ $public = [
 
     ['GET', '', 'HomeController', 'index'],
     ['GET', 'button-checkboxes', 'ComponentsController', 'buttonCheckboxes'],
+    ['GET', 'button-checkbox', 'ComponentsController', 'buttonCheckbox'],
     ['GET', 'button-dropdown', 'ComponentsController', 'buttonDropdown'],
     ['GET', 'input-dropdown', 'ComponentsController', 'inputDropdown'],
 

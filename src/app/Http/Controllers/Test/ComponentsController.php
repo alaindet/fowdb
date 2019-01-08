@@ -8,6 +8,15 @@ use App\Views\Page;
 
 class ComponentsController extends Controller
 {
+    public function buttonCheckbox(Request $request): string
+    {
+        return (new Page)
+            ->template('test/button-checkbox')
+            ->title('Test: button-checkbox component')
+            ->minify(false)
+            ->render();
+    }
+    
     public function buttonCheckboxes(Request $request): string
     {
         return (new Page)
