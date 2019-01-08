@@ -32,6 +32,7 @@ if (isset($css)) {
     <?php
       // ITEMS: value => label
       foreach ($items as $value => $label):
+        if ($label === 0) $label = '&#48;';
     ?>
       <label class="btn<?=$buttonCss?>">
         <input
@@ -48,6 +49,7 @@ if (isset($css)) {
     <?php
       // ITEMS: input name => label
       foreach ($items as $inputName => $label):
+        if ($label === 0) $label = '&#48;';
     ?>
       <label class="btn<?=$buttonCss?>">
         <input
