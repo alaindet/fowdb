@@ -64,15 +64,15 @@
   word-break: break-all;
 }
 
-// Variation: no styling, just margin and position
-.fd-box.--no-style {
+// Variation: no color, just margin and position
+.fd-box.--no-color {
   background: none;
   border-radius: 0;
   border: 0;
   box-shadow: none;
 }
-.fd-box.--no-style .fd-box__title,
-.fd-box.--no-style .fd-box__footer {
+.fd-box.--no-color .fd-box__title,
+.fd-box.--no-color .fd-box__footer {
   background-color: initial;
   border: 0;
 }
