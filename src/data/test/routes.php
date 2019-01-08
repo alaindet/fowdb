@@ -36,11 +36,17 @@
  */
 $public = [
 
+    // Home
     ['GET', '', 'HomeController', 'index'],
+
+    // View components
     ['GET', 'button-checkboxes', 'ComponentsController', 'buttonCheckboxes'],
     ['GET', 'button-checkbox', 'ComponentsController', 'buttonCheckbox'],
     ['GET', 'button-dropdown', 'ComponentsController', 'buttonDropdown'],
     ['GET', 'input-dropdown', 'ComponentsController', 'inputDropdown'],
+
+    // Array utilities
+    ['GET', 'array-whitelist', 'UtilsController', 'arrayWhitelist'],
 
 ];
 

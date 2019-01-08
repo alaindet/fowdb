@@ -134,4 +134,40 @@ class Arrays
         }
         $pointer[] = $value;
     }
+
+    /**
+     * Filters an array through a whitelist array
+     *
+     * @param array $array
+     * @param array $whitelist
+     * @return array
+     */
+    public static function filterWhitelist(
+        array $array,
+        array $whitelist
+    ): array
+    {
+        $result = [];
+
+        $whitelistCount = count($whitelist);
+        $arrayCount = count($array);
+
+        // Decide what to loop on based for performance
+        if ($arrayCount < $whitelistCount) {
+            $count = &$arrayCount;
+            $list = &$array;
+            $otherList = &$whitelist;
+        } else {
+            $count = &$whitelistCount;
+            $list = &$whitelist;
+            $otherList = &$array;
+        }
+
+        for ($i = 0; $i < $count; $i++) {
+            $item = &$list[$i];
+            if (in_array($item, $otherList)) $result[] = $item;
+        }
+
+        return $result;
+    }
 }
