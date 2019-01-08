@@ -95,9 +95,10 @@ function database(): Database
  *
  * @param mixed $data Data to be dumped
  * @param string $title (Optional) Title to give to the log
+ * @param bool $wrap (Optional) Wraps the line
  * @return void
  */
-function dump($data, string $title = null): void
+function dump($data, string $title = null, bool $wrap = false): void
 {
 	echo \App\Utils\Logger::html($data, $title);
 	die();
