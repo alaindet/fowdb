@@ -77,7 +77,7 @@ function auth(): LegacyAuthorization
  */
 function config(string $name)
 {
-	return (\App\Services\ Config::getInstance())->get($name);
+	return (\App\Services\Config::getInstance())->get($name);
 }
 
 /**
