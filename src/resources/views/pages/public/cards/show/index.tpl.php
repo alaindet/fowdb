@@ -35,7 +35,7 @@ foreach ($cards as $card):
 		<?php // Admin buttons ----------------------------------------------------
 			if (auth()->check($auth_levels)):
 		?>
-			<div class="col-xs-12 text-center sm-text-left">
+			<div class="col-xs-12 text-center sm-text-left mb-100">
 				
 				<!-- Update ======================================================= -->
         <a

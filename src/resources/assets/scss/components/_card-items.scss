@@ -1,0 +1,26 @@
+// Basic card-item component
+.fd-card-item {
+  padding: .3em;
+  position: relative;
+}
+// Avoids nasty white corners
+.fd-card-item img {
+  width: 100%;
+  border-radius: 3%!important;
+}
+
+// Spoiled card into search Results
+.fd-card-item--spoiler img {
+  border: 2px solid #f00;
+  border-radius: 5%!important;
+}
+.fd-card-item--spoiler::after {
+  position: absolute;
+  max-width: 100%;
+  content: "SPOILER";
+  font-weight: bold;
+  color: white;
+  background-color: rgba(255,0,0,0.75);
+  left: 5%;
+  bottom: 5%;
+}

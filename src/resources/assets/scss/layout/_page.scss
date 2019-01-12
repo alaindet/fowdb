@@ -1,0 +1,17 @@
+#page-wrapper {
+  margin: 0 auto;
+  max-width: 75em;
+  overflow-x: hidden;
+  padding: 0!important;
+}
+
+@media only screen and (max-width: $breakpoint-xs) {
+    .row {
+      margin-left: 3px;
+      margin-right: 3px;
+    }
+    .col-xs-12 {
+      padding-left: 0!important;
+      padding-right: 0!important;
+    }
+}

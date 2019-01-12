@@ -5,8 +5,10 @@
 @import 'components/alert';
 @import 'components/box';
 @import 'components/button';
+@import 'components/card-items';
 @import 'components/card-text';
 @import 'components/cr';
+@import 'components/formats';
 @import 'components/forms/text-form-horizontal';
 @import 'components/hr';
 @import 'components/list';
@@ -16,14 +18,28 @@
 @import 'components/top-anchor';
 @import 'components/zoomable';
 
+@import 'layout/footer';
 @import 'layout/grid';
 @import 'layout/link';
+@import 'layout/page';
 @import 'layout/table';
 
 @import 'utilities/display';
 @import 'utilities/margin';
 @import 'utilities/padding';
 @import 'utilities/typography';
+
+// General
+html {
+  position: relative;
+  min-height: 100%;
+  font-size: $font-size;
+}
+body {
+  font-family: $font-family;
+  margin-bottom: 100px; // Deal with the footer
+  height: 100%;
+}
 
 // Legacy stuff
 @import 'old';

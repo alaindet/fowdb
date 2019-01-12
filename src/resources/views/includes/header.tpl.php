@@ -133,7 +133,7 @@ $links = [
   </div>
 
 	<!-- Logo -->
-	<div id="logo">
+	<div id="logo" class="mb-100">
 		<a href="<?=url('/')?>">
       <img src="<?=asset('images/logo.png')?>">
     </a>

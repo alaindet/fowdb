@@ -1,0 +1,20 @@
+footer {
+  position: absolute;
+  text-align: center;
+  padding: 0.5em;
+  bottom: 0;
+  width: 100%;
+  height: 100px; // Min height to min resolution to see entire footer
+  color: #888;
+}
+footer .footer-icons a {
+  color: #888!important;;
+  font-size: 1.75em;
+  text-decoration: none;
+}
+footer .footer-icons a:hover {
+  color: #333!important;
+}
+footer footer-desc {
+  font-size: .8em;
+}

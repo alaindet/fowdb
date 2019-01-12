@@ -9,7 +9,7 @@
     |&nbsp;<a href="https://github.com/alaindet" style="font-size:1em;">alaindet</a>
     |&nbsp;<a href="http://www.fowtcg.com/" target="_blank" style="font-size:1em;">Go to official website</a>
   </div>
-  <div class="footer-desc">
+  <div class="footer-description">
     <small>
       Info here about Force of Will, both literal and graphical, is copyrighted by Force of Will., Ltd.<br>This website is not produced, endorsed, supported, or affiliated with Force of Will Co., Ltd.
     </small>

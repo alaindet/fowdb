@@ -17,7 +17,7 @@
         <?=$f['name']?>
       </a>
     </h2>
-    <ul class="fdb-indented">
+    <ul class="ml-100">
       <?php foreach ($f['list'] as $ccode => &$c): ?>
         <li>
           <h4>
@@ -31,7 +31,7 @@
             <ul>
               <?php foreach ($c['list'] as $scode => $sname): ?>
                 <li>
-                  <div class="fdb-formats-label">
+                  <div class="formats-set-label">
                     <?=strtoupper($scode)?>
                   </div>
                   <a href="<?=url('cards', ['set' => $scode])?>">
