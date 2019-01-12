@@ -310,7 +310,7 @@ function include_view(string $path, array $__variables = null): string
 	if (!empty($__variables)) {
 		foreach ($__variables as $__name => $__value) {
 			if (strpos($__name, '-')) {
-                $__name = Strings::kebabToSnake($__name);
+                $__name = \App\Utils\Strings::kebabToSnake($__name);
             }
 			$$__name = $__value;
 		}
