@@ -100,6 +100,7 @@ function database(): Database
  */
 function dump($data, string $title = null, bool $wrap = false): void
 {
+	ob_end_clean();
 	echo \App\Utils\Logger::html($data, $title, $wrap);
 	die();
 }
