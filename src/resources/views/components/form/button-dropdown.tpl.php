@@ -20,7 +20,7 @@ $sizes = [
 
 $size = isset($size) && isset($sizes[$size]) ? ' '.$sizes[$size] : '';
 
-// State
+// STATE ----------------------------------------------------------------------
 [$face, $value] = [$default['face'], $default['value']];
 if (isset($state) && isset($items[$state])) {
   [$face, $value] = [$items[$state], $state];
