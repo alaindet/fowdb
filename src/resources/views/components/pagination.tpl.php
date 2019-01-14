@@ -1,32 +1,64 @@
 <?php
+
 // VARIABLES
-// $items
-$first = array_shift($items);
-$last = array_pop($items);
+// $css
+// $links
+// $progress_label
+// $progress_percentage
+
+$cssClasses = isset($css) ? ' '.implode(' ', $css) : '';
+$count = count($links);
+
 ?>
-<nav aria-label="Page navigation">
-  <ul class="pagination fd-pagination">
+<div class="fd-pagination mv-100<?=$cssClasses?>">
 
-    <li>
-      <a href="<?=$first['link']?>" aria-label="First page">
-        <span aria-hidden="true">First</span>
+  <!-- Links -->
+  <nav class="fd-pagination-links">
+    
+    <!-- Prev -->
+    <?php if ($links[0]['disable']): ?>
+      <span class="prev">
+        &#10094;&nbsp;Prev
+      </span>
+    <?php else: ?>
+      <a href="<?=$links[0]['link']?>" class="prev">
+        &#10094;&nbsp;Prev
       </a>
-    </li>
+    <?php endif; ?>
 
-    <?php foreach ($items as $item): ?>
-      <?php $active = $item['active'] ? ' class="active"' : ''; ?>
-      <li<?=$active?>>
-        <a href="<?=$item['link']?>">
-          <?=$item['page']?>
+    <?php for ($i = 1, $len = $count - 1; $i < $len; $i++):
+      $link = &$links[$i];
+    ?>
+      <?php if ($link['class'] === 'missing'): ?>
+        <span class="dots">...</span>
+      <?php elseif ($link['class'] === 'current'): ?>
+        <span class="current"><?=$link['page']?></span>
+      <?php else: ?>
+        <a href="<?=$link['link']?>" class="<?=$link['class']?>">
+          <?=$link['page']?>
         </a>
-      </li>
-    <?php endforeach; ?>
+      <?php endif; ?>
+    <?php endfor; ?>
 
-    <li>
-      <a href="<?=$last['link']?>" aria-label="Last Page">
-        <span aria-hidden="true">Last (<?=$last['page']?>)</span>
+    <!-- Next -->
+    <?php if ($links[$count - 1]['disable']): ?>
+      <span class="next">
+        Next&nbsp;&#10095;
+      </span>
+    <?php else: ?>
+      <a href="<?=$links[$count - 1]['link']?>" class="next">
+        Next&nbsp;&#10095;
       </a>
-    </li>
+    <?php endif; ?>
 
-  </ul>
-</nav>
+  </nav>
+
+  <!-- Progress bar -->
+  <div
+    class="fd-pagination-progress"
+    style="background-size: <?=$progress_percentage?>%;"
+  >
+    <?=$progress_label?>
+  </div>
+ 
+</div>
