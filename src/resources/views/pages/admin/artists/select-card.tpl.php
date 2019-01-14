@@ -19,9 +19,9 @@
 <hr>
 
 <div class="row">
-  <div class="col-xs-12">
+  <div class="col-xs-12 fd-grid-items">
     <?php foreach ($cards as $card): ?>
-      <div class="fdb-card fdb-card-10">
+      <div class="fd-card-item fd-grid fd-grid-10">
         <a
           href="<?=url("artists/card/{$card['id']}")?>"
           target="_self"

@@ -232,7 +232,7 @@ class Card
             $flavorText = null;
             if (isset($card['flavor_text'])) {
                 $flavorText = (
-                    '<span class="flavortext">'.
+                    '<span class="text-italic">'.
                         $card['flavor_text'].
                     '</span>'
                 );    
