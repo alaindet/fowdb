@@ -1,21 +1,24 @@
 <?php
 
 // VARIABLES
-// name (optional)
-// items
-// css (optional)
+// $name (optional)
+// $state[]
+// $items
+// $css (optional)
 //   container
 //   button
 
-// NOTE
+// NOTE -----------------------------------------------------------------------
 // If input name is not given, each item has a different input name so that
 // $items = [ input_name => label, ... ]
 // instead of default behavior
 // $items = [ value => label, ... ]
+$multipleNames = !isset($name);
+if (!$multipleNames) $name .= "[]";
 
+// CSS ------------------------------------------------------------------------
 $containerCss = '';
 $buttonCss = '';
-
 if (isset($css)) {
   if (isset($css['container'])) {
     $containerCss = ' ' . implode(' ', $css['container']);
@@ -27,39 +30,30 @@ if (isset($css)) {
 
 ?>
 <div class="btg-group<?=$containerCss?>" data-toggle="buttons">
-  <?php if (isset($name)): ?>
+  <?php
+    // ITEMS: value => label (default)
+    foreach ($items as $key => $label):
 
-    <?php
-      // ITEMS: value => label
-      foreach ($items as $value => $label):
-        if ($label === 0) $label = '&#48;';
-    ?>
-      <label class="btn<?=$buttonCss?>">
-        <input
-          type="checkbox"
-          name="<?=$name?>[]"
-          value="<?=$value?>"
-        >
-        <span class="pointer"><?=$label?></span>
-      </label>
-    <?php endforeach; ?>
+      // Preserve 0 character for the label
+      if ($label === 0) $label = '&#48;';
 
-  <?php else: ?>
+      ($multipleNames)
+        ? [$inputName, $inputValue] = [$key, 1]
+        : [$inputName, $inputValue] = [$name, $key];
 
-    <?php
-      // ITEMS: input name => label
-      foreach ($items as $inputName => $label):
-        if ($label === 0) $label = '&#48;';
-    ?>
-      <label class="btn<?=$buttonCss?>">
-        <input
-          type="checkbox"
-          name="<?=$inputName?>"
-          value="1"
-        >
-        <span class="pointer"><?=$label?></span>
-      </label>
-    <?php endforeach; ?>
-
-  <?php endif; ?>
+      // State
+      (in_array($key, $state))
+        ? [$active, $checked] = [' active', ' checked']
+        : [$active, $checked] = ['', ''];
+  ?>
+    <label class="btn<?=$buttonCss?><?=$active?>">
+      <input
+        type="checkbox"
+        name="<?=$inputName?>"
+        value="<?=$inputValue?>"
+        <?=$checked?>
+      >
+      <span class="pointer"><?=$label?></span>
+    </label>
+  <?php endforeach; ?>
 </div>
