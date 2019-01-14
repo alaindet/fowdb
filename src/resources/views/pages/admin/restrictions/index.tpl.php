@@ -15,10 +15,7 @@ if ($hasFilters && $hasItems) {
 
 ?>
 <div class="page-header">
-  <h1>
-    Restricted cards: banned and limited
-    <small>(<?=$pagination['total']?>)</small>
-  </h1>
+  <h1>Restricted cards: banned and limited</h1>
   <?php
     $links = [
       'Admin' => url('profile'),
@@ -80,19 +77,14 @@ if ($hasFilters && $hasItems) {
     </div>
   <?php endif; ?>
 
-  <!-- Pagination (save and re-use it) -->
-  <div class="col-xs-12">
-    <?=$pageLinks = component('pagination', $pagination)?>
-  </div>
-
-  <!-- Progress bar -->
-  <div class="col-xs-12">
-    <?=component('progress-bar', [
-      'from' => $pagination['lower-bound'],
-      'to' => $pagination['upper-bound'],
-      'total' => $pagination['total']
-    ])?>
-  </div>
+  <!-- Pagination (top) -->
+  <?php if ($pagination['has-pagination']): ?>
+    <div class="col-xs-12">
+      <?=$pagelinks = component('pagination', [
+        'pagination' => $pagination,
+      ])?>
+    </div>
+  <?php endif; ?>
 
   <!-- Items list -->
   <div class="col-xs-12">
@@ -106,9 +98,11 @@ if ($hasFilters && $hasItems) {
     <?=component('top-anchor')?>
   </div>
 
-  <!-- Pagination -->
-  <div class="col-xs-12">
-    <?=$pageLinks?>
-  </div>
+  <!-- Pagination (bottom) -->
+  <?php if ($pagination['has-pagination']): ?>
+    <div class="col-xs-12">
+      <?=$pagelinks?>
+    </div>
+  <?php endif; ?>
   
 </div>

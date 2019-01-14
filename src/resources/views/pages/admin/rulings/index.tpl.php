@@ -13,10 +13,7 @@ if ($hasFilters && $hasItems) {
 
 ?>
 <div class="page-header">
-  <h1>
-    Rulings
-    <small>(<?=$pagination['total']?>)</small>
-  </h1>
+  <h1>Rulings</h1>
   <?php
     $links = [
       'Admin' => url('profile'),
@@ -79,19 +76,14 @@ if ($hasFilters && $hasItems) {
     </div>
   <?php endif; ?>
 
-  <!-- Pagination (save and re-use it) -->
-  <div class="col-xs-12">
-    <?=$pagelinks = component('pagination', $pagination)?>
-  </div>
-
-  <!-- Progress bar -->
-  <div class="col-xs-12">
-    <?=component('progress-bar', [
-      'from' => $pagination['lower-bound'],
-      'to' => $pagination['upper-bound'],
-      'total' => $pagination['total']
-    ])?>
-  </div>
+  <!-- Pagination (top) -->
+  <?php if ($pagination['has-pagination']): ?>
+    <div class="col-xs-12">
+      <?=$pagelinks = component('pagination', [
+        'pagination' => $pagination,
+      ])?>
+    </div>
+  <?php endif; ?>
 
   <!-- Rulings -->
   <div class="col-xs-12">
@@ -105,9 +97,11 @@ if ($hasFilters && $hasItems) {
     <?=component('top-anchor')?>
   </div>
 
-  <!-- Pagination -->
-  <div class="col-xs-12">
-    <?=$pagelinks?>
-  </div>
+  <!-- Pagination (bottom) -->
+  <?php if ($pagination['has-pagination']): ?>
+    <div class="col-xs-12">
+      <?=$pagelinks?>
+    </div>
+  <?php endif; ?>
   
 </div>
