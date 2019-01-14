@@ -1,21 +1,32 @@
 // Default button (grey)
 .fd-btn-default {
   background-color: $color-my-default;
-  color: #333;
+  color: $color-grey-20;
   box-sizing: border-box;
-  // border: 1px solid $color-my-default-darken-10;
 }
 .fd-btn-default:hover,
 .fd-btn-default-hover:hover {
   background-color: $color-my-default-darken-10;
-  color: #eee;
+  color: $color-grey-93;
 }
+
+// Black on white on ACTIVE or FOCUS
 .fd-btn-default:active,
 .fd-btn-default.active,
 .fd-btn-default:focus,
 .fd-btn-default.focus {
-  // border: 2px solid #333;
-  box-shadow: inset 0 0 0 2px #444;
+  background-color: $color-grey-20; // #333
+  color: $color-grey-93;
+}
+
+// Variation: black border on ACTIVE or FOCUS
+.fd-btn-default.--border:active,
+.fd-btn-default.--border.active,
+.fd-btn-default.--border:focus,
+.fd-btn-default.--border.focus {
+  background-color: $color-my-default;
+  color: $color-grey-20;
+  box-shadow: inset 0 0 0 2px $color-grey-20;
 }
 
 // Custom button groups
@@ -30,7 +41,7 @@
 // Primary button (black)
 .fd-btn-primary {
   background-color: $color-my-primary;
-  color: #eee;
+  color: $color-grey-93;
 }
 .fd-btn-primary:hover,
 .fd-btn-primary:active,
@@ -46,9 +57,9 @@
 }
 .fd-btn-warning-hover:hover {
   background-color: $color-warning-darken-10;
-  color: #eee;
+  color: $color-grey-93;
 }
 .fd-btn-danger-hover:hover {
   background-color: $color-danger-darken-10;
-  color: #eee;
+  color: $color-grey-93;
 }
