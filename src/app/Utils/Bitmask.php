@@ -55,13 +55,23 @@ class Bitmask
     }
 
     /**
-     * Returns the mask as it is, as integer
+     * Returns the current mask, as integer
      *
      * @return int
      */
     public function getMask(): int
     {
         return $this->mask;
+    }
+
+    /**
+     * Returns the opposite of current mask, as integer
+     *
+     * @return int
+     */
+    public function getFlippedMask(): int
+    {
+        return ~$this->mask;
     }
 
     /**
