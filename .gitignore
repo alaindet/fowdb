@@ -8,6 +8,7 @@ vendor/
 /src/data/cache/
 /src/data/resources/cr
 /src/data/backup
+/src/data/logs
 
 # Public assets and files
 /js/
