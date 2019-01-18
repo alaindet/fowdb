@@ -61,8 +61,8 @@ let main = loadFileAsString(app.paths.main);
 // Further process partial files
 if (app.build.partials) {
   app.build.partials.forEach(partial => {
-    const partialPlaceholder = `// PARTIAL: ${partial}\n`;
-    const partialPath = `${app.paths.dev}/pages/${partial}.partial.js`;
+    const partialPlaceholder = `// @partial: ${partial}\n`;
+    const partialPath = `${app.paths.dev}/pages/${partial}.js`;
     const partialString = loadFileAsString(partialPath);
     main = main.replace(partialPlaceholder, partialString);
   })

@@ -81,12 +81,12 @@ npm run watch-build-js -- --page=foo
 
 ## Partials
 
-- Page scripts may get quite big and unmanageable, that's why you can use fake imports called *partials*.
-- A partial is a `*.partial.js` file from the same directory where the page script is.
-- This file is copied as a string while building the output file and then it's simply pasted inside the page script, on a specific target line: a comment line like `// PARTIAL: $PARTIAL_PATH` where `$PARTIAL_PATH` is the partial's path, relative to **dev**, without `.partial.js`
+- Page scripts may get quite big and unmanageable, that's why you can use fake imports called *partials*
+- A partial is any `*.js` file from, you just have to provide its path
+- This file is copied as a string while building the output file and then it's simply pasted inside the page script, on a specific target line: a comment line like `// @partial: $PARTIAL_PATH` where `$PARTIAL_PATH` is the partial's path, relative to **dev**, without `.partial.js`
 - Example:
-  - Comment on page script: `// PARTIAL: pages/public/cards/search/bootstrap`
-  - Partial file:  **dev**`/pages/public/cards/search/bootstrap.partial.js`
+  - Comment on page script: `// @partial: pages/public/cards/search/bootstrap`
+  - Partial file:  **dev**`/pages/public/cards/search/bootstrap.js`
 
 ## Example
 
@@ -100,9 +100,9 @@ npm run watch-build-js -- --page=foo
         "components/dropdown-input"
     ],
     "partials": [
-        "pages/foo/bar/state", // pages/foo/bar/state.partial.js
-        "pages/foo/bar/controller", // pages/foo/bar/controller.partial.js
-        "pages/foo/bar/bootstrap", // pages/foo/bar/bootstrap.partial.js
+        "pages/foo/bar/partials/state",
+        "pages/foo/bar/partials/controller",
+        "pages/foo/bar/partials/bootstrap",
     ]
 }
 ```
