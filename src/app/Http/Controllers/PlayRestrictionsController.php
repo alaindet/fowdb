@@ -29,6 +29,9 @@ class PlayRestrictionsController extends Controller
             ->variables([
                 'items' => $items
             ])
+            ->options([
+                'scripts' => ['public/play-restrictions/play-restrictions']
+            ])
             ->render();
     }
 }

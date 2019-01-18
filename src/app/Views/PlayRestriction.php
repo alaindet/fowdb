@@ -30,9 +30,9 @@ class PlayRestriction
                 ],
 
                 // Levels
-                Model::$copiesLabels[$item['restriction_copies']],
+                $item['format_name'],
                 Model::$decksLabels[$item['restriction_deck']],
-                $item['format_name']
+                Model::$copiesLabels[$item['restriction_copies']]
 
             );
         }
