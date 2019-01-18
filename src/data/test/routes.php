@@ -44,6 +44,7 @@ $public = [
     ['GET', 'button-checkbox', 'ComponentsController', 'buttonCheckbox'],
     ['GET', 'button-dropdown', 'ComponentsController', 'buttonDropdown'],
     ['GET', 'input-dropdown', 'ComponentsController', 'inputDropdown'],
+    ['GET', 'select-multiple', 'ComponentsController', 'selectMultiple'],
 
     // Array utilities
     ['GET', 'array-whitelist', 'UtilsController', 'arrayWhitelist'],

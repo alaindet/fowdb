@@ -1,42 +1,63 @@
 <?php
 
-$string = 'abcdefghijlmn';
-$length = 6;
+$name = 'PERSON';
+$items = [
 
-$items = array_reduce(
-  str_split($string),
-  function ($items, $letter) use ($length) {
-    $items['data'][++$items['counter']] = str_repeat($letter, $length);
-    return $items;
-  },
-  ['counter' => 0, 'data' => []]
-);
-$items = $items['data'];
+  // // Grouped
+  // 'Letter A' => [
+  //   'alain' => 'Alain',
+  //   'albert' => 'Albert',
+  //   'anthony' => 'Anthony',
+  // ],
+  // 'Letter B' => [
+  //   'baldwin' => 'Baldwin',
+  //   'barney' => 'Barney',
+  //   'bilbo' => 'Bilbo',
+  // ],
+
+  // Non-grouped
+  'alain' => 'Alain',
+  'albert' => 'Albert',
+  'anthony' => 'Anthony',
+  'baldwin' => 'Baldwin',
+  'barney' => 'Barney',
+  'bilbo' => 'Bilbo',
+
+];
+
+// Log input
+if (isset($_GET[$name])) echo log_html($_GET[$name], $name);
 
 ?>
 
+<!-- Breadcrumb -->
 <?=component('breadcrumb', [
   'Test' => url('test'),
   'select-multiple' => '#'
 ])?>
 
-<!-- The handle -->
-<button
-  class="btn btn-lg fd-btn-default js-select-multiple"
-  data-target="#the-select"
->
-  Multiple
-</button>
+<form action="<?=url('test/select-multiple')?>" method="get">
 
-<hr class="fd-hr">
+  <!-- The handle -->
+  <?=component('form/select-multiple-handle', [
+    'target' => '#the-select',
+    'css' => ['btn-lg', 'fd-btn-default'],
+    'state' => isset($_GET[$name]) && is_array($_GET[$name]),
+  ])?>
 
-<!-- The select -->
-<select
-  class="form-control input-lg text-monospace"
-  name="param"
-  id="the-select"
->
-  <?php foreach ($items as $value => $label): ?>
-    <option value="<?=$value?>"><?=$label?></option>
-  <?php endforeach; ?>
-</select>
+  <hr class="fd-hr">
+
+  <!-- The select -->
+  <?=component('form/select-multiple-items', [
+    'id' => 'the-select',
+    'name' => $name,
+    'items' => $items,
+    'state' => $_GET[$name] ?? null,
+    'css' => ['input-lg', 'text-monospace'],
+  ])?>
+
+  <!-- The submit -->
+  <hr class="fd-hr">
+  <button type="submit" class="btn btn-lg btn-primary">SUBMIT</button>
+
+</form>

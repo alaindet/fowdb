@@ -5,12 +5,17 @@
 // component: select-multiple-items
 
 // VARIABLES
-// $classes
+// $css (optional)
 // $target
+// $state (optional)
+
+$css = isset($css) ? ' '.implode(' ', $css) : '';
+$active = (isset($state) && $state) ? ' active' : '';
 
 ?>
 <button
-  class="js-select-multiple<?=isset($classes) ? ' '.$classes : '' ?>"
+  type="button"
+  class="js-select-multiple btn<?=$css?><?=$active?>"
   data-target="<?=$target?>"
 >
   Multiple
