@@ -155,6 +155,6 @@ function makeDirectories(filePath) {
   const _path = app.dependencies.path;
   const dir = _path.dirname(filePath);
   if (_fs.existsSync(dir)) return true;
-  makeDirectories(dir, path);
+  makeDirectories(dir);
   _fs.mkdirSync(dir);
 }
