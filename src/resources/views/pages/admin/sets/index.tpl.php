@@ -27,19 +27,14 @@
     <hr>
   </div>
 
-  <!-- Pagination (save and re-use it) -->
-  <div class="col-xs-12">
-    <?=$pagelinks = component('pagination', $pagination)?>
-  </div>
-
-  <!-- Progress bar -->
-  <div class="col-xs-12">
-    <?=component('progress-bar', [
-      'from' => $pagination['lower-bound'],
-      'to' => $pagination['upper-bound'],
-      'total' => $pagination['total']
-    ])?>
-  </div>
+  <!-- Pagination (top) -->
+  <?php if ($pagination['has-pagination']): ?>
+    <div class="col-xs-12">
+      <?=$pagelinks = component('pagination', [
+        'pagination' => $pagination,
+      ])?>
+    </div>
+  <?php endif; ?>
 
   <!-- Sets list -->
   <div class="col-xs-12">
@@ -53,9 +48,10 @@
     <?=component('top-anchor')?>
   </div>
 
-  <!-- Pagination -->
-  <div class="col-xs-12">
-    <?=$pagelinks?>
-  </div>
+  <?php if ($pagination['has-pagination']): ?>
+    <div class="col-xs-12">
+      <?=$pagelinks?>
+    </div>
+  <?php endif; ?>
   
 </div>
