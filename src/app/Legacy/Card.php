@@ -99,9 +99,9 @@ class Card
             // $raceLabel -----------------------------------------------------
 
             $raceTypeLabels = CardType::$withRace;
-            (empty(array_diff($raceTypeLabels, $typeLabels)))
-                ? $raceLabel = 'race'
-                : $raceLabel = 'trait';
+            (array_diff($raceTypeLabels, $typeLabels) === $raceTypeLabels)
+                ? $raceLabel = 'trait'
+                : $raceLabel = 'race';
 
             // $raceValue -----------------------------------------------------
             $raceValue = '<em>(None)</em>';
