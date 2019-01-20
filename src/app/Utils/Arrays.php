@@ -142,30 +142,93 @@ class Arrays
      * @param array $whitelist
      * @return array
      */
-    public static function filterWithWhitelist(
+    public static function whitelist(
         array $array,
         array $whitelist
     ): array
     {
-        $result = [];
+        return array_intersect($array, $whitelist);
 
-        $whitelistCount = count($whitelist);
-        $arrayCount = count($array);
+        // $result = [];
 
-        // Decide what to loop on based for performance
-        if ($arrayCount < $whitelistCount) {
-            $count = &$arrayCount;
-            $list = &$array;
-            $otherList = &$whitelist;
-        } else {
-            $count = &$whitelistCount;
-            $list = &$whitelist;
-            $otherList = &$array;
+        // $whitelistCount = count($whitelist);
+        // $arrayCount = count($array);
+
+        // // Decide what array to loop on based on their lenghts
+        // if ($arrayCount < $whitelistCount) {
+        //     $count = &$arrayCount;
+        //     $list = &$array;
+        //     $otherList = &$whitelist;
+        // } else {
+        //     $count = &$whitelistCount;
+        //     $list = &$whitelist;
+        //     $otherList = &$array;
+        // }
+
+        // for ($i = 0; $i < $count; $i++) {
+        //     $item = &$list[$i];
+        //     if (in_array($item, $otherList)) $result[] = $item;
+        // }
+
+        // return $result;
+    }
+
+    /**
+     * Filters an array by its keys through a whitelist array
+     *
+     * @param array $toFilter
+     * @param array $whitelist
+     * @return array
+     */
+    public static function whitelistKeys(
+        array $toFilter,
+        array $whitelist
+    ): array
+    {
+        $results = [];
+
+        // Whitelist is shorter (loop on that)
+        if (count($whitelist) < count($toFilter)) {
+            foreach ($whitelist as $allowedKey) {
+                if (isset($toFilter[$allowedKey])) {
+                    $results[$allowedKey] = $toFilter[$allowedKey];
+                }
+            }
+        }
+        
+        // Array to be filtered is shorter (loop on that)
+        else {
+            foreach ($toFilter as $key => $value) {
+                if (in_array($key, $whitelist)) {
+                    $results[$key] = $value;
+                }
+            }
         }
 
-        for ($i = 0; $i < $count; $i++) {
-            $item = &$list[$i];
-            if (in_array($item, $otherList)) $result[] = $item;
+        return $results;
+    }
+
+    /**
+     * Whitelists an input array through a default array (by keys) and uses
+     * default values if input is missing them
+     * 
+     * If a value from input is missing and its default value is NULL,
+     * the value is optional and is not stored in the resulting array
+     *
+     * @param array $input
+     * @param array $defaults
+     * @return array
+     */
+    public static function defaults(
+        array $input,
+        array $defaults
+    ): array
+    {
+        $result = [];
+
+        foreach ($defaults as $key => $defaultValue) {
+            $value = $input[$key] ?? $defaultValue;
+            if (isset($value)) $result[$key] = $value;
         }
 
         return $result;
