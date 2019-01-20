@@ -78,7 +78,7 @@
 
   <!-- Application initial state -->
   <script>
-    window.INIITIAL_STATE = <?=json_encode(
+    window.INITIAL_STATE = <?=json_encode(
       $state,
       JSON_FORCE_OBJECT | JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES
     )?>;
