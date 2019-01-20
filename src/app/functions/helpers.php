@@ -341,11 +341,12 @@ function escape(string $string): string
  *
  * @param mixed $data Can be any type of data
  * @param string $title Optional
+ * @param bool $wrap Wraps the line at the end of the viewport
  * @return string HTML-friendly log of provided data
  */
-function log_html($data, string $title = null): string
+function log_html($data, string $title = null, bool $wrap = null): string
 {
-	return \App\Utils\Logger::html($data, $title);
+	return \App\Utils\Logger::html($data, $title, $wrap);
 }
 
 /**
