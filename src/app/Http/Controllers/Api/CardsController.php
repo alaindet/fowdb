@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Http\Response\JsonResponse;
-use App\Legacy\CardSearch as Search;
+use App\Services\Resources\Card\Search\Search;
 use App\Models\Card as Model;
 
 /**
@@ -16,22 +16,11 @@ class CardsController extends Controller
     private function autocompleteError(): string
     {
         return (new JsonResponse)
-            ->setData(['label' => 'No term', 'value' => 'No term'])
+            ->setData([
+                'label' => 'No term',
+                'value' => 'No term'
+            ])
             ->render();
-    }
-
-    public function search(Request $request): string
-    {
-        $search = new Search;
-        $search->processFilters($request->input()->get());
-
-        $data = [
-            'response' => true,
-            'cardsData' => $search->getCards(),
-            'nextPage' => $search->isPagination
-        ];
-
-        return (new JsonResponse)->setData($data)->render();
     }
 
     public function autocompleteNames(Request $request): string
