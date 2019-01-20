@@ -344,7 +344,7 @@ function escape(string $string): string
  * @param bool $wrap Wraps the line at the end of the viewport
  * @return string HTML-friendly log of provided data
  */
-function log_html($data, string $title = null, bool $wrap = null): string
+function log_html($data, string $title = null, bool $wrap = false): string
 {
 	return \App\Utils\Logger::html($data, $title, $wrap);
 }
