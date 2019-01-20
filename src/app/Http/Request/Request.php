@@ -23,7 +23,7 @@ class Request
 
     public function setBaseUrl(string $baseUrl = null): Request
     {
-        $this->baseUrl = $baseUrl;
+        if (isset($baseUrl)) $this->baseUrl = $baseUrl;
         return $this;
     }
 
@@ -34,7 +34,7 @@ class Request
 
     public function setMethod(string $method = null): Request
     {
-        $this->method = $method;
+        if (isset($method)) $this->method = $method;
         return $this;
     }
 
@@ -45,7 +45,7 @@ class Request
 
     public function setHost(string $host = null): Request
     {
-        $this->host = $host;
+        if (isset($host)) $this->host = $host;
         return $this;
     }
 
@@ -56,7 +56,7 @@ class Request
     
     public function setScheme(string $scheme = null): Request
     {
-        $this->scheme = $scheme;
+        if (isset($scheme)) $this->scheme = $scheme;
         return $this;
     }
 
@@ -65,31 +65,31 @@ class Request
         return $this->scheme;
     }
 
-    public function setHttpPort(string $httpPort = null): Request
+    public function setHttpPort(int $httpPort = null): Request
     {
-        $this->httpPort = $httpPort;
+        if (isset($httpPort)) $this->httpPort = $httpPort;
         return $this;
     }
 
-    public function getHttpPort(): string
+    public function getHttpPort(): int
     {
         return $this->httpPort;
     }
 
-    public function setHttpsPort(string $httpsPort = null): Request
+    public function setHttpsPort(int $httpsPort = null): Request
     {
-        $this->httpsPort = $httpsPort;
+        if (isset($httpsPort)) $this->httpsPort = $httpsPort;
         return $this;
     }
 
-    public function getHttpsPort(): string
+    public function getHttpsPort(): int
     {
         return $this->httpsPort;
     }
 
     public function setQueryString(string $queryString = null): Request
     {
-        $this->queryString = $queryString;
+        if (isset($queryString)) $this->queryString = $queryString;
         return $this;
     }
 
@@ -102,7 +102,7 @@ class Request
     {
         if (isset($path)) {
             $pos = strpos($path, '?');
-            if ($pos !== false) $value = substr($path, 0, $pos);
+            if ($pos !== false) $path = substr($path, 0, $pos);
             $this->path = $path;
         }
 
@@ -136,14 +136,17 @@ class Request
         return Input::getInstance();
     }
 
-    public function getCurrentUrl(bool $withQueryString = true): string
+    public function getCurrentUrl(bool $withQueryString = false): string
     {
-        $currentUrl = url($this->path);
+        // $currentUrl = url($this->path);
 
-        if (!$withQueryString) return $currentUrl;
+        // if (!$withQueryString) return $currentUrl;
 
-        $qs = !empty($this->queryString) ? '?'.$this->queryString : '';
-        return $currentUrl . $qs;
+        // $qs = !empty($this->queryString) ? '?'.$this->queryString : '';
+        // return $currentUrl . $qs;
+
+        $queryString = !empty($this->queryString) ? '?'.$this->queryString : '';
+        return url($this->path) . $queryString;
     }
 
     /**
