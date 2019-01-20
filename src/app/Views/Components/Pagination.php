@@ -123,7 +123,6 @@ class Pagination extends Component
         $last =& $this->state['pagination']['last-page'];
         $link =& $this->state['pagination']['link'];
         $baseLink = $link . ((strpos($link,'?')===false)?'?':'&') . 'page=';
-        $pageNumbersCount = count($pageNumbers);
 
         // Previous page
         $prev = max($current - 1, $first);

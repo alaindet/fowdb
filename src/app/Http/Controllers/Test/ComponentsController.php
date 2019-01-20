@@ -55,4 +55,28 @@ class ComponentsController extends Controller
             ->minify(false)
             ->render();
     }
+
+    public function pagination(Request $request): string
+    {
+        $pagination = [
+            'total' => 3128,
+            'current-page' => 100,
+            'last-page' => 126,
+            'more' => 1,
+            'lower-bound' => 2476,
+            'upper-bound' => 2500,
+            'link' => 'https://www.fowdb.altervista.org/cards',
+            'has-pagination' => 1,
+            'per-page' => 25,
+        ];
+
+        return (new Page)
+            ->template('test/pagination')
+            ->title('Test: pagination component')
+            ->variables([
+                'pagination' => $pagination,
+            ])
+            ->minify(false)
+            ->render();
+    }
 }
