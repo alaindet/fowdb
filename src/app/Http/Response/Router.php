@@ -42,17 +42,17 @@ class Router
     public function setRequest(Request $request): Router
     {
         $this->request = new SymfonyRequestContext(
-            $baseUrl = $request->baseUrl(),
-            $method = $request->method(),
-            $host = $request->host(),
-            $scheme = $request->scheme(),
-            $httpPort = $request->httpPort(),
-            $httpsPort = $request->httpsPort(),
-            $path = $request->path(),
-            $queryString = $request->queryString()
+            $request->getBaseUrl(),
+            $request->getMethod(),
+            $request->getHost(),
+            $request->getScheme(),
+            $request->getHttpPort(),
+            $request->getHttpsPort(),
+            $request->getPath(),
+            $request->getQueryString()
         );
 
-        $this->uri = $request->path();
+        $this->uri = $request->getPath();
 
         return $this;
     }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Request;
 
-use App\Base\GetterSetterTrait;
 use App\Http\Request\Input;
 use App\Services\Alert;
 use App\Services\Validation\Validation;
@@ -11,8 +10,6 @@ use App\Exceptions\ApiValidationException;
 
 class Request
 {
-    use GetterSetterTrait;
-
     private $baseUrl;
     private $method;
     private $host;
@@ -24,53 +21,106 @@ class Request
     private $app;
     private $validationException = ValidationException::class;
 
-    public function baseUrl(string $value = null)
+    public function setBaseUrl(string $baseUrl = null): Request
     {
-        return $this->getterSetter('baseUrl', $value);
+        $this->baseUrl = $baseUrl;
+        return $this;
     }
 
-    public function method(string $value = null)
+    public function getBaseUrl(): string
     {
-        return $this->getterSetter('method', $value);
+        return $this->baseUrl;
     }
 
-    public function host(string $value = null)
+    public function setMethod(string $method = null): Request
     {
-        return $this->getterSetter('host', $value);
+        $this->method = $method;
+        return $this;
     }
 
-    public function scheme(string $value = null)
+    public function getMethod(): string
     {
-        return $this->getterSetter('scheme', $value);
+        return $this->method;
     }
 
-    public function httpPort(int $value = null)
+    public function setHost(string $host = null): Request
     {
-        return $this->getterSetter('httpPort', $value);
+        $this->host = $host;
+        return $this;
     }
 
-    public function httpsPort(int $value = null)
+    public function getHost(): string
     {
-        return $this->getterSetter('httpsPort', $value);
+        return $this->host;
+    }
+    
+    public function setScheme(string $scheme = null): Request
+    {
+        $this->scheme = $scheme;
+        return $this;
     }
 
-    public function queryString(string $value = null)
+    public function getScheme(): string
     {
-        return $this->getterSetter('queryString', $value);
+        return $this->scheme;
     }
 
-    public function path(string $value = null)
+    public function setHttpPort(string $httpPort = null): Request
     {
-        if (isset($value)) {
-            $pos = strpos($value, '?');
-            if ($pos !== false) $value = substr($value, 0, $pos);
-            $this->path = $value;
-            return $this;
+        $this->httpPort = $httpPort;
+        return $this;
+    }
+
+    public function getHttpPort(): string
+    {
+        return $this->httpPort;
+    }
+
+    public function setHttpsPort(string $httpsPort = null): Request
+    {
+        $this->httpsPort = $httpsPort;
+        return $this;
+    }
+
+    public function getHttpsPort(): string
+    {
+        return $this->httpsPort;
+    }
+
+    public function setQueryString(string $queryString = null): Request
+    {
+        $this->queryString = $queryString;
+        return $this;
+    }
+
+    public function getQueryString(): string
+    {
+        return $this->queryString;
+    }
+
+    public function setPath(string $path = null): Request
+    {
+        if (isset($path)) {
+            $pos = strpos($path, '?');
+            if ($pos !== false) $value = substr($path, 0, $pos);
+            $this->path = $path;
         }
 
+        return $this;
+    }
+
+    public function getPath(): string
+    {
         return $this->path;
     }
 
+    /**
+     * Sets and reads app data
+     *
+     * @param string $name
+     * @param any $value
+     * @return void
+     */
     public function app(string $name, $value = null)
     {
         if (isset($value)) {
@@ -86,12 +136,21 @@ class Request
         return Input::getInstance();
     }
 
-    public function getCurrentUrl($withQueryString = true): string
+    public function getCurrentUrl(bool $withQueryString = true): string
     {
-        $queryString = !empty($this->queryString) ? '?'.$this->queryString : '';
-        return url($this->path) . $queryString;
+        $currentUrl = url($this->path);
+
+        if (!$withQueryString) return $currentUrl;
+
+        $qs = !empty($this->queryString) ? '?'.$this->queryString : '';
+        return $currentUrl . $qs;
     }
 
+    /**
+     * Activates JSON validation errors (used in API)
+     *
+     * @return Request
+     */
     public function api(): Request
     {
         $this->validationException = ApiValidationException::class;
@@ -99,37 +158,38 @@ class Request
         return $this;
     }
 
+    /**
+     * Validate inputs, throws validation exception on fail
+     *
+     * @param string $httpMethod
+     * @param array $toValidate
+     * @param array $input
+     * @return void
+     */
     public function validate(
-        string $type,
-        array $toValidate,
+        string $httpMethod,
+        array $rules,
         array $input = null
     ): void
     {
         $errors = (new Validation)
-            ->input($input ?? $this->input()->$type())
-            ->validate($toValidate)
+            ->input($input ?? $this->input()->$httpMethod())
+            ->validate($rules)
             ->getErrors();
 
+        // No validation errors, quit here
+        if (empty($errors)) return;
+
         // Build the error message
-        if (!empty($errors)) {
-
-            // Single error
-            if (count($errors) === 1) {
-                $message = $errors[0];
-            }
-            
-            // Errors list
-            else {
-                $message = collapse(
-                    "<ul style='display:inline-block'>",
-                    array_reduce($errors, function ($message, $error) {
-                        return $message .= "<li>{$error}</li>";
-                    }),
-                    "</ul>"
-                );
-            }
-
-            throw new $this->validationException($message);
+        if (count($errors) === 1) {
+            $message = $errors[0];
+        } else {
+            $message = "<ul class='display-inline-block'>";
+            foreach ($errors as $error) $message .= "<li>{$error}</li>";
+            $message .= "</ul>";
         }
+
+        // Throw a validation error
+        throw new $this->validationException($message);
     }
 }
