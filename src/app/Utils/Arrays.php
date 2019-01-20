@@ -142,7 +142,7 @@ class Arrays
      * @param array $whitelist
      * @return array
      */
-    public static function filterWhitelist(
+    public static function filterWithWhitelist(
         array $array,
         array $whitelist
     ): array

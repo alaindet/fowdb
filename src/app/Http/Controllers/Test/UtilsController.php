@@ -15,7 +15,7 @@ class UtilsController extends Controller
         $whitelist = [1,3,5,7,9,11,13];
 
         return log_html(
-            Arrays::filterWhitelist($raw, $whitelist)
+            Arrays::filterWithWhitelist($raw, $whitelist)
         );
     }
 }
