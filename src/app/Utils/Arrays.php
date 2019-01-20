@@ -148,29 +148,6 @@ class Arrays
     ): array
     {
         return array_intersect($array, $whitelist);
-
-        // $result = [];
-
-        // $whitelistCount = count($whitelist);
-        // $arrayCount = count($array);
-
-        // // Decide what array to loop on based on their lenghts
-        // if ($arrayCount < $whitelistCount) {
-        //     $count = &$arrayCount;
-        //     $list = &$array;
-        //     $otherList = &$whitelist;
-        // } else {
-        //     $count = &$whitelistCount;
-        //     $list = &$whitelist;
-        //     $otherList = &$array;
-        // }
-
-        // for ($i = 0; $i < $count; $i++) {
-        //     $item = &$list[$i];
-        //     if (in_array($item, $otherList)) $result[] = $item;
-        // }
-
-        // return $result;
     }
 
     /**
