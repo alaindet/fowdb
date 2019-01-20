@@ -21,14 +21,14 @@ if (isset($_GET['p']) || isset($_GET['do'])) {
 
 // Generate HTTP request
 $request = (new \App\Http\Request\Request)
-    ->baseUrl('/')
-    ->method($_SERVER['REQUEST_METHOD'] ?? 'GET')
-    ->host($_SERVER['HTTP_HOST'] ?? config('app.host'))
-    ->scheme($_SERVER['REQUEST_SCHEME'] ?? 'http')
-    ->httpPort(80)
-    ->httpsPort(443)
-    ->path($_SERVER['REQUEST_URI'] ?? '/')
-    ->queryString($_SERVER['QUERY_STRING']);
+    ->setBaseUrl('/')
+    ->setMethod($_SERVER['REQUEST_METHOD'] ?? 'GET')
+    ->setHost($_SERVER['HTTP_HOST'] ?? config('app.host'))
+    ->setScheme($_SERVER['REQUEST_SCHEME'] ?? 'http')
+    ->setHttpPort(80)
+    ->setHttpsPort(443)
+    ->setPath($_SERVER['REQUEST_URI'] ?? '/')
+    ->setQueryString($_SERVER['QUERY_STRING']);
 
 // Read the routes
 // $routes = \App\Services\FileSystem::loadFile(path_data('test/routes.php'));
