@@ -1,5 +1,5 @@
 {
-  "name": "fowdb-craton-assets",
+  "name": "fowdb-assets",
   "version": "1.0.0",
   "description": "Building tools for FoWDB",
   "main": "index.js",
