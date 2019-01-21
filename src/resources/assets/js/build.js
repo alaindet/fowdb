@@ -52,8 +52,8 @@ catch (error) {
 
 // Build all dependencies as a single string
 app.output.raw = (app.build.dependencies || [])
-.map(file => loadFileAsString(`${app.paths.dev}/dependencies/${file}.js`))
-.join('');
+  .map(file => loadFileAsString(`${app.paths.dev}/dependencies/${file}.js`))
+  .join('');
 
 // Load page script
 let main = loadFileAsString(app.paths.main);

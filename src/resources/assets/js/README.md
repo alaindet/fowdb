@@ -10,7 +10,7 @@ Since there are not so many dependencies or no dependencies at all (apart from s
 
 I wanted page scripts to rely on shared functionalities and I *did not* want to just copy-paste the code around all page scripts. I then built a `build.js` script to glue and minify page scripts together, providing flexibility.
 
-There are 2 NPM scripts which use the custom `builder.js` which in turns uses UglifyJS3 to glue and minify all needed JS files together.
+There are 2 NPM scripts which use the custom `build.js` which in turn uses UglifyJS3 to glue and minify all needed JS files together.
 
 ```
 npm run build-js -- --page=foo
@@ -79,37 +79,67 @@ npm run watch-build-js -- --page=foo
    ```
    Please mind that, even on Windows, page names always use forward slashes when called from the terminal, like `--page=foo/bar`. The `build.js` script uses forward slashes internally and translates them to backslashes only when passing the `--windows` flag.
 
+5. If you don't want to compress the final bundle, pass the `--dev` flag to the script, like this
+   ```
+   npm run build-js -- --page=foo/bar --windows --dev
+   ```
+
 ## Partials
 
 - Page scripts may get quite big and unmanageable, that's why you can use fake imports called *partials*
-- A partial is any `*.js` file from, you just have to provide its path
-- This file is copied as a string while building the output file and then it's simply pasted inside the page script, on a specific target line: a comment line like `// @partial: $PARTIAL_PATH` where `$PARTIAL_PATH` is the partial's path, relative to **dev**, without `.partial.js`
+- A partial is any `*.js` file, you just have to provide its path
+- This file is literally copy-pasted as a string to a specific line ("fake import") while building the output file
+- The target line is a comment line like `// @partial: $PARTIAL_PATH` where `$PARTIAL_PATH` is the partial's path, relative to **dev**, without the extension
 - Example:
   - Comment on page script: `// @partial: pages/public/cards/search/bootstrap`
   - Partial file:  **dev**`/pages/public/cards/search/bootstrap.js`
 
 ## Example
 
-```
-// /pages/foo/bar.build.json
-{
-    "output": "foo/bar",
-    "dependencies": [
-        "vendor/bootstrap",
-        "functions/numbers/parse-integer",
-        "components/dropdown-input"
-    ],
-    "partials": [
-        "pages/foo/bar/partials/state",
-        "pages/foo/bar/partials/controller",
-        "pages/foo/bar/partials/bootstrap",
-    ]
-}
-```
+- The build file
+  ```
+  // /src/resources/assets/js/pages/foo/bar.build.json
+  
+  {
+      "output": "foo/bar",
+      "dependencies": [
+          "vendor/bootstrap",
+          "functions/numbers/parse-integer",
+          "components/dropdown-input"
+      ],
+      "partials": [
+          "pages/foo/partials/my-partial"
+      ]
+  }
+  ```
 
-```
-npm run build-js -- --page=foo/bar --windows
-```
+- The page script
+  ```
+  // /src/resources/assets/js/pages/foo/bar.js
+  
+  console.log("This is the foo/bar page");
+  // @partial: pages/foo/partials/my-partial
+  ```
+
+- The partial script
+  ```
+  // /src/resources/assets/js/pages/foo/partials/my-partial.js
+  
+  console.log("And this is foo/partial/my-partial");
+  ```
+
+- Then execute this
+  ```
+  npm run build-js -- --page=foo/bar --windows --dev
+  ```
+
+- The output file
+  ```
+  // /js/foo/bar.js
+  
+  console.log("This is the foo/bar page");
+  console.log("And this is foo/partial/my-partial");
+  ```
 
 ## References
 
