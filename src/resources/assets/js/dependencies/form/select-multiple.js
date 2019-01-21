@@ -21,7 +21,7 @@
 (function () {
 
   // CSS Selectors ------------------------------------------------------------
-  var css_selectMultiple = '.js-select-multiple';
+  var css_multipleHandle = '.js-select-multiple';
 
 
   // Bootstrap ----------------------------------------------------------------
@@ -30,8 +30,8 @@
     $(document)
 
       // Original events
-      .on('click', css_selectMultiple, function () {
-        handleSelectMultipleClick($(this));
+      .on('click', css_multipleHandle, function (event) {
+        $(document).trigger('fd:select-multiple:toggle', [event, $(this)]);
       })
 
       // Custom events
@@ -43,27 +43,28 @@
 
   // Controller functions -----------------------------------------------------
 
-  function handleSelectMultipleClick(target) {
-    $(document).trigger('fd:select-multiple:toggle', [target]);
+  function handleSelectMultipleEvent(customEvent, originalEvent, handle) {
+
+    const targetId = handle.data('target');
+    const target = $(targetId);
+    const isMultiple = !!target.attr('multiple');
+
+    if (isMultiple) {
+      view_disableMultiple(target, handle);
+    } else {
+      view_enableMultiple(target, handle);
+    }
+
   }
 
-  function handleSelectMultipleEvent(event, handle) {
+  function handleResetEvent(customEvent) {
 
-    var target = $(handle.data('target'));
-    var isMultiple = !!target.attr('multiple');
-
-    if (isMultiple) view_disableMultiple(target);
-    else view_enableMultiple(target);
-
-  }
-
-  function handleResetEvent(event) {
-
-    $(css_selectMultiple).each(function () {
-
-      var target = $($(this).data('target'));
-      view_enableMultiple(target);
-
+    // Loop on all multiple handles and disable all select-multiple components
+    $(css_multipleHandle).each(function () {
+      const handle = $(this);
+      const targetId = handle.data('target');
+      const target = $(targetId);
+      view_disableMultiple(target, handle);
     });
 
   }
@@ -76,14 +77,18 @@
 
   // View functions -----------------------------------------------------------
 
-  function view_enableMultiple(target) {
+  function view_enableMultiple(target, handle) {
+    handle
+      .addClass('active');
     target
       .attr('name', target.attr('name') + '[]')
       .attr('multiple', 'true')
       .attr('size', 10);
   }
 
-  function view_disableMultiple(target) {
+  function view_disableMultiple(target, handle) {
+    handle
+      .removeClass('active');
     target
       .attr('name', target.attr('name').replace('[]', ''))
       .removeAttr('multiple')
