@@ -1,13 +1,13 @@
 <?php
 
 // REQUIRES
-// /src/resources/assets/js/dependencies/form/select-multiple.js
+// script: dependencies/form/select-multiple.js
 // component: select-multiple-items
 
 // VARIABLES
 // $css (optional)
-// $target
 // $state (optional)
+// $target
 
 $css = isset($css) ? ' '.implode(' ', $css) : '';
 $active = (isset($state) && $state) ? ' active' : '';

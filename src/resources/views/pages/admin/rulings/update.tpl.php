@@ -148,3 +148,5 @@
     </form>
   </div>
 </div>
+
+<?=include_view('pages/admin/rulings/includes/conventions')?>

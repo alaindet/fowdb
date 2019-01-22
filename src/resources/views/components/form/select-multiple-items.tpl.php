@@ -5,11 +5,11 @@
 // component: select-multiple-handle
 
 // VARIABLES
-// $id
-// $name
-// $items
-// $state (optional)
 // $css (optional)
+// $id
+// $items
+// $name
+// $state (optional)
 
 // CSS
 $css = isset($css) ? ' '.implode(' ', $css) : '';
