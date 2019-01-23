@@ -62,57 +62,69 @@
 */
 (function () {
 
-  // CSS Selectors ------------------------------------------------------------
-  var css_inputDropdown = '.js-input-dropdown';
-  var css_inputDropdownFace = '.js-input-dropdown-face';
-  var css_inputDropdownItem = '.js-input-dropdown-item';
-  var css_inputDropdownInput = '.js-input-dropdown-hidden';
+  // CSS Selectors ----------------------------------------------------------
+  const css_inputDropdown = '.js-input-dropdown';
+  const css_inputDropdownFace = '.js-input-dropdown-face';
+  const css_inputDropdownItem = '.js-input-dropdown-item';
+  const css_inputDropdownInput = '.js-input-dropdown-hidden';
 
 
-  // Bootstrap ----------------------------------------------------------------
+  // Bootstrap --------------------------------------------------------------
   function bootstrap() {
 
     $(document)
 
       // Original events
       .on('click', css_inputDropdownItem, function () {
-        handleDropdownItemClick($(this));
+        $(document).trigger('fd:input-dropdown:select-item', [$(this)]);
       })
 
       // Custom events
       .on('fd:input-dropdown:select-item', handleSelectItemEvent)
+      .on('fd:input-dropdown:submit', handleSubmitEvent)
       .on('fd:input-dropdown:reset', handleResetEvent)
 
   }
 
 
-  // Controller functions -----------------------------------------------------
-
-  function handleDropdownItemClick(target) {
-    $(document).trigger('fd:input-dropdown:select-item', [target]);
-  }
-
+  // Controller functions ---------------------------------------------------
   function handleSelectItemEvent(event, item) {
-    var container = item.parents(css_inputDropdown);
+    const container = item.parents(css_inputDropdown);
     view_updateInput(container, item.data('value'));
     view_updateFace(container, item.data('face'));
   }
 
+  /**
+   * Disables the dropdown hidden input on submit if text input is empty
+   * 
+   * @param object event 
+   */
+  function handleSubmitEvent(event) {
+    $(css_inputDropdown).each(function () {
+      const container = $(this);
+      const inputText = $("input[type='text']", container);
+      const inputDropdown = $(css_inputDropdownInput, container);
+      if (inputText.val() === '' || inputDropdown.val() === '') {
+        inputDropdown.prop('disabled', true);
+      }
+    });
+  }
+
   function handleResetEvent(event) {
     $(css_inputDropdown).each(function () {
-      var container = $(this);
+      const container = $(this);
       view_updateInput(container);
       view_updateFace(container);
     });
   }
 
 
-  // Model functions ----------------------------------------------------------
+  // Model functions --------------------------------------------------------
 
   // ...
 
 
-  // View functions -----------------------------------------------------------
+  // View functions ---------------------------------------------------------
 
   function view_updateInput(container, value) {
     var element = $(css_inputDropdownInput, container);
@@ -127,12 +139,12 @@
   }
 
 
-  // Utility functions --------------------------------------------------------
+  // Utility functions ------------------------------------------------------
 
   // ...
 
 
-  // Go! ----------------------------------------------------------------------
+  // Go! --------------------------------------------------------------------
   $(document).ready(bootstrap);
 
 })();

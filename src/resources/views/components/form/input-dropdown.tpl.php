@@ -4,25 +4,28 @@
 // /src/resources/assets/js/dependencies/form/input-dropdown.js
 
 // VARIABLES
-// dropdown[]
+// $dropdown[]
 //   dropdown.name
 //   dropdown.items
-//   dropdown.size
+//   dropdown.css[] (optional)
 //   dropdown.default[]
 //     dropdown.default.face
 //     dropdown.default.value
 //   dropdown.state[]
 //     dropdown.state.face
 //     dropdown.state.value
-// input[]
+// $input[]
 //   input.name
-//   input.size
 //   input.state
+//   input.css[] (optional)
+
+$dropdownCss = isset($dropdown['css']) ? ' '.implode($dropdown['css']) : '';
+$inputCss = isset($input['css']) ? ' '.implode($input['css']) : '';
 
 ?>
 <div class="js-input-dropdown">
 
-  <!-- Dropdown input -->
+  <!-- Dropdown hidden input -->
   <input
     type="hidden"
     name="<?=$dropdown['name']?>"
@@ -37,7 +40,7 @@
       <!-- Dropdown button -->
       <button
         type="button"
-        class="dropdown-toggle btn<?=$dropdown['size']?> fd-btn-default"
+        class="dropdown-toggle btn fd-btn-default<?=$dropdownCss?>"
         data-toggle="dropdown"
         aria-haspopup="true"
         aria-expanded="false"
@@ -80,7 +83,7 @@
     <input
       type="text"
       name="<?=$input['name']?>"
-      class="form-control<?=$input['size']?>"
+      class="form-control<?=$inputCss?>"
       value="<?=$input['state']?>"
     >
 
