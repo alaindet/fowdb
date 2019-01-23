@@ -1,56 +1,53 @@
 /**
  * REQUIRES
  * dependencies/utils/is-integer
+ * dependencies/utils/range
  * 
  * EXPORTS
  * window.APP.fitItems
  */
 
 /**
- * Fits card items to the current screen size
+ * Changes the size of items inside a container via CSS classes for sizing
  * 
- * @param bool readInput Flag for initializing (skips reading input value)
+ * The size is decided upon the container's width, but it can optionally be
+ * passed as integer
+ * 
+ * @param string container The container CSS selector
+ * @param string item The item CSS selector
+ * @param int itemsPerLine (Optional) How many items per line to show
+ * @return void
  */
 window.APP.fitItems = function(
-  boxSelector,
-  itemSelector,
-  inputSelector,
-  skipInput
+  container = '.js-fd-card-items',
+  item = '.fd-grid',
+  itemsPerLine = 0
 ) {
-  
-  // CSS selectors
-  var box = boxSelector || '#cards-container';
-  var item = itemSelector || '.fdb-card';
-  var input = inputSelector || '#opt_i_numxrow';
+  const defaultWidth = 220;
+  const min = 1;
+  const max = 10;
 
-  // Default data
-  var defaultWidth = 200;
-  var minItems = 1;
-  var maxItems = 10;
-
-  // HTML elements
-  var inputEl = $(input);
-  var boxEl = $(box);
-  var boxWidth = parseInt(boxEl.width());
-
-  // Calculate how many items per row
-  if (ini) {
-    var itemsPerRow = Math.floor(boxWidth / defaultWidth);
-  } else {
-    var itemsPerRow = window.APP.isInteger(inputEl.val());
-    if (itemsPerRow < minItems) itemsPerRow = minItems;
-    if (itemsPerRow > maxItems) itemsPerRow = maxItems;
+  // Calculate items per row based on the container's width
+  if (itemsPerLine === 0) {
+    itemsPerLine = Math.floor($(container).width() / defaultWidth);
   }
+  
+  // Sanitize value anyway
+  if (itemsPerLine < min) itemsPerLine = min;
+  if (itemsPerLine > max) itemsPerLine = max;
 
-  // Build classes to remove
-  var classesToRemove = window.APP
-    .range(minItems, maxItems)
-    .map(function(i) { return item + '-' + i; })
+  // Remove dot (Ex.: .fd-grid => fd-grid)
+  const itemName = item.substr(1);
+
+  const cssWrongSizes = window.APP
+    .range(min, max)
+    .map(n => `${itemName}-${n}`)
     .join(' ');
 
-  // Adjust classes
-  $(item)
-    .removeClass(classesToRemove)
-    .addClass(item + '-' + itemsPerRow);
+  const cssRightSize = `${itemName}-${itemsPerLine}`;
 
+  // Adjust sizing on all items
+  $(item)
+    .removeClass(cssWrongSizes)
+    .addClass(cssRightSize);
 };
