@@ -8,11 +8,11 @@
  * 
  * @param int a Lower end
  * @param int b Upper end
+ * @param int step The distance between each element in the range
  * @return array The range
  */
-window.APP.range = function (a, b, step) {
-  var range = [];
-  var step = typeof step === 'undefined' ? 1 : step;
-  for (i = a; i <= b; i+=step) range.push(i);
+window.APP.range = function (a, b, step = 1) {
+  const range = [];
+  for (let i = a; i <= b; i+=step) range.push(i);
   return range;
 };
