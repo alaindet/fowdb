@@ -4,11 +4,15 @@
 // /src/resources/assets/js/dependencies/form/button-dropdown.js
 
 // VARIABLES
-// $default [face, value]
-// $items
 // $name
+// $items
+// $default[] (optional)
+//   face
+//   value
 // $size (optional)
-// $state (optional) [face, value]
+// $state[] (optional)
+//   face
+//   value
 
 // Specific to Bootstrap 3
 $sizes = [
@@ -19,21 +23,31 @@ $sizes = [
 ];
 
 $size = isset($size) && isset($sizes[$size]) ? ' '.$sizes[$size] : '';
+$nullable = false;
 
-// STATE ----------------------------------------------------------------------
+// Default
+if (!isset($default)) {
+  $nullable = true;
+  $default = [
+    'face' => 'Select...',
+    'value' => ''
+  ];
+}
+
+// STATE --------------------------------------------------------------------
 [$face, $value] = [$default['face'], $default['value']];
 if (isset($state) && isset($items[$state])) {
   [$face, $value] = [$items[$state], $state];
 }
 
 ?>
-<div class="js-input-dropdown">
+<div class="js-button-dropdown<?=$nullable ? ' --nullable' : ''?>">
 
   <!-- Dropdown input -->
   <input
     type="hidden"
     name="<?=$name?>"
-    class="js-input-dropdown-hidden"
+    class="js-button-dropdown-hidden"
     value="<?=$value?>"
     data-default="<?=$default['value']?>"
   >
@@ -49,7 +63,7 @@ if (isset($state) && isset($items[$state])) {
       aria-expanded="false"
     >
       <span
-        class="js-input-dropdown-face"
+        class="js-button-dropdown-face"
         data-default="<?=$default['face']?>"
       >
         <?=$face?>
@@ -67,7 +81,7 @@ if (isset($state) && isset($items[$state])) {
       ?>
         <li>
           <a
-            class="js-input-dropdown-item pointer"
+            class="js-button-dropdown-item pointer"
             data-face="<?=$face?>"
             data-value="<?=$value?>"
           >
