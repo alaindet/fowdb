@@ -4,8 +4,9 @@
  */
 
 /**
- * Checks if an input is an integer or at least numeric and returns an integer
- * for sure. If input is not numeric, returns 0 anyway
+ * Checks if an input is an integer or at least numeric
+ * If input is not integer nor numeric, returns 0
+ * Else returns the input integer as it is
  * 
  * @param any n Any numeric input (even strings)
  * @return int
