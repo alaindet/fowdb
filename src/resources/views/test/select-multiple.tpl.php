@@ -25,9 +25,6 @@ $items = [
 
 ];
 
-// Log input
-if (isset($_GET[$name])) echo log_html($_GET[$name], $name);
-
 ?>
 
 <!-- Breadcrumb -->
@@ -35,6 +32,12 @@ if (isset($_GET[$name])) echo log_html($_GET[$name], $name);
   'Test' => url('test'),
   'select-multiple' => '#'
 ])?>
+
+<?php // LOG
+  if (input()->has($name)) {
+    echo log_html(input()->get($name), $name);
+  }
+?>
 
 <form action="<?=url('test/select-multiple')?>" method="get">
 

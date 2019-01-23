@@ -24,8 +24,8 @@ $items = [
     ],
     'name' => 'INPUT_NAME',
     'size' => 'lg',
-    'state' => 2, // Should appear "bbb" selected
-    'items' => $items
+    'state' => input()->get('INPUT_NAME'),
+    'items' => $items,
   ])?>
 
   <!-- submit -->

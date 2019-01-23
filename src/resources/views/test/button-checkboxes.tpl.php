@@ -20,6 +20,7 @@ $items = [
   <?=component('form/button-checkboxes', [
     'name' => 'INPUT_NAME',
     'items' => $items,
+    'state' => input()->get('INPUT_NAME') ?? [],
     'css' => [
       'button' => ['mv-10', 'fd-btn-default']
     ]
