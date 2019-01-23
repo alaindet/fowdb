@@ -31,7 +31,7 @@ if (isset($state) && is_array($state)) {
   class="form-control<?=$css?>"
   <?=$multiple?>
 >
-  <option value="no">Select...</option>
+  <option value="">Select...</option>
   <?php foreach ($items as $key => $item): ?>
     <?php if (is_array($item)): ?>
       <optgroup label="<?=$key?>">
