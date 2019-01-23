@@ -1,21 +1,21 @@
 (function () {
 
-  // CSS Selectors ------------------------------------------------------------
-  var css_hideHandle = '.js-hider';
+  // CSS Selectors ----------------------------------------------------------
+  const css_hideHandle = '.js-hider';
 
-  // Application data ---------------------------------------------------------
-  var data_iconWhenOpen = 'fa-chevron-down';
-  var data_iconWhenClosed = 'fa-chevron-right';
+  // Application data -------------------------------------------------------
+  const data_iconWhenOpen = 'fa-chevron-down';
+  const data_iconWhenClosed = 'fa-chevron-right';
 
 
-  // Bootstrap ----------------------------------------------------------------
+  // Bootstrap --------------------------------------------------------------
   function bootstrap() {
 
     $(document)
 
       // Original events
-      .on('click', css_hideHandle, function () {
-        handleHideHandleClick($(this));
+      .on('click', css_hideHandle, function (event) {
+        $(document).trigger('fd:hider', [event, $(this)]);
       })
 
       // Custom events
@@ -24,42 +24,53 @@
   }
 
 
-  // Controller functions -----------------------------------------------------
+  // Controller functions ---------------------------------------------------
 
-  function handleHideHandleClick(target) {
-    $(document).trigger('fd:hider', [target]);
-  }
+  function handleHiderEvent(customEvent, originalEvent, handle) {
 
-  function handleHiderEvent(event, handle) {
-
-    var target = handle.data('target');
-    var targetElement = $(target);
-    var icon = $('i.fa', target);
+    const target = handle.data("target");
+    const targetElement = $(target);
+    const icon = $("i.fa", targetElement);
 
     if (icon) {
-      var iconWhenOpen = view_getIconWhenOpen(handle);
-      var iconWhenClosed = view_getIconWhenClosed(handle);
-      var isOpen = !targetElement.hasClass('hidden');
-      var classToRemove = isOpen ? iconWhenOpen : iconWhenClosed;
-      var classToAdd = isOpen ? iconWhenClosed : iconWhenOpen;
+      
+      const iconWhenOpen = view_getIconWhenOpen(handle);
+      const iconWhenClosed = view_getIconWhenClosed(handle);
+      const isOpen = !targetElement.hasClass('hidden');
+      const classToRemove = isOpen ? iconWhenOpen : iconWhenClosed;
+      const classToAdd = isOpen ? iconWhenClosed : iconWhenOpen;
 
       $("[data-target='" + target + "']").each(function () {
         $('i.fa', $(this))
           .removeClass(classToRemove)
           .addClass(classToAdd)
       });
+      
     }
+
+    // Activate/deactivate any related label handle
+    // which is not being clicked
+    $(`[data-target="${target}"]`).each(function () {
+      const current = $(this)[0];
+      if (
+        current.nodeName === 'LABEL' && // Is this a <label>?
+        !handle.is(current) // Is this being clicked?
+      ) {
+        $(current).toggleClass('active');
+      }
+    });
+
 
     targetElement.toggleClass("hidden");
   }
 
 
-  // Model functions ----------------------------------------------------------
+  // Model functions --------------------------------------------------------
 
   // ...
 
 
-  // View functions -----------------------------------------------------------
+  // View functions ---------------------------------------------------------
 
   function view_getIconWhenOpen(target) {
     return target.data('open-icon') || data_iconWhenOpen;
@@ -70,12 +81,12 @@
   }
 
 
-  // Utility functions --------------------------------------------------------
+  // Utility functions ------------------------------------------------------
 
   // ...
 
 
-  // Go! ----------------------------------------------------------------------
+  // Go! --------------------------------------------------------------------
   $(document).ready(bootstrap);
 
 })();
