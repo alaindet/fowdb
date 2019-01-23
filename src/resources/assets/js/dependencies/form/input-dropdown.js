@@ -113,8 +113,8 @@
   function handleResetEvent(event) {
     $(css_inputDropdown).each(function () {
       const container = $(this);
-      view_updateInput(container);
-      view_updateFace(container);
+      view_updateInput(container); // Uses default values
+      view_updateFace(container); // Uses default values
     });
   }
 

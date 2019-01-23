@@ -84,8 +84,9 @@
   function handleSubmitEvent(event) {
     $(css_buttonDropdown).each(function () {
       const container = $(this);
+      const input = $(css_buttonDropdownInput, container);
       const nullable = css_buttonDropdownNullable.substr(1); // Remove dot
-      if (container.hasClass(nullable)) {
+      if (container.hasClass(nullable) && input.val() === '') {
         const input = $(css_buttonDropdownInput, container);
         input.prop("disabled", true);
       }
