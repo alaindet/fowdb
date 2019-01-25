@@ -2,6 +2,8 @@
 .fd-card-item {
   padding: .3em;
   position: relative;
+  transition-property: flex-basis;
+  transition-duration: 150ms;
 }
 // Avoids nasty white corners
 .fd-card-item img {
