@@ -16,7 +16,7 @@
  * @param string container The container CSS selector
  * @param string item The item CSS selector
  * @param int itemsPerLine (Optional) How many items per line to show
- * @return void
+ * @return int Number of items per line
  */
 window.APP.fitItems = function(
   container = '.js-fd-card-items',
@@ -50,4 +50,6 @@ window.APP.fitItems = function(
   $(item)
     .removeClass(cssWrongSizes)
     .addClass(cssRightSize);
+
+  return itemsPerLine;
 };
