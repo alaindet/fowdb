@@ -21,15 +21,15 @@
 window.APP.fitItems = function(
   container = '.js-fd-card-items',
   item = '.fd-grid',
-  itemsPerLine = 0
+  itemsPerLine,
+  itemWidth = 220,
+  min = 1,
+  max = 10
 ) {
-  const defaultWidth = 220;
-  const min = 1;
-  const max = 10;
 
   // Calculate items per row based on the container's width
-  if (itemsPerLine === 0) {
-    itemsPerLine = Math.floor($(container).width() / defaultWidth);
+  if (typeof itemsPerLine === 'undefined') {
+    itemsPerLine = Math.floor($(container).width() / itemWidth);
   }
   
   // Sanitize value anyway
