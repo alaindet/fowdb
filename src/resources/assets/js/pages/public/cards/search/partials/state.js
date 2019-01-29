@@ -12,6 +12,7 @@ const css_itemsPerLineMore = "#js-items-per-line-more";
 
 // Application data ------------------------------------------------------
 const data_breakpoint = 768; // Pixels
+const data_enterKey = 13;
 let data_itemsPerLine = 0;
 const data_defaultFilters = [
   {

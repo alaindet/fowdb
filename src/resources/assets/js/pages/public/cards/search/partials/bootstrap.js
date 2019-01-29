@@ -1,6 +1,4 @@
-// console.log('bootstrap.partial.js');
-
-// Bootstrap -------------------------------------------------------------
+// Bootstrap ------------------------------------------------------------------
 function bootstrap() {
 
   // Events name space prefix
@@ -21,8 +19,12 @@ function bootstrap() {
     .on("click", css_itemsPerLineLess, () => {
       $(document).trigger("fd:cards-search:items-per-line:less");
     })
+    // Enter key
     .on("keyup", css_itemsPerLineInput, function(event) {
-      console.log('items-per-line-keyup', event.keyCode);
+      if (event.keyCode !== data_enterKey) return;
+      $(document).trigger(
+        "fd:cards-search:items-per-line:fit", [event, event.target.value]
+      );
     })
     .on("click", css_itemsPerLineMore, () => {
       $(document).trigger("fd:cards-search:items-per-line:more");
@@ -38,9 +40,6 @@ function bootstrap() {
 
   // Default: fit items into container based on container's size
   $(document).trigger("fd:cards-search:items-per-line:fit");
-
-  // Triggers also when clicking the "Back" button on the browser!
-  // console.log('bootstrapping...');
 }
 
 $(document).ready(bootstrap);
