@@ -40,7 +40,6 @@ use \App\Legacy\Authorization as LegacyAuthorization;
  * log_html
  * render
  * url
- * view_old // LEGACY
  */
 
 
@@ -370,27 +369,6 @@ function render(string $toRender): string
 function url(string $to = null, array $params = []): string
 {
 	return \App\Utils\Uri::build($to, $params);
-}
-
-/**
- * Calls the page constructor
- *
- * @param string $title
- * @param string $path
- * @param array $options
- * @param array $vars
- * @param boolean $minimize
- * @return void
- */
-function view_old(
-	string $title = null,
-	string $path = null,
-	array $options = null,
-	array $vars = null,
-	bool $minimize = true
-)
-{
-    return \App\Legacy\Page::build($title, $path, $options, $vars, $minimize);
 }
 
 /**

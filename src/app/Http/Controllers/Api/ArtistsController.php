@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
-use App\Legacy\CardSearch as Search;
 use App\Http\Response\JsonResponse;
 
 /**
