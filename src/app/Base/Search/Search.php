@@ -26,7 +26,32 @@ abstract class Search implements SearchInterface
      *
      * @var array
      */
-    protected $filters = [];
+    protected $parameters = [];
+
+    /**
+     * Override this in child class
+     * Assoc array mapping current filter names to their processors
+     *
+     * @var array
+     */
+    protected $parameterProcessors = [];
+
+    /**
+     * Override this in child class
+     * Assoc array mapping filter aliases (ex.: legacy) to current filters
+     *
+     * @var array
+     */
+    protected $parameterAliases = [];
+
+    /**
+     * Array of filters which are always accepted
+     *
+     * @var array
+     */
+    private $parameterAlways = [
+        "page",
+    ];
 
     /**
      * Data fetched from the database
@@ -41,14 +66,6 @@ abstract class Search implements SearchInterface
      * @var array
      */
     protected $state = [];
-
-    /**
-     * Override this in child class
-     * Associative array mapping filter labels to its processor function
-     *
-     * @var array
-     */
-    protected $processors = [];
 
     /**
      * All pagination information
@@ -94,19 +111,6 @@ abstract class Search implements SearchInterface
     }
 
     /**
-     * Sets the search filters, later to be processed
-     *
-     * @param array $filters
-     * @return SearchInterface
-     */
-    public function setFilters(array $filters = null): SearchInterface
-    {
-        $this->filters = $filters;
-
-        return $this;
-    }
-
-    /**
      * Sets the pagination link to be used on page links
      *
      * @param string $link
@@ -120,35 +124,73 @@ abstract class Search implements SearchInterface
     }
 
     /**
+     * Sets the search filters, later to be processed
+     *
+     * @param array $parameters
+     * @return SearchInterface
+     */
+    public function setParameters(array $parameters = null): SearchInterface
+    {
+        foreach ($parameters as $name => $value) {
+
+            // Skip invalid values
+            if (
+                (is_string($value) && $value === '') ||
+                (is_array($value) && $value[0] === '')
+            ) continue;
+
+            // Always allowed filters
+            if (in_array($name, $this->parameterAlways)) {
+                $this->parameters[$name] = $value;
+                continue;
+            }
+
+            // Current filter
+            if (isset($this->parameterProcessors[$name])) {
+                $this->parameters[$name] = $value;
+                continue;
+            }
+
+            // Alias filter
+            if (isset($this->parameterAliases[$name])) {
+                $name = $this->parameterAliases[$name];
+                $this->parameters[$name] = $value;
+                continue;
+            }
+
+        }
+
+        return $this;
+    }
+
+    /**
      * Return search filters as they were passed
      *
      * @return array
      */
-    public function getFilters(): array
+    public function getParameters(): array
     {
-        return $this->filters;
+        return $this->parameters;
     }
 
     /**
      * Calls all input processing functions for each filter
+     * 
+     * Validation and sanitization is already performed before calling this
      *
      * @return SearchInterface
      */
-    public function processFilters(): SearchInterface
+    public function processParameters(): SearchInterface
     {
         // Prepares some needed state variables
         $this->beforeProcessing();
 
         // Call processor functions of each filter
         // A processor function alters the SqlStatement object directly
-        foreach ($this->filters as $key => $value) {
-
-            // This filters out unvalid search filters
-            if (isset($this->processors[$key])) {
-                $processor = $this->processors[$key];
-                $this->$processor($value, $this->state);
-            }
-
+        foreach ($this->parameters as $name => $value) {
+            $processor = $this->parameterProcessors[$name] ?? false;
+            if (!$processor) continue;
+            $this->$processor($value, $this->state);
         }
 
         // After processing: useful to call multi-input processors
@@ -168,7 +210,7 @@ abstract class Search implements SearchInterface
         $database = database()
             ->select($this->statement)
             ->bind($this->bind)
-            ->page($this->filters['page'] ?? 1)
+            ->page($this->parameters['page'] ?? 1)
             ->paginationLink($this->paginationLink);
 
         // Fetch paginated data
