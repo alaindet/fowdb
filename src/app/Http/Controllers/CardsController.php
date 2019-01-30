@@ -6,7 +6,7 @@ use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Legacy\Card as LegacyCard;
 use App\Models\Card as Model;
-use App\Legacy\CardSearch as Search;
+use App\Services\Resources\Card\Search\Search;
 use App\Views\Page;
 
 /**
@@ -17,57 +17,53 @@ class CardsController extends Controller
 {
     public function searchForm(Request $request): string
     {
-        return view_old(
-            'Search',
-            'old/search/search.php',
-            [ 'js' => [ 'public/search' ] ],
-            ['thereWereResults' => false]
-        );
+        return (new Page)
+            ->template('pages/public/cards/search/index-form')
+            ->title('Cards Search')
+            ->options([
+                'scripts' => ['public/cards/search-form']
+            ])
+            ->minify(false)
+            ->render();
     }
 
     public function search(Request $request): string
     {
         $search = new Search;
+        $search->setParameters($request->input()->get());
+        $search->setPagination($request->getCurrentUrl());
+        $search->processParameters();
 
-        // Read the raw input
-        $input = $request->input()->get();
+        // // DEBUG
+        // return $search->getStatement();
 
-        // Filter out unwanted input
-        $filters = $search->getFilters($input);
-
-        // Get the results
-        $cards = $search->processFilters($input)->getCards();
-
-        // TEST: SQL statement
-        // dump($search->getSQL());
+        $search->fetchResults();
+        $results = $search->getResults();
 
         // ERROR: Cards not found!
-        if (empty($cards)) {
-            alert(
-                'No results. Please try changing your searching criteria.',
-                'danger'
-            );
+        if (empty($results)) {
+            alert('No results. Please try changing your filters.', 'danger');
             redirect('cards/search');
         }
 
-        // Alias the filters
-        return view_old(
-            'Search',
-            'old/search/search.php',
-            [ 'js' => [ 'public/search' ] ],
-            [
-                'filters' => $filters,
-                'search' => $search,
-                'cards' => $cards,
-                'thereWereResults' => true
-            ]
-        );
+        return (new Page)
+            ->template('pages/public/cards/search/index-results')
+            ->title('Cards Search')
+            ->options([
+                'scripts' => ['public/cards/search-results']
+            ])
+            ->variables([
+                'results' => $results,
+                'filters' => $search->getParameters(),
+                'pagination' => $search->getPagination()
+            ])
+            ->render();
     }
 
     public function showSearchHelp(): string
     {
         return (new Page)
-            ->template('pages/public/cards/search-help/index')
+            ->template('pages/public/cards/search/index-help')
             ->title('Cards Search Help')
             ->render();
     }
@@ -120,7 +116,7 @@ class CardsController extends Controller
             ])
             ->options([
                 'ogp' => $ogp,
-                'scripts' => [ 'public/card' ],
+                'scripts' => ['public/cards/show'],
             ])
             ->render();
     }
