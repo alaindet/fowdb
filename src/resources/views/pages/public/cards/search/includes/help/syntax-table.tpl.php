@@ -1,5 +1,7 @@
 <?php
-  $blank = asset('images/icons/blank.gif');
+
+$blank = asset('images/icons/blank.gif');
+
 ?>
 <div class="table-responsive">
   <table class="table table-striped table-condensed">
