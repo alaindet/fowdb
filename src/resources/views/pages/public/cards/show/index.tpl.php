@@ -15,7 +15,7 @@ foreach ($cards as $card):
 	$isFirst = ($cardsCounter) === 1;
 	$isLast = ($cardsCounter === $cardsCount);
 ?>
-	<?=!$isFirst ? '<hr class="fd-hr">' : ''?>
+	<?=!$isFirst ? '<hr class="fd-hr mv-200">' : ''?>
 
 	<div class="row cardpage">
 
@@ -126,13 +126,13 @@ foreach ($cards as $card):
 		<?php // Next card --------------------------------------------------------
 			if ($isLast && !empty($next_card)):
 		?>
-			<div class="col-xs-12 text-center sm-text-right">
+			<div class="col-xs-12 text-center sm-text-right mv-50">
 				<a
 					href="<?=url("card/{$next_card['code']}")?>"
 					class="btn btn-lg fd-btn-default"
 				>
-					<i class="fa fa-arrow-right"></i>
-					<strong>Next</strong> <em>(<?=$next_card['code']?>)</em>
+					<?=$next_card['code']?>
+					<strong>Next &rarr;</strong>
 				</a>
 			</div>
 		<?php endif; ?>
