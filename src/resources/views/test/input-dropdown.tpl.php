@@ -7,11 +7,6 @@ $items = [
   'item4' => 'ddd',
 ];
 
-$state = [
-  'input' => 'Hello, World!',
-  'dropdown' => 'item3',
-];
-
 ?>
 
 <?=component('breadcrumb', [
@@ -24,22 +19,22 @@ $state = [
   <!-- component -->
   <?=component('form/input-dropdown', [
 
-    'size' => 'lg',
-
-    'input' => [
-      'name' => 'THE_INPUT',
-      'state' => $state['input'],
-    ],
-
     'dropdown' => [
       'name' => 'THE_DROPDOWN',
-      'state' => $state['dropdown'],
+      'state' => input()->get('THE_DROPDOWN'),
       'items' => $items,
+      'css' => ['btn-lg'],
       'default' => [
         'face' => 'DEFAULT_FACE',
         'value' => 'DEFAULT_VALUE',
       ]
     ],
+
+    'input' => [
+      'name' => 'THE_INPUT',
+      'state' => input()->get('THE_INPUT'),
+      'css' => ['input-lg'],
+    ]
 
   ])?>
 
