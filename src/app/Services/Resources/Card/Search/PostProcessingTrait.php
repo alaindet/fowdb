@@ -81,7 +81,6 @@ trait PostProcessingTrait
         $this->postProcessDef();
         $this->postProcessCost();
         $this->postProcessSort();
-        $this->preventMagicStonesUnlessSpecified();
         return $this;
     }
 
@@ -304,18 +303,5 @@ trait PostProcessingTrait
         }
 
         $this->statement->orderBy("{$sort}, {$this->state['sort-default']}");
-    }
-
-    private function preventMagicStonesUnlessSpecified(): void
-    {
-        if (
-            !isset($this->filters['set']) &&
-            !isset($this->filters['num']) &&
-            !isset($this->filters['type']) &&
-            !isset($this->filters['rarity'])
-        ) {
-            $bitval = 4; // Hard-coded bit value of Magic Stone type
-            $this->statement->where("NOT(type_bit & {$bitval} = {$bitval})");
-        }
     }
 }
