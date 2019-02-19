@@ -31,7 +31,7 @@
 	</style>
  
   <!-- Bootstrap -->
- 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css" defer>
+ 	<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet" type="text/css" defer>
 
   <!-- Fontawesome 4.7 -->
 	<script src="https://use.fontawesome.com/f5164b39df.js" defer></script>
@@ -74,7 +74,7 @@
 	<?php endif; ?>
 
   <!-- Bootstrap -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" defer></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" defer></script>
 
   <!-- Application initial state -->
   <script>
