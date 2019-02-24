@@ -29,10 +29,8 @@ trait ValidationRulesTrait
 
         if ($input < $min || $input > $max) {
             $this->pushError(
-                collapse(
-                    "Input <strong>{$inputName}</strong> must be ",
-                    "included in range ({$min} ; {$max})"
-                )
+                "Input <strong>{$inputName}</strong> must be ".
+                "included in range ({$min} ; {$max})"
             );
             return false;
         }
@@ -303,10 +301,8 @@ trait ValidationRulesTrait
     {
         if (intval($this->input[$inputName]) > intval($value)) {
             $this->pushError(
-                collapse(
-                    "Input <strong>{$inputName}</strong> must be ",
-                    "less than {$value}"
-                )
+                "Input <strong>{$inputName}</strong> must be ".
+                "less than {$value}"
             );
             return false;
         }
@@ -328,10 +324,8 @@ trait ValidationRulesTrait
     {
         if (intval($this->input[$inputName]) < intval($value)) {
             $this->pushError(
-                collapse(
-                    "Input <strong>{$inputName}</strong> must be ",
-                    "more than {$value}"
-                )
+                "Input <strong>{$inputName}</strong> must be ".
+                "more than {$value}"
             );
             return false;
         }

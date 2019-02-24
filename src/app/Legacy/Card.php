@@ -183,14 +183,12 @@ class Card
                             $ban['copies']
                         ]);
 
-                        return collapse(
-                            '<span style="color:red;">',
-                                '<strong>',$ban['format'],'</strong>&nbsp',
-                            '</span>',
-                            '<em>',
-                                !empty($extra)
-                                    ? '('.implode(', ', $extra).')'
-                                    : '',
+                        return (
+                            '<span style="color:red;">'.
+                                '<strong>'.$ban['format'].'</strong>&nbsp'.
+                            '</span>'.
+                            '<em>'.
+                                !empty($extra)?'('.implode(', ',$extra).')':''.
                             '</em>'
                         );
 
@@ -244,9 +242,9 @@ class Card
             if (!isset($card['atk']) && !isset($card['def'])) {
                 $atkDef = '<em>(No battle values)</em>';
             } else {
-                $atkDef = collapse(
-                    '<span class="font-150 text-italic">',
-                        $card['atk'], ' / ', $card['def'],
+                $atkDef = (
+                    '<span class="font-150 text-italic">'.
+                        $card['atk'].' / '.$card['def'].
                     '</span>'
                 );
             }

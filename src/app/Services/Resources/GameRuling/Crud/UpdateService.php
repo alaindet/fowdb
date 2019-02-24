@@ -52,8 +52,8 @@ class UpdateService extends CrudService
         $link = '<a href="'.url('rulings/manage').'">Rulings</a>';
         $id = $this->old['id'];
 
-        $message = collapse(
-            "Ruling #{$id} for card <strong>{$label}</strong> updated. ",
+        $message = (
+            "Ruling #{$id} for card <strong>{$label}</strong> updated. ".
             "Go back to the <strong>{$link}</strong> page."
         );
 

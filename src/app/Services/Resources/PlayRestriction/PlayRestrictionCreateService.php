@@ -49,11 +49,11 @@ class PlayRestrictionCreateService extends CrudService
         $card = (new Card)->byId($cardId, ['name', 'code']);
 
         // Build the success message
-        $message = collapse(
-            'New restriction for card <strong>',
-                "{$card['name']} ({$card['code']})",
-            '</strong> added. Go back to the <strong>',
-                '<a href="',url('restrictions/manage'),'">Restrictions</a>',
+        $message = (
+            'New restriction for card <strong>'.
+            "{$card['name']} ({$card['code']})".
+            '</strong> added. Go back to the <strong>'.
+            '<a href="'.url('restrictions/manage').'">Restrictions</a>'.
             '</strong> page.'
         );
 

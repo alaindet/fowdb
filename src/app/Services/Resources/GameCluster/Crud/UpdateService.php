@@ -44,13 +44,13 @@ class UpdateService extends CrudService
      */
     public function getFeedback(): array
     {
-        $message = collapse(
-            "Cluster <strong> ",
-            "#{$this->old['id']} ",
-            "{$this->old['name']} ({$this->old['code']})",
-            "</strong> updated to <strong>",
-            "#{$this->old['id']} ",
-            "{$this->new['name']} ({$this->new['code']})
+        $message = (
+            "Cluster <strong> ".
+            "#{$this->old['id']} ".
+            "{$this->old['name']} ({$this->old['code']})".
+            "</strong> updated to <strong>".
+            "#{$this->old['id']} ".
+            "{$this->new['name']} ({$this->new['code']}.
             </strong>."
         );
 

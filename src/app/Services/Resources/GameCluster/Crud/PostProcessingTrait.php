@@ -55,12 +55,10 @@ trait PostProcessingTrait
         
         if (!empty($existing)) {
             throw new CrudException(
-                collapse(
-                    "A cluster with ID <strong>{$this->new['id']}</strong>, ",
-                    "or name <strong>{$this->new['name']}</strong>, ",
-                    "or code <strong>{$this->new['code']}</strong> ",
-                    "already exists"
-                )
+                "A cluster with ID <strong>{$this->new['id']}</strong>, ".
+                "or name <strong>{$this->new['name']}</strong>, ".
+                "or code <strong>{$this->new['code']}</strong> ".
+                "already exists"
             );
         }
     }
@@ -92,11 +90,9 @@ trait PostProcessingTrait
 
         if (!empty($existing)) {
             throw new CrudException(
-                collapse(
-                    "A cluster named <strong>{$this->new['name']}</strong>, ",
-                    "or with code <strong>{$this->new['code']}</strong> ",
-                    "already exists. Clusters must have unique names and codes."
-                )
+                "A cluster named <strong>{$this->new['name']}</strong>, ".
+                "or with code <strong>{$this->new['code']}</strong> ".
+                "already exists. Clusters must have unique names and codes."
             );
         }
     }

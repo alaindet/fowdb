@@ -25,9 +25,9 @@ if (isset($card['attribute'])) {
   $map = lookup('attributes.code2name');
   foreach (explode('/', $card['attribute']) as $attribute) {
     $label = $map[$attribute];
-    $displayAttribute[] = collapse(
-      "<img ",
-        "src=\"{$blank}\" ",
+    $displayAttribute[] = (
+      "<img ".
+        "src=\"{$blank}\" ".
         "class=\"fd-icon-{$attribute}\"> {$label}"
     );
   }
@@ -48,10 +48,10 @@ if (isset($card['atk']) && isset($card['def'])) {
 }
 
 // CSN ------------------------------------------------------------------------
-$displayCsn = collapse(
-  "<li>",lookup('clusters.id2name.'.$card['clusters_id']),"</li>",
-  "<li>",lookup('sets.id2name.'.$card['sets_id']),"</li>",
-  "<li>",str_pad($card['num'], 3, '0', STR_PAD_LEFT),"</li>"
+$displayCsn = (
+  "<li>".lookup('clusters.id2name.'.$card['clusters_id'])."</li>".
+  "<li>".lookup('sets.id2name.'.$card['sets_id'])."</li>".
+  "<li>".str_pad($card['num'], 3, '0', STR_PAD_LEFT)."</li>"
 );
 
 ?>

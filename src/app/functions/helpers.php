@@ -241,24 +241,6 @@ function asset(string $path, string $type = 'any'): string
 }
 
 /**
- * Accepts a list of strings and collapses them in a single string.
- * Useful when building some HTML content for easy indentation
- * 
- * Ex.:
- * collapse(
- *   "<a href='{$someHref}'>",
- *     $someContent
- *   "</a>"
- * )
- *
- * @return string
- */
-function collapse(): string
-{
-	return implode('', func_get_args());
-}
-
-/**
  * Instantiates a view component, renders it using provided data and
  * returns its HTML rendering as a string
  *

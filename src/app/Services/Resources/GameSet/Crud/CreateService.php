@@ -54,10 +54,10 @@ class CreateService extends CrudService
      */
     public function getFeedback(): array
     {
-        $message = collapse(
-            "New set <strong> ",
-            "#{$this->new['id']} ",
-            "{$this->new['name']} ({$this->new['code']})",
+        $message = (
+            "New set <strong> ".
+            "#{$this->new['id']} ".
+            "{$this->new['name']} ({$this->new['code']})".
             "</strong> created."
         );
 

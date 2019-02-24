@@ -37,11 +37,11 @@ class PlayRestrictionDeleteService extends CrudService
         $card = (new Card)->byId($this->old['cards_id'], ['name', 'code']);
 
         // Build the success message
-        $message = collapse(
-            'Restriction for card <strong>',
-                "{$card['name']} ({$card['code']})",
-            '</strong> deleted. Go back to the <strong>',
-                '<a href="',url('restrictions/manage'),'">Restrictions</a>',
+        $message = (
+            'Restriction for card <strong>'.
+            "{$card['name']} ({$card['code']})".
+            '</strong> deleted. Go back to the <strong>'.
+            '<a href="'.url('restrictions/manage').'">Restrictions</a>'.
             '</strong> page.'
         );
 
