@@ -26,6 +26,15 @@ class ComponentsController extends Controller
             ->render();
     }
 
+    public function buttonRadio(Request $request): string
+    {
+        return (new Page)
+            ->template('test/button-radio')
+            ->title('Test: button-radio component')
+            ->minify(false)
+            ->render();
+    }
+
     public function inputDropdown(Request $request): string
     {
         return (new Page)

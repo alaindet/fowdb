@@ -1,20 +1,12 @@
 <?php
 
 // VARIABLES
-// $name (optional)
-// $state[]
-// $items[]
+// $name
+// $state
+// $items
 // $css (optional)
 //   container
 //   button
-
-// NOTE -----------------------------------------------------------------------
-// If input name is not given, each item has a different input name so that
-// $items = [ input_name => label, ... ]
-// instead of default behavior
-// $items = [ value => label, ... ]
-$multipleNames = !isset($name);
-if (!$multipleNames) $name .= "[]";
 
 // CSS ------------------------------------------------------------------------
 $containerCss = '';
@@ -31,26 +23,21 @@ if (isset($css)) {
 ?>
 <div class="btg-group<?=$containerCss?>" data-toggle="buttons">
   <?php
-    // ITEMS: value => label (default)
-    foreach ($items as $key => $label):
+    foreach ($items as $value => $label):
 
       // Preserve 0 character for the label
       if ($label === 0) $label = '&#48;';
 
-      ($multipleNames)
-        ? [$inputName, $inputValue] = [$key, 1]
-        : [$inputName, $inputValue] = [$name, $key];
-
       // State
-      (in_array($key, $state))
+      ($value === $state)
         ? [$active, $checked] = [' active', ' checked']
         : [$active, $checked] = ['', ''];
   ?>
     <label class="btn<?=$buttonCss?><?=$active?>">
       <input
-        type="checkbox"
-        name="<?=$inputName?>"
-        value="<?=$inputValue?>"
+        type="radio"
+        name="<?=$name?>"
+        value="<?=$value?>"
         <?=$checked?>
       >
       <span class="pointer"><?=$label?></span>
