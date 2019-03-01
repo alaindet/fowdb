@@ -35,8 +35,17 @@ class BannedGenerator implements Generatable
             )
             ->get();
 
+        // STRUCTURE
+        // =========
+        // [
+        //     format_code => [
+        //         card_id,
+        //         ...
+        //     ],
+        //     ...
+        // ]
         foreach ($items as $item) {
-
+            
             // Format
             $format = &$item['format_code'];
             if (!isset($result[$format])) {
@@ -45,18 +54,46 @@ class BannedGenerator implements Generatable
 
             // Card
             $card = &$item['cards_id'];
-            if ((!isset($result[$format][$card]))) {
-                $result[$format][$card] = [];
+            if (!in_array($card, $result[$format])) {
+                $result[$format][] = $card;
             }
-
-            // Deck => copies
-            $deckId = &$item['deck'];
-            $deck = PlayRestriction::$decksLabels[$deckId];
-            $deck = str_replace(' Deck', '', $deck); // 'Main Deck' => 'Main'
-            $copies = &$item['copies'];
-            $result[$format][$card][$deck] = $copies;
-
+            
         }
+
+        // // STRUCTURE
+        // // =========
+        // // [
+        // //     format_code => [
+        // //         card_id => [
+        // //             deck_name => copies,
+        // //             ...
+        // //         ],
+        // //         ...
+        // //     ],
+        // //     ...
+        // // ]
+        // foreach ($items as $item) {
+
+        //     // Format
+        //     $format = &$item['format_code'];
+        //     if (!isset($result[$format])) {
+        //         $result[$format] = [];
+        //     }
+
+        //     // Card
+        //     $card = &$item['cards_id'];
+        //     if ((!isset($result[$format][$card]))) {
+        //         $result[$format][$card] = [];
+        //     }
+
+        //     // Deck => copies
+        //     $deckId = &$item['deck'];
+        //     $deck = PlayRestriction::$decksLabels[$deckId];
+        //     $deck = str_replace(' Deck', '', $deck); // 'Main Deck' => 'Main'
+        //     $copies = &$item['copies'];
+        //     $result[$format][$card][$deck] = $copies;
+
+        // }
 
         return $result;
     }
