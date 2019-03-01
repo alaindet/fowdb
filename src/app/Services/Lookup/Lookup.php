@@ -190,7 +190,8 @@ class Lookup
 
         // Loop on all bits and dive deeper if needed
         foreach ($bits as &$bit) {
-            if (isset($result[$bit])) $result = $result[$bit];
+            if (!isset($result[$bit])) return null;
+            $result = $result[$bit];
         }
 
         return $result;
