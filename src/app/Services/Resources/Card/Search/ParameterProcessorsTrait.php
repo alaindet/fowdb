@@ -252,17 +252,22 @@ trait ParameterProcessorsTrait
         }
     }
 
-    protected function processFormatParameter(array $values): void
+    /**
+     * Allows both array and string as input
+     *
+     * @param string|string[] $value
+     * @return void
+     */
+    protected function processFormatParameter($value): void
     {
-        $clusters = [];
+        // Keep first value if multiple are passed (multiple is legacy)
+        if (is_array($value)) $value = $value[0];
+        
         $map = $this->lookup->get('formats.code2clusters');
-        for ($i = 0, $ii = count($values); $i < $ii; $i++) {
-            $formatClusters = $map[$values[$i]] ?? [];
-            $clusters = array_merge($clusters, $formatClusters);
-        }
-        $clusters = implode(',', array_unique($clusters));
+        $clusters = $map[$value] ?? [];
+        $clustersString = implode(',', $clusters);
 
-        $this->statement->where("clusters_id IN ({$clusters})");
+        $this->statement->where("clusters_id IN ({$clustersString})");
     }
 
     protected function processBackSideParameter(array $values): void

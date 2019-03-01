@@ -5,8 +5,8 @@ const css_searchReset = ".js-search-reset";
 // Application data -----------------------------------------------------------
 const data_defaultFilters = [
   {
-    name: "format[]",
-    value: ["wandr"],
-    type: "checkbox"
+    name: "format",
+    value: "wandr",
+    type: "radio"
   }
 ];

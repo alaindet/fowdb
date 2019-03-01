@@ -1,5 +1,5 @@
 // Bootstrap ------------------------------------------------------------------
-function bootstrap() {
+$(document).ready(function () {
 
   // Events name space prefix
   const ns = "fd:cards-search";
@@ -40,6 +40,5 @@ function bootstrap() {
 
   // Default: fit items into container based on container's size
   $(document).trigger("fd:cards-search:items-per-line:fit");
-}
-
-$(document).ready(bootstrap);
+  
+});

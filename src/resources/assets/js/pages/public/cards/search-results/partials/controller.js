@@ -60,27 +60,16 @@ function handleFormResetEvent() {
   // Activate default filters
   data_defaultFilters.forEach((filter) => {
 
-    // Checkboxes only
-    if (filter.type === 'checkbox') {
-      filter.value.forEach((value) => {
+    // // Checkbox buttons
+    // if (filter.type === 'checkbox') {
+    //   filter.value.forEach(value => {
+    //     view_activateButtons(filter.name, value);
+    //   });
+    // }
 
-        // Select the input with this name and value
-        const input = $(`input[name="${filter.name}"][value="${value}"]`);
-
-        // ERROR: No <input> selected
-        if (!input.length) return;
-
-        // Select its <label> container
-        const label = input.parents("label");
-
-        // ERROR: No <label> selected
-        if (!label.length) return;
-
-        // Activate <label> and <input> elements
-        label.addClass("active");
-        input.prop("checked", true);
-
-      });
+    // Radio buttons
+    if (filter.type === 'radio') {
+      view_activateButtons(filter.name, filter.value);
     }
 
   });

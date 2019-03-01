@@ -1,6 +1,6 @@
 // Bootstrap ------------------------------------------------------------------
-function bootstrap() {
-
+$(document).ready(function () {
+  
   $(document)
 
     // Original events
@@ -14,6 +14,5 @@ function bootstrap() {
     // Custom events
     .on("fd:cards-search:form-reset", handleFormResetEvent)
     .on("fd:cards-search:form-submit", handleFormSubmitEvent)
-}
 
-$(document).ready(bootstrap);
+});

@@ -16,8 +16,8 @@ const data_enterKey = 13;
 let data_itemsPerLine = 0;
 const data_defaultFilters = [
   {
-    name: "format[]",
-    value: ["wandr"],
-    type: "checkbox"
+    name: "format",
+    value: "wandr",
+    type: "radio"
   }
 ];
