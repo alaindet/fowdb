@@ -18,7 +18,7 @@
 // divinity[]
 // partial-match
 // exclude[]
-// format[]
+// format
 // illust
 // in-fields[]
 // q
@@ -35,6 +35,8 @@
 
 $areResults = !empty($results);
 $spoilerIds = lookup('spoilers.ids');
+$format = $filters['format'] ?? null;
+$bannedList = lookup("banned.{$format}") ?? [];
 
 ?>
 <div class="row">
@@ -53,6 +55,7 @@ $spoilerIds = lookup('spoilers.ids');
   <div class="col-xs-12" id="the-results">
     <div class="fd-box --xs-less-padding">
 
+      <!-- Title -->
       <div class="fd-box__title">
         <h2>
           Results
@@ -87,12 +90,19 @@ $spoilerIds = lookup('spoilers.ids');
           <?php foreach ($results as $item):
 
             $link = url('card/'.urlencode($item['code']));
-            in_array($item['sets_id'], $spoilerIds)
-              ? $spoiled = ' fd-card-item--spoiler'
-              : $spoiled = '';
+
+            $custom = '';
+
+            if (in_array($item['sets_id'], $spoilerIds)) {
+              $custom = ' fd-card-item--spoiler';
+            }
+
+            if (in_array(intval($item['id']), $bannedList)) {
+              $custom = ' fd-card-item--banned';
+            }
 
           ?>
-            <div class="fd-card-item fd-grid fd-grid-3<?=$spoiled?>">
+            <div class="fd-card-item fd-grid fd-grid-3<?=$custom?>">
               <a href="<?=$link?>">
                 <img
                   src="<?=asset($item['thumb_path'])?>"

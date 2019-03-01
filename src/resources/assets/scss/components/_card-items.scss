@@ -26,3 +26,19 @@
   left: 5%;
   bottom: 5%;
 }
+
+// Banned card into search Results
+.fd-card-item--banned img {
+  border: 2px solid #f00;
+  border-radius: 5%!important;
+}
+.fd-card-item--banned::after {
+  position: absolute;
+  max-width: 100%;
+  content: "BANNED";
+  font-weight: bold;
+  color: white;
+  background-color: rgba(255,0,0,0.75);
+  left: 5%;
+  bottom: 5%;
+}
