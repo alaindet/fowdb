@@ -8,6 +8,7 @@ use App\Exceptions\LookupException;
 use App\Services\FileSystem;
 use App\Services\Lookup\Generators\AttributesGenerator;
 use App\Services\Lookup\Generators\BackSidesGenerator;
+use App\Services\Lookup\Generators\BannedGenerator;
 use App\Services\Lookup\Generators\ClustersGenerator;
 use App\Services\Lookup\Generators\CostsGenerator;
 use App\Services\Lookup\Generators\DivinitiesGenerator;
@@ -56,6 +57,7 @@ class Lookup
     public $features = [
         'attributes' => AttributesGenerator::class,
         'backsides'  => BackSidesGenerator::class,
+        'banned'     => BannedGenerator::class,
         'clusters'   => ClustersGenerator::class,
         'costs'      => CostsGenerator::class,
         'divinities' => DivinitiesGenerator::class,
@@ -160,7 +162,16 @@ class Lookup
         if (!isset($path)) return $this->getAll();
 
         // Directly return data (not-nested data)
-        if (false === strpos($path, '.')) return $this->cache[$path];
+        if (false === strpos($path, '.')) {
+
+            // ERROR: Wrong path
+            if (!isset($this->cache[$path])) {
+                throw new LookupException("Feature \"{$path}\" doesn't exist");
+            }
+
+            return $this->cache[$path];
+
+        } 
 
         // Split by the dot
         $bits = explode('.', $path);
@@ -193,6 +204,11 @@ class Lookup
     public function getAll(): array
     {
         return $this->cache;
+    }
+
+    public function exists(string $feature): bool
+    {
+        return isset($this->cache[$feature]);
     }
 
     /**

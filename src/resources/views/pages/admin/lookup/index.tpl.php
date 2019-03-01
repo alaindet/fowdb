@@ -19,7 +19,7 @@
 
 <div class="col-xs-12 col-sm-3">
 
-  <!-- Regeneraate all -->
+  <!-- Regenerate all -->
   <a href="<?=url('lookup/build')?>" class="btn btn-lg fd-btn-primary">
     <i class="fa fa-database"></i>
     Regenerate all
