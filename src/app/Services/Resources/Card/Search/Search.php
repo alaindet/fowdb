@@ -4,14 +4,16 @@ namespace App\Services\Resources\Card\Search;
 
 use App\Base\Search\Search as BaseSearch;
 use App\Base\Search\SearchInterface;
-use App\Services\Resources\Card\Search\ParameterProcessorsTrait;
-use App\Services\Resources\Card\Search\PostProcessingTrait;
 use App\Services\Lookup\Lookup;
+use App\Services\Resources\Card\Search\BeforeProcessingTrait;
+use App\Services\Resources\Card\Search\ParameterProcessorsTrait;
+use App\Services\Resources\Card\Search\AfterProcessingTrait;
 
 class Search extends BaseSearch
 {
+    use BeforeProcessingTrait;
     use ParameterProcessorsTrait;
-    use PostProcessingTrait;
+    use AfterProcessingTrait;
 
     protected $parameterProcessors = [
         'atk'                => 'processAtkValueParameter',

@@ -17,60 +17,9 @@ use App\Utils\Arrays;
  * protected $state;
  * protected $lookup
  */
-trait PostProcessingTrait
+trait AfterProcessingTrait
 {
     use SearchBarProcessorTrait;
-
-    protected function beforeProcessing(): SearchInterface
-    {
-        $this->beforeNormalizeInputs();
-        $this->beforeDefaultStateVariables();
-        return $this;
-    }
-
-    private function beforeNormalizeInputs(): void
-    {
-        // 'format' must be an array (allows strings)
-        if (
-            isset($this->filters['format']) &&
-            !is_array($this->filters['format'])
-        ) {
-            $this->filters['format'] = [ $this->filters['format'] ];
-        }
-
-        // 'back-side' must be an array (allows strings)
-        if (
-            isset($this->filters['back-side']) &&
-            !is_array($this->filters['back-side'])
-        ) {
-            $this->filters['back-side'] = [ $this->filters['back-side'] ];
-        }
-    }
-
-    private function beforeDefaultStateVariables(): void
-    {
-        $this->state['query'] = '';
-        $this->state['query-fields'] = [];
-        $this->state['query-exact'] = false;
-
-        $this->state['attributes'] = [];
-        $this->state['attributes-selected'] = false;
-        $this->state['attributes-only-single'] = false;
-        $this->state['attributes-only-multi'] = false;
-
-        $this->state['atk-operator'] = 'equals';
-        $this->state['def-operator'] = 'equals';
-
-        $this->state['sort'] = null;
-        $this->state['sort-direction'] = 'asc';
-        $this->state['sort-default'] = 'sorted_id DESC';
-
-        $this->state['types'] = [];
-        $this->state['types-selected'] = false;
-
-        $this->state['cost'] = [];
-        $this->state['cost-x'] = false;
-    }
 
     protected function afterProcessing(): SearchInterface
     {
