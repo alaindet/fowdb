@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
-use App\Legacy\Card as LegacyCard;
+use App\Legacy\Card\Card as LegacyCard;
 use App\Models\Card as Model;
 use App\Services\Resources\Card\Search\Search;
 use App\Views\Page;
@@ -60,7 +60,7 @@ class CardsController extends Controller
             ->render();
     }
 
-    public function showSearchHelp(): string
+    public function searchHelp(): string
     {
         return (new Page)
             ->template('pages/public/cards/search/index-help')

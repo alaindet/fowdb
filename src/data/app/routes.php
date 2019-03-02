@@ -58,7 +58,7 @@ $public = [
     ['GET', 'errata','ErrataController','index'],
     ['GET', 'banlist','PlayRestrictionsController','index'],
     ['GET', 'restrictions','PlayRestrictionsController','index'], // Alias
-    ['GET', 'cards/search/help','CardsController','showSearchHelp'],
+    ['GET', 'cards/search/help','CardsController','searchHelp'],
     ['GET', 'login','Auth\\LoginController','loginForm'],
     ['POST','login','Auth\\LoginController','login', null, ['token']],
     ['GET', 'logout','Auth\\LoginController','logout'],
