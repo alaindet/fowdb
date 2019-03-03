@@ -28,7 +28,6 @@ trait AfterProcessingTrait
         $this->postProcessTypes();
         $this->postProcessAtk();
         $this->postProcessDef();
-        $this->postProcessCost();
         $this->postProcessSort();
         return $this;
     }
@@ -144,9 +143,10 @@ trait AfterProcessingTrait
 
         // Read the map (display_name => bit_value)
         $map = $this->lookup->get('types.display');
-
+        $allowedTypeNames = array_keys($map);
+    
         // Filter the types with the whitelist
-        $types = Arrays::whitelistKeys($this->state['types'],array_keys($map));
+        $types = Arrays::whitelist($this->state['types'], $allowedTypeNames);
 
         // ERROR: No *VALID* types
         if (empty($types)) return;
@@ -172,6 +172,7 @@ trait AfterProcessingTrait
             $bitval = $map[$type];
             $clauses[] = "type_bit & {$bitval} = {$bitval}";
         }
+
         $this->statement->where($clauses, 'or', 'and');
     }
 
@@ -203,11 +204,6 @@ trait AfterProcessingTrait
         $operator = $map[$this->state['def-operator']] ?? '=';
         $this->statement->where("def {$operator} :def");
         $this->bind[':def'] = $this->state['def'];
-    }
-
-    private function postProcessCost(): void
-    {
-        
     }
 
     private function postProcessSort(): void
