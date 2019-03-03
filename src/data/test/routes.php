@@ -60,6 +60,9 @@ $public = [
     ['GET', 'lookup/build', 'LookupController', 'buildAll'],
     ['GET', 'lookup/build/{feature}', 'LookupController', 'build'],
 
+    // Cards
+    ['GET', 'cards/properties/html', 'CardsController', 'propsHtml'],
+
 ];
 
 /**
