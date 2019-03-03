@@ -6,6 +6,7 @@ use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Entities\Card\CardsRepository;
 use App\Utils\Arrays;
+use App\Views\Page;
 
 class CardsController extends Controller
 {
@@ -34,28 +35,21 @@ class CardsController extends Controller
         ];
 
         $repo = new CardsRepository;
-        $cards = $repo->findAllByCode($code);
+        $card = $repo->findByCode($code);
 
-        // $count = $cards->count();
-        // return "Cards are {$count}";
+        $props = Arrays::reduce($props, function($result, $prop) use ($card) {
+            [$propLabel, $propValue] = $card->get($prop);
+            $result[$propLabel] = $propValue;
+            return $result;
+        }, []);
 
-        $card = $cards->first();
-
-
-        $html = "<ul>".Arrays::reduce(
-            $props,
-            function ($log, $propName) use ($card) {
-                [$propLabel, $propValue] = $card->get($propName);
-                return $log .= (
-                    "<li>".
-                        "<strong>{$propLabel}</strong> ({$propName})".
-                        "<p>{$propValue}</p>".
-                    "</li>"
-                );
-            },
-            ""
-        )."</ul>";
-
-        return $html;
+        return (new Page)
+            ->template('test/cards/html-properties')
+            ->title('Test: Card HTML properties')
+            ->variables([
+                'props' => $props
+            ])
+            ->minify(false)
+            ->render();
     }
 }
