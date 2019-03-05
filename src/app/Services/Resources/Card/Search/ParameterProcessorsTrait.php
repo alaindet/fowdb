@@ -226,7 +226,7 @@ trait ParameterProcessorsTrait
      * @param string $values
      * @return void
      */
-    protected function processTypeSelectedParameter(array $values): void
+    protected function processTypeSelectedParameter(string $value): void
     {
         $this->state['types-selected'] = true;
     }
