@@ -58,7 +58,7 @@ abstract class ItemsCollection implements Iterator
         return $this;
     }
 
-    public function reduce(callable $callback, mixed $carry = null): mixed
+    public function reduce(callable $callback, $carry = null)
     {
         if (!isset($carry)) {
             if ($this->items === []) {
