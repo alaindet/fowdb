@@ -3,77 +3,51 @@
 namespace App\Services\Lookup\Generators;
 
 use App\Services\Lookup\Generatable;
+use App\Entities\Play\Format\FormatsRepository;
 
 class FormatsGenerator implements Generatable
 {
-    public function data(): array
-    {
-        return database()
-            ->select(
-                statement('select')
-                    ->select([
-                        'f.id f_id',
-                        'f.name f_name',
-                        'f.code f_code',
-                        'f.is_default f_is_default',
-                        'f.is_multi_cluster f_is_multi_cluster',
-                        'c.id c_id',
-                    ])
-                    ->from(
-                        'game_formats f
-                        INNER JOIN pivot_cluster_format cf ON f.id = cf.formats_id
-                        INNER JOIN game_clusters c ON cf.clusters_id = c.id'
-                    )
-                    ->orderBy([
-                        'f.is_multi_cluster DESC',
-                        'f.id DESC',
-                        'c.id DESC',
-                    ])
-            )
-            ->get();
-    }
-
-
     public function generate(): array
     {
-        return array_reduce(
+        $state = [
+            'default' => '',
+            'code2id' => [],
+            'code2name' => [],
+            'code2clusters' => [],
+            'id2code' => [],
+            'id2name' => [],
+            'display' => [],
+            'id2clusters' => []
+        ];
+
+        $reducer = function($result, $format) {
             
-            // Data
-            $this->data(),
-            
-            // Reducer
-            function ($o, $i) {
+            if ($format->is_default) {
+                $result['default'] = $format->code;
+            }
 
-                if ($i['f_is_default']) $o['default'] = $i['f_code'];
-                $o['code2id'][$i['f_code']] = $i['f_id'];
-                $o['code2name'][$i['f_code']] = $i['f_name'];
+            if ($format->is_multi_cluster) {
+                $result['display'][$format->code] = $format->name;
+            }
 
-                if ($i['f_is_multi_cluster']) {
-                    $o['display'][$i['f_code']] = $i['f_name'];
-                }
+            $result['code2id'][$format->code] = $format->id;
+            $result['code2name'][$format->code] = $format->name;
+            $result['id2code'][$format->id] = $format->code;
+            $result['id2name'][$format->id] = $format->name;
 
-                if (!isset($o['code2clusters'][$i['f_code']])) {
-                    $o['code2clusters'][$i['f_code']] = [];
-                }
-                $o['code2clusters'][$i['f_code']][] = $i['c_id'];
+            $result['id2clusters'][$format->id] = $format->clusters
+                ->reduce(function($result, $cluster) {
+                    $result[] = [
+                        'id' => $cluster->id,
+                        'code' => $cluster->code,
+                        'name' => $cluster->name
+                    ];
+                    return $result;
+                }, []);
 
-                $o['id2code'][$i['f_id']] = $i['f_code'];
-                $o['id2name'][$i['f_id']] = $i['f_name'];
+            return $result;
+        };
 
-                return $o;
-            },
-        
-            // State
-            [
-                'default' => '',
-                'code2id' => [],
-                'code2name' => [],
-                'code2clusters' => [],
-                'id2code' => [],
-                'id2name' => [],
-                'display' => [],
-            ]
-
-        );
+        return (new FormatsRepository)->all()->reduce($reducer, $state);
     }
 }
