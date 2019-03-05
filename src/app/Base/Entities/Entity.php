@@ -60,7 +60,7 @@ abstract class Entity extends Item
         }
 
         // Get the property accessor name
-        $accessor = $this->properties[$propertyName];
+        $accessor = $this->propertyAccessors[$propertyName];
 
         // Execute the property accessor method and cache the result
         $this->properties[$propertyName] =  $this->$accessor($args);
