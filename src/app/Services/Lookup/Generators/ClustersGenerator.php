@@ -50,6 +50,9 @@ class ClustersGenerator implements Generatable
                 // Populate code => id map
                 $result['code2id'][$item['c_code']] = $item['c_id'];
 
+                // Populate id => code map
+                $result['id2code'][$item['c_id']] = $item['c_code'];
+
                 // Break the cached value
                 if ($current !== $item['c_code']) {
 
@@ -75,6 +78,7 @@ class ClustersGenerator implements Generatable
                 'list' => [],
                 'id2name' => [],
                 'code2id' => [],
+                'id2code' => [],
             ]
         );
     }
