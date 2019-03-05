@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
-use App\Legacy\Card\Card as LegacyCard;
 use App\Models\Card as Model;
 use App\Services\Resources\Card\Search\Search;
+use App\Services\Resources\Card\Read\ReadService;
 use App\Views\Page;
 
 /**
@@ -23,7 +23,6 @@ class CardsController extends Controller
             ->options([
                 'scripts' => ['public/cards/search-form']
             ])
-            ->minify(false)
             ->render();
     }
 
@@ -35,7 +34,11 @@ class CardsController extends Controller
         $search->processParameters();
 
         // // DEBUG
-        // return $search->getStatement();
+        // return log_html([
+        //     'params' => $request->input()->get(),
+        //     'sql' => $search->getStatement(),
+        //     'bind' => $search->getBoundData(),
+        // ]);
 
         $search->fetchResults();
         $results = $search->getResults();
@@ -88,24 +91,46 @@ class CardsController extends Controller
         // Validate and process input
         // Ex.: ABC-001+C => ABC-001C
         $code = str_replace(' ', '', urldecode($code));
-        
-        $cards = LegacyCard::getCardPageData($code);
+
+        $cardsRepository = new \App\Entities\Card\CardsRepository;
+        $cards = $cardsRepository->findAllByCode($code);
+        $card = $cards->first();
+
+        dump($card);
+
+        // $cards = LegacyCard::getCardPageData($code);
 
         // Build Open Graph Protocol data for this page
-        $card = &$cards[0];
-        $title = "{$card['name']} ({$card['code']}) ~ ".config('app.name');
+        $card = $cards->first();
+        $appName = config('app.name');
+        $title = "{$card->get('name')} ({$card->get('code')}) ~ {$appName}";
         $ogp = [
             'title' => $title,
-            'url' => url('card/'.urlencode($card['code'])),
+            'url' => $card->get('link'),
             'image' => [
-                'url' => asset($card['thumb_path']),
+                'url' => $card->get('thumb-path'),
                 'alt' => $title
             ]
         ];
 
-        // Calculate next card
-        $lastCard = &$cards[count($cards)-1];
-        $nextCard = (new Model)->getNext($lastCard['sorted_id']);
+        // Find next card
+        $nextCard = $cards->last()->getNext();
+
+        // // Build Open Graph Protocol data for this page
+        // $card = &$cards[0];
+        // $title = "{$card['name']} ({$card['code']}) ~ ".config('app.name');
+        // $ogp = [
+        //     'title' => $title,
+        //     'url' => url('card/'.urlencode($card['code'])),
+        //     'image' => [
+        //         'url' => asset($card['thumb_path']),
+        //         'alt' => $title
+        //     ]
+        // ];
+
+        // // Calculate next card
+        // $lastCard = &$cards[count($cards)-1];
+        // $nextCard = (new Model)->getNext($lastCard['sorted_id']);
         
         return (new Page)
             ->template('pages/public/cards/show/index')
