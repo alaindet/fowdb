@@ -71,4 +71,12 @@ abstract class ItemsCollection implements Iterator
         }
         return $carry;
     }
+
+    public function pluck(string $column): ItemsCollection
+    {
+        for ($i = 0, $len = count($this->items); $i < $len; $i++) {
+            $this->items[$i] = $this->items[$i]->$column;
+        }
+        return $this;
+    }
 }
