@@ -29,7 +29,7 @@
     The search query you type gets split into individual search terms by whitespace by default. To <strong>preserve whitespace</strong> in a single search term (ex.: you desperately need to match something like "destroy target resonator"), <strong>use backticks</strong>. <em>Ex.:</em> <code>`destroy target resonator` other terms</code> gets processed as 3 search terms: "destroy target resonator", "other" and "terms".
   </li>
   <li>
-    The button <span class="btn btn-xs fd-btn-default">Only Multi-Attribute</span> exclude all single attribute cards from the results.
+    The button <span class="btn btn-xs fd-btn-default">Only Multi-Attribute</span> excludes all single attribute cards from the results.
   </li>
   <li>
     The button <span class="btn btn-xs fd-btn-default">Must contain just selected</span> will match only cards with attributes specified on the Attributes search filters. Best paired with <span class="btn btn-xs fd-btn-default">Only Multi-Attribute</span> to match only multi-attribute cards containing only selected attributes. <em>Ex.: </em> You want fire/wind cards but you definetely don't want to match water/wind cards also.
