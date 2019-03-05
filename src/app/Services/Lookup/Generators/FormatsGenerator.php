@@ -22,6 +22,10 @@ class FormatsGenerator implements Generatable
 
         $reducer = function($result, $format) {
             
+            // Set the cache flag: invalidate the cache!
+            // This forces any computed property to call the database
+            $format->useCache(false);
+
             if ($format->is_default) {
                 $result['default'] = $format->code;
             }
@@ -36,14 +40,17 @@ class FormatsGenerator implements Generatable
             $result['id2name'][$format->id] = $format->name;
 
             $result['id2clusters'][$format->id] = $format->clusters
-                ->reduce(function($result, $cluster) {
-                    $result[] = [
-                        'id' => $cluster->id,
-                        'code' => $cluster->code,
-                        'name' => $cluster->name
-                    ];
-                    return $result;
-                }, []);
+                ->reduce(
+                    function($result, $cluster) {
+                        $result[] = [
+                            'id' => $cluster->id,
+                            'code' => $cluster->code,
+                            'name' => $cluster->name
+                        ];
+                        return $result;
+                    },
+                    $clusters = []
+                );
 
             return $result;
         };
