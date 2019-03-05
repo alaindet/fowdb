@@ -27,6 +27,12 @@ abstract class Entity extends Item
      */
     private $useCache = true;
 
+    /**
+     * Gets or sets the "useCache" flag
+     *
+     * @param bool $use
+     * @return mixed Entity|bool
+     */
     public function useCache(bool $use = null)
     {
         // Set
@@ -37,6 +43,19 @@ abstract class Entity extends Item
 
         // Get
         return $this->useCache;
+    }
+
+    /**
+     * Sets all database properties on creation, if needed
+     *
+     * @param array $data Ideally, a database row
+     */
+    public function __construct(array $data = null) {
+        if (isset($data)) {
+            foreach ($data as $key => $value) {
+                $this->$key = $value;
+            }
+        }
     }
 
     /**
