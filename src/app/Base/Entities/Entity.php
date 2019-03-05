@@ -21,6 +21,19 @@ abstract class Entity extends Item
     protected $properties = [];
 
     /**
+     * Use pseudo-cached lookup data if possible
+     *
+     * @var bool
+     */
+    private $useCache = true;
+
+    public function setUseCache(bool $use): Entity
+    {
+        $this->useCache = $use;
+        return $this;
+    }
+
+    /**
      * Gets a property of the entity
      * 
      * Properties can be
