@@ -21,7 +21,7 @@ abstract class Entity extends Item
     protected $properties = [];
 
     /**
-     * Use pseudo-cached lookup data if possible
+     * Flag to use or avoid using the cache when reading properties
      *
      * @var bool
      */
@@ -31,6 +31,11 @@ abstract class Entity extends Item
     {
         $this->useCache = $use;
         return $this;
+    }
+
+    public function getUseCache(): bool
+    {
+        return $this->useCache;
     }
 
     /**
