@@ -27,14 +27,15 @@ abstract class Entity extends Item
      */
     private $useCache = true;
 
-    public function setUseCache(bool $use): Entity
+    public function useCache(bool $use = null)
     {
-        $this->useCache = $use;
-        return $this;
-    }
+        // Set
+        if (isset($use)) {
+            $this->useCache = $use;
+            return $this;
+        }
 
-    public function getUseCache(): bool
-    {
+        // Get
         return $this->useCache;
     }
 
