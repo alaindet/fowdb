@@ -261,4 +261,14 @@ abstract class Search implements SearchInterface
     {
         return $this->results;
     }
+
+    /**
+     * Returns bound data to prepared statement
+     *
+     * @return array
+     */
+    public function getBoundData(): array
+    {
+        return $this->bind;
+    }
 }
