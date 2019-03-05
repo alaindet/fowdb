@@ -14,32 +14,59 @@ abstract class Entity extends Item
      *
      * @var array
      */
-    protected $properties = [
+    protected $propertyAccessors = [
         // Ex.: 'foo' => 'getFooProperty'
     ];
 
-    public function get(string $propertyName = null, array ...$args)
+    protected $properties = [];
+
+    /**
+     * Gets a property of the entity
+     * 
+     * Properties can be
+     * - native: direct property (comes from db)
+     * - computed: via property accessor
+     * - cached: a computed property already calculated
+     *
+     * @param string $propertyName
+     * @param bool $forceCompute Forces to reset the cache, if present
+     * @param array ...$args Extra arguments passed to the getter
+     * @return mixed The value of the property (usually string|string[])
+     */
+    public function get(
+        string $propertyName = null,
+        bool $forceCompute = false,
+        array ...$args
+    )
     {
         // ERROR: Missing property name
         if (!isset($propertyName)) {
             throw new MissingPropertyNameException();
         }
 
-        // Return public property from database
+        // Native property (from database)
         if (isset($this->$propertyName)) {
             return $this->$propertyName;
         }
 
-        // ERROR: There's no custom property with this name
-        if (!isset($this->properties[$propertyName])) {
+        // Cached computed property
+        if (isset($this->properties[$propertyName]) && !$forceCompute) {
+            return $this->properties[$propertyName];
+        }
+
+        // ERROR: There's no property accessor for this property
+        if (!isset($this->propertyAccessors[$propertyName])) {
             throw new InvalidPropertyNameException();
         }
 
         // Get the property accessor name
         $accessor = $this->properties[$propertyName];
 
-        // Execute the property accessor method
-        return $this->$accessor($args);
+        // Execute the property accessor method and cache the result
+        $this->properties[$propertyName] =  $this->$accessor($args);
+
+        // Return cached value
+        return $this->properties[$propertyName];
     }
 
     /**
