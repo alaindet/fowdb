@@ -33,19 +33,21 @@ class Validation
      * @var array
      */
     private $validators = [
-        'between'  => 'validateBetweenRule',
-        '!empty'   => 'validateNotEmptyRule',
-        'enum'     => 'validateEnumRule',
-        'equals'   => 'validateEqualsRule',
-        'except'   => 'validateExceptRule',
-        'exists'   => 'validateExistsRule',
-        '!exists'  => 'validateNotExistsRule',
-        'is'       => 'validateIsRule',
-        'match'    => 'validateMatchRule',
-        'max'      => 'validateMaxRule',
-        'min'      => 'validateMinRule',
-        'required' => 'validateRequiredRule',
-        'optional' => 'validateOptionalRule',
+        '!empty'    => 'validateNotEmptyRule',
+        '!exists'   => 'validateNotExistsRule',
+        '!required' => 'validateOptionalRule',
+        'are'       => 'validateAreRule',
+        'between'   => 'validateBetweenRule',
+        'enum'      => 'validateEnumRule',
+        'equals'    => 'validateEqualsRule',
+        'except'    => 'validateExceptRule',
+        'exists'    => 'validateExistsRule',
+        'is'        => 'validateIsRule',
+        'match'     => 'validateMatchRule',
+        'max'       => 'validateMaxRule',
+        'min'       => 'validateMinRule',
+        'optional'  => 'validateOptionalRule', // Alias
+        'required'  => 'validateRequiredRule',
     ];
 
     /**

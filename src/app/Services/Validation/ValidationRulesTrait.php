@@ -10,6 +10,97 @@ namespace App\Services\Validation;
 trait ValidationRulesTrait
 {
     /**
+     * It's equivalent to "is" rule, but acts on an array's values
+     * Returns TRUE only if all values of input array match the rule
+     *
+     * @param string $inputName
+     * @param string $ruleValue
+     * @return bool
+     */
+    public function validateAreRule(
+        string $inputName,
+        string $ruleValue
+    ): bool
+    {
+        $input = $this->input[$inputName];
+
+        // ERROR: Input is not an array
+        if (!is_array($input)) {
+            $this->pushError(
+                "Input <strong>{$inputName}</strong> ".
+                "must be an array to validate the \"are\" rule."
+            );
+        }
+
+        // Define the validator function
+        switch ($ruleValue) {
+            case 'number':
+                $validator = function(&$input) {
+                    return is_numeric($input);
+                };
+                break;
+            case 'integer':
+                $validator = function(&$input) {
+                    return filter_var($input, FILTER_VALIDATE_INT) !== false;
+                };
+                break;
+            case 'decimal':
+            case 'float':
+                $validator = function(&$input) {
+                    return filter_var($input, FILTER_VALIDATE_FLOAT) !== false;
+                };
+                break;
+            case 'date':
+                $validator = function(&$input) {
+                    return strtotime($input) !== false;
+                };
+                break;
+            case 'text':
+                $validator = function(&$input) {
+                    return is_string($input);
+                };
+                break;
+            case 'array':
+                $validator = function(&$input) {
+                    return is_array($input);
+                };
+                break;
+            case 'alphanumeric':
+                $validator = function(&$input) {
+                    return preg_match('/^[a-zA-Z0-9]+$/', $input);
+                };
+                break;
+            case 'alphadash':
+                $validator = function(&$input) {
+                    return preg_match('/^[a-zA-Z0-9\-_]+$/', $input);
+                };
+                break;
+            case 'file':
+                $validator = function(&$input) {
+                    return $input['error'] === UPLOAD_ERR_OK;
+                };
+                break;
+            case 'boolean':
+                $validator = function(&$input) {
+                    return $input === '0' || $input === '1';
+                };
+                break;
+        }
+
+        foreach ($input as $inputValue) {
+            if ($validator($inputValue) === false) {
+                $this->pushError(
+                    "Input array <strong>{$inputName}</strong> ".
+                    "must have all <strong>{$ruleValue}</strong> values."
+                );
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Rule: input must be contained in given range (including both ends)
      * Rule value *MUST* be two numeric values separated by a comma
      * 
@@ -281,6 +372,7 @@ trait ValidationRulesTrait
                 if ($isInteger === false) $valid = false;
                 break;
             case 'decimal':
+            case 'float':
                 $isDecimal = filter_var($input, FILTER_VALIDATE_FLOAT);
                 if ($isDecimal === false) $valid = false;
                 break;
