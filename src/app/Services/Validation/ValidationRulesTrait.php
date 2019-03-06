@@ -414,6 +414,46 @@ trait ValidationRulesTrait
     }
 
     /**
+     * Requires an array or a string to have provided length
+     *
+     * @param string $inputName
+     * @param string $ruleValue
+     * @return bool
+     */
+    public function validateLengthRule(
+        string $inputName,
+        string $ruleValue
+    ): bool
+    {
+        $input = $this->input[$inputName];
+        $length = intval($ruleValue);
+
+        if (is_array($input)) {
+            $inputValue = count($input);
+            if ($inputValue !== $length) {
+                $this->pushError(
+                    "Input <strong>{$inputName}</strong> ".
+                    "must have exactly {$length} elements."
+                );
+                return false;
+            }
+        }
+
+        if (is_string($input)) {
+            $inputValue = strlen($input);
+            if ($inputValue !== $length) {
+                $this->pushError(
+                    "Input <strong>{$inputName}</strong> ".
+                    "must have exactly {$length} characters."
+                );
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Rule: input must match given regex pattern
      *
      * @param string $inputName

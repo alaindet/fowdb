@@ -42,6 +42,7 @@ class Validation
         'equals'    => 'validateEqualsRule',
         'except'    => 'validateExceptRule',
         'exists'    => 'validateExistsRule',
+        'length'    => 'validateLengthRule',
         'is'        => 'validateIsRule',
         'match'     => 'validateMatchRule',
         'max'       => 'validateMaxRule',
