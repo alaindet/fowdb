@@ -10,11 +10,13 @@
   color: $color-grey-93;
 }
 
-// Black on white on ACTIVE or FOCUS
+// Black on white on ACTIVE
+// .fd-btn-default:active,
+// .fd-btn-default.active,
+// .fd-btn-default:focus,
+// .fd-btn-default.focus {
 .fd-btn-default:active,
-.fd-btn-default.active,
-.fd-btn-default:focus,
-.fd-btn-default.focus {
+.fd-btn-default.active {
   background-color: $color-grey-20; // #333
   color: $color-grey-93;
 }
