@@ -151,7 +151,7 @@ class Card
         return $card;
     }
 
-    public static function buildTypeLabels(int $typeMask)
+    public static function buildTypeLabels(int $typeMask): array
     {
         $bitmask = (new Bitmask)->setMask($typeMask);
         $labels = [];

@@ -60,19 +60,21 @@ class SpoilersController extends Controller
     {
         // ERROR: Missing spoilers at the moment
         if (empty(lookup('spoilers.ids'))) {
-            Alert::add('No spoilers on FoWDB at the moment, sorry.', 'warning');
+            Alert::add(
+                'No spoilers on FoWDB at the moment, sorry.',
+                'warning'
+            );
             Redirect::to('/');
         }
 
         return (new Page)
             ->template('pages/public/cards/spoiler/index')
             ->title('Spoiler')
-            ->variables([ 'items' => $this->getSpoilerSets() ])
+            ->variables([
+                'items' => $this->getSpoilerSets()
+            ])
             ->options([
-                'scripts' => [
-                    'public/search',
-                    'public/spoiler'
-                ],
+                'scripts' => ['public/cards/spoiler']
             ])
             ->render();
     }

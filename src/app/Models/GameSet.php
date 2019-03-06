@@ -10,7 +10,7 @@ class GameSet extends Model
 
     public static function nextAvailableId(): int
     {
-        $item = database()->rawSelect('SELECT max(id) max FROm game_sets');
+        $item = database()->rawSelect('SELECT max(id) max FROM game_sets');
 
         return intval($item[0]['max']) + 1;
     }

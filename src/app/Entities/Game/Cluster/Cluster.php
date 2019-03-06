@@ -12,11 +12,11 @@ class Cluster extends Entity
     use ClusterComputedPropertiesTrait;
 
     /**
-     * Define computed properties and its property accessors
+     * Define computed properties and its property getters
      *
      * @var array
      */
-    protected $propertyAccessors = [
+    protected $propertyGetters = [
 
         'formats' => 'getFormatsProperty',
         'sets' => 'getSetsProperty',

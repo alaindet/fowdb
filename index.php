@@ -32,7 +32,9 @@ $request = (new \App\Http\Request\Request)
 
 // Read the routes
 $routes = \App\Services\FileSystem::loadFile(path_data('app/routes.php'));
-// require __DIR__ . '/src/add-test-routes.php';
+
+// TEST
+require __DIR__ . '/src/add-test-routes.php';
 
 // Map request to its route
 $route = (new \App\Http\Response\Router())

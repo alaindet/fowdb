@@ -12,13 +12,20 @@ class Format extends Entity
     use FormatComputedPropertiesTrait;
 
     /**
-     * Define computed properties and its property accessors
+     * Define computed properties and its property getters
      *
      * @var array
      */
-    protected $propertyAccessors = [
-
+    protected $propertyGetters = [
         'clusters' => 'getClustersProperty',
+    ];
 
+    /**
+     * Define computed properties and its property setters
+     *
+     * @var array
+     */
+    protected $propertySetters = [
+        'clusters' => 'setClustersProperty',
     ];
 }

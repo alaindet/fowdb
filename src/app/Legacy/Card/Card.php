@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Legacy;
+namespace App\Legacy\Card;
 
 use App\Models\PlayRestriction;
 use App\Models\CardNarp;
@@ -10,9 +10,12 @@ use App\Models\GameRuling;
 use App\Utils\Arrays;
 use App\Views\Card\Card as View;
 use App\Utils\BitmaskFlags;
+use App\Legacy\Card\CardPropertiesTrait;
 
 class Card
 {
+    use CardPropertiesTrait;
+
     public static function getCardPageData(string $code): array
     {
         $cardModel = new Model;
@@ -30,14 +33,12 @@ class Card
         foreach ($cardsDb as &$card) {
 
             // $type ----------------------------------------------------------
-            $_type = [];
-            $typeLabels = View::buildTypeLabels(intval($card['type_bit']));
-            foreach ($typeLabels as $typeLabel) {
-                $link = url('cards', ['type' => [$typeLabel]]);
-                $_type[] = "<a href=\"{$link}\">{$typeLabel}</a>";
-            }
-            $type = implode(' / ', $_type);
-            if ($card['back_side'] === '2') $type .= ' (Shift)';
+            $typeBit = intval($card['type_bit']);
+            $typeLabels = View::buildTypeLabels($typeBit);
+            $type = self::buildTypeProperty(
+                $typeLabels,
+                $isShift = ($card['back_side'] === '2')
+            );
             
             // $freecost ------------------------------------------------------
             $freecost = '';
@@ -58,13 +59,15 @@ class Card
             if (!empty($card['attribute_cost'])) {
                 $attributecost = array_reduce(
                     str_split($card['attribute_cost']),
-                    function ($tot, $attr) { return $tot .= render('{'.$attr.'}'); },
+                    function ($tot, $attr) {
+                        return $tot .= render('{'.$attr.'}');
+                    },
                     ''
                 );
             }
             
             // $cost ----------------------------------------------------------
-            $cost = empty($card['total_cost']) ? '0' : $attributecost . $freecost;
+            $cost = empty($card['total_cost']) ? '0' : $attributecost.$freecost;
 
             // $totalCost -----------------------------------------------------
             $link = url('cards', ['total_cost' => [$card['total_cost']]]);

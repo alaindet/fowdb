@@ -46,6 +46,7 @@ class UserController extends Controller
                 url('cards/manage') => 'Game: Cards',
                 url('sets/manage') => 'Game: Sets',
                 url('clusters/manage') => 'Game: Clusters',
+                url('formats/manage') => 'Game: Formats',
                 url('rulings/manage') => 'Game: Rulings',
                 url('restrictions/manage') => 'Play: Banned and Limited cards',
                 url('cr/manage') => 'Play: Comprehensive Rules',

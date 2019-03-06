@@ -7,6 +7,30 @@ use App\Base\Model;
 
 class Card extends Model
 {
+    use BuildHtmlAttribute;
+
+    public $virtualAttributes = [
+        '*html-name' => 'getHtmlAttribute',
+        '*html-type' => 'getHtmlTypeAttribute',
+        '*html-cost' => 'getHtmlCostAttribute',
+        '*html-total-cost' => 'getHtmlTotalCostAttribute',
+        '*html-battle-stats' => 'getHtmlBattleStatsAttribute',
+        '*html-divinity' => 'getHtmlDivinityAttribute',
+        '*html-race' => 'getHtmlRaceAttribute',
+        '*html-attribute' => 'getHtmlAttributeAttribute',
+        '*html-text' => 'getHtmlTextAttribute',
+        '*html-flavor-test' => 'getHtmlFlavorTextAttribute',
+        '*html-code' => 'getHtmlCodeAttribute',
+        '*html-rarity' => 'getHtmlRarityAttribute',
+        '*html-artist' => 'getHtmlArtistAttribute',
+        '*html-set' => 'getHtmlSetAttribute',
+        '*html-cluster' => 'getHtmlClusterAttribute',
+        '*html-format' => 'getHtmlFormatAttribute',
+        '*html-banned' => 'getHtmlBannedAttribute',
+        '*narp' => 'getNarpAttribute',
+        '*rulings' => 'getRulingsAttribute'
+    ];
+
     public $table = 'cards';
 
     public $numeric = [
@@ -96,7 +120,6 @@ class Card extends Model
                 ->select($fields)
                 ->from($this->table)
                 ->where('code = :code')
-                // ->where('code LIKE :code')
                 ->limit(3)
             )
             ->bind([':code' => $code])

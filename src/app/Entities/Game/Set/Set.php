@@ -12,11 +12,11 @@ class Set extends Entity
     use SetComputedPropertiesTrait;
 
     /**
-     * Define computed properties and its property accessors
+     * Define computed properties and its property getters
      *
      * @var array
      */
-    protected $propertyAccessors = [
+    protected $propertyGetters = [
 
         //
 

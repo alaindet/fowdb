@@ -11,7 +11,11 @@ trait ValidationRulesTrait
 {
     /**
      * Rule: input must be contained in given range (including both ends)
-     * Value *MUST* be two numeric values separated by a comma
+     * Rule value *MUST* be two numeric values separated by a comma
+     * 
+     * If input is numeric, its value is used
+     * If input is string, its character count is used
+     * If input is an array, its length is used
      *
      * @param string $inputName
      * @param string $ruleValue
@@ -19,20 +23,48 @@ trait ValidationRulesTrait
      */
     public function validateBetweenRule(
         string $inputName,
-        string $ruleVlue = null
+        string $ruleValue = null
     ): bool
     {
-        $input = intval($this->input[$inputName]);
+        $input = $this->input[$inputName];
         [$min, $max] = explode(',', $ruleValue);
         $min = intval($min);
         $max = intval($max);
 
-        if ($input < $min || $input > $max) {
-            $this->pushError(
-                "Input <strong>{$inputName}</strong> must be ".
-                "included in range ({$min} ; {$max})"
-            );
-            return false;
+        // Input is array
+        if (is_array($input)) {
+            $inputValue = count($input);
+            if ($inputValue < $min || $inputValue > $max) {
+                $this->pushError(
+                    "Input <strong>{$inputName}</strong> ".
+                    "length must be between {$min} and {$max}."
+                );
+                return false;
+            }
+        }
+
+        // Input is numeric
+        if (is_numeric($input)) {
+            $inputValue = filter_var($input, FILTER_VALIDATE_FLOAT);
+            if ($inputValue < $min || $inputValue > $max) {
+                $this->pushError(
+                    "Input <strong>{$inputName}</strong> ".
+                    "value must be between {$min} and {$max}."
+                );
+                return false;
+            }
+        }
+
+        // Input is text
+        else {
+            $inputValue = strlen($input);
+            if ($inputValue < $min || $inputValue > $max) {
+                $this->pushError(
+                    "Input <strong>{$inputName}</strong> ".
+                    "length must be between {$min} and {$max} characters."
+                );
+                return false;
+            }
         }
 
         return true;
@@ -312,6 +344,9 @@ trait ValidationRulesTrait
 
     /**
      * Rule: input must be less than passed max value
+     * If input is numeric, its value is used
+     * If input is string, its character count is used
+     * If input is an array, its length is used
      *
      * @param string $inputName
      * @param string $ruleValue
@@ -322,12 +357,43 @@ trait ValidationRulesTrait
         string $ruleValue = null
     ): bool
     {
-        if (intval($this->input[$inputName]) > intval($ruleValue)) {
-            $this->pushError(
-                "Input <strong>{$inputName}</strong> must be ".
-                "less than {$ruleValue}"
-            );
-            return false;
+        $input = $this->input[$inputName];
+        $max = intval($ruleValue);
+
+        // Input is array
+        if (is_array($input)) {
+            $inputValue = count($input);
+            if ($inputValue > $max) {
+                $this->pushError(
+                    "Input <strong>{$inputName}</strong> ".
+                    "length must be less than {$max}."
+                );
+                return false;
+            }
+        }
+
+        // Input is number
+        if (is_numeric($input)) {
+            $inputValue = filter_var($input, FILTER_VALIDATE_FLOAT);
+            if ($inputValue > $max) {
+                $this->pushError(
+                    "Input <strong>{$inputName}</strong> ".
+                    "value must be less than {$max}."
+                );
+                return false;
+            }
+        }
+
+        // Input is text
+        else {
+            $inputValue = strlen($input);
+            if ($inputValue > $max) {
+                $this->pushError(
+                    "Input <strong>{$inputName}</strong> ".
+                    "length must be less than {$max} characters."
+                );
+                return false;
+            }
         }
 
         return true;
@@ -335,6 +401,9 @@ trait ValidationRulesTrait
 
     /**
      * Rule: input must be more than passed min value
+     * If input is numeric, its value is used
+     * If input is string, its character count is used
+     * If input is an array, its length is used
      *
      * @param string $inputName
      * @param string $ruleValue
@@ -345,12 +414,43 @@ trait ValidationRulesTrait
         string $ruleValue = null
     ): bool
     {
-        if (intval($this->input[$inputName]) < intval($ruleValue)) {
-            $this->pushError(
-                "Input <strong>{$inputName}</strong> must be ".
-                "more than {$ruleValue}"
-            );
-            return false;
+        $input = $this->input[$inputName];
+        $min = intval($ruleValue);
+
+        // Input is array
+        if (is_array($input)) {
+            $inputValue = count($input);
+            if ($inputValue < $min) {
+                $this->pushError(
+                    "Input <strong>{$inputName}</strong> ".
+                    "length must be more than {$min}."
+                );
+                return false;
+            }
+        }
+
+        // Input is number
+        if (is_numeric($input)) {
+            $inputValue = filter_var($input, FILTER_VALIDATE_FLOAT);
+            if ($inputValue < $min) {
+                $this->pushError(
+                    "Input <strong>{$inputName}</strong> ".
+                    "value must be more than {$min}."
+                );
+                return false;
+            }
+        }
+
+        // Input is text
+        else {
+            $inputValue = strlen($input);
+            if ($inputValue < $min) {
+                $this->pushError(
+                    "Input <strong>{$inputName}</strong> ".
+                    "length must be more than {$min} characters."
+                );
+                return false;
+            }
         }
 
         return true;

@@ -6,30 +6,26 @@
 ?>
 <div class="row">
 
-  <!-- Side options -->
-  <?=include_view(
-    'pages/public/cards/search/includes/options',
-    [
-      'isSpoiler' => true,
-      'spoilers' => $items // TO DO
-    ]
-  )?>
+  <!-- Options -->
+  <?=include_view('pages/public/cards/search/includes/results/options', [
+    'spoilers' => $items
+  ])?>
 
   <!-- Results -->
-  <div class="col-xs-12" id="search-results">
-    <div class="panel panel-default">
+  <div class="col-xs-12" id="the-results">
+    <div class="fd-box --xs-less-padding">
 
       <!-- Header -->
-      <div class="panel-heading">
-        <h3>
+      <div class="fd-box__title">
+        <h2>
           <i class="fa fa-th-large"></i>
           Spoiler
 
           <!-- Show options -->
           <button
             type="button"
-            class="btn fd-btn-default js-hider js-panel-toggle js-panel-toggle-options"
-            data-target="#hide-options"
+            class="btn btn-xs btn-link link-as-text js-hider js-options-toggle"
+            data-target="#the-options"
             data-open-icon="fa-times"
             data-closed-icon="fa-plus"
           >
@@ -37,33 +33,40 @@
             Options
           </button>
 
-        </h3>
+        </h2>
       </div>
 
       <!-- Content -->
-      <div class="panel-body cards-container">
-        <?php foreach ($items as $set) : ?>
-
+      <div class="fd-box__content">
+        <?php foreach ($items as $set):
+          $targetId = "spoiler-{$set['code']}";
+        ?>
           <!-- Spoiler set container -->
           <div
             id="<?=$set['code']?>"
-            class="spoiler"
+            class="fd-box js-spoiler text-center"
             data-set-code="<?=$set['code']?>"
             data-set-count="<?=$set['count']?>"
           >
             <!-- Spoiler set header -->
-            <div class="spoiler-header text-center">
+            <div class="fd-box__title js-spoiler-header">
               
+              <!-- Spoiler set name -->
               <h3
                 class="js-hider pointer inline"
-                data-target="#hide-spoiler-<?=$set['code']?>"
+                data-target="#<?=$targetId?>"
               >
                 <i class="fa fa-chevron-down"></i>
                 <?="{$set['name']} ({$set['spoiled']} / {$set['count']})"?>
               </h3>
               
               <!-- Top anchor -->
-              <a href="#top" class="btn btn-link">Top</a>
+              <a
+                href="#top"
+                class="btn btn-link"
+              >
+                Top
+              </a>
 
               <!-- Share button -->
               <a
@@ -76,28 +79,27 @@
               
             </div>
 
-            <p></p>
-
             <!-- Spoiler set body -->
-            <div class="spoiler-body" id="hide-spoiler-<?=$set['code']?>"><!--
+            <div
+              class="fd-box__content fd-grid-items js-spoiler-body"
+              id="<?=$targetId?>"
+            ><!--
               <?php if (!empty($set['cards'])): ?>
-                <?php foreach ($set['cards'] as $card): ?>
-                    --><div
-                      class="fdb-card fdb-card-3"
-                      data-number="<?=$card['num']?>"
-                      data-code="<?=$card['code']?>"
-                      data-id="<?=$card['id']?>"
-                    >
-                      <a
-                        href="<?=url('card/'.urlencode($card['code']))?>"
-                        target="_self"
+                <?php foreach ($set['cards'] as $item):
+                  $link = url('card/'.urlencode($item['code']));
+                ?>
+                  --><div
+                    class="fd-card-item fd-grid fd-grid-3"
+                    data-id="<?=$item['id']?>"
+                    data-number="<?=$item['num']?>"
+                  >
+                    <a href="<?=$link?>" target="_self">
+                      <img
+                        src="<?=asset($item['thumb_path'])?>"
+                        alt="<?=$item['name']?>"
                       >
-                        <img
-                          src="<?=$card['thumb_path']?>"
-                          alt="<?=$card['name']?>"
-                        >
-                      </a>
-                    </div><!--
+                    </a>
+                  </div><!--
                 <?php endforeach; ?>
               <?php endif; ?>
             --></div>
@@ -105,9 +107,7 @@
           </div>
         <?php endforeach; ?>
         <?=component('top-anchor')?>
-      </div>
-
-    </div>
-  </div>
-
-</div>
+      </div><!-- /.fd-box__content -->
+    </div><!-- /.fd-box -->
+  </div><!-- /.col-xs-12 -->
+</div><!-- /.row -->

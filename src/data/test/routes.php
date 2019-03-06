@@ -62,6 +62,8 @@ $public = [
 
     // Cards
     ['GET', 'cards/properties/html', 'CardsController', 'propsHtml'],
+    ['GET', 'cards/properties/html/{code}', 'CardsController', 'propsHtml'],
+    ['GET', 'cards/types-list', 'CardsController', 'typesList'],
 
 ];
 
