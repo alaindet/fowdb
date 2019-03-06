@@ -210,4 +210,21 @@ class Arrays
 
         return $result;
     }
+
+    /**
+     * Ensures the passed $input is an array
+     * If so, return it as it is
+     * If not (a number, a string, etc.), return a 1-element array with $input
+     * 
+     * @param $input mixed Anything to be converted into an array
+     * @return array
+     */
+    public static function makeArray($input): array
+    {
+        if (!is_array($input)) {
+            $input = [$input];
+        }
+
+        return $input;
+    }
 }
