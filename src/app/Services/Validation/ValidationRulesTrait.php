@@ -241,11 +241,22 @@ trait ValidationRulesTrait
         $valid = true;
 
         switch ($ruleValue) {
-            case 'integer':
+            case 'number':
                 if (!is_numeric($input)) $valid = false;
+                break;
+            case 'integer':
+                $isInteger = filter_var($input, FILTER_VALIDATE_INT);
+                if ($isInteger === false) $valid = false;
+                break;
+            case 'decimal':
+                $isDecimal = filter_var($input, FILTER_VALIDATE_FLOAT);
+                if ($isDecimal === false) $valid = false;
                 break;
             case 'date':
                 if (strtotime($input) === false) $valid = false;
+                break;
+            case 'text':
+                if (!is_string($input)) $valid = false;
                 break;
             case 'array':
                 if (!is_array($input)) $valid = false;
