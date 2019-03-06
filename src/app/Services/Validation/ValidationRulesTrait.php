@@ -4,7 +4,7 @@ namespace App\Services\Validation;
 
 /**
  * protected $input; (from Validation)
- * protected $skip; (from Validation)
+ * protected $stop; (from Validation)
  * public function pushError(string $message): void; (from Errorable)
  */
 trait ValidationRulesTrait
@@ -14,18 +14,18 @@ trait ValidationRulesTrait
      * Value *MUST* be two numeric values separated by a comma
      *
      * @param string $inputName
-     * @param string $value
+     * @param string $ruleValue
      * @return boolean
      */
     public function validateBetweenRule(
         string $inputName,
-        string $value = null
+        string $ruleVlue = null
     ): bool
     {
         $input = intval($this->input[$inputName]);
-        $bits = explode(',', $value);
-        $min = intval($bits[0]);
-        $max = intval($bits[1]);
+        [$min, $max] = explode(',', $ruleValue);
+        $min = intval($min);
+        $max = intval($max);
 
         if ($input < $min || $input > $max) {
             $this->pushError(
@@ -42,22 +42,22 @@ trait ValidationRulesTrait
      * Rule: input must not be empty
      *
      * @param string $inputName
-     * @param string|array $value
+     * @param string|array $ruleValue
      * @return boolean
      */
     public function validateNotEmptyRule(
         string $inputName,
-        $value = null
+        $ruleValue = null
     ): bool
     {
         $input = $this->input[$inputName];
-        
-        if (
-            (is_string($input) && $input === '') ||
-            (is_array($input) && count($input) === 0)
-        ) {
+        $emptyString = (is_string($input) && $input === '');
+        $emptyArray = (is_array($input) && count($input) === 0);
+
+        if ($emptyString || $emptyArray) {
             $this->pushError(
-                "Input <strong>{$inputName}</strong> must not be empty"
+                "Input <strong>{$inputName}</strong> ".
+                "must not be empty"
             );
             return false;
         }
@@ -69,25 +69,25 @@ trait ValidationRulesTrait
      * Rule: input must have one of the listed values
      *
      * @param string $inputName
-     * @param string $value List of comma-separated values
+     * @param string $ruleValue List of comma-separated values
      * @return boolean
      */
     public function validateEnumRule(
         string $inputName,
-        string $value = null
+        string $ruleValue = null
     ): bool
     {
-        $values = explode(',', $value);
+        $ruleValues = explode(',', $ruleValue);
 
         if (!is_array($this->input[$inputName])) {
             $this->input[$inputName] = [ $this->input[$inputName] ];
         }
 
         foreach ($this->input[$inputName] as $input) {
-            if (!in_array($input, $values)) {
+            if (!in_array($input, $ruleValues)) {
                 $this->pushError(
-                    "Input <strong>{$inputName}</strong> value must be "
-                    . "in this list: {$value}"
+                    "Input <strong>{$inputName}</strong> value ".
+                    "must be one of these values: {$ruleValue}."
                 );
                 return false;
             }
@@ -100,20 +100,20 @@ trait ValidationRulesTrait
      * Rule: input must *NOT* be equal to given value
      *
      * @param string $inputName
-     * @param string $value
+     * @param string $ruleValue
      * @return boolean
      */
     public function validateExceptRule(
         string $inputName,
-        string $value = null
+        string $ruleValue = null
     ): bool
     {
-        $values = explode(',', $value);
+        $ruleValues = explode(',', $ruleValue);
 
-        if (in_array($this->input[$inputName], $values)) {
+        if (in_array($this->input[$inputName], $ruleValues)) {
             $this->pushError(
-                "Input <strong>{$inputName}</strong> value must not be "
-                . "equal to \"{$value}\""
+                "Input <strong>{$inputName}</strong> value ".
+                "must not be equal to one of these values: \"{$ruleValue}\"."
             );
             return false;
         }
@@ -125,18 +125,18 @@ trait ValidationRulesTrait
      * Rule: Input must be equal to given value
      *
      * @param string $inputName
-     * @param string $value
+     * @param string $rulValue
      * @return boolean
      */
     public function validateEqualsRule(
         string $inputName,
-        string $value = null
+        string $ruleValue = null
     ): bool
     {
-        if ($this->input[$inputName] !== $value) {
+        if ($this->input[$inputName] !== $ruleValue) {
             $this->pushError(
-                "Input <strong>{$inputName}</strong> value must be "
-                . "equal to {$value}"
+                "Input <strong>{$inputName}</strong> value ".
+                "must be equal to {$ruleValue}."
             );
             return false;
         }
@@ -148,40 +148,35 @@ trait ValidationRulesTrait
      * Rule: input must exist in given table and column
      *
      * @param string $inputName
-     * @param string $value
+     * @param string $ruleValue
      * @return boolean
      */
     public function validateExistsRule(
         string $inputName,
-        string $value = null
+        string $ruleValue = null
     ): bool
     {
-        [$table, $column] = explode(',', $value);
+        $input = $this->input[$inputName];
+        
+        [$table, $column] = explode(',', $ruleValue);
 
-        if (!isset($column)) {
-            $this->pushError(
-                "Missing database column for rule <strong>exists</strong> ".
-                "of input <strong>{$inputName}</strong>"
-            );
-            return false;
-        }
+        $statement = statement('select')
+            ->select($column)
+            ->from($table)
+            ->where("{$column} = :value")
+            ->limit(1);
 
-        $exists = database()
-            ->select(statement('select')
-                ->select($column)
-                ->from($table)
-                ->where("{$column} = :value")
-                ->limit(1)
-            )
-            ->bind([':value' => $this->input[$inputName]])
+        $result = database()
+            ->select($statement)
+            ->bind([':value' => $input])
             ->first();
 
-        if (empty($exists)) {
+        if (empty($result)) {
             $this->pushError(
                 "Input <strong>{$inputName}</strong> with value ".
-                "<strong>{$this->input[$inputName]}</strong> does not exist ".
+                "<strong>{$input}</strong> does *NOT* exist ".
                 "into database table <strong>{$table}</strong> ".
-                "on the column <strong>{$column}</strong>"
+                "on the column <strong>{$column}</strong>."
             );
             return false;
         }
@@ -193,40 +188,36 @@ trait ValidationRulesTrait
      * Rule: input must *NOT* exist in given table and column
      *
      * @param string $inputName
-     * @param string $value
+     * @param string $ruleValue
      * @return boolean
      */
     public function validateNotExistsRule(
         string $inputName,
-        string $value = null
+        string $ruleValue = null
     ): bool
     {
-        [$table, $column] = explode(',', $value);
+        $input = $this->input[$inputName];
+        
+        [$table, $column] = explode(',', $ruleValue);
 
-        if (!isset($column)) {
-            $this->pushError(
-                "Missing database column for rule <strong>exists</strong> ".
-                "of input <strong>{$inputName}</strong>"
-            );
-            return false;
-        }
 
-        $exists = database()
-            ->select(statement('select')
-                ->select($column)
-                ->from($table)
-                ->where("{$column} = :value")
-                ->limit(1)
-            )
-            ->bind([':value' => $this->input[$inputName]])
+        $statement = statement('select')
+            ->select($column)
+            ->from($table)
+            ->where("{$column} = :value")
+            ->limit(1);
+
+        $result = database()
+            ->select($statement)
+            ->bind([':value' => $input])
             ->first();
 
-        if (!empty($exists)) {
+        if (!empty($result)) {
             $this->pushError(
                 "Input <strong>{$inputName}</strong> with value ".
-                "<strong>{$this->input[$inputName]}</strong> already exists ".
+                "<strong>{$input}</strong> already exists ".
                 "into database table <strong>{$table}</strong> ".
-                "on the column <strong>{$column}</strong>"
+                "on the column <strong>{$column}</strong>."
             );
             return false;
         }
@@ -238,28 +229,49 @@ trait ValidationRulesTrait
      * Rule: input type must be of given type
      *
      * @param string $inputName
-     * @param string $value
+     * @param string $ruleValue
      * @return boolean
      */
     public function validateIsRule(
         string $inputName,
-        string $value = null
+        string $ruleValue
     ): bool
     {
-        $input =& $this->input[$inputName];
+        $input = &$this->input[$inputName];
+        $valid = true;
 
-        if (
-            ($value === 'integer' && !is_numeric($input)) ||
-            ($value === 'date' && strtotime($input) === false) ||
-            ($value === 'array' && !is_array($input)) ||
-            (
-                $value === 'alphanumeric' &&
-                !preg_match('/^[a-zA-Z0-9]+$/', $input)
-            ) ||
-            ($value === 'file' && $input['error'] !== UPLOAD_ERR_OK) ||
-            ($value === 'boolean' && $input !== '0' && $input !== '1')
-        ) {
-            $this->pushError("Input <strong>{$inputName}</strong> must be of type {$value}");
+        switch ($ruleValue) {
+            case 'integer':
+                if (!is_numeric($input)) $valid = false;
+                break;
+            case 'date':
+                if (strtotime($input) === false) $valid = false;
+                break;
+            case 'array':
+                if (!is_array($input)) $valid = false;
+                break;
+            case 'alphanumeric':
+                $pattern = '/^[a-zA-Z0-9]+$/';
+                if (!preg_match($pattern, $input)) $valid = false;
+                break;
+            case 'alphadash':
+                $pattern = '/^[a-zA-Z0-9\-_]+$/';
+                if (!preg_match($pattern, $input)) $valid = false;
+                break;
+            case 'file':
+                if ($input['error'] !== UPLOAD_ERR_OK) $valid = false;
+                break;
+            case 'boolean':
+                if ($input !== '0' && $input !== '1') $valid = false;
+                break;
+        }
+
+        // ERROR
+        if (!$valid) {
+            $this->pushError(
+                "Input <strong>{$inputName}</strong> ".
+                "must be of type {$value}"
+            );
             return false;
         }
 
@@ -270,16 +282,16 @@ trait ValidationRulesTrait
      * Rule: input must match given regex pattern
      *
      * @param string $inputName
-     * @param string $value
+     * @param string $ruleValue
      * @return bool
      */
-    public function validateMatchRule(string $inputName, string $value): bool
+    public function validateMatchRule(string $inputName, string $ruleValue): bool
     {
-        $pattern = "~{$value}~";
+        $pattern = "~{$ruleValue}~";
         if (!preg_match($pattern, $this->input[$inputName])) {
             $this->pushError(
                 "Input <strong>{$inputName}</strong> must match pattern ".
-                "<span class=\"text-monospace text-bold\">{$value}</span>"
+                "<span class=\"text-monospace text-bold\">{$ruleValue}</span>"
             );
             return false;
         }
@@ -291,18 +303,18 @@ trait ValidationRulesTrait
      * Rule: input must be less than passed max value
      *
      * @param string $inputName
-     * @param string $value
+     * @param string $ruleValue
      * @return boolean
      */
     public function validateMaxRule(
         string $inputName,
-        string $value = null
+        string $ruleValue = null
     ): bool
     {
-        if (intval($this->input[$inputName]) > intval($value)) {
+        if (intval($this->input[$inputName]) > intval($ruleValue)) {
             $this->pushError(
                 "Input <strong>{$inputName}</strong> must be ".
-                "less than {$value}"
+                "less than {$ruleValue}"
             );
             return false;
         }
@@ -314,18 +326,18 @@ trait ValidationRulesTrait
      * Rule: input must be more than passed min value
      *
      * @param string $inputName
-     * @param string $value
+     * @param string $ruleValue
      * @return boolean
      */
     public function validateMinRule(
         string $inputName,
-        string $value = null
+        string $ruleValue = null
     ): bool
     {
-        if (intval($this->input[$inputName]) < intval($value)) {
+        if (intval($this->input[$inputName]) < intval($ruleValue)) {
             $this->pushError(
                 "Input <strong>{$inputName}</strong> must be ".
-                "more than {$value}"
+                "more than {$ruleValue}"
             );
             return false;
         }
@@ -342,43 +354,83 @@ trait ValidationRulesTrait
      */
     public function validateRequiredRule(
         string $inputName,
-        string $value = null
+        string $ruleValue = null
     ): bool
     {
-        $exists = true;
+        // Default is required:1
+        $ruleValue = $ruleValue ?? '1';
 
-        if (!isset($this->input[$inputName])) $exists = false;
+        // Read the input
+        $input = $this->input[$inputName] ?? null;
 
-        // Input is required
-        if (
-            ($value === '1' || $value === '') &&
-            (
-                !isset($this->input[$inputName]) ||
-                $this->input[$inputName] === '' ||
-                (
-                    isset($this->input[$inputName]['error']) &&
-                    $this->input[$inputName]['error'] !== UPLOAD_ERR_OK
-                )
-            )
-        ) {
-            $this->pushError("Input <strong>{$inputName}</strong> is required");
-            $this->skip = true;
-            return false;
+        // required:1
+        if ($ruleValue === '1') {
+
+            // ERROR: Does not exist (fail validation and stop all other rules!)
+            if ($input === null) {
+                $this->pushError(
+                    "Input <strong>{$inputName}</strong> is required. ".
+                    "No input with that name passed."
+                );
+                $this->stop = true;
+                return false;
+            }
+
+            // ERROR: Invalid uploaded file
+            if (isset($input['error']) && $input['error'] !== UPLOAD_ERR_OK) {
+                $this->pushError(
+                    "Input <strong>{$inputName}</strong> is required. ".
+                    "Invalid file uploaded."
+                );
+                $this->stop = true;
+                return false;
+            }
+
+            return true;
         }
 
-        // Input is *NOT* required
-        if (
-            $value === '0' && 
-            (
-                !isset($this->input[$inputName]) ||
-                $this->input[$inputName] === '' ||
-                (
-                    isset($this->input[$inputName]['error']) &&
-                    $this->input[$inputName]['error'] !== UPLOAD_ERR_OK
-                )
-            )
-        ) {
-            $this->skip = true;
+        // required:0
+        if ($ruleValue === '0') {
+
+            // Does not exist (stop validation and move to another input)
+            if ($input === null) {
+                $this->stop = true;
+            }
+
+            // Invalid uploaded file (stop validation and move to another input)
+            if (isset($input['error']) && $input['error'] !== UPLOAD_ERR_OK) {
+                $this->stop = true;
+            }
+
+            return true;
+
+        }
+    }
+
+    /**
+     * Aliases required:0 validation rule. Always returns TRUE,
+     * but stops validation if input is missing
+     *
+     * @param string $inputName
+     * @param string $ruleValue
+     * @return bool TRUE
+     */
+    public function validateOptionalRule(
+        string $inputName,
+        string $ruleValue = null
+    ): bool
+    {
+        // Read the input
+        $input = $this->input[$inputName] ?? null;
+
+        // Does not exist (stop validation and move to another input)
+        if ($input === null) {
+            $this->stop = true;
+        }
+
+        // Invalid uploaded file (stop validation and move to another input)
+        if (isset($input['error']) && $input['error'] !== UPLOAD_ERR_OK) {
+            $this->stop = true;
         }
 
         return true;
