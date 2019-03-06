@@ -34,53 +34,53 @@ trait ValidationRulesTrait
 
         // Define the validator function
         switch ($ruleValue) {
-            case 'number':
+            case 'numbers':
                 $validator = function(&$input) {
                     return is_numeric($input);
                 };
                 break;
-            case 'integer':
+            case 'integers':
                 $validator = function(&$input) {
                     return filter_var($input, FILTER_VALIDATE_INT) !== false;
                 };
                 break;
-            case 'decimal':
-            case 'float':
+            case 'decimals':
+            case 'floats':
                 $validator = function(&$input) {
                     return filter_var($input, FILTER_VALIDATE_FLOAT) !== false;
                 };
                 break;
-            case 'date':
+            case 'dates':
                 $validator = function(&$input) {
                     return strtotime($input) !== false;
                 };
                 break;
-            case 'text':
+            case 'texts':
                 $validator = function(&$input) {
                     return is_string($input);
                 };
                 break;
-            case 'array':
+            case 'arrays':
                 $validator = function(&$input) {
                     return is_array($input);
                 };
                 break;
-            case 'alphanumeric':
+            case 'alphanumerics':
                 $validator = function(&$input) {
                     return preg_match('/^[a-zA-Z0-9]+$/', $input);
                 };
                 break;
-            case 'alphadash':
+            case 'alphadashes':
                 $validator = function(&$input) {
                     return preg_match('/^[a-zA-Z0-9\-_]+$/', $input);
                 };
                 break;
-            case 'file':
+            case 'files':
                 $validator = function(&$input) {
                     return $input['error'] === UPLOAD_ERR_OK;
                 };
                 break;
-            case 'boolean':
+            case 'booleans':
                 $validator = function(&$input) {
                     return $input === '0' || $input === '1';
                 };
