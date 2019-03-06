@@ -42,10 +42,19 @@ abstract class ItemsCollection implements Iterator
         return count($this->items);
     }
 
+    /**
+     * Performs a callback on every item
+     * If callback returns FALSE, the loop stops
+     *
+     * @param callable $callback
+     * @return ItemsCollection
+     */
     public function each(callable $callback): ItemsCollection
     {
         for ($i = 0, $len = count($this->items); $i < $len; $i++) {
-            $callback($this->items[$i], $i);
+            if ($callback($this->items[$i], $i) === false) {
+                return $this;
+            }
         }
         return $this;
     }
