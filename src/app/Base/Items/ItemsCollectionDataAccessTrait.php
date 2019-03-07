@@ -21,6 +21,12 @@ trait ItemsCollectionDataAccessTrait
         return $this;
     }
 
+    public function add(ItemInterface $item): ItemsCollectionInterface
+    {
+        $this->items[] = $item;
+        return $this;
+    }
+
     public function get(int $index): ?ItemInterface
     {
         return $this->items[$index] ?? null;
