@@ -5,8 +5,8 @@ namespace App\Http\Request;
 use App\Http\Request\Input;
 use App\Services\Alert;
 use App\Services\Validation\Validation;
-use App\Exceptions\ValidationException;
 use App\Exceptions\ApiValidationException;
+use App\Utils\Arrays;
 
 class Request
 {
@@ -115,7 +115,7 @@ class Request
     }
 
     /**
-     * Sets and reads app data
+     * Sets or reads app data
      *
      * @param string $name
      * @param any $value
@@ -128,7 +128,7 @@ class Request
             return $this;
         }
 
-        return $this->app[$name];
+        return $this->app[$name] ?? null;
     }
 
     public function input(): Input
@@ -138,14 +138,10 @@ class Request
 
     public function getCurrentUrl(bool $withQueryString = false): string
     {
-        // $currentUrl = url($this->path);
+        (empty($this->queryString))
+            ? $queryString = ""
+            : $queryString = "?{$this->queryString}";
 
-        // if (!$withQueryString) return $currentUrl;
-
-        // $qs = !empty($this->queryString) ? '?'.$this->queryString : '';
-        // return $currentUrl . $qs;
-
-        $queryString = !empty($this->queryString) ? '?'.$this->queryString : '';
         return url($this->path) . $queryString;
     }
 
@@ -169,30 +165,44 @@ class Request
      * @param array $input
      * @return void
      */
-    public function validate(
-        string $httpMethod,
-        array $rules,
-        array $input = null
-    ): void
+    public function validate(array $rules): void
     {
-        $errors = (new Validation)
-            ->input($input ?? $this->input()->$httpMethod())
-            ->validate($rules)
-            ->getErrors();
+        $method = $this->method;
+        $data = $this->input()->$method();
 
-        // No validation errors, quit here
-        if (empty($errors)) return;
+        $validation = new Validation;
+        $validation->setData($data);
+        $validation->setRules($rules);
 
-        // Build the error message
-        if (count($errors) === 1) {
-            $message = $errors[0];
-        } else {
-            $message = "<ul class='display-inline-block'>";
-            foreach ($errors as $error) $message .= "<li>{$error}</li>";
-            $message .= "</ul>";
+        if ($this->isApi) {
+            
         }
+        
+        if (!$validation->validate()) {
+            $validation->throwException();
+        }
+            ->setData($data)
+            ->setRules($rules)
+            ->validate()
+            ->
 
-        // Throw a validation error
-        throw new $this->validationException($message);
+        // // No validation errors, quit here
+        // if (!$validation->areErrors()) {
+        //     return;
+        // }
+
+        // $errors = $validation->getErrors();
+
+        // // Build the error message
+        // (count($errors) === 1)
+        //     ? $message = $errors[0]
+        //     : $message = (
+        //         "<ul class=\"display-inline-block\">".
+        //             "<li>".implode('</li><li>', $errors)."</li>".
+        //         "</ul>"
+        //     );
+
+        // // Throw a validation error (can be a basic or JSON validation error)
+        // throw new $this->validationException($message);
     }
 }

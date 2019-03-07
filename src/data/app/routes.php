@@ -118,7 +118,7 @@ $admin = [
     ['GET', 'artists/set/{set}', 'Admin\\ArtistsController','selectCardForm', ['set' => '[0-9]+']],
     ['GET', 'artists/card/{card}', 'Admin\\ArtistsController','cardForm', ['set' => '[0-9]+', 'card' => '[0-9]+']],
     ['POST','artists/store', 'Admin\\ArtistsController','store',null, ['token']],
-    ['GET', 'api/artists/autocomplete', 'Api\\ArtistsController','autocomplete',null, ['!auth', 'api-auth']],
+    ['GET', 'api/artists/autocomplete', 'Api\\ArtistsController','autocomplete',null, ['!auth', 'api', 'api-auth']],
 
 ];
 
@@ -185,21 +185,21 @@ $judge = [
 
     // Clusters
     ['GET', 'api/clusters',
-        'Admin\\GameClustersController','apiShowAll', null, ['!auth', 'api-auth']],
+        'Admin\\GameClustersController','apiShowAll', null, ['!auth', 'api', 'api-auth']],
     ['GET', 'api/clusters/{d}',
-        'Admin\\GameClustersController','apiShow', $d, ['!auth', 'api-auth']],
+        'Admin\\GameClustersController','apiShow', $d, ['!auth', 'api', 'api-auth']],
     ['POST','api/clusters/create',
-        'Admin\\GameClustersController','apiCreate', null, ['!auth', 'api-auth', 'api-token']],
+        'Admin\\GameClustersController','apiCreate', null, ['!auth', 'api', 'api-auth', 'api-token']],
     ['POST','api/clusters/update/{d}',
-        'Admin\\GameClustersController','apiUpdate', $d, ['!auth', 'api-auth', 'api-token']],
+        'Admin\\GameClustersController','apiUpdate', $d, ['!auth', 'api', 'api-auth', 'api-token']],
     ['POST','api/clusters/delete/{d}',
-        'Admin\\GameClustersController','apiDelete', $d, ['!auth', 'api-auth', 'api-token']],
+        'Admin\\GameClustersController','apiDelete', $d, ['!auth', 'api', 'api-auth', 'api-token']],
 
     // Cards
     ['GET', 'api/cards/autocomplete/names',
-        'Api\\CardsController','autocompleteNames',null,['!auth', 'api-auth']],
+        'Api\\CardsController','autocompleteNames',null,['!auth', 'api', 'api-auth']],
     ['GET', 'api/cards/check/{d}',
-        'Api\\CardsController','checkId',$d,['!auth', 'api-auth']],
+        'Api\\CardsController','checkId',$d,['!auth', 'api', 'api-auth']],
 
 ];
 

@@ -13,6 +13,7 @@ class Middlewares
     private $all = [
         'auth'  => CheckAuthorizationMiddleware::class,
         'token' => CheckCsrfTokenMiddleware::class,
+        'api' => ApiEnvironmentMiddleware::class,
         'api-auth' => ApiCheckAuthorizationMiddleware::class,
         'api-token' => ApiCheckCsrfTokenMiddleware::class,
     ];
@@ -59,7 +60,7 @@ class Middlewares
     {
         $middlewares = array_values($this->list);
         for ($i = 0, $len = count($middlewares); $i < $len; $i++) {
-            $middleware =& $middlewares[$i];
+            $middleware = &$middlewares[$i];
             (new $middleware)->run($request);
         }
     }
