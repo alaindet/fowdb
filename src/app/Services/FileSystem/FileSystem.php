@@ -2,7 +2,7 @@
 
 namespace App\Services\FileSystem;
 
-use App\Services\FileSystemInterface;
+use App\Services\FileSystem\FileSystemInterface;
 use App\Services\Exceptions\FileSystemException;
 use App\Services\Exceptions\FileNotFoundException;
 use App\Services\Exceptions\DirectoryExistsException;
