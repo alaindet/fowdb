@@ -1,12 +1,12 @@
 <?php
 
-require __DIR__ . '/src/bootstrap.php';
-
 use \App\Legacy\Router\Router as LegacyRouter;
 use \App\Services\FileSystem\FileSystem;
 use \App\Http\Request\Request;
 use \App\Http\Response\Router;
 use \App\Http\Response\Dispatcher;
+
+require __DIR__ . '/src/bootstrap.php';
 
 /*
  | ----------------------------------------------------------------------------
