@@ -2,9 +2,6 @@
 
 namespace App\Base\Items;
 
-use App\Base\Items\ItemInterface;
-use App\Base\Items\Exception\MissingPropertyNameException;
-use App\Base\Items\Exception\InvalidPropertyNameException;
-use App\Base\Items\Exception\MissingDataException;
+use App\Base\Items\Interfaces\ItemInterface;
 
 abstract class Item implements ItemInterface {}

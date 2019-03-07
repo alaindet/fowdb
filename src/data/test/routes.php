@@ -53,6 +53,9 @@ $public = [
     ['GET', 'array-whitelist-keys', 'UtilsController', 'arrayWhitelistKeys'],
     ['GET', 'array-defaults', 'UtilsController', 'arrayDefaults'],
 
+    // Collection utilities
+    ['GET', 'collection', 'CollectionController', 'index'],
+
     // Lookup
     ['GET', 'lookup', 'LookupController', 'index'],
     ['GET', 'lookup/read', 'LookupController', 'readAll'], // Alias

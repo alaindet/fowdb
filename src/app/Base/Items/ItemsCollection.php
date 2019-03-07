@@ -2,90 +2,24 @@
 
 namespace App\Base\Items;
 
-use Iterator;
-use App\Base\Items\ItemInterface;
+use App\Base\Items\Interfaces\ItemInterface;
+use App\Base\Items\Interfaces\ItemsCollectionInterface;
 use App\Base\Items\ItemsCollectionIteratorTrait;
 use App\Base\Items\ItemsCollectionDsCollectionTrait;
+use App\Base\Items\ItemsCollectionDataAccessTrait;
+use App\Base\Items\ItemsCollectionListOperationsTrait;
 
-abstract class ItemsCollection implements Iterator
+class ItemsCollection implements ItemsCollectionInterface
 {
     use ItemsCollectionIteratorTrait;
     use ItemsCollectionDsCollectionTrait;
+    use ItemsCollectionDataAccessTrait;
+    use ItemsCollectionListOperationsTrait;
 
-    private $items = [];
-
-    public function set(array $items): ItemsCollection
-    {
-        $this->items = $items;
-        return $this;
-    }
-
-    public function get(int $index): ?ItemInterface
-    {
-        return $this->items[$index] ?? null;
-    }
-
-    public function first(): ?ItemInterface
-    {
-        $index = 0;
-        return $this->get($index);
-    }
-
-    public function last(): ?ItemInterface
-    {
-        $index = count($this->items) - 1;
-        return $this->get($index);
-    }
+    protected $items = [];
 
     public function count(): int
     {
         return count($this->items);
-    }
-
-    /**
-     * Performs a callback on every item
-     * If callback returns FALSE, the loop stops
-     *
-     * @param callable $callback
-     * @return ItemsCollection
-     */
-    public function each(callable $callback): ItemsCollection
-    {
-        for ($i = 0, $len = count($this->items); $i < $len; $i++) {
-            if ($callback($this->items[$i], $i) === false) {
-                return $this;
-            }
-        }
-        return $this;
-    }
-
-    public function map(callable $callback): ItemsCollection
-    {
-        for ($i = 0, $len = count($this->items); $i < $len; $i++) {
-            $this->items[$i] = $callback($this->items[$i], $i);
-        }
-        return $this;
-    }
-
-    public function reduce(callable $callback, $carry = null)
-    {
-        if (!isset($carry)) {
-            if ($this->items === []) {
-                return null;
-            }
-            $carry = $this->items[0];
-        }
-        for ($i = 0, $len = count($this->items); $i < $len; $i++) {
-            $carry = $callback($carry, $this->items[$i], $i);
-        }
-        return $carry;
-    }
-
-    public function pluck(string $column): ItemsCollection
-    {
-        for ($i = 0, $len = count($this->items); $i < $len; $i++) {
-            $this->items[$i] = $this->items[$i]->$column;
-        }
-        return $this;
     }
 }
