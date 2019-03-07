@@ -5,7 +5,7 @@ namespace App\Services\Resources\GameRules;
 use App\Services\Resources\GameRules\DocumentScannerTrait;
 use App\Services\Resources\GameRules\DocumentBuilderTrait;
 use App\Services\Resources\GameRules\DocumentBodyBuilderTrait;
-use App\Services\FileSystem;
+use App\Services\FileSystem\FileSystem;
 
 /**
  * Converts a Force of Will Comprehensive Rules .txt file into .html

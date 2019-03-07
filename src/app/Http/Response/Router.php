@@ -65,7 +65,6 @@ class Router
         $method = $route[3];
         $parameters = $route[4] ?? [];
         $middleware = $route[5] ?? [];
-
         
         $this->uri = $uri;
 

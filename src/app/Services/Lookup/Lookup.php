@@ -3,9 +3,9 @@
 namespace App\Services\Lookup;
 
 use App\Base\Singleton;
-use App\Exceptions\FileSystemException;
+use App\Services\FileSystem\Exceptions\FileSystemException;
 use App\Exceptions\LookupException;
-use App\Services\FileSystem;
+use App\Services\FileSystem\FileSystem;
 use App\Services\Lookup\Generators\AttributesGenerator;
 use App\Services\Lookup\Generators\BackSidesGenerator;
 use App\Services\Lookup\Generators\BannedGenerator;

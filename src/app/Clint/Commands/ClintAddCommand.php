@@ -3,7 +3,7 @@
 namespace App\Clint\Commands;
 
 use App\Clint\Commands\Command;
-use App\Services\FileSystem;
+use App\Services\FileSystem\FileSystem;
 use App\Utils\Strings;
 
 class ClintAddCommand extends Command

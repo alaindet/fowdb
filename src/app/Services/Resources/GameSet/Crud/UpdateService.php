@@ -6,7 +6,7 @@ use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
 use App\Services\Resources\GameSet\Crud\InputProcessor;
 use App\Models\GameSet as Model;
-use App\Services\FileSystem;
+use App\Services\FileSystem\FileSystem;
 
 class UpdateService extends CrudService
 {

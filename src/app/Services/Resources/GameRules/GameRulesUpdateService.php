@@ -7,7 +7,7 @@ use App\Base\CrudServiceInterface;
 use App\Models\GameRules as Model;
 use App\Services\Resources\GameRules\GameRulesInputProcessor as InputProcessor;
 use App\Services\Resources\GameRules\DocumentConverter;
-use App\Services\Filesystem;
+use App\Services\FileSystem\FileSystem;
 
 class GameRulesUpdateService extends CrudService
 {

@@ -3,17 +3,39 @@
 namespace App\Services;
 
 use App\Base\Singleton;
-use App\Services\FileSystem;
-use App\Exceptions\FileSystemException;
+use App\Services\FileSystem\FileSystem;
 use App\Exceptions\ConfigNotFoundException;
 
 class Config
 {
     use Singleton;
 
+    /**
+     * Configuration data
+     *
+     * @var array
+     */
     private $data;
+
+    /**
+     * src/ directory path
+     *
+     * @var string
+     */
     private $srcPath;
+
+    /**
+     * Cache file path
+     *
+     * @var string
+     */
     private $cachePath;
+
+    /**
+     * Timestamps file path
+     *
+     * @var string
+     */
     private $normalPath;
 
     /**
@@ -48,6 +70,18 @@ class Config
         }
 
         return $this->data[$name];
+    }
+
+    /**
+     * Sets new data to given key ($name) or overwrites existing data on $name
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return void
+     */
+    public function set(string $name, $value): void
+    {
+        $this->data[$name] = $value;
     }
 
     /**
@@ -123,7 +157,7 @@ class Config
     }
 
     /**
-     * Reads the current .env file and caches it on the filesystem
+     * Reads all config data and caches it on the filesystem on a single file
      *
      * @return void
      */

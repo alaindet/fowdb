@@ -3,7 +3,7 @@
 namespace App\Clint\Commands;
 
 use App\Clint\CommandInterface;
-use App\Services\FileSystem;
+use App\Services\FileSystem\FileSystem;
 
 abstract class Command implements CommandInterface
 {

@@ -2,7 +2,7 @@
 
 namespace App\Services\Resources\GameRules;
 
-use App\Exceptions\FileSystemException;
+use App\Services\FileSystem\Exceptions\FileNotFoundException;
 
 /**
  * DocumentConverter properties used
@@ -56,9 +56,7 @@ trait DocumentScannerTrait
 
         // ERROR: File not found
         if (!$this->handle) {
-            throw new FileSystemException(
-                "File {$this->inputFilePath} not found."
-            );
+            throw new FileNotFoundException($this->inputFilePath);
         }
 
         // Read lines

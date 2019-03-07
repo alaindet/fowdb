@@ -3,7 +3,7 @@
 namespace App\Clint;
 
 use App\Clint\CommandInterface;
-use App\Services\FileSystem;
+use App\Services\FileSystem\FileSystem;
 
 class Commands
 {

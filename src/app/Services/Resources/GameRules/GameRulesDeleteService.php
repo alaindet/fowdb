@@ -5,7 +5,7 @@ namespace App\Services\Resources\GameRules;
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
 use App\Models\GameRules as Model;
-use App\Services\Filesystem;
+use App\Services\FileSystem\FileSystem;
 
 class GameRulesDeleteService extends CrudService
 {

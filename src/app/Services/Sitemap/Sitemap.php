@@ -4,7 +4,7 @@ namespace App\Services\Sitemap;
 
 use App\Services\Sitemap\DynamicRouteGeneratorTrait;
 use App\Utils\Time;
-use App\Services\FileSystem;
+use App\Services\FileSystem\FileSystem;
 
 /**
  * Builds /sitemap.xml

@@ -5,7 +5,7 @@ namespace App\Clint\Commands;
 use App\Clint\Commands\Command;
 use App\Clint\Exceptions\MissingArgumentException;
 use App\Clint\Exceptions\InvalidArgumentException;
-use App\Services\FileSystem;
+use App\Services\FileSystem\FileSystem;
 use App\Services\Config;
 
 class SwitchEnvironmentCommand extends Command

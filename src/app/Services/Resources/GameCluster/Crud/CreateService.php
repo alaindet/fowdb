@@ -5,7 +5,7 @@ namespace App\Services\Resources\GameCluster\Crud;
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
 use App\Services\Resources\GameCluster\Crud\InputProcessor;
-use App\Services\FileSystem;
+use App\Services\FileSystem\FileSystem;
 
 class CreateService extends CrudService
 {

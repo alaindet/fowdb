@@ -4,7 +4,7 @@ namespace App\Services\Resources\GameCluster\Crud;
 
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
-use App\Services\FileSystem;
+use App\Services\FileSystem\FileSystem;
 use App\Models\GameCluster as Model;
 
 class DeleteService extends CrudService

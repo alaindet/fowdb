@@ -7,7 +7,7 @@ use App\Base\CrudServiceInterface;
 use App\Models\Card as Model;
 use App\Services\Resources\Card\Crud\InputProcessor;
 use Intervention\Image\ImageManager;
-use App\Services\Filesystem;
+use App\Services\FileSystem\FileSystem;
 use App\Utils\Arrays;
 use App\Utils\Uri;
 

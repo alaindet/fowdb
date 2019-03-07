@@ -4,7 +4,7 @@ namespace App\Clint\Commands;
 
 use App\Clint\Commands\Command;
 use App\Utils\Time;
-use App\Services\FileSystem;
+use App\Services\FileSystem\FileSystem;
 
 class ConfigTimestampCommand extends Command
 {

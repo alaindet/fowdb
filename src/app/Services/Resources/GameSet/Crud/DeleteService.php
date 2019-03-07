@@ -5,7 +5,7 @@ namespace App\Services\Resources\GameSet\Crud;
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
 use App\Models\GameSet as Model;
-use App\Services\FileSystem;
+use App\Services\FileSystem\FileSystem;
 
 class DeleteService extends CrudService
 {
