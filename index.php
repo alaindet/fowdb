@@ -2,6 +2,12 @@
 
 require __DIR__ . '/src/bootstrap.php';
 
+use \App\Legacy\Router\Router as LegacyRouter;
+use \App\Services\FileSystem\FileSystem;
+use \App\Http\Request\Request;
+use \App\Http\Response\Router;
+use \App\Http\Response\Dispatcher;
+
 /*
  | ----------------------------------------------------------------------------
  |
@@ -16,11 +22,11 @@ require __DIR__ . '/src/bootstrap.php';
  | ----------------------------------------------------------------------------
  */
 if (isset($_GET['p']) || isset($_GET['do'])) {
-    return (new \App\Legacy\Router\Router)->run();
+    return (new LegacyRouter)->run();
 }
 
 // Generate HTTP request
-$request = (new \App\Http\Request\Request)
+$request = (new Request)
     ->setBaseUrl('/')
     ->setMethod($_SERVER['REQUEST_METHOD'] ?? 'GET')
     ->setHost($_SERVER['HTTP_HOST'] ?? config('app.host'))
@@ -31,13 +37,13 @@ $request = (new \App\Http\Request\Request)
     ->setQueryString($_SERVER['QUERY_STRING']);
 
 // Read the routes
-$routes = \App\Services\FileSystem::loadFile(path_data('app/routes.php'));
+$routes = FileSystem::loadFile(path_data('app/routes.php'));
 
 // TEST
-require __DIR__ . '/src/add-test-routes.php';
+// require __DIR__ . '/src/add-test-routes.php';
 
 // Map request to its route
-$route = (new \App\Http\Response\Router())
+$route = (new Router)
     ->setRoutes($routes)
     ->setRequest($request)
     ->match();
@@ -46,7 +52,7 @@ $route = (new \App\Http\Response\Router())
 $request->app('access', $route['_access']);
 
 // Initialize the dispatcher
-$response = (new \App\Http\Response\Dispatcher())
+$response = (new Dispatcher)
     ->setRequest($request)
     ->setMatchedRoute($route)
     ->runMiddleware()
