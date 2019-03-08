@@ -59,4 +59,31 @@ class Strings
     {
         return ucwords(str_replace('_', ' ', $snake));
     }
+
+    /**
+     * Turns any string into snake_case
+     * Optionally turns everything to lower case (default)
+     *
+     * @param string $input
+     * @param bool $lowercase
+     * @return string
+     */
+    public static function toSnake(
+        string $input,
+        bool $lowercase = true
+    ): string
+    {
+        // Any whitespace to _, remove all non-alphanumeric characters
+        return preg_replace(
+            [
+                '/[\s]/',
+                '/[^_a-zA-Z0-9]/'
+            ],
+            [
+                '_',
+                ''
+            ],
+            $lowercase ? strlower($input) : $input
+        );
+    }
 }
