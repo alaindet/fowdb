@@ -3,9 +3,9 @@
 namespace App\Services\Lookup;
 
 use App\Base\Singleton;
-use App\Services\FileSystem\Exceptions\FileSystemException;
 use App\Exceptions\LookupException;
 use App\Services\FileSystem\FileSystem;
+use App\Services\FileSystem\Exceptions\FileNotFoundException;
 use App\Services\Lookup\Generators\AttributesGenerator;
 use App\Services\Lookup\Generators\BackSidesGenerator;
 use App\Services\Lookup\Generators\BannedGenerator;
@@ -75,7 +75,7 @@ class Lookup
      */
     private function __construct()
     {
-        $this->cacheFilename = path_cache('lookup/lookup.txt');
+        $this->cacheFilename = path_cache('lookup.txt');
         $this->load();
     }
 
@@ -87,13 +87,9 @@ class Lookup
     private function load(): void
     {
         try {
-            $this->cache = unserialize(
-                FileSystem::readFile($this->cacheFilename)
-            );
-        }
-        
-        // ERROR: Missing cached file!
-        catch (FileSystemException $exception) {
+            $file = FileSystem::readFile($this->cacheFilename);
+            $this->cache = unserialize($file);
+        } catch (FileNotFoundException $exception) {
             $this->cache = [];
         }
     }
