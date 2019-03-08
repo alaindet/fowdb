@@ -15,7 +15,12 @@ class Time
             'default' => 'Y-m-d H:i:s',
             'file' => 'Ymd_His',
             'file-nospace' => 'YmdHis',
+            'cache' => 'Ymd',
         ];
+
+        if ($format === 'cache') {
+            return date($formats[$format]) . '-1';    
+        }
 
         return date($formats[$format]);
     }
