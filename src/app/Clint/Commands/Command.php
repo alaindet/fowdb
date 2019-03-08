@@ -11,6 +11,14 @@ abstract class Command implements CommandInterface
     protected $title = null;
     public $name = 'clint:command:name';
 
+    /**
+     * Overridden by child class
+     * Contains the logic of the command
+     *
+     * @param array $options
+     * @param array $arguments
+     * @return void
+     */
     public function run(array $options, array $arguments): void
     {
         //
@@ -29,12 +37,5 @@ abstract class Command implements CommandInterface
     protected function path(string $path): string
     {
         return path_src('/app/Clint/'.$path);
-    }
-
-    protected function template(string $template): string
-    {
-        return FileSystem::readFile(
-            path_src('/app/Clint/templates/'.$template.'.tpl')
-        );
     }
 }

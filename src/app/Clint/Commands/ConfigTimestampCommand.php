@@ -5,40 +5,82 @@ namespace App\Clint\Commands;
 use App\Clint\Commands\Command;
 use App\Utils\Time;
 use App\Services\FileSystem\FileSystem;
+use App\Services\Exceptions\FileNotFoundException;
+use App\Clint\Core\Template;
 
 class ConfigTimestampCommand extends Command
 {
     public $name = 'config:timestamp';
+    private $templateFile = 'config-timestamp';
+    private $cacheFile;
+
+    /**
+     * Maps the arguments with the keys on timestamps.php
+     *
+     * @var array
+     */
+    private $keys = [
+        'generic' => 'APP_TIMESTAMP',
+        'css'     => 'APP_TIMESTAMP_CSS',
+        'js'      => 'APP_TIMESTAMP_JS',
+        'img'     => 'APP_TIMESTAMP_IMG'
+    ];
+
+    public function __construct()
+    {
+        $this->cacheFile = path_data('app/timestamps.php');
+    }
 
     public function run(array $options, array $arguments): void
     {
-        // Maps the arguments with the keys on timestamps.php
-        $keys = [
-            'generic' => 'APP_TIMESTAMP',
-            'css' => 'APP_TIMESTAMP_CSS',
-            'js' => 'APP_TIMESTAMP_JS',
-            'img' => 'APP_TIMESTAMP_IMG'
-        ];
+        try {
+            $this->updateCacheFile($arguments);
+        }
+        
+        catch (FileNotFoundException $exception) {
+            $this->createCacheFile();
+        }
+    }
 
-        // Load timestamps data
-        $path = path_data('app/timestamps.php');
-        $ts = FileSystem::loadFile($path);
+    private function updateCacheFile(array $arguments): void
+    {
+        // Load existing file (could throw a FileNotFoundException)
+        $timestamps = FileSystem::loadFile($this->cacheFile);
 
         // Update all timestamps by default
-        if (empty($arguments)) $arguments = array_keys($keys);
-
-        // Update timestamps
-        foreach ($arguments as $arg) {
-            $key = $keys[$arg];
-            $ts[$key] = Time::nextCacheTimestamp($ts[$key]);
+        if (empty($arguments)) {
+            $arguments = array_keys($this->keys);
         }
 
-        // Store changed file
-        FileSystem::saveFile($path, $this->buildFile($ts));
+        // Update timestamps from the given list
+        foreach ($arguments as $_key) {
+            $key = $this->keys[$_key];
+            $timestamps[$key] = Time::nextCacheTimestamp($timestamps[$key]);
+        }
 
-        // Notify the user
-        $argumentsList = implode(', ', $arguments);
-        $this->message = "Timestamps updated: {$argumentsList}.";
+        // Store cache file
+        FileSystem::saveFile($this->cacheFile, $this->buildFile($timestamps));
+
+        // Feedback
+        $this->message = "Timestamps updated: " . implode(', ', $arguments);
+    }
+
+    private function createCacheFile(): void
+    {
+        $today = Time::timestamp('cache'); // Ex.: 20190308-1
+
+        $timestamps = [
+            'APP_TIMESTAMP' => $today,
+            'APP_TIMESTAMP_CSS' => $today,
+            'APP_TIMESTAMP_JS' => $today,
+            'APP_TIMESTAMP_IMG' => $today,
+        ];
+
+        // Store cache file
+        FileSystem::saveFile($this->cacheFile, $this->buildFile($timestamps));
+
+        // Feedback
+        $this->message = "Timestamps cache file generated";
     }
 
     /**

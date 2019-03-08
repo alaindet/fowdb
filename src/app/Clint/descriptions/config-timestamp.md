@@ -1,5 +1,5 @@
 Description:
-  Bump one or more timestamps (to bust the cache)
+  Bump one or more timestamps, rebuilds file if missing
 
 Usage
   config:timestamp <timestamp>

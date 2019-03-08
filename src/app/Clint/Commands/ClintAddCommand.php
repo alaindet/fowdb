@@ -5,6 +5,7 @@ namespace App\Clint\Commands;
 use App\Clint\Commands\Command;
 use App\Services\FileSystem\FileSystem;
 use App\Utils\Strings;
+use App\Clint\Core\Template;
 
 class ClintAddCommand extends Command
 {
@@ -67,16 +68,14 @@ class ClintAddCommand extends Command
 
     private function classFileContent(): string
     {
-        $template = $this->template('clint-add');
-
-        $replace = [
-            '%CLASS_NAME%' => $this->commandClass,
-            '%COMMAND_NAME%' => $this->commandName
-        ];
-
-        $what = array_keys($replace);
-        $with = array_values($replace);
-        return str_replace($what, $with, $template);
+        return (new Template)
+            ->setFilePath('clint-add')
+            ->setData([
+                '%CLASS_NAME%' => $this->commandClass,
+                '%COMMAND_NAME%' => $this->commandName
+            ])
+            ->render()
+            ->getFile();
     }
 
     private function description(string $desc = null): void
