@@ -18,6 +18,10 @@ class Time
             'cache' => 'Ymd',
         ];
 
+        if ($format === 'cache') {
+            return date($formats[$format]) . '-1';    
+        }
+
         return date($formats[$format]);
     }
 
