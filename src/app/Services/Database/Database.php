@@ -4,7 +4,7 @@ namespace App\Services\Database;
 
 use App\Base\Singleton;
 use App\Exceptions\DatabaseException;
-use App\Services\Config;
+use App\Services\Configuration\Configuration;
 use App\Services\Database\Pageable;
 use App\Services\Database\Statement\DeleteSqlStatement;
 use App\Services\Database\Statement\InsertSqlStatement;
@@ -58,11 +58,11 @@ class Database
     protected function __construct()
     {
         // Read the configuration variables
-        $cfg = Config::getInstance();
-        $host = $cfg->get('db.host');
-        $name = $cfg->get('db.name');
-        $user = $cfg->get('db.user');
-        $password = $cfg->get('db.password');
+        $config = Configuration::getInstance();
+        $host = $config->get('db.host');
+        $name = $config->get('db.name');
+        $user = $config->get('db.user');
+        $password = $config->get('db.password');
 
         // Create the connection
         $this->pdo = new PDO(

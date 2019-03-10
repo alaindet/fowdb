@@ -2,6 +2,7 @@
 
 // Imports
 use \App\Services\Database\Database;
+use \App\Services\Configuration\Configuration;
 use \App\Http\Request\Input;
 use \App\Services\Database\Statement\SqlStatement;
 use \App\Legacy\Authorization as LegacyAuthorization;
@@ -76,7 +77,7 @@ function auth(): LegacyAuthorization
  */
 function config(string $name)
 {
-	return (\App\Services\Config::getInstance())->get($name);
+	return (Configuration::getInstance())->get($name);
 }
 
 /**
@@ -166,7 +167,7 @@ function statement(string $type): SqlStatement
  */
 function path_cache(string $path = null): string
 {
-	$dir = (\App\Services\Config::getInstance())->get('dir.cache');
+	$dir = (Configuration::getInstance())->get('dir.cache');
 	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
@@ -176,7 +177,7 @@ function path_cache(string $path = null): string
  */
 function path_data(string $path = null): string
 {
-	$dir = (\App\Services\Config::getInstance())->get('dir.data');
+	$dir = (Configuration::getInstance())->get('dir.data');
 	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
@@ -186,7 +187,7 @@ function path_data(string $path = null): string
  */
 function path_root(string $path = null): string
 {
-	$dir = (\App\Services\Config::getInstance())->get('dir.root');
+	$dir = (Configuration::getInstance())->get('dir.root');
 	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
@@ -196,7 +197,7 @@ function path_root(string $path = null): string
  */
 function path_src(string $path = null): string
 {
-	$dir = (\App\Services\Config::getInstance())->get('dir.src');
+	$dir = (Configuration::getInstance())->get('dir.src');
 	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
@@ -206,7 +207,7 @@ function path_src(string $path = null): string
  */
 function path_views(string $path = null): string
 {
-	$dir = (\App\Services\Config::getInstance())->get('dir.views');
+	$dir = (Configuration::getInstance())->get('dir.views');
 	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
@@ -222,7 +223,7 @@ function path_views(string $path = null): string
  */
 function asset(string $path, string $type = 'any'): string
 {
-	$config = \App\Services\Config::getInstance();
+	$config = Configuration::getInstance();
     
 	$url = $config->get('app.url');
 

@@ -12,12 +12,12 @@ use App\Services\FileSystem\FileSystem;
 class ClintController extends Controller
 {
     private $commands = [
-        'cache-config' => [
-            'label' => 'Cache the configuration',
-            'name' => 'config:cache'
+        'config-build' => [
+            'label' => 'Rebuild configuration cache',
+            'name' => 'config:build'
         ],
-        'cache-clear' => [
-            'label' => 'Clear the configuration file',
+        'config-clear' => [
+            'label' => 'Clear configuration cache',
             'name' => 'config:clear'
         ],
         'env-to-production' => [
