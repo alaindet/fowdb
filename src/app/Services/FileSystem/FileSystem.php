@@ -3,9 +3,9 @@
 namespace App\Services\FileSystem;
 
 use App\Services\FileSystem\FileSystemInterface;
-use App\Services\Exceptions\FileSystemException;
-use App\Services\Exceptions\FileNotFoundException;
-use App\Services\Exceptions\DirectoryExistsException;
+use App\Services\FileSystem\Exceptions\FileSystemException;
+use App\Services\FileSystem\Exceptions\FileNotFoundException;
+use App\Services\FileSystem\Exceptions\DirectoryExistsException;
 use ErrorException;
 
 class FileSystem implements FileSystemInterface
