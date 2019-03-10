@@ -1,5 +1,5 @@
 Description:
-  Displays the description of the command
+  Displays a specific command description
 
 Usage:
   help <arguments>

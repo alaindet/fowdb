@@ -1,5 +1,5 @@
 Description:
-  Returns the current environment
+  Displays the current environment
 
 Usage:
   env:get

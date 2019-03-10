@@ -1,5 +1,5 @@
 Description:
-  Clears the configuration file (parse on each request)
+  Clears the cached configuration files
 
 Usage
   config:clear

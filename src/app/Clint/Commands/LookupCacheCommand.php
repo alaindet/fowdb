@@ -13,6 +13,6 @@ class LookupCacheCommand extends Command
     {
         (Lookup::getInstance())->generateAll()->cache();
 
-        $this->message = 'Lookup data successfully cached';
+        $this->message = "Lookup data successfully cached.";
     }
 }

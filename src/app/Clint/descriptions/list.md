@@ -1,5 +1,5 @@
 Description:
-  Returns a list of all available commands
+  Displays the list of commands
 
 Usage:
   list

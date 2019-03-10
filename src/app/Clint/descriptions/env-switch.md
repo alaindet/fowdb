@@ -1,5 +1,5 @@
 Description:
-  Switches environment variables between production and development
+  Switches environment (prod, dev), rebuilds configuration cache
 
 Usage
   env:switch <target>

@@ -2,14 +2,13 @@ Usage:
   command [options]
 
 Commands:
-  list              Display the list of commands (this command)
-  help              Display a specific command he
-  clint:add         Adds a new Clint command
-  config:cache      Caches the configuration files
-  config:clear      Clears the configuration file (parse on each request)
-  env:get           Displays the current environment
-  env:switch        Switches environment variables (production, development)
-  lookup:cache      Caches the lookup data (domain-specific
-  sitemap:make      Generates a dynamic sitemap.xml into 
-  config:timestamp  Bump one or more timestamps, rebuilds file if missing
-  cards:sort        Re-builds 'sorted_id' field on 'cards' table
+  list          Displays the list of commands (this command)
+  help          Displays a specific command description
+  cards:sort    Re-builds 'sorted_id' field on 'cards' table
+  clint:add     Adds a new Clint command
+  config:build  Builds the configuration cache file
+  config:clear  Clears the cached configuration files
+  env:get       Displays the current environment
+  env:switch    Switches environment (prod, dev), rebuilds config
+  lookup:cache  Caches the lookup data (domain-specific cached data)
+  sitemap:make  Generates a dynamic sitemap.xml into 

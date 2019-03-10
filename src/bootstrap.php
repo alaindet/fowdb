@@ -5,24 +5,24 @@ use \App\Services\OpenGraphProtocol\OpenGraphProtocolImage;
 use \App\Services\CsrfToken;
 use \App\Services\Session;
 use \App\Legacy\Authorization;
-use \App\Services\Config;
-use \App\Exceptions\Handler as ExceptionsHandler;
+use \App\Services\Configuration\Configuration;
+use \App\Exceptions\Handler;
 
 // Load required files
 require __DIR__ . '/vendor/autoload.php';
 
 // Initialize the configuration and the authentication services
-$config = Config::getInstance();
+$config = Configuration::getInstance();
 Authorization::getInstance();
 
 require __DIR__ . '/app/functions/helpers.php';
 
 // Global exception handling
-set_exception_handler([ExceptionsHandler::class, 'handler']);
+set_exception_handler([Handler::class, 'handler']);
 
 // Global error handling
 // https://stackoverflow.com/a/51091503/5653974
-set_error_handler([ExceptionsHandler::class, 'errorHandler'], E_ALL);
+set_error_handler([Handler::class, 'errorHandler'], E_ALL);
 
 // Start the session
 Session::start();
@@ -31,8 +31,8 @@ Session::start();
 if (!CsrfToken::exists()) CsrfToken::create();
 
 // Open Graph Protocol tags (See http://ogp.me)
-$openGraphProtocol = OpenGraphProtocol::getInstance();
-$openGraphProtocol
+$openGraphProtocol = OpenGraphProtocol
+    ::getInstance()
     ->title($config->get('app.name')) // Can be changed
     ->type($config->get('ogp.type'))
     ->url($config->get('app.url')) // Can be changed

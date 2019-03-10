@@ -6,12 +6,17 @@ use App\Clint\Commands\Command;
 use App\Clint\Exceptions\MissingArgumentException;
 use App\Clint\Exceptions\InvalidArgumentException;
 use App\Services\FileSystem\FileSystem;
-use App\Services\Config;
+use App\Services\Configuration\Configuration;
 
 class SwitchEnvironmentCommand extends Command
 {
     public $name = 'env:switch';
-    private $targets = ['production', 'development'];
+    private $targets = [
+        'development' => 'development',
+        'dev'         => 'development',
+        'production'  => 'production',
+        'prod'        => 'production',
+    ];
 
     public function run(array $options, array $arguments): void
     {
@@ -21,11 +26,11 @@ class SwitchEnvironmentCommand extends Command
         }
 
         // ERROR: Invalid argument
-        if (!in_array($arguments[0], $this->targets)) {
+        if (!in_array($arguments[0], array_keys($this->targets))) {
             throw new InvalidArgumentException;
         }
 
-        $target = $arguments[0];
+        $target = $this->targets[$arguments[0]];
         $currentEnv = path_src('.env');
         $targetEnv = path_src(".env.{$target}");
 
@@ -33,7 +38,8 @@ class SwitchEnvironmentCommand extends Command
         FileSystem::copyFile($targetEnv, $currentEnv);
 
         // Force to cache the new environment
-        (Config::getInstance())->cache();
+        $config = Configuration::getInstance();
+        $config->rebuild();
 
         $this->message = "Switched environment to {$target}";
     }

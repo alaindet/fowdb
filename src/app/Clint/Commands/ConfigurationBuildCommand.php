@@ -5,15 +5,15 @@ namespace App\Clint\Commands;
 use App\Clint\Commands\Command;
 use App\Services\Configuration\Configuration;
 
-class ConfigurationClearCommand extends Command
+class ConfigurationBuildCommand extends Command
 {
-    public $name = 'config:clear';
+    public $name = 'config:rebuild';
 
     public function run(array $options, array $arguments): void
     {
         $config = Configuration::getInstance();
-        $config->clear();
+        $config->build();
 
-        $this->message = "Configuration cached files were deleted.";
+        $this->message = "Configuration cache file built.";
     }
 }

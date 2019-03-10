@@ -2,24 +2,21 @@
 
 // Some conventions: https://stackoverflow.com/a/36495940/5653974
 
+use \App\Clint\Clint;
+use \App\Clint\Exceptions\ClintException;
+use \App\Utils\Logger;
+
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/app/functions/helpers.php';
 
-try
-{
-    $clint = new \App\Clint\Clint($argv);
+try {
+    $clint = new Clint($argv);
     $clint->run();
     $message = "\n".$clint->message();
     $title = $clint->title();
-}
-
-catch (\App\Clint\Exceptions\ClintException $exception)
-{
+} catch (ClintException $exception) {
     $message = $exception->getMessage();
     $title = 'Clint CLI error';
-}
-
-finally
-{
-    echo \App\Utils\Logger::cli($message, $title);
+} finally {
+    echo Logger::cli($message, $title);
 }
