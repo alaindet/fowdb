@@ -18,6 +18,13 @@ class PhpArray
      */
     private $minify = true;
 
+    public function __construct(string $path = null)
+    {
+        if ($path !== null) {
+            $this->setFilePath($path);
+        }
+    }
+
     public function setMinify(bool $minify): PhpArray
     {
         $this->minify = $minify;
@@ -30,7 +37,7 @@ class PhpArray
         return $this;
     }
 
-    public function getData(string $content): array
+    public function getData(): array
     {
         return $this->data;
     }

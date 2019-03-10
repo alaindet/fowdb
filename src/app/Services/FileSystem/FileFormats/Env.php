@@ -11,13 +11,20 @@ class Env
     private $fileContent;
     private $data;
 
+    public function __construct(string $path = null)
+    {
+        if ($path !== null) {
+            $this->setFilePath($path);
+        }
+    }
+
     public function setFilePath(string $path): Env
     {
         $this->filePath = $path;
         return $this;
     }
 
-    public function getData(string $content): array
+    public function getData(): array
     {
         return $this->data;
     }
