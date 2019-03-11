@@ -28,6 +28,11 @@ trait ItemsCollectionDsCollectionTrait
         return $this->items === [];
     }
 
+    public function isNotEmpty(): bool
+    {
+        return $this->items !== [];
+    }
+
     public function toArray(): array
     {
         return $this->items;
