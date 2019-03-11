@@ -4,6 +4,7 @@ namespace App\Services\Configuration;
 
 use App\Base\Singleton;
 use App\Services\FileSystem\FileSystem;
+use App\Services\FileSystem\Exceptions\FileNotFoundException;
 use App\Services\Configuration\Interfaces\ConfigurationInterface;
 use App\Services\Configuration\Files\Environment;
 use App\Services\Configuration\Files\Timestamps;
@@ -76,9 +77,9 @@ class Configuration implements ConfigurationInterface
      */
     public function load(): ConfigurationInterface
     {
-        if (FileSystem::existsFile($this->paths['file.cache'])) {
+        try {
             $this->data = FileSystem::loadFile($this->paths['file.cache']);
-        } else {
+        } catch (FileNotFoundException $exception) {
             $this->build();
         }
 

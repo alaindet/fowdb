@@ -10,11 +10,6 @@ use \App\Exceptions\Handler;
 
 // Load required files
 require __DIR__ . '/vendor/autoload.php';
-
-// Initialize the configuration and the authentication services
-$config = Configuration::getInstance();
-Authorization::getInstance();
-
 require __DIR__ . '/app/functions/helpers.php';
 
 // Global exception handling
@@ -24,19 +19,22 @@ set_exception_handler([Handler::class, 'handler']);
 // https://stackoverflow.com/a/51091503/5653974
 set_error_handler([Handler::class, 'errorHandler'], E_ALL);
 
-// Start the session
+// Initialize services
+$config = Configuration::getInstance();
+$openGraphProtocol = OpenGraphProtocol::getInstance();
+Authorization::getInstance();
 Session::start();
-
-// Anti-CSRF token
-if (!CsrfToken::exists()) CsrfToken::create();
+if (!CsrfToken::exists()) {
+    CsrfToken::create();
+}
 
 // Open Graph Protocol tags (See http://ogp.me)
-$openGraphProtocol = OpenGraphProtocol
-    ::getInstance()
-    ->title($config->get('app.name')) // Can be changed
+// Title, url and image can be changed by specific pages
+$openGraphProtocol
+    ->title($config->get('app.name'))
     ->type($config->get('ogp.type'))
-    ->url($config->get('app.url')) // Can be changed
-    ->image( // Can be changed
+    ->url($config->get('app.url'))
+    ->image(
         (new OpenGraphProtocolImage)
             ->url($config->get('ogp.image'))
             ->mimeType($config->get('ogp.image.type'))
