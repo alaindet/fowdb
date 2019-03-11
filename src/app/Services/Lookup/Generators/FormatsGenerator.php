@@ -2,10 +2,10 @@
 
 namespace App\Services\Lookup\Generators;
 
-use App\Services\Lookup\Generatable;
+use App\Services\Lookup\Interfaces\LookupDataGeneratorInterface;
 use App\Entities\Play\Format\FormatsRepository;
 
-class FormatsGenerator implements Generatable
+class FormatsGenerator implements LookupDataGeneratorInterface
 {
     public function generate(): array
     {

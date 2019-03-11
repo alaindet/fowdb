@@ -2,10 +2,10 @@
 
 namespace App\Services\Lookup\Generators;
 
-use App\Services\Lookup\Generatable;
 use App\Models\CardType;
+use App\Services\Lookup\Interfaces\LookupDataGeneratorInterface;
 
-class TypesGenerator implements Generatable
+class TypesGenerator implements LookupDataGeneratorInterface
 {
     public function generate(): array
     {

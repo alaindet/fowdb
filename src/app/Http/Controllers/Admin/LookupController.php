@@ -50,7 +50,7 @@ class LookupController extends Controller
         
         // Read all data
         else {
-            $data = $this->lookup->getAll($feature);
+            $data = $this->lookup->getAll();
             $feature = 'all';
         }
 

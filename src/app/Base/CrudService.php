@@ -137,7 +137,7 @@ abstract class CrudService implements CrudServiceInterface
         }
 
         // Store new lookup data into the filesystem
-        $lookup->cache();
+        $lookup->store();
 
         return $this;
     }

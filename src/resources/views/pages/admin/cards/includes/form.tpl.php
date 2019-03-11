@@ -30,12 +30,12 @@ $url = $isCard ? 'cards/update/'.$card['id'] : 'cards/create';
 
 // Lookup data
 $lookup = (App\Services\Lookup\Lookup::getInstance())->getAll();
-$narps = &$lookup['narps']['id2name'];
-$clusters = &$lookup['clusters']['list'];
-$setMap = &$lookup['sets']['id2code'];
-$rarities = &$lookup['rarities']['code2name'];
+$narps     = &$lookup['narps']['id2name'];
+$clusters  = &$lookup['clusters']['list'];
+$setMap    = &$lookup['sets']['id2code'];
+$rarities  = &$lookup['rarities']['code2name'];
 $backsides = &$lookup['backsides']['id2name'];
-$types = &$lookup['types']['name2bit'];
+$types     = &$lookup['types']['name2bit'];
 
 // Further process
 $backsides = array_merge(['0' => '(Basic)'], $backsides);

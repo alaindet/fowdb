@@ -11,7 +11,7 @@ class LookupCacheCommand extends Command
 
     public function run(array $options, array $arguments): void
     {
-        (Lookup::getInstance())->generateAll()->cache();
+        (Lookup::getInstance())->generateAll()->store();
 
         $this->message = "Lookup data successfully cached.";
     }

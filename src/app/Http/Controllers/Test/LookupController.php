@@ -42,7 +42,7 @@ class LookupController extends Controller
 
     public function buildAll(Request $request): string
     {
-        $data = Lookup::getInstance()->generateAll()->cache()->getAll();
+        $data = Lookup::getInstance()->generateAll()->store()->getAll();
         return (new JsonResponse)->setData($data)->render();
     }
 
@@ -53,7 +53,7 @@ class LookupController extends Controller
             Alert::set("Lookup data for feature \"{$feat}\" can't be built.");
             Redirect::to("test");
         }
-        $data = $lookup->generate($feat)->cache()->get($feat);
+        $data = $lookup->generate($feat)->store()->get($feat);
         return (new JsonResponse)->setData($data)->render();
     }
 }

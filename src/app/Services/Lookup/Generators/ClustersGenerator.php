@@ -2,10 +2,10 @@
 
 namespace App\Services\Lookup\Generators;
 
-use App\Services\Lookup\Generatable;
+use App\Services\Lookup\Interfaces\LookupDataGeneratorInterface;
 use App\Entities\Game\Cluster\ClustersRepository;
 
-class ClustersGenerator implements Generatable
+class ClustersGenerator implements LookupDataGeneratorInterface
 {
     public function generate(): array
     {

@@ -2,9 +2,9 @@
 
 namespace App\Services\Lookup\Generators;
 
-use App\Services\Lookup\Generatable;
+use App\Services\Lookup\Interfaces\LookupDataGeneratorInterface;
 
-class SpoilersGenerator implements Generatable
+class SpoilersGenerator implements LookupDataGeneratorInterface
 {
     public function generate(): array
     {
