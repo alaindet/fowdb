@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Errors;
+namespace App\Base\Errors;
 
 use App\Base\Items\Item;
 
