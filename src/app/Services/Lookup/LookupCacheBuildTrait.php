@@ -41,7 +41,7 @@ trait LookupCacheBuildTrait
     public function load(): LookupInterface
     {
         try {
-            $fileContent = FileSystem::loadFile($this->cacheFilePath);
+            $fileContent = FileSystem::readFile($this->cacheFilePath);
             $this->data = unserialize($fileContent);
         } catch (FileNotFoundException $exception) {
             $this->build();

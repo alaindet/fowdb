@@ -51,7 +51,7 @@ trait LookupDataAccessTrait
         $pathBits = explode('.', $path);
 
         // Pop the first path bit, then dive 1 level deeper
-        $firstPathBit = array_shift($bits);
+        $firstPathBit = array_shift($pathBits);
 
         // ERROR: Invalid path
         if (!in_array($firstPathBit, $this->features)) {
