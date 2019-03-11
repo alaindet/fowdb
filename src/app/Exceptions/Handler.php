@@ -52,20 +52,24 @@ class Handler
         if ($exception instanceof Previousable) {
             $input = Input::getInstance();
             Session::set(Input::PREVIOUS_INPUT, $input->post());
+            return;
         }
 
         // Show exception as an alert
         if ($exception instanceof Alertable) {
             Alert::add($exception->getMessage(), 'danger');
             Redirect::to($exception->getRedirectUrl());
+            return;
         }
 
         // Show exception as a JSON
         if ($exception instanceof Jsonable) {
-            echo (new JsonResponse)->setData([
+            $json = new JsonResponse;
+            $json->setData([
                 'error' => 1,
                 'message' => $exception->getMessage()
-            ])->render();
+            ]);
+            echo $json->render();
             die();
         }
 
