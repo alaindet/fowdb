@@ -5,7 +5,7 @@ namespace App\Http\Request;
 use App\Http\Request\Input;
 use App\Services\Alert;
 use App\Services\Validation\Validation;
-use App\Exceptions\ApiValidationException;
+use App\Services\Configuration\Configuration;
 use App\Utils\Arrays;
 
 class Request
@@ -152,7 +152,7 @@ class Request
      */
     public function api(): Request
     {
-        $this->validationException = ApiValidationException::class;
+        Configuration::getInstance()->set('api', true);
 
         return $this;
     }
@@ -169,40 +169,9 @@ class Request
     {
         $method = $this->method;
         $data = $this->input()->$method();
-
         $validation = new Validation;
         $validation->setData($data);
         $validation->setRules($rules);
-
-        if ($this->isApi) {
-            
-        }
-        
-        if (!$validation->validate()) {
-            $validation->throwException();
-        }
-            ->setData($data)
-            ->setRules($rules)
-            ->validate()
-            ->
-
-        // // No validation errors, quit here
-        // if (!$validation->areErrors()) {
-        //     return;
-        // }
-
-        // $errors = $validation->getErrors();
-
-        // // Build the error message
-        // (count($errors) === 1)
-        //     ? $message = $errors[0]
-        //     : $message = (
-        //         "<ul class=\"display-inline-block\">".
-        //             "<li>".implode('</li><li>', $errors)."</li>".
-        //         "</ul>"
-        //     );
-
-        // // Throw a validation error (can be a basic or JSON validation error)
-        // throw new $this->validationException($message);
+        $validation->validate();
     }
 }

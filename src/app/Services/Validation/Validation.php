@@ -4,13 +4,15 @@ namespace App\Services\Validation;
 
 use App\Http\Response\Redirect;
 use App\Services\Validation\VaildationRulesTrait;
+use App\Services\Validation\Exceptions\ValidationException;
+use App\Services\Validation\Exceptions\ApiValidationException;
+use App\Base\Errors\ErrorsBag;
 
 /**
  * This service validates some data against some rules
  */
 class Validation
 {
-
     use ValidationRulesTrait;
 
     /**
@@ -44,6 +46,13 @@ class Validation
     private $rules = [];
 
     /**
+     * ErrorsBag instance
+     *
+     * @var ErrorsBag
+     */
+    protected $errors;
+
+    /**
      * If any rule validator sets this to true, remaining rules are skipped
      * entirely. This ensures complex validator do not run on optional and
      * missing inputs, for example
@@ -58,24 +67,32 @@ class Validation
      * @var array
      */
     private $validators = [
-        '!empty'    => 'validateNotEmptyRule',
-        '!exists'   => 'validateNotExistsRule',
-        '!required' => 'validateOptionalRule',
-        'are'       => 'validateAreRule',
-        'between'   => 'validateBetweenRule',
-        'enum'      => 'validateEnumRule',
-        'equals'    => 'validateEqualsRule',
-        'except'    => 'validateExceptRule',
-        'exists'    => 'validateExistsRule',
-        'length'    => 'validateLengthRule',
-        'is'        => 'validateIsRule',
-        'match'     => 'validateMatchRule',
-        'max'       => 'validateMaxRule',
-        'min'       => 'validateMinRule',
-        'optional'  => 'validateOptionalRule',
-        'required'  => 'validateRequiredRule',
-        'requires'  => 'validateRequiresRule',
+        '!empty'       => 'validateNotEmptyRule',
+        'not-empty'    => 'validateNotEmptyRule',
+        '!exists'      => 'validateNotExistsRule',
+        'not-exists'   => 'validateNotExistsRule',
+        '!required'    => 'validateOptionalRule',
+        'not-required' => 'validateOptionalRule',
+        'are'          => 'validateAreRule',
+        'between'      => 'validateBetweenRule',
+        'enum'         => 'validateEnumRule',
+        'equals'       => 'validateEqualsRule',
+        'except'       => 'validateExceptRule',
+        'exists'       => 'validateExistsRule',
+        'length'       => 'validateLengthRule',
+        'is'           => 'validateIsRule',
+        'match'        => 'validateMatchRule',
+        'max'          => 'validateMaxRule',
+        'min'          => 'validateMinRule',
+        'optional'     => 'validateOptionalRule',
+        'required'     => 'validateRequiredRule',
+        'requires'     => 'validateRequiresRule',
     ];
+
+    public function __construct()
+    {
+        $this->errors = new ErrorsBag;
+    }
 
     /**
      * Sets all the input to be validated
@@ -130,26 +147,21 @@ class Validation
             }
         }
 
-        if ($this->areErrors()) {
-            $this->throwException();
+        // ERROR
+        if ($this->errors->isNotEmpty()) {
+            $this->throwException($this->errors);
             return false;
         }
 
         return true;
     }
 
-    private function throwException(): void
+    private function throwException(ErrorsBag $errors): void
     {
-        $errors = $this->getErrors();
-
-        (count($errors) === 1)
-            ? $message = $errors[0]
-            : $message = (
-                "<ul class=\"display-inline-block\">".
-                    "<li>".implode('</li><li>', $errors)."</li>".
-                "</ul>"
-            );
-
-        throw new $this->exception($message);
+        if (config('api') === null) {
+            throw new ValidationException($errors);
+        } else {
+            throw new ApiValidationException($errors);
+        }
     }
 }

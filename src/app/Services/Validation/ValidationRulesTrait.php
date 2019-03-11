@@ -2,26 +2,21 @@
 
 namespace App\Services\Validation;
 
-use App\Base\Errorable;
 use App\Utils\Arrays;
 
 /**
  * This trait defines validators for validation rules defined in
  * App\Services\Validation
  * 
+ * 
  * From App\Services\Validation\Validation
  * =======================================
+ * 
  * protected $data;
  * protected $stop;
- * 
- * From App\Base\Errorable
- * =======================
- * public function pushError(string $message): void;
  */
 trait ValidationRulesTrait
 {
-    use Errorable;
-
     /**
      * It's equivalent to "is" rule, but acts on an array's values
      * Returns TRUE only if all values of input array match the rule
@@ -39,7 +34,7 @@ trait ValidationRulesTrait
 
         // ERROR: Input is not an array
         if (!is_array($dataValues)) {
-            $this->pushError(
+            $this->errors->addError(
                 "Input <strong>{$dataKey}</strong> ".
                 "must be an array to validate the \"are\" rule."
             );
@@ -102,7 +97,7 @@ trait ValidationRulesTrait
 
         foreach ($dataValues as $dataValue) {
             if ($validator($dataValue) === false) {
-                $this->pushError(
+                $this->errors->addError(
                     "Input array <strong>{$dataKey}</strong> ".
                     "must have all <strong>{$ruleValue}</strong> values."
                 );
@@ -139,7 +134,7 @@ trait ValidationRulesTrait
         if (is_array($dataValue)) {
             $dataNumber = count($dataValue);
             if ($dataNumber < $min || $dataNumber > $max) {
-                $this->pushError(
+                $this->errors->addError(
                     "Input <strong>{$dataKey}</strong> ".
                     "length must be between {$min} and {$max}."
                 );
@@ -151,7 +146,7 @@ trait ValidationRulesTrait
         if (is_numeric($dataValue)) {
             $dataNumber = filter_var($dataValue, FILTER_VALIDATE_FLOAT);
             if ($dataNumber < $min || $dataNumber > $max) {
-                $this->pushError(
+                $this->errors->addError(
                     "Input <strong>{$dataKey}</strong> ".
                     "value must be between {$min} and {$max}."
                 );
@@ -163,7 +158,7 @@ trait ValidationRulesTrait
         else {
             $dataNumber = strlen($data);
             if ($dataNumber < $min || $dataNumber > $max) {
-                $this->pushError(
+                $this->errors->addError(
                     "Input <strong>{$dataKey}</strong> ".
                     "length must be between {$min} and {$max} characters."
                 );
@@ -191,7 +186,7 @@ trait ValidationRulesTrait
         $emptyArray = (is_array($dataValue) && count($dataValue) === 0);
 
         if ($emptyString || $emptyArray) {
-            $this->pushError(
+            $this->errors->addError(
                 "Input <strong>{$dataKey}</strong> ".
                 "must not be empty"
             );
@@ -218,7 +213,7 @@ trait ValidationRulesTrait
 
         foreach (Arrays::makeArray($dataValue) as $data) {
             if (!in_array($data, $ruleValues)) {
-                $this->pushError(
+                $this->errors->addError(
                     "Input <strong>{$dataKey}</strong> value ".
                     "must be one of these values: {$ruleValue}."
                 );
@@ -245,7 +240,7 @@ trait ValidationRulesTrait
         $ruleValues = explode(',', $ruleValue);
 
         if (in_array($dataValue, $ruleValues)) {
-            $this->pushError(
+            $this->errors->addError(
                 "Input <strong>{$dataKey}</strong> value ".
                 "must not be equal to one of these values: \"{$ruleValue}\"."
             );
@@ -270,7 +265,7 @@ trait ValidationRulesTrait
         $dataValue = &$this->data[$dataKey];
 
         if ($dataValue !== $ruleValue) {
-            $this->pushError(
+            $this->errors->addError(
                 "Input <strong>{$dataKey}</strong> value ".
                 "must be equal to {$ruleValue}."
             );
@@ -308,7 +303,7 @@ trait ValidationRulesTrait
             ->first();
 
         if (empty($result)) {
-            $this->pushError(
+            $this->errors->addError(
                 "Input <strong>{$dataKey}</strong> with value ".
                 "<strong>{$dataValue}</strong> does *NOT* exist ".
                 "into database table <strong>{$table}</strong> ".
@@ -348,7 +343,7 @@ trait ValidationRulesTrait
             ->first();
 
         if (!empty($result)) {
-            $this->pushError(
+            $this->errors->addError(
                 "Input <strong>{$dataKey}</strong> with value ".
                 "<strong>{$dataValue}</strong> already exists ".
                 "into database table <strong>{$table}</strong> ".
@@ -415,7 +410,7 @@ trait ValidationRulesTrait
 
         // ERROR
         if (!$valid) {
-            $this->pushError(
+            $this->errors->addError(
                 "Input <strong>{$dataKey}</strong> ".
                 "must be of type {$ruleValue}"
             );
@@ -441,9 +436,9 @@ trait ValidationRulesTrait
         $length = intval($ruleValue);
 
         if (is_array($dataValue)) {
-            $dataNumber = count($data);
+            $dataNumber = count($dataValue);
             if ($dataNumber !== $length) {
-                $this->pushError(
+                $this->errors->addError(
                     "Input <strong>{$dataKey}</strong> ".
                     "must have exactly {$length} elements."
                 );
@@ -452,9 +447,9 @@ trait ValidationRulesTrait
         }
 
         if (is_string($dataValue)) {
-            $dataNumber = strlen($data);
+            $dataNumber = strlen($dataValue);
             if ($dataNumber !== $length) {
-                $this->pushError(
+                $this->errors->addError(
                     "Input <strong>{$dataKey}</strong> ".
                     "must have exactly {$length} characters."
                 );
@@ -481,7 +476,7 @@ trait ValidationRulesTrait
         $pattern = "~{$ruleValue}~";
 
         if (!preg_match($pattern, $dataValue)) {
-            $this->pushError(
+            $this->errors->addError(
                 "Input <strong>{$dataKey}</strong> must match pattern ".
                 "<span class=\"text-monospace text-bold\">{$ruleValue}</span>"
             );
@@ -513,7 +508,7 @@ trait ValidationRulesTrait
         if (is_array($dataValue)) {
             $dataNumber = count($dataValue);
             if ($dataNumber > $max) {
-                $this->pushError(
+                $this->errors->addError(
                     "Input <strong>{$dataKey}</strong> ".
                     "length must be less than {$max}."
                 );
@@ -523,9 +518,9 @@ trait ValidationRulesTrait
 
         // Input is number
         if (is_numeric($dataValue)) {
-            $dataNumber = filter_var($data, FILTER_VALIDATE_FLOAT);
+            $dataNumber = filter_var($dataValue, FILTER_VALIDATE_FLOAT);
             if ($dataNumber > $max) {
-                $this->pushError(
+                $this->errors->addError(
                     "Input <strong>{$dataKey}</strong> ".
                     "value must be less than {$max}."
                 );
@@ -537,7 +532,7 @@ trait ValidationRulesTrait
         else {
             $dataNumber = strlen($data);
             if ($dataNumber > $max) {
-                $this->pushError(
+                $this->errors->addError(
                     "Input <strong>{$dataKey}</strong> ".
                     "length must be less than {$max} characters."
                 );
@@ -570,7 +565,7 @@ trait ValidationRulesTrait
         if (is_array($dataValue)) {
             $dataNumber = count($dataValue);
             if ($dataNumber < $min) {
-                $this->pushError(
+                $this->errors->addError(
                     "Input <strong>{$dataKey}</strong> ".
                     "length must be more than {$min}."
                 );
@@ -582,7 +577,7 @@ trait ValidationRulesTrait
         if (is_numeric($dataValue)) {
             $dataNumber = filter_var($dataValue, FILTER_VALIDATE_FLOAT);
             if ($dataNumber < $min) {
-                $this->pushError(
+                $this->errors->addError(
                     "Input <strong>{$dataKey}</strong> ".
                     "value must be more than {$min}."
                 );
@@ -594,7 +589,7 @@ trait ValidationRulesTrait
         else {
             $dataNumber = strlen($dataValue);
             if ($dataNumber < $min) {
-                $this->pushError(
+                $this->errors->addError(
                     "Input <strong>{$dataKey}</strong> ".
                     "length must be more than {$min} characters."
                 );
@@ -628,7 +623,7 @@ trait ValidationRulesTrait
 
             // ERROR: Does not exist (fail validation and stop all other rules!)
             if ($data === null) {
-                $this->pushError(
+                $this->errors->addError(
                     "Input <strong>{$dataKey}</strong> is required. ".
                     "No input with that name passed."
                 );
@@ -638,7 +633,7 @@ trait ValidationRulesTrait
 
             // ERROR: Invalid uploaded file
             if (isset($data['error']) && $data['error'] !== UPLOAD_ERR_OK) {
-                $this->pushError(
+                $this->errors->addError(
                     "Input <strong>{$dataKey}</strong> is required. ".
                     "Invalid file uploaded."
                 );
@@ -680,12 +675,14 @@ trait ValidationRulesTrait
     ): bool
     {
         if (!isset($this->data[$ruleValue])) {
-            $this->pushError(
+            $this->errors->addError(
                 "Input <strong>{$dataKey}</strong> requires ".
                 "input <strong>{$ruleValue}</strong> to be set."
             );
             return false;
         }
+        
+        return true;
     }
 
     /**

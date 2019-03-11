@@ -68,6 +68,15 @@ $public = [
     ['GET', 'cards/properties/html/{code}', 'CardsController', 'propsHtml'],
     ['GET', 'cards/types-list', 'CardsController', 'typesList'],
 
+    // Validation service
+    ['GET', 'validate/empty', 'ValidationController', 'emptyRule'],
+    ['GET', 'validate/exists', 'ValidationController', 'existsRule'],
+    ['GET', 'validate/required', 'ValidationController', 'requiredRule'],
+    ['GET', 'validate/is', 'ValidationController', 'isRule'],
+    ['GET', 'validate/numbers', 'ValidationController', 'numbersRule'],
+    ['GET', 'validate/enum', 'ValidationController', 'enumRule'],
+    ['GET', 'validate/match', 'ValidationController', 'matchRule'],
+
 ];
 
 /**
