@@ -156,7 +156,7 @@ trait ValidationRulesTrait
 
         // Input is text
         else {
-            $dataNumber = strlen($data);
+            $dataNumber = strlen($dataValue);
             if ($dataNumber < $min || $dataNumber > $max) {
                 $this->errors->addError(
                     "Input <strong>{$dataKey}</strong> ".
