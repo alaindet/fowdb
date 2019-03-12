@@ -2,7 +2,7 @@
 
 namespace App\Base\Items;
 
-use App\Base\Items\ItemInterface;
+use App\Base\Items\Interfaces\ItemInterface;
 
 /**
  * Provides an implementation of the \Iterator interface
