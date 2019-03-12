@@ -83,7 +83,7 @@ class ArtistsController extends Controller
     public function store(Request $request): string
     {
         // Validate input
-        $request->validate('post', [
+        $request->validate([
             'card-id' => ['required','is:integer','exists:cards,id'],
             'artist-name' => ['required'],
         ]);

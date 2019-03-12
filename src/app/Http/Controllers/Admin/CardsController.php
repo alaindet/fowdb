@@ -11,6 +11,7 @@ use App\Services\Resources\Card\Crud\CreateService;
 use App\Services\Resources\Card\Crud\DeleteService;
 use App\Services\Resources\Card\Crud\UpdateService;
 use App\Views\Page;
+use App\Services\Validation\Validation;
 
 /**
  * Contains actions for JUDGE routes only
@@ -49,8 +50,10 @@ class CardsController extends Controller
             $request->input()->files()
         );
 
-        // Validate assembled input ($_POST + $_FILES)
-        $request->validate('post', [
+        // Validate input
+        $validation = new Validation;
+        $validation->setData($input);
+        $validation->setRules([
             
             // Required fields
             'image' => ['required','is:file'],
@@ -58,24 +61,25 @@ class CardsController extends Controller
             'set' => ['required','except:0'],
             'number' => ['required','is:integer'],
             'back-side' => ['required','is:integer','enum:0,1,2,3,4'],
-            'name' => ['required','except:'],
+            'name' => ['required','is:text','not-empty'],
             'type' => ['required','except:0'],
-            'rarity' => ['required','enum:0,c,u,r,sr,s,ar'],
+            'rarity' => ['required','is:text','enum:0,c,u,r,sr,s,ar'],
             'attribute' => ['required','is:array'],
 
             // Optional fields
-            'code' => ['required:0',],
-            'attribute-cost' => ['required:0'],
-            'free-cost' => ['required:0','is:integer'],
-            'divinity-cost' => ['required:0','is:integer'],
-            'atk' => ['required:0','is:integer'],
-            'def' => ['required:0','is:integer'],
-            'race' => ['required:0'],
-            'text' => ['required:0'],
-            'flavor-text' => ['required:0'],
-            'artist-name' => ['required:0'],
+            'code' => ['optional','is:alphadash'],
+            'attribute-cost' => ['optional','is:text'],
+            'free-cost' => ['optional','is:integer'],
+            'divinity-cost' => ['optional','is:integer'],
+            'atk' => ['optional','is:integer'],
+            'def' => ['optional','is:integer'],
+            'race' => ['optioanl','is:text'],
+            'text' => ['optioanl','is:text'],
+            'flavor-text' => ['optional','is:text'],
+            'artist-name' => ['optional','is:text'],
 
-        ], $input);
+        ]);
+        $validation->validate();
 
         $service = new CreateService($input);
         $service->processInput();
@@ -115,33 +119,35 @@ class CardsController extends Controller
             $request->input()->files()
         );
 
-        // Validate assembled input ($_POST + $_FILES)
-        $request->validate('post', [
+        $validation = new Validation;
+        $validation->setData($input);
+        $validation->setRules([
             
             // Required fields
             'narp' => ['required','is:integer','enum:0,1,2,3'],
             'set' => ['required','except:0'],
             'number' => ['required','is:integer'],
             'back-side' => ['required','is:integer','enum:0,1,2,3,4'],
-            'name' => ['required','except:'],
+            'name' => ['required','is:text','except:'],
             'type' => ['required','except:0'],
             'rarity' => ['required','enum:0,c,u,r,sr,s,ar'],
             'attribute' => ['required','is:array'],
 
             // Optional fields
-            'image' => ['required:0','is:file'],
-            'code' => ['required:0',],
-            'attribute-cost' => ['required:0'],
-            'free-cost' => ['required:0','is:integer'],
-            'divinity-cost' => ['required:0','is:integer'],
-            'atk' => ['required:0','is:integer'],
-            'def' => ['required:0','is:integer'],
-            'race' => ['required:0'],
-            'text' => ['required:0'],
-            'flavor-text' => ['required:0'],
-            'artist-name' => ['required:0'],
+            'image' => ['optional','is:file'],
+            'code' => ['optional','is:alphadash'],
+            'attribute-cost' => ['optional','is:text'],
+            'free-cost' => ['optional','is:integer'],
+            'divinity-cost' => ['optional','is:integer'],
+            'atk' => ['optional','is:integer'],
+            'def' => ['optional','is:integer'],
+            'race' => ['optional','is:text'],
+            'text' => ['optional','is:text'],
+            'flavor-text' => ['optional','is:text'],
+            'artist-name' => ['optional','is:text'],
 
-        ], $input);
+        ]);
+        $validation->validate();
 
         $service = new UpdateService($input, $id);
         $service->processInput();

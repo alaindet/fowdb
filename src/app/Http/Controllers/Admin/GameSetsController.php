@@ -72,14 +72,14 @@ class GameSetsController extends Controller
 
     public function create(Request $request): string
     {
-        $request->validate('post', [
+        $request->validate([
             'cluster-id' => ['required','is:integer','exists:game_clusters,id'],
             'id' => ['required','is:integer','!exists:game_sets,id'],
-            'name' => ['required'],
-            'code' => ['required','is:alphanumeric'],
+            'name' => ['required','is:text'],
+            'code' => ['required','is:alphadash'],
             'count' => ['required','is:integer','between:1,255'],
-            'release-date' => ['required:0','is:date'],
-            'is-spoiler' => ['required:0','is:boolean'],
+            'release-date' => ['optional','is:date'],
+            'is-spoiler' => ['optional','is:boolean'],
         ]);
 
         $service = new CreateService($request->input()->post());
@@ -116,14 +116,14 @@ class GameSetsController extends Controller
 
     public function update(Request $request, string $id): string
     {
-        $request->validate('post', [
+        $request->validate([
             'cluster-id' => ['required','is:integer','exists:game_clusters,id'],
             'id' => ['required','is:integer','exists:game_sets,id'],
-            'name' => ['required'],
-            'code' => ['required','is:alphanumeric'],
+            'name' => ['required','is:text'],
+            'code' => ['required','is:alphadash'],
             'count' => ['required','is:integer','between:1,255'],
-            'release-date' => ['required:0','is:date'],
-            'is-spoiler' => ['required:0','is:boolean'],
+            'release-date' => ['optional','is:date'],
+            'is-spoiler' => ['optional','is:boolean'],
         ]);
 
         $service = new UpdateService($request->input()->post(), $id);

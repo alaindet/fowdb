@@ -13,6 +13,7 @@ use App\Services\Resources\GameRules\GameRulesUpdateService;
 use App\Views\Page;
 use App\Exceptions\ModelNotFoundException;
 use App\Http\Response\PlainTextResponse;
+use App\Services\Validation\Validation;
 
 class GameRulesController extends Controller
 {
@@ -85,12 +86,16 @@ class GameRulesController extends Controller
 
     public function create(Request $request): string
     {
+        // Input
         $input = array_merge(
             $request->input()->post(),
             $request->input()->files()
         );
 
-        $request->validate('post', [
+        // Validation
+        $validation = new Validation;
+        $validation->setData($input);
+        $validation->setRules([
             'txt-file' => ['required','is:file'],
             'version' => [
                 'required',
@@ -100,7 +105,8 @@ class GameRulesController extends Controller
             ],
             'date-validity' => ['required','is:date'],
             'is-default' => ['required:0','is:boolean'],
-        ], $input);
+        ]);
+        $validation->validate();
 
         $service = new GameRulesCreateService($input);
         $service->processInput();
@@ -133,12 +139,15 @@ class GameRulesController extends Controller
             $request->input()->files()
         );
 
-        $request->validate('post', [
-            'txt-file' => ['required:0','is:file'],
+        $validation = new Validation;
+        $validation->setData($input);
+        $validation->setRules([
+            'txt-file' => ['optional','is:file'],
             'version' => ['required','!empty','match:[0-9]+.[0-9]+[a-z]*'],
             'date-validity' => ['required','is:date'],
-            'is-default' => ['required:0','is:boolean']
-        ], $input);
+            'is-default' => ['optional','is:boolean']
+        ]);
+        $validation->validate();
 
         $service = new GameRulesUpdateService($input, $id, [
             'id',

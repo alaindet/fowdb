@@ -13,6 +13,7 @@ use App\Services\Resources\GameCluster\Crud\CreateService;
 use App\Services\Resources\GameCluster\Crud\DeleteService;
 use App\Services\Resources\GameCluster\Crud\UpdateService;
 use App\Views\Page;
+use App\Services\Configuration\Configuration;
 
 class GameClustersController extends Controller
 {

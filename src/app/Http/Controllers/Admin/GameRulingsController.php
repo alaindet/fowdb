@@ -139,10 +139,10 @@ class GameRulingsController extends Controller
 
     public function create(Request $request): string
     {
-        $request->validate('post', [
+        $request->validate([
             'card-id' => ['required','is:integer','exists:cards,id'],
-            'ruling-errata' => ['required:0','is:integer','enum:0,1'],
-            'ruling-date' => ['required:0','is:date'],
+            'ruling-errata' => ['optional','is:integer','enum:0,1'],
+            'ruling-date' => ['optional','is:date'],
             'ruling-text' => ['required'],
         ]);
 
@@ -198,8 +198,8 @@ class GameRulingsController extends Controller
 
     public function update(Request $request, string $id): string
     {
-        $request->validate('post', [
-            'ruling-errata' => ['required:0','is:boolean'],
+        $request->validate([
+            'ruling-errata' => ['optional','is:boolean'],
             'ruling-date' => ['required','is:date'],
             'ruling-text' => ['required'],
         ]);

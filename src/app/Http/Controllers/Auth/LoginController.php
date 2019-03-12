@@ -22,16 +22,15 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate('post', [
-            'username' => ['required'],
-            'password' => ['required'],
+        $request->validate([
+            'username' => ['required','is:text'],
+            'password' => ['required','is:text'],
         ]);
 
         $username = $request->input()->post('username', $escape = true);
         $password = $request->input()->post('password');
 
         Authentication::login($username, $password);
-
         alert('You signed in', 'success');
         redirect('profile');
     }
