@@ -3,10 +3,11 @@
 namespace App\Base\Entities;
 
 use App\Base\Items\Item;
+use App\Base\Entities\Interfaces\EntityInterface;
 use App\Base\Entities\Exceptions\MissingPropertyGetterException;
 use App\Base\Entities\Exceptions\MissingPropertySetterException;
 
-abstract class Entity extends Item
+abstract class Entity extends Item implements EntityInterface
 {
     /**
      * Maps custom properties to their getters
