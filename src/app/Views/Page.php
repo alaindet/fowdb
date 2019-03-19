@@ -23,7 +23,7 @@ class Page
     private $options = [];
     private $template;
     private $mainTemplate;
-    private $minify = true;
+    private $minify = false;
 
     /**
      * Sets some default values
