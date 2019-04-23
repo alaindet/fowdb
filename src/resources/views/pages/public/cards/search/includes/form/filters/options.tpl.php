@@ -62,6 +62,7 @@
       'spoilers'   => 'Spoilers',
       'alternates' => 'Alternates',
       'reprints'   => 'Reprints',
+      'promo'      => 'Promo',
     ],
     'css' => [
       'container' => ['display-inline-block'],

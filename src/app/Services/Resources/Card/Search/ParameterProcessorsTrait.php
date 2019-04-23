@@ -248,6 +248,9 @@ trait ParameterProcessorsTrait
                 case 'reprints':
                     $this->statement->where('narp <> 2');
                     break;
+                case 'promo':
+                    $this->statement->where('narp <> 3');
+                    break;
             }
         }
     }
