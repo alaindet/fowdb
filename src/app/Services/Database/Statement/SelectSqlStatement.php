@@ -3,12 +3,15 @@
 namespace App\Services\Database\Statement;
 
 use App\Services\Database\Statement\SqlStatement;
+use App\Services\Database\Statement\Exceptions\RequiredClauseException;
 
 /**
  * https://dev.mysql.com/doc/refman/8.0/en/select.html
  */
 class SelectSqlStatement extends SqlStatement
 {
+    private $aux = [];
+
     public $clauses = [
         'SELECT' => [],
         'FROM' => '',
@@ -62,14 +65,78 @@ class SelectSqlStatement extends SqlStatement
     }
 
     /**
-     * Sets the table_references expression ('cards', 'cards INNER JOIN game_rulings...')
+     * Sets the table_reference expression
+     * For INNER JOIN expressions, better use SelectSqlStatement::innerJoin()
      *
-     * @param string $table
+     * @param string $table Table name
+     * @param string $alias Table alias
      * @return SelectSqlStatement
      */
-    public function from(string $table): SelectSqlStatement
+    public function from(
+        string $table,
+        string $alias = null
+    ): SelectSqlStatement
     {
-        $this->clauses['FROM'] = $table;
+        $this->aux['table'] = $table;
+        $this->aux['table-alias'] = $table;
+        $expression = $table;
+        
+        if ($alias !== null) {
+            $this->aux['table-alias'] = $alias;
+            $expression .= " as {$alias}";
+        }
+
+        $this->clauses['FROM'] = $expression;
+
+        return $this;
+    }
+
+    /**
+     * Adds an INNER JOIN table
+     *
+     * @param string|string[] $rTable
+     * @param string $rField
+     * @param string $operator
+     * @param string $lField
+     * @return SelectSqlStatement
+     */
+    public function innerJoin(
+        $rTable, // string|string[]
+        string $rField,
+        string $operator,
+        string $lField = null
+    ): SelectSqlStatement
+    {
+        // ERROR: Missing base table
+        if (!isset($this->aux['table'])) {
+            throw new RequiredClauseException(
+                'method "from" must be called before "innerJoin".'
+            );
+        }
+
+        // Left table
+        $lAlias = $this->aux['table-alias'];
+
+        // Right table
+        if (is_array($rTable)) {
+            [$rTable, $rAlias] = $rTable;
+            $rTableRef = "{$rTable} as {$rAlias}";
+        } else {
+            [$rTable, $rAlias] = [$rTable, $rTable];
+            $rTableRef = $rTable;
+        }
+
+        // Implicit = operator
+        if ($lField === null) {
+            $lField = $operator;
+            $operator = '=';
+        }
+
+        // Add to the FROM clause
+        $this->clauses['FROM'] .= (
+            " INNER JOIN {$rTableRef} ON ".
+            "{$lAlias}.{$lField} {$operator} {$rAlias}.{$rField}"
+        );
 
         return $this;
     }

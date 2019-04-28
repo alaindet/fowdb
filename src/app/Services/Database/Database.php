@@ -286,10 +286,7 @@ class Database
     public function first(string $className = null)
     {
         $results = $this->get($className);
-
-        if (!isset($results[0])) return [];
-        
-        return $results[0];
+        return $results[0] ?? null;
     }
 
     /**
