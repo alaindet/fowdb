@@ -2,8 +2,9 @@
 
 namespace App\Entity\GameFormat;
 
-use App\Base\Entity\EntityCustomProperties;
+use App\Base\Entity\Entity\EntityCustomProperties;
 use App\Base\Items\ItemsCollection;
+use App\Base\Entity\Manager\EntityManager;
 
 class GameFormatCustomProperties extends EntityCustomProperties
 {
@@ -13,6 +14,7 @@ class GameFormatCustomProperties extends EntityCustomProperties
 
     public function getClustersProperty(bool $useCache): ItemsCollection
     {
-        return GameFormatRepository::getClusters($this->entity);
+        $repo = EntityManager::getRepository(get_class($this->entity));
+        return $repo->getClusters($this->entity);
     }
 }

@@ -2,16 +2,17 @@
 
 namespace App\Entity\GameCluster;
 
-use App\Base\Entity\EntityRepository;
+use App\Base\Entity\Repository\EntityRepository;
+use App\Base\Items\ItemsCollection;
+use App\Entity\GameCluster\GameCluster;
+use App\Entity\GameFormat\GameFormat;
 use App\Services\Database\Database;
 use App\Services\Database\Statement\SelectSqlStatement;
-use App\Base\Items\ItemsCollection;
-use App\Base\Entity\GameFormat\GameFormat;
-use App\Base\Entity\GameCluster\GameCluster;
 
 class GameClusterRepository extends EntityRepository
 {
     public $table = "game_clusters";
+    public $tableAlias = "c";
 
     /**
      * Returns all formats containing given cluster
@@ -25,26 +26,7 @@ class GameClusterRepository extends EntityRepository
         array $formatFields = null
     ): ItemsCollection
     {
-        $tables = [
-            "left" => [
-                "name" => $this->table,
-                "alias" => "f",
-                "field-to-middle" => "id",
-            ],
-            "middle" => [
-                "name" => "pivot_cluster_format",
-                "alias" => "cf",
-                "field-to-left" => "format_id",
-                "field-to-right" => "cluster_id",
-            ],
-            "right" => [
-                "name" => "game_clusters",
-                "alias" => "c",
-                "field-to-middle" => "id",
-            ],
-        ];
-
-        $allowedFields = [
+        $formatAllowedFields = [
             "id",
             "code",
             "name",
@@ -54,9 +36,9 @@ class GameClusterRepository extends EntityRepository
         ];
 
         if ($formatFields !== null) {
-            $fields = array_intersect($allowedFields, $formatFields);
+            $fields = array_intersect($formatAllowedFields, $formatFields);
         } else {
-            $fields = &$allowedFields;
+            $fields = &$formatAllowedFields;
         }
 
         foreach ($fields as &$field) {
@@ -65,16 +47,15 @@ class GameClusterRepository extends EntityRepository
 
         $statement = (new SelectSqlStatement)
             ->select($fields)
-            ->from("
-                {$this->table} as f
-                INNER JOIN pivot_cluster_format as cf ON cf.formats_id = f.id
-                INNER JOIN game_clusters as c ON cf.clusters_id = c.id
-            ")
-            ->where("f.id = :id");
+            ->from($this->table, $this->tableAlias)
+            ->innerJoin(["pivot_cluster_format", "cf"], "clusters_id", "id")
+            ->innerJoin(["game_formats", "f"], "id", "formats_id")
+            ->where("{$this->tableAlias}.id = :id")
+            ->orderBy("f.id");
 
         $items = Database::getInstance()
             ->select($statement)
-            ->bind([":id" => $format->id])
+            ->bind([":id" => $cluster->id])
             ->get(GameCluster::class);
 
         return (new ItemsCollection)->set($items);

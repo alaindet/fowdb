@@ -2,11 +2,11 @@
 
 namespace App\Entity\GameFormat;
 
-use App\Base\Entity\Entity;
-use App\Base\Entity\GameFormat\GameFormat;
-use App\Base\Entity\EntityMapperInterface;
+use App\Base\Entity\Entity\Entity;
+use App\Base\Entity\Mapper\EntityMapper;
+use App\Entity\GameFormat\GameFormat;
 
-class GameFormatMapper implements EntityMapperInterface
+class GameFormatMapper extends EntityMapper
 {
     public function entityToDatabase(Entity $entity): array
     {

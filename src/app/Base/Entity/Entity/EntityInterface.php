@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Base\Entity;
+namespace App\Base\Entity\Entity;
 
 interface EntityInterface
 {

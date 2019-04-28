@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Base\Entity;
+namespace App\Base\Entity\Manager;
 
-use App\Base\Entity\EntityMapperInterface;
-use App\Base\Entity\EntityRepositoryInterface;
+use App\Base\Entity\Mapper\EntityMapperInterface;
+use App\Base\Entity\Repository\EntityRepositoryInterface;
 
 class EntityManager
 {

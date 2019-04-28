@@ -2,16 +2,17 @@
 
 namespace App\Entity\GameFormat;
 
-use App\Base\Entity\EntityRepository;
+use App\Base\Entity\Repository\EntityRepository;
+use App\Base\Items\ItemsCollection;
+use App\Entity\GameCluster\GameCluster;
+use App\Entity\GameFormat\GameFormat;
 use App\Services\Database\Database;
 use App\Services\Database\Statement\SelectSqlStatement;
-use App\Base\Items\ItemsCollection;
-use App\Base\Entity\GameFormat\GameFormat;
-use App\Base\Entity\GameCluster\GameCluster;
 
 class GameFormatRepository extends EntityRepository
 {
     public $table = "game_formats";
+    public $tableAlias = "f";
 
     public function getClusters(GameFormat $format): ItemsCollection
     {
@@ -21,12 +22,10 @@ class GameFormatRepository extends EntityRepository
                 "c.code",
                 "c.name",
             ])
-            ->from("
-                {$this->table} as f
-                INNER JOIN pivot_cluster_format as cf ON cf.formats_id = f.id
-                INNER JOIN game_clusters as c ON cf.clusters_id = c.id
-            ")
-            ->where("f.id = :id");
+            ->from($this->table, $this->tableAlias)
+            ->innerJoin(["pivot_cluster_format", "cf"], "formats_id", "id")
+            ->innerJoin(["game_clusters", "c"], "id", "clusters_id")
+            ->where("{$this->tableAlias}.id = :id");
 
         $items = Database::getInstance()
             ->select($statement)

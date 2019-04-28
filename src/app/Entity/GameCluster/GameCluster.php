@@ -2,13 +2,14 @@
 
 namespace App\Entity\GameCluster;
 
-use App\Base\Entity\Entity;
+use App\Base\Entity\Entity\Entity;
+use App\Entity\GameCluster\GameClusterCustomProperties;
 
 class GameCluster extends Entity
 {
-    static public $table = "game_clusters";
-
     public $id;
     public $code;
     public $name;
+
+    protected $customProperties = GameClusterCustomProperties::class;
 }

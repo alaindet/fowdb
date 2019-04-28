@@ -2,8 +2,8 @@
 
 namespace App\Entity\GameFormat;
 
-use App\Base\Entity\Entity;
-use App\Base\Entity\GameFormat\GameFormatCustomProperties;
+use App\Base\Entity\Entity\Entity;
+use App\Entity\GameFormat\GameFormatCustomProperties;
 
 class GameFormat extends Entity
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Base\Entity;
+namespace App\Base\Entity\Entity;
 
-use App\Base\Entity\EntityCustomProperties;
-use App\Base\Entity\EntityInterface;
+use App\Base\Entity\Entity\EntityCustomProperties;
+use App\Base\Entity\Entity\EntityInterface;
 
 /**
  * Native properties are those fetched from the database

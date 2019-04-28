@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Base\Entity;
+namespace App\Base\Entity\Repository;
 
-use App\Base\Entity\EntityInterface;
+use App\Base\Entity\Entity\EntityInterface;
 use App\Base\Items\Interfaces\ItemsCollectionInterface;
 
 interface EntityRepositoryInterface

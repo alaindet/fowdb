@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Base\Entity;
+namespace App\Base\Entity\Repository;
 
 use App\Services\Database\Database;
 use App\Services\Database\Statement\SelectSqlStatement;
 use App\Base\Items\ItemsCollection;
 use App\Base\Items\Interfaces\ItemsCollectionInterface;
-use App\Base\Entity\EntityInterface;
-use App\Base\Entity\EntityRepositoryInterface;
+use App\Base\Entity\Entity\EntityInterface;
+use App\Base\Entity\Repository\EntityRepositoryInterface;
 
 abstract class EntityRepository implements EntityRepositoryInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Base\Entity;
+namespace App\Base\Entity\Mapper;
 
 use App\Base\Entity\Entity;
 use App\Base\Items\ItemsCollection;
