@@ -33,7 +33,6 @@ use \App\Legacy\Authorization as LegacyAuthorization;
  * VIEW
  * ====
  * asset
- * collapse
  * component
  * csrf_token
  * include_view
