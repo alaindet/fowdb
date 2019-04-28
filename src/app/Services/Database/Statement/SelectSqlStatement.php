@@ -93,8 +93,18 @@ class SelectSqlStatement extends SqlStatement
 
     /**
      * Adds an INNER JOIN table
+     * 
+     * If first argument is a string, it's the join table name,
+     * If first argument is an array, then it's [join_table_name, alias]
+     * 
+     * Implicit operator (=)
+     * ->innerJoin(['rarities','r'], 'id', 'rarity')
+     * 
+     * Explicit operator
+     * ->innerJoin(['rarities','r'], 'id', '=', 'rarity')
+     * ->innerJoin(['rarities','r'], 'id', '<>', 'rarity')
      *
-     * @param string|string[] $rTable
+     * @param string|string[] $rTable Table name (and alias)
      * @param string $rField
      * @param string $operator
      * @param string $lField
@@ -137,6 +147,8 @@ class SelectSqlStatement extends SqlStatement
             " INNER JOIN {$rTableRef} ON ".
             "{$lAlias}.{$lField} {$operator} {$rAlias}.{$rField}"
         );
+
+        $this->aux['table-alias'] = $rAlias;
 
         return $this;
     }
