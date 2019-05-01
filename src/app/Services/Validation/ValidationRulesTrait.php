@@ -85,7 +85,7 @@ trait ValidationRulesTrait
                 break;
             case 'files':
                 $validator = function(&$data) {
-                    return $this->isFileValid($data);
+                    return !$this->isFileInvalid($data);
                 };
                 break;
             case 'booleans':
@@ -401,19 +401,20 @@ trait ValidationRulesTrait
                 if (!preg_match($pattern, $dataValue)) $valid = false;
                 break;
             case 'file':
-                if (!$this->isFileValid($dataValue)) $valid = false;
+                if ($this->isFileInvalid($dataValue)) $valid = false;
                 break;
             case 'boolean':
                 if ($dataValue !== '0' && $dataValue !== '1') $valid = false;
                 break;
         }
 
-        // ERROR
+        // ERROR: Stop Validation here
         if (!$valid) {
             $this->errors->addError(
                 "Input <strong>{$dataKey}</strong> ".
                 "must be of type {$ruleValue}"
             );
+            $this->stop = true;
             return false;
         }
 
@@ -632,7 +633,7 @@ trait ValidationRulesTrait
             }
 
             // ERROR: Invalid uploaded file
-            if (!$this->isFileValid($dataValue)) {
+            if ($this->isFileInvalid($dataValue)) {
                 $this->errors->addError(
                     "Input <strong>{$dataKey}</strong> is required. ".
                     "Invalid file uploaded."
@@ -653,7 +654,7 @@ trait ValidationRulesTrait
             }
 
             // Invalid uploaded file (stop validation and move to another input)
-            if (!$this->isFileValid($dataValue)) {
+            if ($this->isFileInvalid($dataValue)) {
                 $this->stop = true;
             }
 
@@ -674,7 +675,7 @@ trait ValidationRulesTrait
         string $ruleValue
     ): bool
     {
-        if ($this->getDataValueByKey($dataKey) !== null) {
+        if ($this->getDataValueByKey($ruleValue) === null) {
             $this->errors->addError(
                 "Input <strong>{$dataKey}</strong> requires ".
                 "input <strong>{$ruleValue}</strong> to be set."
@@ -707,7 +708,7 @@ trait ValidationRulesTrait
         }
 
         // Invalid uploaded file (stop validation and move to another input)
-        if (!$this->isFileValid($dataValue)) {
+        if ($this->isFileInvalid($dataValue)) {
             $this->stop = true;
         }
 
@@ -715,15 +716,23 @@ trait ValidationRulesTrait
     }
 
     /**
-     * Checks if uploaded file is valid
+     * Checks if input is a file and it's invalid
      *
-     * @param array $file
+     * @param array|string $file
      * @return bool
      */
-    private function isFileValid(array $file): bool
+    private function isFileInvalid($file): bool
     {
-        if (!isset($file["error"])) return true;
-        if ($file["error"] === UPLOAD_ERR_OK) return true;
-        return false;
+        // It's not a file as file inputs must be arrays
+        if (!is_array($file)) return false;
+
+        // It's an array input, but not a file
+        if (!isset($file["error"])) return false;
+
+        // It's a file and had no problems uploading
+        if ($file["error"] === UPLOAD_ERR_OK) return false;
+
+        // It's a proper file that had problems while uploading
+        return true;
     }
 }

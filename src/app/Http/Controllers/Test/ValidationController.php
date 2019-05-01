@@ -11,7 +11,7 @@ class ValidationController extends ApiController
     public function emptyRule(Request $request): string
     {
         return (new Validation)
-            ->setData($request->input()->get())
+            ->setData($request->inputObject()->get())
             ->setRules([
                 'foo' => ['required', 'not-empty'],
                 'bar' => ['required','!empty'],
@@ -22,7 +22,7 @@ class ValidationController extends ApiController
     public function existsRule(Request $request): string
     {
         return (new Validation)
-            ->setData($request->input()->get())
+            ->setData($request->inputObject()->get())
             ->setRules([
                 'foo' => ['required','exists:cards,id'],
                 'bar' => ['optional','!exists:cards,id'],
@@ -33,7 +33,7 @@ class ValidationController extends ApiController
     public function requiredRule(Request $request): string
     {
         return (new Validation)
-            ->setData($request->input()->get())
+            ->setData($request->inputObject()->get())
             ->setRules([
                 'foo' => ['required'],
                 'bar' => ['optional'],
@@ -45,7 +45,7 @@ class ValidationController extends ApiController
     public function isRule(Request $request): string
     {
         return (new Validation)
-            ->setData($request->input()->get())
+            ->setData($request->inputObject()->get())
             ->setRules([
                 'age' => ['required','is:integer'],
                 'pi' => ['required','is:decimal'],
@@ -59,7 +59,7 @@ class ValidationController extends ApiController
     public function numbersRule(Request $request): string
     {
         return (new Validation)
-            ->setData($request->input()->get())
+            ->setData($request->inputObject()->get())
             ->setRules([
                 'a' => ['required','between:1,10'],
                 'b' => ['required','equals:42'],
@@ -73,7 +73,7 @@ class ValidationController extends ApiController
     public function enumRule(Request $request): string
     {
         return (new Validation)
-            ->setData($request->input()->get())
+            ->setData($request->inputObject()->get())
             ->setRules([
                 'foo' => ['required','enum:1,2,3'],
                 'bar' => ['required','enum:10,20,30'],
@@ -84,7 +84,7 @@ class ValidationController extends ApiController
     public function matchRule(Request $request): string
     {
         return (new Validation)
-            ->setData($request->input()->get())
+            ->setData($request->inputObject()->get())
             ->setRules([
                 'foo' => ['required','is:text','match:[a-z]{1}[0-9]{1}'],
                 'bar' => ['required','is:text','length:5'],
