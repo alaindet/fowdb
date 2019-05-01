@@ -17,7 +17,7 @@ class Validation
 
     /**
      * Data to be validated
-     * MUST be an associative array key => value
+     * Can be an associative array or an object
      * 
      * Ex.:
      * [
@@ -25,9 +25,16 @@ class Validation
      *   'is-spoiler' => 1
      * ]
      *
-     * @var array
+     * @var array|object
      */
-    protected $data = [];
+    private $data = null;
+
+    /**
+     * Flag to check if input data is an array, used to fetch values
+     *
+     * @var bool
+     */
+    private $dataIsArray;
 
     /**
      * Validation rules, later checked by appropriate validators
@@ -95,15 +102,33 @@ class Validation
     }
 
     /**
-     * Sets all the input to be validated
+     * Sets all the input to be validated, as an array
      *
-     * @param array $data
+     * @param array|object $data
      * @return Validation
      */
-    public function setData(array $data): Validation
+    public function setData($data): Validation
     {
         $this->data = $data;
+        $this->dataIsArray = is_array($data);
+
         return $this;
+    }
+
+    /**
+     * Reads a value from input data by key
+     * Works on arrays and objects as well
+     *
+     * @param string $key
+     * @return string|string[]|null
+     */
+    protected function getDataValueByKey(string $key)
+    {
+        if ($this->dataIsArray) {
+            return $this->data[$key] ?? null;
+        }
+
+        return $this->data->{$key} ?? null;
     }
 
     /**
@@ -140,7 +165,7 @@ class Validation
                 $validator = $this->validators[$ruleName];
                 $this->$validator($dataKey, $ruleValue);
 
-                // If the validator has set $this->skip to TRUE,
+                // If the validator has set $this->stop to TRUE,
                 // Stop any remaining validator!
                 if ($this->stop) break;
 

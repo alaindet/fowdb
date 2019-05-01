@@ -30,7 +30,7 @@ trait ValidationRulesTrait
         string $ruleValue
     ): bool
     {
-        $dataValues = &$this->data[$dataKey];
+        $dataValues = $this->getDataValueByKey($dataKey);
 
         // ERROR: Input is not an array
         if (!is_array($dataValues)) {
@@ -85,7 +85,7 @@ trait ValidationRulesTrait
                 break;
             case 'files':
                 $validator = function(&$data) {
-                    return $data['error'] === UPLOAD_ERR_OK;
+                    return $this->isFileValid($data);
                 };
                 break;
             case 'booleans':
@@ -125,7 +125,7 @@ trait ValidationRulesTrait
         string $ruleValue
     ): bool
     {
-        $dataValue = &$this->data[$dataKey];
+        $dataValue = $this->getDataValueByKey($dataKey);
         [$min, $max] = explode(',', $ruleValue);
         $min = intval($min);
         $max = intval($max);
@@ -181,7 +181,7 @@ trait ValidationRulesTrait
         string $ruleValue = null
     ): bool
     {
-        $dataValue = &$this->data[$dataKey];
+        $dataValue = $this->getDataValueByKey($dataKey);
         $emptyString = (is_string($dataValue) && $dataValue === '');
         $emptyArray = (is_array($dataValue) && count($dataValue) === 0);
 
@@ -208,7 +208,7 @@ trait ValidationRulesTrait
         string $ruleValue = null
     ): bool
     {
-        $dataValue = &$this->data[$dataKey];
+        $dataValue = $this->getDataValueByKey($dataKey);
         $ruleValues = explode(',', $ruleValue);
 
         foreach (Arrays::makeArray($dataValue) as $data) {
@@ -236,7 +236,7 @@ trait ValidationRulesTrait
         string $ruleValue = null
     ): bool
     {
-        $dataValue = &$this->data[$dataKey];
+        $dataValue = $this->getDataValueByKey($dataKey);
         $ruleValues = explode(',', $ruleValue);
 
         if (in_array($dataValue, $ruleValues)) {
@@ -262,7 +262,7 @@ trait ValidationRulesTrait
         string $ruleValue = null
     ): bool
     {
-        $dataValue = &$this->data[$dataKey];
+        $dataValue = $this->getDataValueByKey($dataKey);
 
         if ($dataValue !== $ruleValue) {
             $this->errors->addError(
@@ -287,7 +287,7 @@ trait ValidationRulesTrait
         string $ruleValue = null
     ): bool
     {
-        $dataValue = &$this->data[$dataKey];
+        $dataValue = $this->getDataValueByKey($dataKey);
         
         [$table, $column] = explode(',', $ruleValue);
 
@@ -327,7 +327,7 @@ trait ValidationRulesTrait
         string $ruleValue = null
     ): bool
     {
-        $dataValue = &$this->data[$dataKey];
+        $dataValue = $this->getDataValueByKey($dataKey);
         
         [$table, $column] = explode(',', $ruleValue);
 
@@ -367,7 +367,7 @@ trait ValidationRulesTrait
         string $ruleValue
     ): bool
     {
-        $dataValue = &$this->data[$dataKey];
+        $dataValue = $this->getDataValueByKey($dataKey);
         $valid = true;
 
         switch ($ruleValue) {
@@ -401,7 +401,7 @@ trait ValidationRulesTrait
                 if (!preg_match($pattern, $dataValue)) $valid = false;
                 break;
             case 'file':
-                if ($dataValue['error'] !== UPLOAD_ERR_OK) $valid = false;
+                if (!$this->isFileValid($dataValue)) $valid = false;
                 break;
             case 'boolean':
                 if ($dataValue !== '0' && $dataValue !== '1') $valid = false;
@@ -432,7 +432,7 @@ trait ValidationRulesTrait
         string $ruleValue
     ): bool
     {
-        $dataValue = &$this->data[$dataKey];
+        $dataValue = $this->getDataValueByKey($dataKey);
         $length = intval($ruleValue);
 
         if (is_array($dataValue)) {
@@ -472,7 +472,7 @@ trait ValidationRulesTrait
         string $ruleValue
     ): bool
     {
-        $dataValue = &$this->data[$dataKey];
+        $dataValue = $this->getDataValueByKey($dataKey);
         $pattern = "~{$ruleValue}~";
 
         if (!preg_match($pattern, $dataValue)) {
@@ -501,7 +501,7 @@ trait ValidationRulesTrait
         string $ruleValue = null
     ): bool
     {
-        $dataValue = &$this->data[$dataKey];
+        $dataValue = $this->getDataValueByKey($dataKey);
         $max = intval($ruleValue);
 
         // Input is array
@@ -558,7 +558,7 @@ trait ValidationRulesTrait
         string $ruleValue = null
     ): bool
     {
-        $dataValue = &$this->data[$dataKey];
+        $dataValue = $this->getDataValueByKey($dataKey);
         $min = intval($ruleValue);
 
         // Input is array
@@ -616,13 +616,13 @@ trait ValidationRulesTrait
         $ruleValue = $ruleValue ?? '1';
 
         // Read the input
-        $data = $this->data[$dataKey] ?? null;
+        $dataValue = $this->getDataValueByKey($dataKey);
 
         // required:1
         if ($ruleValue === '1') {
 
             // ERROR: Does not exist (fail validation and stop all other rules!)
-            if ($data === null) {
+            if ($dataValue === null) {
                 $this->errors->addError(
                     "Input <strong>{$dataKey}</strong> is required. ".
                     "No input with that name passed."
@@ -632,7 +632,7 @@ trait ValidationRulesTrait
             }
 
             // ERROR: Invalid uploaded file
-            if (isset($data['error']) && $data['error'] !== UPLOAD_ERR_OK) {
+            if (!$this->isFileValid($dataValue)) {
                 $this->errors->addError(
                     "Input <strong>{$dataKey}</strong> is required. ".
                     "Invalid file uploaded."
@@ -648,12 +648,12 @@ trait ValidationRulesTrait
         if ($ruleValue === '0') {
 
             // Does not exist (stop validation and move to another input)
-            if ($data === null) {
+            if ($dataValue === null) {
                 $this->stop = true;
             }
 
             // Invalid uploaded file (stop validation and move to another input)
-            if (isset($data['error']) && $data['error'] !== UPLOAD_ERR_OK) {
+            if (!$this->isFileValid($dataValue)) {
                 $this->stop = true;
             }
 
@@ -674,7 +674,7 @@ trait ValidationRulesTrait
         string $ruleValue
     ): bool
     {
-        if (!isset($this->data[$ruleValue])) {
+        if ($this->getDataValueByKey($dataKey) !== null) {
             $this->errors->addError(
                 "Input <strong>{$dataKey}</strong> requires ".
                 "input <strong>{$ruleValue}</strong> to be set."
@@ -699,18 +699,31 @@ trait ValidationRulesTrait
     ): bool
     {
         // Read the input
-        $data = $this->data[$dataKey] ?? null;
+        $dataValue = $this->getDataValueByKey($dataKey);
 
         // Does not exist (stop validation and move to another input)
-        if ($data === null) {
+        if ($dataValue === null) {
             $this->stop = true;
         }
 
         // Invalid uploaded file (stop validation and move to another input)
-        if (isset($data['error']) && $data['error'] !== UPLOAD_ERR_OK) {
+        if (!$this->isFileValid($dataValue)) {
             $this->stop = true;
         }
 
         return true;
+    }
+
+    /**
+     * Checks if uploaded file is valid
+     *
+     * @param array $file
+     * @return bool
+     */
+    private function isFileValid(array $file): bool
+    {
+        if (!isset($file["error"])) return true;
+        if ($file["error"] === UPLOAD_ERR_OK) return true;
+        return false;
     }
 }
