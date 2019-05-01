@@ -48,17 +48,17 @@ class InputObject extends Base
      */
     public function get($names = null)
     {
-        return $this->read('GET', $name);
+        return $this->read('GET', $names);
     }
 
     public function post($names = null)
     {
-        return $this->read('POST', $name);
+        return $this->read('POST', $names);
     }
 
     public function files($names = null)
     {
-        return $this->read('FILES', $name);
+        return $this->read('FILES', $names);
     }
 
     /**
@@ -72,7 +72,7 @@ class InputObject extends Base
     private function read(string $type, $names = null)
     {
         // Alias the super global, like $_GET, $_POST or $_FILES
-        $global = $this->getGlobalArrayReference($type);
+        $global = $this->getGlobalReference($type);
 
         // No name, return entire super global
         if ($names === null) {

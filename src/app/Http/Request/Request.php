@@ -3,6 +3,7 @@
 namespace App\Http\Request;
 
 use App\Http\Request\Input;
+use App\Http\Request\InputObject;
 use App\Services\Alert;
 use App\Services\Validation\Validation;
 use App\Services\Configuration\Configuration;
@@ -134,6 +135,11 @@ class Request
     public function input(): Input
     {
         return Input::getInstance();
+    }
+
+    public function inputObject(): InputObject
+    {
+        return InputObject::getInstance();
     }
 
     public function getCurrentUrl(bool $withQueryString = false): string
