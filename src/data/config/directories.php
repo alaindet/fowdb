@@ -23,5 +23,6 @@ return [
     'dir.views' => $root . '/src/resources/views',
     'dir.data'  => $root . '/src/data',
     'dir.cache' => $root . '/src/data/cache',
+    'dir.resolutions' => 'hd,sd,tn',
 
 ];
