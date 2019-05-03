@@ -29,17 +29,5 @@
 @import 'utilities/padding';
 @import 'utilities/typography';
 
-// General
-html {
-  position: relative;
-  min-height: 100%;
-  font-size: $font-size;
-}
-body {
-  font-family: $font-family;
-  margin-bottom: 100px; // Deal with the footer
-  height: 100%;
-}
-
 // Legacy stuff
 @import 'old';

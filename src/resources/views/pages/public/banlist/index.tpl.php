@@ -65,7 +65,6 @@ $formatCodes = array_flip(lookup('formats.code2name'));
         <?php endforeach; ?>
       </div>
     <?php endforeach; ?>
-    <hr class="fd-hr mv-200">
   </div>
 
 <?php endforeach; ?>

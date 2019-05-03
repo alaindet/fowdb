@@ -48,11 +48,9 @@
 
 <body>
 	<a name="top"></a>
-	<div class="container-fluid" id="page-wrapper">
-		<?=include_view('includes/header')?>
-		<?=$fowdb_content?>
-	</div>
-	<?=include_view('includes/footer')?>
+  <header><?=include_view('includes/header')?></header>
+  <main><?=$fowdb_content?></main>
+  <footer><?=include_view('includes/footer')?></footer>
 
   <!-- jQuery 2.2.4 -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" defer></script>

@@ -30,8 +30,8 @@ class Page
      */
     public function __construct()
     {
-        $this->title = config('app.name');
-        $this->mainTemplate = path_views('layout/main.tpl.php');
+        $this->title = config("app.name");
+        $this->mainTemplate = path_views("layout/main.tpl.php");
     }
 
     /**
@@ -41,7 +41,7 @@ class Page
      */
     public function title(string $title): Page
     {
-        $this->title = $title . ' ~ ' . $this->title;
+        $this->title = $title . " ~ " . $this->title;
 
         return $this;
     }
@@ -111,29 +111,29 @@ class Page
         $ogp->title($this->title);
 
         // Set custom ogp:* tags
-        if (isset($this->options['ogp'])) {
+        if (isset($this->options["ogp"])) {
 
-            $myOgp =& $this->options['ogp'];
+            $myOgp = &$this->options["ogp"];
 
 			// Update title
-            if (isset($myOgp['title'])) {
-				$ogp->title($myOgp['title']);
+            if (isset($myOgp["title"])) {
+				$ogp->title($myOgp["title"]);
 			}
 
 			// Update URL
-			if (isset($myOgp['url'])) {
-				$ogp->url($myOgp['url']);
+			if (isset($myOgp["url"])) {
+				$ogp->url($myOgp["url"]);
 			}
 
 			// Update image
-			if (isset($myOgp['image'])) {
+			if (isset($myOgp["image"])) {
 
                 $image = (new OpenGraphProtocolImage)
-                    ->url( $myOgp['image']['url'] ?? config('ogp.image') )
-                    ->mimeType( config('ogp.image.type') )
-                    ->width( config('ogp.image.width') )
-                    ->height( config('ogp.image.height') )
-                    ->alt( $myOgp['image']['alt'] ?? config('app.name') );
+                    ->url( $myOgp["image"]["url"] ?? config("ogp.image") )
+                    ->mimeType( config("ogp.image.type") )
+                    ->width( config("ogp.image.width") )
+                    ->height( config("ogp.image.height") )
+                    ->alt( $myOgp["image"]["alt"] ?? config("app.name") );
 
 				$ogp->image($image);
 			}
@@ -174,12 +174,12 @@ class Page
         
         // Prefixed variable names should be be altered by client script
         $defaultOptions = [
-            'dependencies' => [],
-            'fowdb_content' => $content,
-            'fowdb_ogp' => $this->openGraphProtocol(),
-            'scripts' => [],
-            'state' => [],
-            'title' => $this->title,
+            "dependencies" => [],
+            "fowdb_content" => $content,
+            "fowdb_ogp" => $this->openGraphProtocol(),
+            "scripts" => [],
+            "state" => [],
+            "title" => $this->title,
         ];
 
         $this->options = array_merge($defaultOptions, $this->options);

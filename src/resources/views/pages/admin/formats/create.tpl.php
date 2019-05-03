@@ -36,17 +36,7 @@
       <a name="rules"></a>
     </div>
     <div class="fd-box__content">
-      <ul class="fd-list --spaced">
-        <li>
-          Setting a format as <strong>default</strong> automatically removes any other format from being default
-        </li>
-        <li>
-          Format <strong>names</strong> for single cluster formats must include " Cluster". Ex.: "Grimm Cluster"
-        </li>
-        <li>
-          Format <strong>codes</strong> for single cluster formats must follow the pattern <kbd>c-xxx</kbd> where <kbd>xxx</kbd> is a 3-letter code representing the cluster. Ex.: "c-gri"
-        </li>
-      </ul>
+      <?=include_view('pages/admin/formats/includes/form-rules')?>
     </div>
   </div>
 
