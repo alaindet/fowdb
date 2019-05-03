@@ -4,15 +4,16 @@ namespace App\Exceptions;
 
 use App\Base\Exception;
 use App\Exceptions\Alertable;
-use ErrorException;
 use App\Exceptions\Jsonable;
 use App\Exceptions\Previousable;
 use App\Http\Request\Input;
 use App\Http\Response\JsonResponse;
 use App\Http\Response\Redirect;
 use App\Services\Alert;
+use App\Services\FileSystem\FileSystem;
 use App\Services\Session;
 use App\Utils\Logger;
+use ErrorException;
 use Throwable;
 
 class Handler
@@ -55,38 +56,61 @@ class Handler
             return;
         }
 
-        // Show exception as an alert
+        // Show exception as an alert on the UI
         if ($exception instanceof Alertable) {
-            Alert::add($exception->getMessage(), 'danger');
+            Alert::add($exception->getMessage(), "danger");
             Redirect::to($exception->getRedirectUrl());
             return;
         }
 
         // Show exception as a JSON
         if ($exception instanceof Jsonable) {
-            $json = new JsonResponse;
-            $json->setData([
-                'error' => 1,
-                'message' => $exception->getMessage()
-            ]);
-            echo $json->render();
+            echo (new JsonResponse)
+                ->setData([
+                    "error" => true,
+                    "message" => $exception->getMessage()
+                ])
+                ->render();
             die();
         }
 
+        // Create log data
+        $data = [
+            "message" => $exception->getMessage(),
+            "code" => $exception->getCode(),
+            "file" => $exception->getFile(),
+            "line" => $exception->getLine(),
+            "trace" => $exception->getTrace()
+        ];
+
         // Show readable log of the exception
-        echo call_user_func(
-            [
-                $class = Logger::class,
-                $method = 'html' // Change to 'cli' for CLI debugging
-            ],
-            $data = [
-                'message' => $exception->getMessage(),
-                'code' => $exception->getCode(),
-                'file' => $exception->getFile(),
-                'line' => $exception->getLine(),
-                'trace' => $exception->getTrace()
-            ],
-            $title = get_class($exception)
+        if (config("app.env") === "development") {
+            echo call_user_func(
+                [Logger::class, "html"], // Change to "cli" for CLI debugging
+                $data,
+                $title = get_class($exception)
+            );
+            die();
+        }
+
+        // Show simple error on production and store exception into a log file
+        $serializedData = serialize($data);
+        $hash = md5($serializedData);
+        $filename = path_data("logs/exceptions/{$hash}.txt");
+
+        if (!FileSystem::existsFile($filename)) {
+            FileSystem::saveFile($filename, $serializedData);
+        }
+
+
+        $mailToSubject = "FOWDB_EXCEPTION:{$time}_{$hash}";
+        $mailTo = "mailto:alain.det@gmail.com?subject={$mailToSubject}";
+
+        echo (
+            "An error occurred on our servers, please notify us at ".
+            "<a href=\"{$mailTo}\">alain.det@gmail.com</a>. ".
+            "Thanks for your help, the FoWDB team."
         );
+        die();
     }
 }
