@@ -55,6 +55,7 @@ $public = [
 
     // Collection utilities
     ['GET', 'collection', 'CollectionController', 'index'],
+    ['GET', 'collection/format2clusters', 'CollectionController', 'format2clusters'],
 
     // Lookup
     ['GET', 'lookup', 'LookupController', 'index'],

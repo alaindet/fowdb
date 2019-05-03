@@ -8,6 +8,10 @@ use App\Views\Page;
 use App\Base\Items\ItemsCollection;
 use App\Base\Items\Item;
 
+use App\Entity\GameFormat\GameFormat;
+use App\Entity\EntityManager;
+use App\Http\Response\JsonResponse;
+
 class TestItem extends Item
 {
     public $name;
@@ -58,5 +62,22 @@ class CollectionController extends Controller
                 })
                 ->toArray()
         );
+    }
+
+    public function format2clusters(): string
+    {
+        $repo = EntityManager::getRepository(GameFormat::class);
+
+        $data = [
+            "format-first" => $repo->findById(1)->name,
+            "format-default" => $repo->findBy("is_default", 1)->name,
+            "formats-all" => $repo->all()->pluck("name")->toArray(),
+            "formats-isMultiCluster" => $repo
+                ->findAllBy("is_multi_cluster", 1)
+                ->pluck("name")
+                ->toArray(),
+        ];
+
+        return (new JsonResponse)->setData($data)->render();
     }
 }
