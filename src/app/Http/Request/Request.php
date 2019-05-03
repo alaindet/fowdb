@@ -19,7 +19,6 @@ class Request
     private $httpsPort;
     private $path;
     private $queryString;
-    private $app;
     private $validationException = ValidationException::class;
 
     public function setBaseUrl(string $baseUrl = null): Request
@@ -113,23 +112,6 @@ class Request
     public function getPath(): string
     {
         return $this->path;
-    }
-
-    /**
-     * Sets or reads app data
-     *
-     * @param string $name
-     * @param any $value
-     * @return void
-     */
-    public function app(string $name, $value = null)
-    {
-        if (isset($value)) {
-            $this->app[$name] = $value;
-            return $this;
-        }
-
-        return $this->app[$name] ?? null;
     }
 
     public function input(): Input

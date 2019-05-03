@@ -1,14 +1,16 @@
 <?php
 
 // Imports
-use \App\Services\Database\Database;
-use \App\Services\Configuration\Configuration;
-use \App\Http\Request\Input;
-use \App\Services\Database\Statement\SqlStatement;
-use \App\Legacy\Authorization as LegacyAuthorization;
+use App\Services\Database\Database;
+use App\Services\Configuration\Configuration;
+use App\Http\Request\Input;
+use App\Services\Database\Statement\SqlStatement;
+use App\Legacy\Authorization as LegacyAuthorization;
+use App\Base\Entity\Manager\EntityManager;
+use App\Base\Entity\Repository\EntityRepository;
 
 /**
- * Index:
+ * List of helper functions
  * 
  * SERVICES
  * ========
@@ -20,6 +22,7 @@ use \App\Legacy\Authorization as LegacyAuthorization;
  * input
  * lookup
  * redirect
+ * repository
  * statement
  * 
  * DIRECTORIES
@@ -40,6 +43,7 @@ use \App\Legacy\Authorization as LegacyAuthorization;
  * log_html
  * render
  * url
+ * 
  */
 
 
@@ -69,14 +73,28 @@ function auth(): LegacyAuthorization
 }
 
 /**
- * Returns configuration data
+ * Returns or sets configuration data
  *
  * @param string $name
- * @return mixed string | array
+ * @param any $value
+ * @return mixed null|string|array
  */
-function config(string $name)
+function config(string $name = null, $value = null)
 {
-	return (Configuration::getInstance())->get($name);
+	$config = Configuration::getInstance();
+
+	// Return configuration service
+	if ($name === null) {
+		return $config;
+	}
+
+	// Return configuration value
+	if ($value === null) {
+		return (Configuration::getInstance())->get($name);
+	}
+
+	// Set value on configurations
+	(Configuration::getInstance())->set($name, $value);
 }
 
 /**
@@ -135,6 +153,11 @@ function lookup(string $path = null)
 function redirect(string $uri = '', array $qs = []): void
 {
 	\App\Http\Response\Redirect::to($uri, $qs);
+}
+
+function repository(string $entityClass): EntityRepository
+{
+	return EntityManager::getRepository($entityClass);
 }
 
 /**

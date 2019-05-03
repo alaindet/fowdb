@@ -10,7 +10,7 @@ class CheckAuthorizationMiddleware implements MiddlewareInterface
 {
     public function run(Request $request): void
     {
-        $requiredRole = $request->app('access');
+        $requiredRole = config('current.access');
 
         // Shortcut for public routes
         if ($requiredRole === 'public') return;

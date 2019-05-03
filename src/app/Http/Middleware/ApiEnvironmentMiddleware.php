@@ -9,6 +9,6 @@ class ApiEnvironmentMiddleware implements MiddlewareInterface
 {
     public function run(Request $request): void
     {
-        $request->app('api', true);
+        config('current.mode', 'api');
     }
 }
