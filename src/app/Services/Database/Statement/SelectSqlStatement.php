@@ -145,7 +145,7 @@ class SelectSqlStatement extends SqlStatement
         // Add to the FROM clause
         $this->clauses['FROM'] .= (
             " INNER JOIN {$rTableRef} ON ".
-            "{$lAlias}.{$lField} {$operator} {$rAlias}.{$rField}"
+            "{$rAlias}.{$rField} {$operator} {$lAlias}.{$lField}"
         );
 
         $this->aux['table-alias'] = $rAlias;
