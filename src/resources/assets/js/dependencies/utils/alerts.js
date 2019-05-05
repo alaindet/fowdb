@@ -1,4 +1,7 @@
 /**
+ * IMPORTS
+ * dependencies/utils/arg
+ * 
  * EXPORTS
  * window.APP.clearAlerts
  * window.APP.alert
@@ -7,13 +10,11 @@
 /**
  * Clear all existing alerts
  *
- * @return this
+ * @return this Chainable method
  */
-window.APP.clearAlerts = function () {
-
+window.APP.clearAlerts = () => {
   $('.fd-alerts').empty();
   return this;
-
 };
 
 /**
@@ -24,14 +25,14 @@ window.APP.clearAlerts = function () {
  * @param bool returnHtml If TRUE, returns the message instead of appending it
  * @return this
  */
-window.APP.alert = function(message, type, returnHtml) {
+window.APP.alert = (message, type, returnHtml) => {
 
-  var message = message || '';
-  var types = ['succes','info','warning','danger'];
-  var type = types.indexOf(type) !== -1 ? type : 'info';
-  var returnHtml = returnHtml || false;
+  message = window.APP.arg(message, '');
+  const types = ['succes', 'info', 'warning', 'danger'];
+  type = (types.indexOf(type) !== -1) ? type : 'info';
+  returnHtml = window.APP.arg(returnHtml, false);
 
-  var html = (
+  const html = (
     '<div class="fd-alert alert alert-'+type+' alert-dismissable">'+
       '<a href="#" class="close" data-dismiss="alert" aria-label="close">'+
         '&times;'+
@@ -40,11 +41,18 @@ window.APP.alert = function(message, type, returnHtml) {
     '</div>'
   );
 
-  if (returnHtml) return html;
+  if (returnHtml) {
+    return html;
+  }
 
-  var alerts = $('.fd-alerts');
+  const alerts = $('.fd-alerts');
   alerts.first().append(html);
-  $('html').animate({ scrollTop: alerts.offset().top }, 200);
+  $('html').animate(
+    {
+      scrollTop: alerts.offset().top
+    },
+    200
+  );
 
   return this;
 
