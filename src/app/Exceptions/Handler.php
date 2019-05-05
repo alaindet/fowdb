@@ -49,6 +49,17 @@ class Handler
      */
     public static function handler(Throwable $exception): void
     {
+        // Bypass any processing, return an API error
+        if (config("current.mode") === "api") {
+            $respone = new JsonResponse;
+            $response->setData([
+                "error" => 1,
+                "message" => $exception->getMessage()
+            ]);
+            echo $response->render();
+            die();
+        }
+
         // Store $_POST data
         if ($exception instanceof Previousable) {
             $input = Input::getInstance();
@@ -61,17 +72,6 @@ class Handler
             Alert::add($exception->getMessage(), "danger");
             Redirect::to($exception->getRedirectUrl());
             return;
-        }
-
-        // Show exception as a JSON
-        if ($exception instanceof Jsonable) {
-            echo (new JsonResponse)
-                ->setData([
-                    "error" => true,
-                    "message" => $exception->getMessage()
-                ])
-                ->render();
-            die();
         }
 
         // Create log data
@@ -93,15 +93,13 @@ class Handler
             die();
         }
 
-        // Show simple error on production and store exception into a log file
+        // The last hope: log the exception into a log file
         $serializedData = serialize($data);
         $hash = md5($serializedData);
         $filename = path_data("logs/exceptions/{$hash}.txt");
-
         if (!FileSystem::existsFile($filename)) {
             FileSystem::saveFile($filename, $serializedData);
         }
-
 
         $mailToSubject = "FOWDB_EXCEPTION:{$time}_{$hash}";
         $mailTo = "mailto:alain.det@gmail.com?subject={$mailToSubject}";
