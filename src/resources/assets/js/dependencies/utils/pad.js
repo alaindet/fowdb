@@ -12,10 +12,14 @@
  * @param string filler Defaults to 0
  * @return string The left-padded number
  */
-window.APP.padLeft = function(val, len, filler) {
-  filler = (typeof filler !== 'undefined') ? filler : '0';
+window.APP.padLeft = (val, len, filler) => {
+  if (typeof filler === 'undefined') {
+    filler = '0';
+  }
   val += ''; // Cast as string
-  while (val.length < len) val = filler + val;
+  while (val.length < len) {
+    val = filler + val;
+  }
   return val;
 };
 
@@ -27,9 +31,13 @@ window.APP.padLeft = function(val, len, filler) {
  * @param string filler Defaults to 0
  * @return string The left-padded number
  */
-window.APP.padRight = function (val, len, filler) {
-  filler = (typeof filler !== 'undefined') ? filler : '0';
+window.APP.padRight = (val, len, filler) => {
+  if (typeof filler === 'undefined') {
+    filler = '0';
+  }
   val += ''; // Cast as string
-  while (val.length < len) val = val + filler;
+  while (val.length < len) {
+    val = val + filler;
+  }
   return val;
 };

@@ -11,7 +11,7 @@
  * @param any n Any numeric input (even strings)
  * @return int
  */
-window.APP.isInteger = function(n) {
+window.APP.isInteger = (n) => {
 
   if (Number(parseInt(n)) === parseInt(n) && parseInt(n) % 1 === 0) {
     return parseInt(n);

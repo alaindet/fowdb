@@ -11,8 +11,10 @@
  * @param int step The distance between each element in the range
  * @return array The range
  */
-window.APP.range = function (a, b, step = 1) {
+window.APP.range = (a, b, step = 1) => {
   const range = [];
-  for (let i = a; i <= b; i+=step) range.push(i);
+  for (let i = a; i <= b; i+=step) {
+    range.push(i);
+  }
   return range;
 };
