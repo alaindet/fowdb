@@ -2,8 +2,7 @@
 
 namespace App\Services\Validation;
 
-use App\Http\Response\Redirect;
-use App\Services\Validation\VaildationRulesTrait;
+use App\Services\Validation\ValidationRulesTrait;
 use App\Services\Validation\Exceptions\ValidationException;
 use App\Services\Validation\Exceptions\ApiValidationException;
 use App\Base\Errors\ErrorsBag;
@@ -102,7 +101,7 @@ class Validation
     }
 
     /**
-     * Sets all the input to be validated, as an array
+     * Sets all the input to be validated
      *
      * @param array|object $data
      * @return Validation
@@ -113,22 +112,6 @@ class Validation
         $this->dataIsArray = is_array($data);
 
         return $this;
-    }
-
-    /**
-     * Reads a value from input data by key
-     * Works on arrays and objects as well
-     *
-     * @param string $key
-     * @return string|string[]|null
-     */
-    protected function getDataValueByKey(string $key)
-    {
-        if ($this->dataIsArray) {
-            return $this->data[$key] ?? null;
-        }
-
-        return $this->data->{$key} ?? null;
     }
 
     /**
@@ -144,6 +127,21 @@ class Validation
     }
 
     /**
+     * Returns value from data by key, works on array and object as well
+     *
+     * @param string $key
+     * @return any
+     */
+    protected function getDataValueByKey(string $key): any
+    {
+        if ($this->dataIsArray) {
+            return $this->data[$dataKey] ?? null;
+        }
+
+        return $this->data->{$dataKey} ?? null;
+    }
+
+    /**
      * Validates all the inputs with their defined rules
      *
      * @return Validation
@@ -152,41 +150,27 @@ class Validation
     {
         foreach ($this->rules as $dataKey => $validationRules) {
 
-            // Reset the stop flag for this input
-            $this->stop = false;
+            $dataValue = $this->getDataValueByKey($dataKey);
 
-            // Check all validation rules
             foreach ($validationRules as $validationRule) {
-
                 $bits = explode(':', $validationRule, 2);
                 $ruleName = $bits[0];
                 $ruleValue = $bits[1] ?? null;
 
-                $validator = $this->validators[$ruleName];
-                $this->$validator($dataKey, $ruleValue);
+                $validatorFunction = $this->validators[$ruleName];
+                $this->$validatorFunction($dataValue, $dataKey, $ruleValue);
 
-                // If the validator has set $this->stop to TRUE,
-                // Stop any remaining validator!
-                if ($this->stop) break;
-
+                if ($this->stop) {
+                    break;
+                }
             }
         }
 
-        // ERROR
         if ($this->errors->isNotEmpty()) {
-            $this->throwException($this->errors);
+            throw new ValidationException($errors);
             return false;
         }
 
         return true;
-    }
-
-    private function throwException(ErrorsBag $errors): void
-    {
-        if (config('api') === null) {
-            throw new ValidationException($errors);
-        } else {
-            throw new ApiValidationException($errors);
-        }
     }
 }

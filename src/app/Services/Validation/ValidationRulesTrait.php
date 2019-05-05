@@ -5,15 +5,11 @@ namespace App\Services\Validation;
 use App\Utils\Arrays;
 
 /**
- * This trait defines validators for validation rules defined in
- * App\Services\Validation
- * 
- * 
  * From App\Services\Validation\Validation
  * =======================================
  * 
- * protected $data;
- * protected $stop;
+ * protected array|object $data;
+ * protected bool $stop;
  */
 trait ValidationRulesTrait
 {
@@ -21,22 +17,21 @@ trait ValidationRulesTrait
      * It's equivalent to "is" rule, but acts on an array's values
      * Returns TRUE only if all values of input array match the rule
      *
+     * @param any $dataValues
      * @param string $dataKey
      * @param string $ruleValue
      * @return bool
      */
     public function validateAreRule(
+        $dataValues,
         string $dataKey,
         string $ruleValue
     ): bool
     {
-        $dataValues = $this->getDataValueByKey($dataKey);
-
         // ERROR: Input is not an array
         if (!is_array($dataValues)) {
             $this->errors->addError(
-                "Input <strong>{$dataKey}</strong> ".
-                "must be an array to validate the \"are\" rule."
+                "Input **{$dataKey}** value must be an array"
             );
         }
 
@@ -98,8 +93,8 @@ trait ValidationRulesTrait
         foreach ($dataValues as $dataValue) {
             if ($validator($dataValue) === false) {
                 $this->errors->addError(
-                    "Input array <strong>{$dataKey}</strong> ".
-                    "must have all <strong>{$ruleValue}</strong> values."
+                    "Input array **{$dataKey}** ".
+                    "must have all **{$ruleValue}** values"
                 );
                 return false;
             }
@@ -116,17 +111,18 @@ trait ValidationRulesTrait
      * If input is string, its character count is used
      * If input is an array, its length is used
      *
+     * @param any $dataValue
      * @param string $dataKey
      * @param string $ruleValue
      * @return boolean
      */
     public function validateBetweenRule(
+        $dataValue,
         string $dataKey,
         string $ruleValue
     ): bool
     {
-        $dataValue = $this->getDataValueByKey($dataKey);
-        [$min, $max] = explode(',', $ruleValue);
+        [$min, $max] = explode(",", $ruleValue);
         $min = intval($min);
         $max = intval($max);
 
@@ -135,8 +131,8 @@ trait ValidationRulesTrait
             $dataNumber = count($dataValue);
             if ($dataNumber < $min || $dataNumber > $max) {
                 $this->errors->addError(
-                    "Input <strong>{$dataKey}</strong> ".
-                    "length must be between {$min} and {$max}."
+                    "Input **{$dataKey}** length ".
+                    "must be between {$min} and {$max}"
                 );
                 return false;
             }
@@ -147,8 +143,8 @@ trait ValidationRulesTrait
             $dataNumber = filter_var($dataValue, FILTER_VALIDATE_FLOAT);
             if ($dataNumber < $min || $dataNumber > $max) {
                 $this->errors->addError(
-                    "Input <strong>{$dataKey}</strong> ".
-                    "value must be between {$min} and {$max}."
+                    "Input **{$dataKey}** value ".
+                    "must be between {$min} and {$max}"
                 );
                 return false;
             }
@@ -159,8 +155,8 @@ trait ValidationRulesTrait
             $dataNumber = strlen($dataValue);
             if ($dataNumber < $min || $dataNumber > $max) {
                 $this->errors->addError(
-                    "Input <strong>{$dataKey}</strong> ".
-                    "length must be between {$min} and {$max} characters."
+                    "Input **{$dataKey}** length ".
+                    "must be between {$min} and {$max} characters"
                 );
                 return false;
             }
@@ -172,23 +168,23 @@ trait ValidationRulesTrait
     /**
      * Rule: input must not be empty
      *
+     * @param any $dataValue
      * @param string $dataKey
      * @param string|array $ruleValue
      * @return boolean
      */
     public function validateNotEmptyRule(
+        $dataValue,
         string $dataKey,
         string $ruleValue = null
     ): bool
     {
-        $dataValue = $this->getDataValueByKey($dataKey);
         $emptyString = (is_string($dataValue) && $dataValue === '');
         $emptyArray = (is_array($dataValue) && count($dataValue) === 0);
 
         if ($emptyString || $emptyArray) {
             $this->errors->addError(
-                "Input <strong>{$dataKey}</strong> ".
-                "must not be empty"
+                "Input **{$dataKey}** must not be empty"
             );
             return false;
         }
@@ -199,23 +195,24 @@ trait ValidationRulesTrait
     /**
      * Rule: input must have one of the listed values
      *
+     * @param any $dataValue
      * @param string $dataKey
      * @param string $ruleValue List of comma-separated values
      * @return boolean
      */
     public function validateEnumRule(
+        $dataValue,
         string $dataKey,
         string $ruleValue = null
     ): bool
     {
-        $dataValue = $this->getDataValueByKey($dataKey);
-        $ruleValues = explode(',', $ruleValue);
+        $ruleValues = explode(",", $ruleValue);
 
         foreach (Arrays::makeArray($dataValue) as $data) {
             if (!in_array($data, $ruleValues)) {
                 $this->errors->addError(
-                    "Input <strong>{$dataKey}</strong> value ".
-                    "must be one of these values: {$ruleValue}."
+                    "Input **{$dataKey}** ".
+                    "value must be one of these values: {$ruleValue}"
                 );
                 return false;
             }
@@ -227,22 +224,23 @@ trait ValidationRulesTrait
     /**
      * Rule: input must *NOT* be equal to given value
      *
+     * @param any $dataValue
      * @param string $dataKey
      * @param string $ruleValue
      * @return boolean
      */
     public function validateExceptRule(
+        $dataValue,
         string $dataKey,
         string $ruleValue = null
     ): bool
     {
-        $dataValue = $this->getDataValueByKey($dataKey);
-        $ruleValues = explode(',', $ruleValue);
+        $ruleValues = explode(",", $ruleValue);
 
         if (in_array($dataValue, $ruleValues)) {
             $this->errors->addError(
-                "Input <strong>{$dataKey}</strong> value ".
-                "must not be equal to one of these values: \"{$ruleValue}\"."
+                "Input **{$dataKey}** value ".
+                "must not be equal to one of these values: {$ruleValue}"
             );
             return false;
         }
@@ -253,21 +251,20 @@ trait ValidationRulesTrait
     /**
      * Rule: Input must be equal to given value
      *
+     * @param any $dataValue
      * @param string $dataKey
      * @param string $rulValue
      * @return boolean
      */
     public function validateEqualsRule(
+        $dataValue,
         string $dataKey,
         string $ruleValue = null
     ): bool
     {
-        $dataValue = $this->getDataValueByKey($dataKey);
-
         if ($dataValue !== $ruleValue) {
             $this->errors->addError(
-                "Input <strong>{$dataKey}</strong> value ".
-                "must be equal to {$ruleValue}."
+                "Input **{$dataKey}** value must be equal to {$ruleValue}"
             );
             return false;
         }
@@ -278,20 +275,20 @@ trait ValidationRulesTrait
     /**
      * Rule: input must exist in given table and column
      *
+     * @param any $dataValue
      * @param string $dataKey
      * @param string $ruleValue
      * @return boolean
      */
     public function validateExistsRule(
+        $dataValue,
         string $dataKey,
         string $ruleValue = null
     ): bool
     {
-        $dataValue = $this->getDataValueByKey($dataKey);
-        
-        [$table, $column] = explode(',', $ruleValue);
+        [$table, $column] = explode(",", $ruleValue);
 
-        $statement = statement('select')
+        $statement = statement("select")
             ->select($column)
             ->from($table)
             ->where("{$column} = :value")
@@ -299,15 +296,15 @@ trait ValidationRulesTrait
 
         $result = database()
             ->select($statement)
-            ->bind([':value' => $dataValue])
+            ->bind([":value" => $dataValue])
             ->first();
 
         if (empty($result)) {
             $this->errors->addError(
-                "Input <strong>{$dataKey}</strong> with value ".
-                "<strong>{$dataValue}</strong> does *NOT* exist ".
-                "into database table <strong>{$table}</strong> ".
-                "on the column <strong>{$column}</strong>."
+                "Input **{$dataKey}** with value ".
+                "**{$dataValue}** does *NOT* exist ".
+                "into database table **{$table}** ".
+                "on the column **{$column}**"
             );
             return false;
         }
@@ -318,20 +315,20 @@ trait ValidationRulesTrait
     /**
      * Rule: input must *NOT* exist in given table and column
      *
+     * @param any $dataValue
      * @param string $dataKey
      * @param string $ruleValue
      * @return boolean
      */
     public function validateNotExistsRule(
+        $dataValue,
         string $dataKey,
         string $ruleValue = null
     ): bool
-    {
-        $dataValue = $this->getDataValueByKey($dataKey);
-        
-        [$table, $column] = explode(',', $ruleValue);
+    {   
+        [$table, $column] = explode(",", $ruleValue);
 
-        $statement = statement('select')
+        $statement = statement("select")
             ->select($column)
             ->from($table)
             ->where("{$column} = :value")
@@ -339,7 +336,7 @@ trait ValidationRulesTrait
 
         $result = database()
             ->select($statement)
-            ->bind([':value' => $dataValue])
+            ->bind([":value" => $dataValue])
             ->first();
 
         if (!empty($result)) {
@@ -358,63 +355,79 @@ trait ValidationRulesTrait
     /**
      * Rule: input type must be of given type
      *
+     * @param any $dataValue
      * @param string $dataKey
      * @param string $ruleValue
      * @return boolean
      */
     public function validateIsRule(
+        $dataValue,
         string $dataKey,
         string $ruleValue
     ): bool
     {
-        $dataValue = $this->getDataValueByKey($dataKey);
         $valid = true;
 
         switch ($ruleValue) {
-            case 'number':
-                if (!is_numeric($dataValue)) $valid = false;
+            case "number":
+                if (!is_numeric($dataValue)) {
+                    $valid = false;
+                }
                 break;
-            case 'integer':
-                $isInteger = filter_var($dataValue, FILTER_VALIDATE_INT);
-                if ($isInteger === false) $valid = false;
+            case "integer":
+                if (filter_var($dataValue, FILTER_VALIDATE_INT) === false) {
+                    $valid = false;
+                }
                 break;
-            case 'decimal':
-            case 'float':
-                $isDecimal = filter_var($dataValue, FILTER_VALIDATE_FLOAT);
-                if ($isDecimal === false) $valid = false;
+            case "decimal":
+            case "float":
+                if (filter_var($dataValue, FILTER_VALIDATE_FLOAT) === false) {
+                    $valid = false;
+                }
                 break;
-            case 'date':
-                if (strtotime($dataValue) === false) $valid = false;
+            case "date":
+                if (strtotime($dataValue) === false) {
+                    $valid = false;
+                }
                 break;
-            case 'text':
-                if (!is_string($dataValue)) $valid = false;
+            case "text":
+                if (!is_string($dataValue)) {
+                    $valid = false;
+                }
                 break;
-            case 'array':
-                if (!is_array($dataValue)) $valid = false;
+            case "array":
+                if (!is_array($dataValue)) {
+                    $valid = false;
+                }
                 break;
-            case 'alphanumeric':
-                $pattern = '/^[a-zA-Z0-9]+$/';
-                if (!preg_match($pattern, $dataValue)) $valid = false;
+            case "alphanumeric":
+                if (!preg_match("/^[a-zA-Z0-9]+$/", $dataValue)) {
+                    $valid = false;
+                }
                 break;
-            case 'alphadash':
-                $pattern = '/^[a-zA-Z0-9\-_]+$/';
-                if (!preg_match($pattern, $dataValue)) $valid = false;
+            case "alphadash":
+                if (!preg_match("/^[a-zA-Z0-9\-_]+$/", $dataValue)) {
+                    $valid = false;
+                }
                 break;
-            case 'file':
-                if ($this->isFileInvalid($dataValue)) $valid = false;
+            case "file":
+                if ($this->isFileInvalid($dataValue)) {
+                    $valid = false;
+                }
                 break;
-            case 'boolean':
-                if ($dataValue !== '0' && $dataValue !== '1') $valid = false;
+            case "boolean":
+                if ($dataValue !== "0" && $dataValue !== "1") {
+                    $valid = false;
+                }
                 break;
         }
 
         // ERROR: Stop Validation here
         if (!$valid) {
-            $this->errors->addError(
-                "Input <strong>{$dataKey}</strong> ".
-                "must be of type {$ruleValue}"
-            );
             $this->stop = true;
+            $this->errors->addError(
+                "Input **{$dataKey}** must be of type {$ruleValue}"
+            );
             return false;
         }
 
@@ -424,24 +437,25 @@ trait ValidationRulesTrait
     /**
      * Requires an array or a string to have provided length
      *
+     * @param any $dataValue
      * @param string $dataKey
      * @param string $ruleValue
      * @return bool
      */
     public function validateLengthRule(
+        $dataValue,
         string $dataKey,
         string $ruleValue
     ): bool
     {
-        $dataValue = $this->getDataValueByKey($dataKey);
         $length = intval($ruleValue);
 
         if (is_array($dataValue)) {
             $dataNumber = count($dataValue);
             if ($dataNumber !== $length) {
                 $this->errors->addError(
-                    "Input <strong>{$dataKey}</strong> ".
-                    "must have exactly {$length} elements."
+                    "Input **{$dataKey}** value ".
+                    "must have exactly {$length} elements"
                 );
                 return false;
             }
@@ -451,8 +465,8 @@ trait ValidationRulesTrait
             $dataNumber = strlen($dataValue);
             if ($dataNumber !== $length) {
                 $this->errors->addError(
-                    "Input <strong>{$dataKey}</strong> ".
-                    "must have exactly {$length} characters."
+                    "Input **{$dataKey}** value ".
+                    "must have exactly {$length} characters"
                 );
                 return false;
             }
@@ -464,22 +478,23 @@ trait ValidationRulesTrait
     /**
      * Rule: input must match given regex pattern
      *
+     * @param any $dataValue
      * @param string $dataKey
      * @param string $ruleValue
      * @return bool
      */
     public function validateMatchRule(
+        $dataValue,
         string $dataKey,
         string $ruleValue
     ): bool
     {
-        $dataValue = $this->getDataValueByKey($dataKey);
         $pattern = "~{$ruleValue}~";
 
         if (!preg_match($pattern, $dataValue)) {
             $this->errors->addError(
-                "Input <strong>{$dataKey}</strong> must match pattern ".
-                "<span class=\"text-monospace text-bold\">{$ruleValue}</span>"
+                "Input **{$dataKey}** value ".
+                "must match pattern **``{$ruleValue}``**"
             );
             return false;
         }
@@ -493,16 +508,17 @@ trait ValidationRulesTrait
      * If input is string, its character count is used
      * If input is an array, its length is used
      *
+     * @param any $dataValue
      * @param string $dataKey
      * @param string $ruleValue
      * @return boolean
      */
     public function validateMaxRule(
+        $dataValue,
         string $dataKey,
         string $ruleValue = null
     ): bool
     {
-        $dataValue = $this->getDataValueByKey($dataKey);
         $max = intval($ruleValue);
 
         // Input is array
@@ -510,8 +526,7 @@ trait ValidationRulesTrait
             $dataNumber = count($dataValue);
             if ($dataNumber > $max) {
                 $this->errors->addError(
-                    "Input <strong>{$dataKey}</strong> ".
-                    "length must be less than {$max}."
+                    "Input **{$dataKey}** length must be less than {$max}"
                 );
                 return false;
             }
@@ -522,8 +537,7 @@ trait ValidationRulesTrait
             $dataNumber = filter_var($dataValue, FILTER_VALIDATE_FLOAT);
             if ($dataNumber > $max) {
                 $this->errors->addError(
-                    "Input <strong>{$dataKey}</strong> ".
-                    "value must be less than {$max}."
+                    "Input **{$dataKey}** value must be less than {$max}"
                 );
                 return false;
             }
@@ -534,8 +548,8 @@ trait ValidationRulesTrait
             $dataNumber = strlen($data);
             if ($dataNumber > $max) {
                 $this->errors->addError(
-                    "Input <strong>{$dataKey}</strong> ".
-                    "length must be less than {$max} characters."
+                    "Input **{$dataKey}** ".
+                    "length must be less than {$max} characters"
                 );
                 return false;
             }
@@ -550,16 +564,17 @@ trait ValidationRulesTrait
      * If input is string, its character count is used
      * If input is an array, its length is used
      *
+     * @param any $dataValue
      * @param string $dataKey
      * @param string $ruleValue
      * @return boolean
      */
     public function validateMinRule(
+        $dataValue,
         string $dataKey,
         string $ruleValue = null
     ): bool
     {
-        $dataValue = $this->getDataValueByKey($dataKey);
         $min = intval($ruleValue);
 
         // Input is array
@@ -567,8 +582,7 @@ trait ValidationRulesTrait
             $dataNumber = count($dataValue);
             if ($dataNumber < $min) {
                 $this->errors->addError(
-                    "Input <strong>{$dataKey}</strong> ".
-                    "length must be more than {$min}."
+                    "Input **{$dataKey}** length must be more than {$min}"
                 );
                 return false;
             }
@@ -579,8 +593,7 @@ trait ValidationRulesTrait
             $dataNumber = filter_var($dataValue, FILTER_VALIDATE_FLOAT);
             if ($dataNumber < $min) {
                 $this->errors->addError(
-                    "Input <strong>{$dataKey}</strong> ".
-                    "value must be more than {$min}."
+                    "Input **{$dataKey}** value must be more than {$min}"
                 );
                 return false;
             }
@@ -591,8 +604,8 @@ trait ValidationRulesTrait
             $dataNumber = strlen($dataValue);
             if ($dataNumber < $min) {
                 $this->errors->addError(
-                    "Input <strong>{$dataKey}</strong> ".
-                    "length must be more than {$min} characters."
+                    "Input **{$dataKey}** length ".
+                    "must be more than {$min} characters"
                 );
                 return false;
             }
@@ -604,29 +617,28 @@ trait ValidationRulesTrait
     /**
      * Rule: input must exist and not be empty
      *
+     * @param any $dataValue
      * @param string $dataKey
      * @param string $ruleValue
      * @return void
      */
     public function validateRequiredRule(
+        $dataValue,
         string $dataKey,
         string $ruleValue = null
     ): bool
     {
         // Default is required:1
-        $ruleValue = $ruleValue ?? '1';
-
-        // Read the input
-        $dataValue = $this->getDataValueByKey($dataKey);
+        $ruleValue = $ruleValue ?? "1";
 
         // required:1
-        if ($ruleValue === '1') {
+        if ($ruleValue === "1") {
 
             // ERROR: Does not exist (fail validation and stop all other rules!)
             if ($dataValue === null) {
                 $this->errors->addError(
-                    "Input <strong>{$dataKey}</strong> is required. ".
-                    "No input with that name passed."
+                    "Input **{$dataKey}** is required. ".
+                    "No input with that name passed"
                 );
                 $this->stop = true;
                 return false;
@@ -635,7 +647,7 @@ trait ValidationRulesTrait
             // ERROR: Invalid uploaded file
             if ($this->isFileInvalid($dataValue)) {
                 $this->errors->addError(
-                    "Input <strong>{$dataKey}</strong> is required. ".
+                    "Input **{$dataKey}** is required. ".
                     "Invalid file uploaded."
                 );
                 $this->stop = true;
@@ -646,7 +658,7 @@ trait ValidationRulesTrait
         }
 
         // required:0
-        if ($ruleValue === '0') {
+        if ($ruleValue === "0") {
 
             // Does not exist (stop validation and move to another input)
             if ($dataValue === null) {
@@ -666,19 +678,20 @@ trait ValidationRulesTrait
     /**
      * Rule: data needs another data value to be set
      *
+     * @param any $dataValue
      * @param string $dataKey
      * @param string $ruleValue
      * @return void
      */
     public function validateRequiresRule(
+        $dataValue,
         string $dataKey,
         string $ruleValue
     ): bool
     {
         if ($this->getDataValueByKey($ruleValue) === null) {
             $this->errors->addError(
-                "Input <strong>{$dataKey}</strong> requires ".
-                "input <strong>{$ruleValue}</strong> to be set."
+                "Input **{$dataKey}** requires input **{$ruleValue}** to be set"
             );
             return false;
         }
@@ -690,18 +703,17 @@ trait ValidationRulesTrait
      * Aliases required:0 validation rule. Always returns TRUE,
      * but stops validation if input is missing
      *
+     * @param any $dataValue
      * @param string $dataKey
      * @param string $ruleValue
      * @return bool TRUE
      */
     public function validateOptionalRule(
+        $dataValue,
         string $dataKey,
         string $ruleValue = null
     ): bool
     {
-        // Read the input
-        $dataValue = $this->getDataValueByKey($dataKey);
-
         // Does not exist (stop validation and move to another input)
         if ($dataValue === null) {
             $this->stop = true;
