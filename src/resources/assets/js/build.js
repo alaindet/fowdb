@@ -1,5 +1,19 @@
 #!/usr/bin/env node
 
+/**
+ * Arguments
+ * 
+ * - page (string)
+ *     Name of the js file relative to this directory, 
+ *     without the file extension
+ * 
+ * - windows (flag)
+ *     Flag to tell the builder it's a Windows development environment
+ * 
+ * - dev (flag)
+ *     Flag to avoid minifying the output
+ */
+
 // Define app container
 const app = {
   args: {},
@@ -23,7 +37,9 @@ app.dependencies = {
 app.args = app.dependencies.yargs.argv;
 
 // ERROR: Missing --page argument
-if (!app.args.page) return console.log('ERROR: Missing --page argument');
+if (!app.args.page) {
+  return console.log('ERROR: Missing --page argument');
+}
 
 // Define dir separator (\ for Windows, / for all else), dirs and files
 app.directorySeparator = app.args.windows ? '\\' : '/';
