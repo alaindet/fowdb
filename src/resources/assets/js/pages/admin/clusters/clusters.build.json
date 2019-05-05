@@ -1,0 +1,16 @@
+{
+    "output": "admin/clusters",
+    "dependencies": [
+        "utils/arg",
+        "utils/alerts",
+        "utils/csrf-token",
+        "utils/ajax"
+    ],
+    "partials": [
+        "admin/clusters/partials/state",
+        "admin/clusters/partials/model",
+        "admin/clusters/partials/view",
+        "admin/clusters/partials/controller",
+        "admin/clusters/partials/bootstrap"
+    ]
+}
