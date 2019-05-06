@@ -142,4 +142,35 @@ class Uri
             . ($queryString !== '' ? "?{$queryString}" : '')
             . ($fragment !== '' ? "#{$fragment}" : '');
     }
+
+    /**
+     * Creates or overwrites a query string parameter
+     * 
+     * If $paramValue is a callback, it will receive the old value as input and
+     * the returned value is used as the new value
+     *
+     * @param string $uri
+     * @param string $paramName
+     * @param string|string[]|callable $paramValue
+     * @return string
+     */
+    public static function setQueryStringParameter(
+        string $uri,
+        string $paramName,
+        $paramValue
+    ): string
+    {
+        $bits = explode("?", $uri);
+        [$baseUrl, $queryString] = (isset($bits[1])) ? $bits : [$bits[0], ""];
+        $params = [];
+        parse_str($queryString, $params);
+
+        (is_callable($paramValue))
+            ? $params[$paramName] = $paramValue($params[$paramName] ?? null)
+            : $params[$paramName] = $paramValue;
+
+        $queryString = http_build_query($params);
+
+        return "{$baseUrl}?{$queryString}";
+    }
 }
