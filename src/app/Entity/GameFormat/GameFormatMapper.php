@@ -2,8 +2,8 @@
 
 namespace App\Entity\GameFormat;
 
-use App\Base\Entity\Entity\Entity;
-use App\Base\Entity\Mapper\EntityMapper;
+use App\Base\ORM\Entity\Entity;
+use App\Base\ORM\Mapper\EntityMapper;
 use App\Entity\GameFormat\GameFormat;
 
 class GameFormatMapper extends EntityMapper

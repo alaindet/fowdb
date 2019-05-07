@@ -2,8 +2,7 @@
 
 namespace App\Entity\GameFormat;
 
-use App\Base\Entity\Entity\Entity;
-use App\Entity\GameFormat\GameFormatCustomProperties;
+use App\Base\ORM\Entity\Entity;
 
 class GameFormat extends Entity
 {
@@ -13,6 +12,4 @@ class GameFormat extends Entity
     public $desc;
     public $is_default;
     public $is_multi_cluster;
-
-    protected $customProperties = GameFormatCustomProperties::class;
 }

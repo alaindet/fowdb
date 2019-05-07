@@ -2,9 +2,9 @@
 
 namespace App\Entity\GameFormat;
 
-use App\Base\Entity\Entity\EntityCustomProperties;
+use App\Base\ORM\Entity\EntityCustomProperties;
 use App\Base\Items\ItemsCollection;
-use App\Base\Entity\Manager\EntityManager;
+use App\Base\ORM\Manager\EntityManager;
 
 class GameFormatCustomProperties extends EntityCustomProperties
 {
