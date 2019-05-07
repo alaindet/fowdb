@@ -13,27 +13,27 @@ class SelectSqlStatement extends SqlStatement
     private $aux = [];
 
     public $clauses = [
-        'SELECT' => [],
-        'FROM' => '',
-        'WHERE' => [],
-        'GROUP BY' => [],
-        'HAVING' => [],
-        'ORDER BY' => [],
-        'LIMIT' => -1,
-        'OFFSET' => -1,
+        "SELECT" => [],
+        "FROM" => "",
+        "WHERE" => [],
+        "GROUP BY" => [],
+        "HAVING" => [],
+        "ORDER BY" => [],
+        "LIMIT" => -1,
+        "OFFSET" => -1,
     ];
 
     /**
      * Appends a select expression to the SELECT clause
-     * A select expression can be as simple as 'id' or
-     * More complex like 'cards.name as c_name'
+     * A select expression can be as simple as "id" or
+     * More complex like "cards.name as c_name"
      * 
      * @param string|string[] $expressions The select expression(s)
      * @return SelectSqlStatement
      */
     public function select($expressions): SelectSqlStatement
     {
-        $clause =& $this->clauses['SELECT'];
+        $clause =& $this->clauses["SELECT"];
 
         if (!is_array($expressions)) $clause[] = $expressions;
         else $clause = array_merge($clause, $expressions);
@@ -59,7 +59,7 @@ class SelectSqlStatement extends SqlStatement
      */
     public function resetSelect(): SelectSqlStatement
     {
-        $this->clauses['SELECT'] = [];
+        $this->clauses["SELECT"] = [];
 
         return $this;
     }
@@ -77,16 +77,16 @@ class SelectSqlStatement extends SqlStatement
         string $alias = null
     ): SelectSqlStatement
     {
-        $this->aux['table'] = $table;
-        $this->aux['table-alias'] = $table;
+        $this->aux["table"] = $table;
+        $this->aux["table-alias"] = $table;
         $expression = $table;
         
         if ($alias !== null) {
-            $this->aux['table-alias'] = $alias;
+            $this->aux["table-alias"] = $alias;
             $expression .= " as {$alias}";
         }
 
-        $this->clauses['FROM'] = $expression;
+        $this->clauses["FROM"] = $expression;
 
         return $this;
     }
@@ -94,15 +94,15 @@ class SelectSqlStatement extends SqlStatement
     /**
      * Adds an INNER JOIN table
      * 
-     * If first argument is a string, it's the join table name,
-     * If first argument is an array, then it's [join_table_name, alias]
+     * If first argument is a string, it"s the join table name,
+     * If first argument is an array, then it"s [join_table_name, alias]
      * 
      * Implicit operator (=)
-     * ->innerJoin(['rarities','r'], 'id', 'rarity')
+     * ->innerJoin(["rarities","r"], "id", "rarity")
      * 
      * Explicit operator
-     * ->innerJoin(['rarities','r'], 'id', '=', 'rarity')
-     * ->innerJoin(['rarities','r'], 'id', '<>', 'rarity')
+     * ->innerJoin(["rarities","r"], "id", "=", "rarity")
+     * ->innerJoin(["rarities","r"], "id", "<>", "rarity")
      *
      * @param string|string[] $rTable Table name (and alias)
      * @param string $rField
@@ -118,14 +118,14 @@ class SelectSqlStatement extends SqlStatement
     ): SelectSqlStatement
     {
         // ERROR: Missing base table
-        if (!isset($this->aux['table'])) {
+        if (!isset($this->aux["table"])) {
             throw new RequiredClauseException(
-                'method "from" must be called before "innerJoin".'
+                "Method \"from\" must be called before \"innerJoin\""
             );
         }
 
         // Left table
-        $lAlias = $this->aux['table-alias'];
+        $lAlias = $this->aux["table-alias"];
 
         // Right table
         if (is_array($rTable)) {
@@ -139,16 +139,16 @@ class SelectSqlStatement extends SqlStatement
         // Implicit = operator
         if ($lField === null) {
             $lField = $operator;
-            $operator = '=';
+            $operator = "=";
         }
 
         // Add to the FROM clause
-        $this->clauses['FROM'] .= (
+        $this->clauses["FROM"] .= (
             " INNER JOIN {$rTableRef} ON ".
             "{$rAlias}.{$rField} {$operator} {$lAlias}.{$lField}"
         );
 
-        $this->aux['table-alias'] = $rAlias;
+        $this->aux["table-alias"] = $rAlias;
 
         return $this;
     }
@@ -164,24 +164,24 @@ class SelectSqlStatement extends SqlStatement
      * If $condition is a string, $operator1 glues it to the previous conditions
      * 
      * @param string|string[] $conditions
-     * @param $operator1 Possible values: 'AND', 'OR'
-     * @param $operator2 Possible values: 'AND', 'OR'
+     * @param $operator1 Possible values: "AND", "OR"
+     * @param $operator2 Possible values: "AND", "OR"
      * @return SelectSqlStatement
      */
     public function where(
         $conditions,
-        string $operator1 = 'AND',
-        string $operator2 = 'AND'
+        string $operator1 = "AND",
+        string $operator2 = "AND"
     ): SelectSqlStatement
     {
         if (is_array($conditions)) {
 
-            $conditions = '('.implode(' '.$operator1.' ', $conditions).')';
-            $this->clauses['WHERE'][] = [$operator2, $conditions];
+            $conditions = "(".implode(" ".$operator1." ", $conditions).")";
+            $this->clauses["WHERE"][] = [$operator2, $conditions];
 
         } else {
 
-            $this->clauses['WHERE'][] = [$operator1, $conditions];
+            $this->clauses["WHERE"][] = [$operator1, $conditions];
 
         }
 
@@ -196,7 +196,7 @@ class SelectSqlStatement extends SqlStatement
      */
     public function groupBy($expressions): SelectSqlStatement
     {
-        $clause =& $this->clauses['GROUP BY'];
+        $clause =& $this->clauses["GROUP BY"];
 
         if (!is_array($expressions)) $clause[] = $expressions;
         else $clause = array_merge($clause, $expressions);
@@ -215,24 +215,24 @@ class SelectSqlStatement extends SqlStatement
      * If $condition is a string, $operator1 glues it to the previous conditions
      * 
      * @param string|string[] $conditions
-     * @param $operator1 Possible values: 'AND', 'OR'
-     * @param $operator2 Possible values: 'AND', 'OR'
+     * @param $operator1 Possible values: "AND", "OR"
+     * @param $operator2 Possible values: "AND", "OR"
      * @return SelectSqlStatement
      */
     public function having(
         $conditions,
-        string $operator1 = 'AND',
-        string $operator2 = 'AND'
+        string $operator1 = "AND",
+        string $operator2 = "AND"
     ): SelectSqlStatement
     {
         if (is_array($conditions)) {
 
-            $conditions = '('.implode(' '.$operator1.' ', $conditions).')';
-            $this->clauses['HAVING'][] = [$operator2, $conditions];
+            $conditions = "(".implode(" {$operator1} ", $conditions).")";
+            $this->clauses["HAVING"][] = [$operator2, $conditions];
 
         } else {
 
-            $this->clauses['HAVING'][] = [$operator1, $conditions];
+            $this->clauses["HAVING"][] = [$operator1, $conditions];
 
         }
 
@@ -247,7 +247,7 @@ class SelectSqlStatement extends SqlStatement
      */
     public function orderBy($columns): SelectSqlStatement
     {
-        $clause =& $this->clauses['ORDER BY'];
+        $clause =& $this->clauses["ORDER BY"];
         if (!is_array($columns)) $clause[] = $columns;
         else $clause = array_merge($clause, $columns);
 
@@ -260,18 +260,15 @@ class SelectSqlStatement extends SqlStatement
      * @param integer $limit
      * @return SelectSqlStatement
      */
-    public function limit(int $limit, bool $add = false): SelectSqlStatement
+    public function limit(int $limit): SelectSqlStatement
     {
-        if (!$add) {
-            
-            $this->clauses['LIMIT'] = $limit;
+        $this->clauses["LIMIT"] = $limit;
+        return $this;
+    }
 
-        } else {
-
-            $this->clauses['LIMIT'] += $limit;
-
-        }
-
+    public function resetLimit(): SelectSqlStatement
+    {
+        $this->clauses["LIMIT"] = -1;
         return $this;
     }
 
@@ -281,18 +278,15 @@ class SelectSqlStatement extends SqlStatement
      * @param integer $offset
      * @return SelectSqlStatement
      */
-    public function offset(int $offset, bool $add = false): SelectSqlStatement
+    public function offset(int $offset): SelectSqlStatement
     {
-        if (!$add) {
+        $this->clauses["OFFSET"] = $offset;
+        return $this;
+    }
 
-            $this->clauses['OFFSET'] = $offset;
-
-        } else {
-
-            $this->clauses['OFFSET'] += $offset;
-
-        }
-
+    public function resetOffset(): SelectSqlStatement
+    {
+        $this->clauses["OFFSET"] = -1;
         return $this;
     }
 }

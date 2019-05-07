@@ -6,7 +6,7 @@ namespace App\Services\Database\Statement;
  * Can only be used by its base class:
  * App\Services\Database\Statement\SqlStatement
  */
-trait Stringable
+trait StringableTrait
 {
     private $clausesToStrings = [
         'SELECT' => 'selectClauseToString',
@@ -254,9 +254,7 @@ trait Stringable
      */
     private function limitClauseToString(string $name, int $value): string
     {
-        if ($value === -1) return '';
-
-        return "{$name} {$value}";
+        return ($value !== -1) ? "{$name} {$value}" : "";
     }
 
     /**
@@ -268,8 +266,6 @@ trait Stringable
      */
     private function offsetClauseToString(string $name, int $value): string
     {
-        if ($value === -1) return '';
-        
-        return "{$name} {$value}";
+        return ($value !== -1) ? "{$name} {$value}" : "";
     }
 }

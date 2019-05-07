@@ -2,35 +2,18 @@
 
 namespace App\Services\Database\Statement;
 
-use App\Services\Database\Statement\Stringable;
+use App\Services\Database\Statement\StringableTrait;
 
 abstract class SqlStatement
 {
     /**
      * This trait exposes a single toString() method
      */
-    use Stringable;
+    use StringableTrait;
 
-    // /**
-    //  * All possible clauses child classes can have
-    //  *
-    //  * @var array
-    //  */
-    // public $clauses = [
-    //     'SELECT' => [],
-    //     'FROM' => '',
-    //     'UPDATE' => '',
-    //     'SET' => [],
-    //     'INSERT INTO' => '',
-    //     'VALUES' => [],
-    //     'DELETE FROM' => '',
-    //     'WHERE' => [],
-    //     'GROUP BY' => [],
-    //     'HAVING' => [],
-    //     'ORDER BY' => [],
-    //     'LIMIT' => -1,
-    //     'OFFSET' => -1,
-    // ];
+    protected $boundValues = [
+        // "name" => "Alain"
+    ];
 
     /**
      * Returns the final valid SQL statement as a string
@@ -41,5 +24,16 @@ abstract class SqlStatement
     public function __toString()
     {
         return $this->toString();
+    }
+
+    public function setBoundValues(array $boundValues): self
+    {
+        $this->boundValues = $boundValues;
+        return $this;
+    }
+
+    public function getBoundValues(): array
+    {
+        return $this->boundValues;
     }
 }
