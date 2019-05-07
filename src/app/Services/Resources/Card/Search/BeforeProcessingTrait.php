@@ -56,7 +56,8 @@ trait BeforeProcessingTrait
         $this->state['query-exact'] = false;
 
         $this->state['attributes'] = [];
-        $this->state['attributes-selected'] = false;
+        $this->state['attributes-only-selected'] = false;
+        $this->state['attributes-all-selected'] = false;
         $this->state['attributes-only-single'] = false;
         $this->state['attributes-only-multi'] = false;
 
@@ -68,7 +69,7 @@ trait BeforeProcessingTrait
         $this->state['sort-default'] = 'sorted_id DESC';
 
         $this->state['types'] = [];
-        $this->state['types-selected'] = false;
+        $this->state['types-all-selected'] = false;
 
         $this->state['cost'] = [];
         $this->state['cost-x'] = false;

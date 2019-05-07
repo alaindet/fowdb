@@ -21,24 +21,41 @@ namespace App\Utils;
  */
 class Bitmask
 {
-    private $maxBits = 32;
-
+    private $maxBits;
     private $mask = 0;
+
+    public function __construct()
+    {
+        $this->maxBits = ($this->is64BitPHP()) ? 64 : 32;
+    }
+
+    private function is64BitPHP(): bool
+    {
+        return PHP_INT_SIZE === 8;
+    }
 
     /**
      * Sets the maximum number of bit flags to use
-     * Allowed values: 32, 64
-     * CAUTION: Use 64 flags *ONLY* on 64-bit PHP versions
      *
      * @param int $bits
      * @return Bitmask
      */
-    public function setMaxBits(int $bits = 32): Bitmask
+    public function setMaxBits(int $bits): Bitmask
     {
-        $whitelist = [32, 64];
-        if (in_array($bits, $whitelist)) $this->maxBits = $bits;
-
+        $this->maxBits = min($bits, $this->maxBits);
         return $this;
+    }
+
+    /**
+     * Throws an error on 64-bit binaries (64-bit OS) and 32-bit binaries (32-bit OS)
+     * Use this on 31-bit-or-less and 63-bit-or-less binaries, according to OS
+     *
+     * @return void
+     */
+    public function getCurrentMaxBits(): int
+    {
+        $this->maxBits = strlen(decbin($this->mask));
+        return $this->maxBits;
     }
 
     /**
@@ -71,7 +88,8 @@ class Bitmask
      */
     public function getFlippedMask(): int
     {
-        return ~$this->mask;
+        $this->getCurrentMaxBits();
+        return bindec(substr(decbin(~$this->mask), -$this->maxBits));
     }
 
     /**
@@ -294,20 +312,26 @@ class Bitmask
      */
     public function readBits(bool $returnValues = false): array
     {
+        // Reduces the number of loops
+        $len = $this->getCurrentMaxBits();
+
         $result = [];
 
-        for ($position = 0, $max = $this->maxBits; $position < $max; $position++) {
+        for ($pos = 0; $pos < $len; $pos++) {
 
             // Read the bit value of this bit position
-            $value = $this->getBitValue($position);
+            $value = $this->getBitValue($pos);
 
             // No need to loop on all 32 flags if they're not set
             if ($value > $this->mask) break;
 
             // Check if mask has this position
             if (($this->mask & $value) === $value) {
-                if ($returnValues) $result[] = $value;
-                else $result[] = $position;
+                if ($returnValues) {
+                    $result[] = $value;
+                } else {
+                    $result[] = $pos;
+                }
             }
         }
 

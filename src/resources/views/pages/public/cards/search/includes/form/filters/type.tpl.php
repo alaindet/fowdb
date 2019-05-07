@@ -5,7 +5,7 @@
 
 // INPUTS
 // type[]
-// type-selected
+// type-all
 
 // type_name => type_name
 $types = array_keys(lookup('types.display'));
@@ -32,10 +32,10 @@ $items = array_combine($types, $types);
   <?=component('form/button-checkboxes', [
     'name' => null,
     'state' => [
-      $state['type-selected'] ? 'type-selected' : null,
+      $state['type-all'] ? 'type-all' : null,
     ],
     'items' => [
-      'type-selected' => 'Must have all selected',
+      'type-all' => 'Must have all selected',
     ],
     'css' => [
       'button' => ['btn-xs', 'fd-btn-default']

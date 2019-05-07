@@ -117,14 +117,27 @@ trait ParameterProcessorsTrait
     /**
      * Sets a state variable for later use (multi-input processor)
      * 
-     * State: attributes-selected
+     * State: attributes-only-selected
      *
      * @param string $value
      * @return void
      */
-    protected function processSelectedAttributeParameter(string $value): void
+    protected function processOnlySelectedAttributesParameter(string $value): void
     {
-        $this->state['attributes-selected'] = true;
+        $this->state['attributes-only-selected'] = true;
+    }
+
+    /**
+     * Sets a state variable for later use (multi-input processor)
+     * 
+     * State: attributes-all-selected
+     *
+     * @param string $value
+     * @return void
+     */
+    protected function processAllSelectedAttributesParameter(string $value): void
+    {
+        $this->state['attributes-all-selected'] = true;
     }
 
     /**
@@ -221,14 +234,14 @@ trait ParameterProcessorsTrait
     /**
      * Sets a state variable instead of adding a filter
      * 
-     * State: types-selected
+     * State: types-all-selected
      *
      * @param string $values
      * @return void
      */
     protected function processTypeSelectedParameter(string $value): void
     {
-        $this->state['types-selected'] = true;
+        $this->state['types-all-selected'] = true;
     }
 
     protected function processExcludeParameter(array $values): void

@@ -7,12 +7,13 @@
 // attribute[]
 // attribute-single
 // attribute-multi
-// attribute-selected
+// attribute-only
+// attribute-all
 
 // Map attribute codes to HTML icons
 $items = [];
-$blank = asset('images/icons/blank.gif');
-$attributes = array_keys(lookup('attributes.display'));
+$blank = asset("images/icons/blank.gif");
+$attributes = array_keys(lookup("attributes.display"));
 foreach ($attributes as $attribute) {
   $items[$attribute] = (
     "<img src=\"{$blank}\" class=\"fd-icon-{$attribute} --bigger\">"
@@ -24,12 +25,12 @@ foreach ($attributes as $attribute) {
 <div class="row sm-ph-100">
 
   <!-- Buttons with icons -->
-  <?=component('form/button-checkboxes', [
-    'name' => 'attribute',
-    'state' => $state['attribute'],
-    'items' => $items,
-    'css' => [
-      'button' => ['mv-10', 'fd-btn-default']
+  <?=component("form/button-checkboxes", [
+    "name" => "attribute",
+    "state" => $state["attribute"],
+    "items" => $items,
+    "css" => [
+      "button" => ["mv-10", "fd-btn-default"]
     ]
   ])?>
 
@@ -37,20 +38,22 @@ foreach ($attributes as $attribute) {
   <hr class="fd-hr mv-25">
 
   <!-- Button flags -->
-  <?=component('form/button-checkboxes', [
-    'name' => null,
-    'state' => [
-      $state['attribute-single'] ? 'attribute-single' : null,
-      $state['attribute-multi'] ? 'attribute-multi' : null,
-      $state['attribute-selected'] ? 'attribute-selected' : null,
+  <?=component("form/button-checkboxes", [
+    "name" => null,
+    "state" => [
+      $state["attribute-single"] ? "attribute-single" : null,
+      $state["attribute-multi"] ? "attribute-multi" : null,
+      $state["attribute-only"] ? "attribute-only" : null,
+      $state["attribute-all"] ? "attribute-all" : null,
     ],
-    'items' => [
-      'attribute-single' => 'No Multi-Attribute',
-      'attribute-multi' => 'Only Multi-Attribute',
-      'attribute-selected' => 'Must contain just selected'
+    "items" => [
+      "attribute-single" => "No Multi-Attribute",
+      "attribute-multi" => "Only Multi-Attribute",
+      "attribute-only" => "Only selected",
+      "attribute-all" => "All selected",
     ],
-    'css' => [
-      'button' => ['btn-xs', 'fd-btn-default']
+    "css" => [
+      "button" => ["btn-xs", "fd-btn-default"]
     ]
   ])?>
 

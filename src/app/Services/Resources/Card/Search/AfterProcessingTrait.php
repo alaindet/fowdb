@@ -92,19 +92,25 @@ trait AfterProcessingTrait
         // ERROR: No *VALID* attributes
         if (empty($attributes)) return;
 
-        $map = $this->lookup->get('attributes.code2bit');
-        $bitmask = (new BitmaskFlags)
-            ->setFlagsMap($map)
-            ->addFlags($attributes);
-
         // attribute = 0 specifically selected (Void icon)
         if (in_array('no', $attributes)) {
             $this->statement->where('attribute_bit = 0');
             return;
         }
 
+        // Unless specifically selected, when selecting any attribute filter
+        // All attribute-less cards are excluded
+        else {
+            $this->statement->where('attribute_bit > 0');
+        }
+
+        $map = $this->lookup->get('attributes.code2bit');
+        $bitmask = (new BitmaskFlags)
+            ->setFlagsMap($map)
+            ->addFlags($attributes);
+
         // Match cards with ONLY THE SELECTED attributes
-        if ($this->state['attributes-selected']) {
+        if ($this->state['attributes-only-selected']) {
             $bitval = bindec(decbin($bitmask->getFlippedMask())); // Flip mask
             $this->statement->where("attribute_bit & {$bitval} = 0");
         }

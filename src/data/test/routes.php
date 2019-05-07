@@ -12,19 +12,19 @@
  | - Register a POST test/update/{id} route
  | - Handle it with TestController::update
  | - Bind {id} uri parameter to its regex pattern [0-9]+ (only digits)
- | - Run the 'captcha' middleware, but *NOT* the 'token' middleware
+ | - Run the "captcha" middleware, but *NOT* the "token" middleware
  | [
- |     'POST',
- |     'test/update/{id}',
- |     'TestController',
- |     'update',
- |     ['d' => '[0-9]+'],
- |     ['!token','captcha']
+ |     "POST",
+ |     "test/update/{id}",
+ |     "TestController",
+ |     "update",
+ |     ["d" => "[0-9]+"],
+ |     ["!token","captcha"]
  | ]
  |
  | PLEASE NOTE:
- | - All routes are prefixed with 'test/' (ex.: foo => test/foo)
- | - All controllers are prefixed 'Test\\' (they must reside inside Test dir)
+ | - All routes are prefixed with "test/" (ex.: foo => test/foo)
+ | - All controllers are prefixed "Test\\" (they must reside inside Test dir)
  |
  | ----------------------------------------------------------------------------
  */
@@ -37,46 +37,60 @@
 $public = [
 
     // Home
-    ['GET', '', 'HomeController', 'index'],
+    ["GET", "", "HomeController", "index"],
 
     // View components
-    ['GET', 'button-checkboxes', 'ComponentsController', 'buttonCheckboxes'],
-    ['GET', 'button-checkbox', 'ComponentsController', 'buttonCheckbox'],
-    ['GET', 'button-dropdown', 'ComponentsController', 'buttonDropdown'],
-    ['GET', 'button-radio', 'ComponentsController', 'buttonRadio'],
-    ['GET', 'input-dropdown', 'ComponentsController', 'inputDropdown'],
-    ['GET', 'select-multiple', 'ComponentsController', 'selectMultiple'],
-    ['GET', 'pagination', 'ComponentsController', 'pagination'],
+    ["GET", "button-checkboxes", "ComponentsController", "buttonCheckboxes"],
+    ["GET", "button-checkbox", "ComponentsController", "buttonCheckbox"],
+    ["GET", "button-dropdown", "ComponentsController", "buttonDropdown"],
+    ["GET", "button-radio", "ComponentsController", "buttonRadio"],
+    ["GET", "input-dropdown", "ComponentsController", "inputDropdown"],
+    ["GET", "select-multiple", "ComponentsController", "selectMultiple"],
+    ["GET", "pagination", "ComponentsController", "pagination"],
 
     // Array utilities
-    ['GET', 'array-whitelist', 'UtilsController', 'arrayWhitelist'],
-    ['GET', 'array-whitelist-keys', 'UtilsController', 'arrayWhitelistKeys'],
-    ['GET', 'array-defaults', 'UtilsController', 'arrayDefaults'],
+    ["GET", "array-whitelist", "UtilsController", "arrayWhitelist"],
+    ["GET", "array-whitelist-keys", "UtilsController", "arrayWhitelistKeys"],
+    ["GET", "array-defaults", "UtilsController", "arrayDefaults"],
 
     // Collection utilities
-    ['GET', 'collection', 'CollectionController', 'index'],
-    ['GET', 'collection/format2clusters', 'CollectionController', 'format2clusters'],
+    ["GET", "collection", "CollectionController", "index"],
+    ["GET", "collection/format-to-clusters",
+        "CollectionController", "formatToClusters"],
+    ["GET", "collection/cluster-to-formats",
+        "CollectionController", "clusterToFormats"],
+
+    // Database
+    ["GET", "database/pagination", "DatabaseController", "pagination"],
+
+    // ORM
+    ["GET", "orm/related/1-n", "OrmController", "relatedOneToMany"],
+    ["GET", "orm/related/n-1", "OrmController", "relatedManyToOne"],
+    ["GET", "orm/related/n-n", "OrmController", "relatedManyToMany"],
 
     // Lookup
-    ['GET', 'lookup', 'LookupController', 'index'],
-    ['GET', 'lookup/read', 'LookupController', 'readAll'], // Alias
-    ['GET', 'lookup/read/{feature}', 'LookupController', 'read'],
-    ['GET', 'lookup/build', 'LookupController', 'buildAll'],
-    ['GET', 'lookup/build/{feature}', 'LookupController', 'build'],
+    ["GET", "lookup", "LookupController", "index"],
+    ["GET", "lookup/read", "LookupController", "readAll"], // Alias
+    ["GET", "lookup/read/{feature}", "LookupController", "read"],
+    ["GET", "lookup/build", "LookupController", "buildAll"],
+    ["GET", "lookup/build/{feature}", "LookupController", "build"],
 
     // Cards
-    ['GET', 'cards/properties/html', 'CardsController', 'propsHtml'],
-    ['GET', 'cards/properties/html/{code}', 'CardsController', 'propsHtml'],
-    ['GET', 'cards/types-list', 'CardsController', 'typesList'],
+    ["GET", "cards/properties/html", "CardsController", "propsHtml"],
+    ["GET", "cards/properties/html/{code}", "CardsController", "propsHtml"],
+    ["GET", "cards/types-list", "CardsController", "typesList"],
 
     // Validation service
-    ['GET', 'validate/empty', 'ValidationController', 'emptyRule'],
-    ['GET', 'validate/exists', 'ValidationController', 'existsRule'],
-    ['GET', 'validate/required', 'ValidationController', 'requiredRule'],
-    ['GET', 'validate/is', 'ValidationController', 'isRule'],
-    ['GET', 'validate/numbers', 'ValidationController', 'numbersRule'],
-    ['GET', 'validate/enum', 'ValidationController', 'enumRule'],
-    ['GET', 'validate/match', 'ValidationController', 'matchRule'],
+    ["GET", "validate/empty", "ValidationController", "emptyRule"],
+    ["GET", "validate/exists", "ValidationController", "existsRule"],
+    ["GET", "validate/required", "ValidationController", "requiredRule"],
+    ["GET", "validate/is", "ValidationController", "isRule"],
+    ["GET", "validate/numbers", "ValidationController", "numbersRule"],
+    ["GET", "validate/enum", "ValidationController", "enumRule"],
+    ["GET", "validate/match", "ValidationController", "matchRule"],
+
+    // Bitmasks
+    ["GET", "bitmask/flipped", "BitmaskController", "flipped"],
 
 ];
 
@@ -118,22 +132,22 @@ $judge = [
  * Return the routes map, grouped by the required role to access them
  */
 $routes = [
-    'public' => $public,
-    'user' => $user,
-    'admin' => $admin,
-    'judge' => $judge
+    "public" => $public,
+    "user" => $user,
+    "admin" => $admin,
+    "judge" => $judge
 ];
 
 // Prefix routes and controllers with test/ and Test\\
 $urls = [];
 foreach ($routes as $role => &$routesGroup) {
     foreach ($routesGroup as &$route) {
-        $route[1] = ($route[1] === '') ? 'test' : 'test/' . $route[1];
-        $route[2] = 'Test\\' . $route[2];
+        $route[1] = ($route[1] === "") ? "test" : "test/" . $route[1];
+        $route[2] = "Test\\" . $route[2];
         $urls[] = url($route[1]);
     }
 }
 
-\App\Services\Session::set('test-routes', $urls);
+\App\Services\Session::set("test-routes", $urls);
 
 return $routes;
