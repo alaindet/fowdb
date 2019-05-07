@@ -100,12 +100,12 @@ class InputObject extends Base
         }
 
         // No value for this name
-        if (!isset($global[$name]) || $global[$name] === '') {
+        if (!isset($global[$names]) || $global[$names] === '') {
             return null;
         }
 
         // Single value, read it from global array
-        return $accessor($global[$name]);
+        return $accessor($global[$names]);
     }
 
     /**
