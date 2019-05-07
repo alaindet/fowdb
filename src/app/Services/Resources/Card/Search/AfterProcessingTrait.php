@@ -93,26 +93,31 @@ trait AfterProcessingTrait
         if (empty($attributes)) return;
 
         // attribute = 0 specifically selected (Void icon)
-        if (in_array('no', $attributes)) {
-            $this->statement->where('attribute_bit = 0');
+        if (in_array("no", $attributes)) {
+            $this->statement->where("attribute_bit = 0");
             return;
         }
 
         // Unless specifically selected, when selecting any attribute filter
         // All attribute-less cards are excluded
         else {
-            $this->statement->where('attribute_bit > 0');
+            $this->statement->where("attribute_bit > 0");
         }
 
-        $map = $this->lookup->get('attributes.code2bit');
+        $map = $this->lookup->get("attributes.code2bit");
         $bitmask = (new BitmaskFlags)
             ->setFlagsMap($map)
             ->addFlags($attributes);
 
         // Match cards with ONLY THE SELECTED attributes
-        if ($this->state['attributes-only-selected']) {
-            $bitval = bindec(decbin($bitmask->getFlippedMask())); // Flip mask
+        if ($this->state["attributes-only-selected"]) {
+            $bitval = $bitmask->getFlippedMask();
             $this->statement->where("attribute_bit & {$bitval} = 0");
+        }
+
+        elseif ($this->state["attributes-all-selected"]) {
+            $bitval = $this->getMask();
+            $this->statement->where("attribute_bit & {$bitval} = {$bitval}");
         }
 
         // Match cards with AT LEAST ONE of the selected attributes (default)
@@ -158,7 +163,7 @@ trait AfterProcessingTrait
         if (empty($types)) return;
 
         // Match cards with ALL selected types
-        if ($this->state['types-selected']) {
+        if ($this->state["types-all-selected"]) {
 
             // Assemble a composite bit flag with all card types
             $bitvals = 0;

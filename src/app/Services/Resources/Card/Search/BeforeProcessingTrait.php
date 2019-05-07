@@ -38,40 +38,40 @@ trait BeforeProcessingTrait
     {
         $params = &$this->parameters;
 
-        // 'format' must be a string
-        if (isset($params['format']) && is_array($params['format'])) {
-            $params['format'] = $params['format'][0];
+        // "format" must be a string
+        if (isset($params["format"]) && is_array($params["format"])) {
+            $params["format"] = $params["format"][0];
         }
 
-        // 'back-side' must be an array (allows strings)
-        if (isset($params['back-side']) && !is_array($params['back-side'])) {
-            $params['back-side'] = [ $params['back-side'] ];
+        // "back-side" must be an array (allows strings)
+        if (isset($params["back-side"]) && !is_array($params["back-side"])) {
+            $params["back-side"] = [ $params["back-side"] ];
         }
     }
 
     private function beforeDefaultStateVariables(): void
     {
-        $this->state['query'] = '';
-        $this->state['query-fields'] = [];
-        $this->state['query-exact'] = false;
+        $this->state["query"] = "";
+        $this->state["query-fields"] = [];
+        $this->state["query-exact"] = false;
 
-        $this->state['attributes'] = [];
-        $this->state['attributes-only-selected'] = false;
-        $this->state['attributes-all-selected'] = false;
-        $this->state['attributes-only-single'] = false;
-        $this->state['attributes-only-multi'] = false;
+        $this->state["attributes"] = [];
+        $this->state["attributes-only-selected"] = false;
+        $this->state["attributes-all-selected"] = false;
+        $this->state["attributes-only-single"] = false;
+        $this->state["attributes-only-multi"] = false;
 
-        $this->state['atk-operator'] = 'equals';
-        $this->state['def-operator'] = 'equals';
+        $this->state["atk-operator"] = "equals";
+        $this->state["def-operator"] = "equals";
 
-        $this->state['sort'] = null;
-        $this->state['sort-direction'] = 'asc';
-        $this->state['sort-default'] = 'sorted_id DESC';
+        $this->state["sort"] = null;
+        $this->state["sort-direction"] = "asc";
+        $this->state["sort-default"] = "sorted_id DESC";
 
-        $this->state['types'] = [];
-        $this->state['types-all-selected'] = false;
+        $this->state["types"] = [];
+        $this->state["types-all-selected"] = false;
 
-        $this->state['cost'] = [];
-        $this->state['cost-x'] = false;
+        $this->state["cost"] = [];
+        $this->state["cost-x"] = false;
     }
 }
