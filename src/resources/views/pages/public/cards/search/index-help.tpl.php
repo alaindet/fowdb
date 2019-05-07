@@ -32,6 +32,9 @@
     The button <span class="btn btn-xs fd-btn-default">Only Multi-Attribute</span> excludes all single attribute cards from the results.
   </li>
   <li>
-    The button <span class="btn btn-xs fd-btn-default">Must contain just selected</span> will match only cards with attributes specified on the Attributes search filters. Best paired with <span class="btn btn-xs fd-btn-default">Only Multi-Attribute</span> to match only multi-attribute cards containing only selected attributes. <em>Ex.: </em> You want fire/wind cards but you definetely don't want to match water/wind cards also.
+    The button <span class="btn btn-xs fd-btn-default">Only selected</span> into the <em>Attribute</em> search filters will match only cards with attributes selected on said filter. Best paired with <span class="btn btn-xs fd-btn-default">Only Multi-Attribute</span> to match only multi-attribute cards containing only selected attributes. <em>Ex.: </em> You want fire/wind cards but you definetely don't want to match water/wind cards also.
+  </li>
+  <li>
+    When selecting any attrbute in the <em>Attribute</em> search filter, unless you specifically select the <em>Void</em> icon <img src="<?=asset('images/icons/blank.gif')?>" class="fd-icon-v">, all attribute-less cards are excluded.
   </li>
 </ul>
