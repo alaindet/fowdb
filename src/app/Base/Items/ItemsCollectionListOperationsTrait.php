@@ -5,15 +5,17 @@ namespace App\Base\Items;
 use App\Base\Items\Interfaces\ItemsCollectionInterface;
 
 /**
- * Implements App\Base\Items\Interfaces\ItemsCollectionListOperationsInterface
- * for App\Base\Items\ItemsCollection
- * 
  * From App\Base\Items\ItemsCollection
  * ===================================
  * protected $items = [];
  */
 trait ItemsCollectionListOperationsTrait
 {
+    public function count(): int
+    {
+        return count($this->items);
+    }
+
     /**
      * Performs a callback on every item
      * If callback returns FALSE, the loop stops
@@ -31,12 +33,30 @@ trait ItemsCollectionListOperationsTrait
         return $this;
     }
 
-    public function map(callable $callback): ItemsCollectionInterface
+    /**
+     * Performs a map operation on the items
+     * Optionally transforms the current collection instead of returning new one
+     *
+     * @param callable $callback
+     * @param bool $transform Transform current collection?
+     * @return ItemsCollectionInterface
+     */
+    public function map(
+        callable $callback,
+        $transform = false
+    ): ItemsCollectionInterface
     {
+        $new = [];
         for ($i = 0, $len = count($this->items); $i < $len; $i++) {
-            $this->items[$i] = $callback($this->items[$i], $i);
+            $new[] = $callback($this->items[$i], $i);
         }
-        return $this;
+
+        if ($transform) {
+            $this->items = $new;
+            return $this;
+        }
+
+        return (new ItemsCollection)->set($new);
     }
 
     public function reduce(callable $callback, $carry = null)
@@ -57,31 +77,52 @@ trait ItemsCollectionListOperationsTrait
      * Loops on all items and extract a single column from every item
      * Each item becomes the value of the extracted column
      * 
+     * Optionally transforms current collection instead of returning new one
+     * 
      * Ex.:
      * items: [ ['a' => 1], ['a' => 2], ['a' => 3] ]
      * pluck('a')
      * items:  [ 1, 2, 3 ]
      *
      * @param string $column
+     * @param bool $transform Transform current collection?
      * @return ItemsCollection
      */
-    public function pluck(string $column): ItemsCollectionInterface
+    public function pluck(
+        string $column,
+        bool $transform = false
+    ): ItemsCollectionInterface
     {
+        $new = [];
         for ($i = 0, $len = count($this->items); $i < $len; $i++) {
-            $this->items[$i] = $this->items[$i]->$column;
+            $new[$i] = $this->items[$i]->$column;
         }
-        return $this;
+
+        if ($transform) {
+            $this->items = $new;
+            return $this;
+        }
+        
+        return (new ItemsCollection)->set($new);
     }
 
-    public function filter(callable $callback): ItemsCollectionInterface
+    public function filter(
+        callable $callback,
+        bool $transform
+    ): ItemsCollectionInterface
     {
-        $filtered = [];
+        $new = [];
         for ($i = 0, $len = count($this->items); $i < $len; $i++) {
             if ($callback($this->items[$i], $i)) {
-                $filtered[] = $this->items[$i];
+                $new[] = $this->items[$i];
             }
         }
-        $this->items = $filtered;
-        return $this;
+
+        if ($transform) {
+            $this->items = $new;
+            return $this;
+        }
+
+        return (new ItemsCollection)->set($new);
     }
 }

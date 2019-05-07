@@ -31,7 +31,7 @@ trait ItemsCollectionIteratorTrait
         return isset($this->items[$this->cursor]);
     }
 
-    public function current(): ItemInterface
+    public function current()
     {
         return $this->items[$this->cursor];
     }

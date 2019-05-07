@@ -6,14 +6,11 @@ use App\Base\Items\Interfaces\ItemInterface;
 use App\Base\Items\Interfaces\ItemsCollectionInterface;
 
 /**
- * Implements App\Base\Items\Interfaces\ItemsCollectionDataAccessInterface
- * for App\Base\Items\ItemsCollection
- * 
  * From App\Base\Items\ItemsCollection
  * ===================================
  * protected $items = [];
  */
-trait ItemsCollectionDataAccessTrait
+trait ItemsCollectionDataWriteTrait
 {
     public function set(array $items): ItemsCollectionInterface
     {
@@ -27,20 +24,8 @@ trait ItemsCollectionDataAccessTrait
         return $this;
     }
 
-    public function get(int $index): ?ItemInterface
+    public function pop()
     {
-        return $this->items[$index] ?? null;
-    }
-
-    public function first(): ?ItemInterface
-    {
-        $index = 0;
-        return $this->get($index);
-    }
-
-    public function last(): ?ItemInterface
-    {
-        $index = count($this->items) - 1;
-        return $this->get($index);
+        return array_pop($this->items);
     }
 }
