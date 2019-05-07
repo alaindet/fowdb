@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Base\Entity\Entity;
+namespace App\Base\ORM\Entity;
 
 abstract class EntityCustomProperties
 {
