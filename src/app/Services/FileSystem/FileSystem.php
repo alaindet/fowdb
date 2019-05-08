@@ -87,6 +87,23 @@ class FileSystem implements FileSystemInterface
     }
 
     /**
+     * Reads a .json file and returned it parsed as object or array
+     *
+     * @param string $path
+     * @param bool $returnObject If FALSE, returns assoc array (default TRUE)
+     * @return object|array
+     */
+    public static function loadJsonFile(string $path, bool $returnObject = true)
+    {
+        try {
+            $json = file_get_contents($path);
+            return json_decode($json, $assoc = !$returnObject);
+        } catch (ErrorException $exception) {
+            throw new FileNotFoundException($path);
+        }
+    }
+
+    /**
      * Renames a file. Overwrites destination file
      *
      * @param string $from

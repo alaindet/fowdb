@@ -9,6 +9,7 @@ interface FileSystemInterface
     public static function readFile(string $path): string;
     public static function existsFile(string $path): bool;
     public static function loadFile(string $path); // array|string
+    public static function loadJsonFile(string $path, bool $returnObject); // object/array
     public static function renameFile(string $from, string $to): void;
     public static function deleteFile(string $path): void;
     
