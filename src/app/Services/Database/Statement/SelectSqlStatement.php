@@ -3,7 +3,7 @@
 namespace App\Services\Database\Statement;
 
 use App\Services\Database\Statement\SqlStatement;
-use App\Services\Database\Statement\Exceptions\RequiredClauseException;
+use App\Services\Database\Exceptions\RequiredClauseException;
 
 /**
  * https://dev.mysql.com/doc/refman/8.0/en/select.html
