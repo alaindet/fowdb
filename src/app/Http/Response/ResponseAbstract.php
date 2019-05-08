@@ -9,9 +9,9 @@ abstract class ResponseAbstract implements ResponseInterface
     /**
      * Holds data to be used by render()
      *
-     * @var array
+     * @var array|object
      */
-    protected $data = [];
+    protected $data;
 
     /**
      * Holds all the headers to be output
@@ -65,10 +65,10 @@ abstract class ResponseAbstract implements ResponseInterface
     /**
      * Sets custom data to be used inside render()
      *
-     * @param array $data
+     * @param array|object $data
      * @return ResponseInterface
      */
-    public function setData(array $data): ResponseInterface
+    public function setData($data): ResponseInterface
     {
         $this->data = $data;
 
