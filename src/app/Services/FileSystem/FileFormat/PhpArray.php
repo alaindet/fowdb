@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Services\FileSystem\FileFormats;
+namespace App\Services\FileSystem\FileFormat;
 
 use App\Services\FileSystem\FileSystem;
+use App\Services\FileSystem\Interfaces\FileFormatInterface;
 
-class PhpArray
+class PhpArray implements FileFormatInterface
 {
     private $filePath;
     private $fileContent;

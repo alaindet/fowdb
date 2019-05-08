@@ -9,7 +9,7 @@ use App\Services\Configuration\Interfaces\ConfigurationInterface;
 use App\Services\Configuration\Files\Environment;
 use App\Services\Configuration\Files\Timestamps;
 use App\Services\Configuration\Files\Directories;
-use App\Services\FileSystem\FileFormats\PhpArray;
+use App\Services\FileSystem\FileFormat\PhpArray;
 
 /**
  * This class completely manages the application configuration data

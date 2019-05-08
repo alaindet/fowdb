@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Services\FileSystem\FileFormats;
+namespace App\Services\FileSystem\FileFormat;
 
+use App\Services\FileSystem\Interfaces\FileFormatInterface;
 use App\Services\FileSystem\FileSystem;
 use App\Utils\Strings;
 
-class Env
+class Env implements FileFormatInterface
 {
     private $filePath;
     private $fileContent;

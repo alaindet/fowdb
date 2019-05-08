@@ -4,7 +4,7 @@ namespace App\Services\Configuration\Files;
 
 use App\Services\Configuration\ConfigurationFile;
 use App\Services\Configuration\Interfaces\ConfigurationFileInterface;
-use App\Services\FileSystem\FileFormats\PhpArray;
+use App\Services\FileSystem\FileFormat\PhpArray;
 use App\Services\FileSystem\FileSystem;
 
 class Directories extends ConfigurationFile
