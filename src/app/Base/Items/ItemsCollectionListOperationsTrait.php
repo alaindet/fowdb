@@ -11,9 +11,47 @@ use App\Base\Items\Interfaces\ItemsCollectionInterface;
  */
 trait ItemsCollectionListOperationsTrait
 {
+    /**
+     * Flag to transform current collection instead of returning new ones
+     *
+     * @var bool
+     */
+    private $transformThisCollection = false;
+
+    public function transformThisCollection(
+        bool $transform = true
+    ): ItemsCollectionInterface
+    {
+        $this->transformThisCollection = $transform;
+        return $this;
+    }
+
     public function count(): int
     {
         return count($this->items);
+    }
+
+    /**
+     * Performs a map operation on the items
+     *
+     * @param callable $callback
+     * @return ItemsCollectionInterface
+     */
+    public function sort(callable $callback): ItemsCollectionInterface
+    {
+        $new = $this->items;
+        if ($callback === null) {
+            sort($new);
+        } else {   
+            usort($new, $callback);
+        }
+
+        if ($this->transformThisCollection) {
+            $this->items = $new;
+            return $this;
+        }
+
+        return (new ItemsCollection)->set($new);
     }
 
     /**
@@ -30,28 +68,24 @@ trait ItemsCollectionListOperationsTrait
                 return $this;
             }
         }
+
         return $this;
     }
 
     /**
      * Performs a map operation on the items
-     * Optionally transforms the current collection instead of returning new one
      *
      * @param callable $callback
-     * @param bool $transform Transform current collection?
      * @return ItemsCollectionInterface
      */
-    public function map(
-        callable $callback,
-        $transform = false
-    ): ItemsCollectionInterface
+    public function map(callable $callback): ItemsCollectionInterface
     {
         $new = [];
         for ($i = 0, $len = count($this->items); $i < $len; $i++) {
             $new[] = $callback($this->items[$i], $i);
         }
 
-        if ($transform) {
+        if ($this->transformThisCollection) {
             $this->items = $new;
             return $this;
         }
@@ -85,20 +119,16 @@ trait ItemsCollectionListOperationsTrait
      * items:  [ 1, 2, 3 ]
      *
      * @param string $column
-     * @param bool $transform Transform current collection?
      * @return ItemsCollection
      */
-    public function pluck(
-        string $column,
-        bool $transform = false
-    ): ItemsCollectionInterface
+    public function pluck(string $column): ItemsCollectionInterface
     {
         $new = [];
         for ($i = 0, $len = count($this->items); $i < $len; $i++) {
             $new[$i] = $this->items[$i]->$column;
         }
 
-        if ($transform) {
+        if ($this->transformThisCollection) {
             $this->items = $new;
             return $this;
         }
@@ -106,10 +136,7 @@ trait ItemsCollectionListOperationsTrait
         return (new ItemsCollection)->set($new);
     }
 
-    public function filter(
-        callable $callback,
-        bool $transform
-    ): ItemsCollectionInterface
+    public function filter(callable $callback): ItemsCollectionInterface
     {
         $new = [];
         for ($i = 0, $len = count($this->items); $i < $len; $i++) {
@@ -118,7 +145,7 @@ trait ItemsCollectionListOperationsTrait
             }
         }
 
-        if ($transform) {
+        if ($this->transformThisCollection) {
             $this->items = $new;
             return $this;
         }

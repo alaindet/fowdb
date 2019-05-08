@@ -8,8 +8,9 @@ use App\Views\Page;
 use App\Base\Items\ItemsCollection;
 use App\Base\Items\Item;
 
+use App\Base\Entity\Manager\EntityManager;
 use App\Entity\GameFormat\GameFormat;
-use App\Entity\EntityManager;
+use App\Entity\GameCluster\GameCluster;
 use App\Http\Response\JsonResponse;
 
 class TestItem extends Item
@@ -64,9 +65,9 @@ class CollectionController extends Controller
         );
     }
 
-    public function format2clusters(): string
+    public function formatToClusters(): string
     {
-        $repo = EntityManager::getRepository(GameFormat::class);
+        $repo = repository(GameFormat::class);
 
         $data = [
             "format-first" => $repo->findById(1)->name,
@@ -79,5 +80,39 @@ class CollectionController extends Controller
         ];
 
         return (new JsonResponse)->setData($data)->render();
+    }
+
+    public function clusterToFormats(): string
+    {
+        $gameClusterRepo = EntityManager::getRepository(GameCluster::class);
+        $gameFormats = $gameClusterRepo->getFormats(
+            $gameClusterRepo->findById(1),
+            [
+                "id",
+                "code",
+                "name",
+            ]
+        );
+    }
+
+    public function sortCollection(Request $request): string
+    {
+        $items = [
+            (object) [ "val" => 2, "name" => "a" ],
+            (object) [ "val" => 3, "name" => "b" ],
+            (object) [ "val" => 1, "name" => "c" ],
+        ];
+
+        $collection = (new ItemsCollection)
+            ->set($items)
+            ->transformThisCollection()
+            ->sort(
+                function (object $a, object $b): int {
+                    return $a->val - $b->val;
+                }
+            )
+            ->toArray();
+
+        return log_html($collection, "Sorted by \"val\" property");
     }
 }

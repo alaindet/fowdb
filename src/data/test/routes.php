@@ -56,6 +56,7 @@ $public = [
 
     // Collection utilities
     ["GET", "collection", "CollectionController", "index"],
+    ["GET", "collection/sort", "CollectionController", "sortCollection"],
     ["GET", "collection/format-to-clusters",
         "CollectionController", "formatToClusters"],
     ["GET", "collection/cluster-to-formats",
