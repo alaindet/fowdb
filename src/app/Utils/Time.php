@@ -2,24 +2,24 @@
 
 namespace App\Utils;
 
-class Time
+abstract class Time
 {
     public static function date(): string
     {
-        return date('Y-m-d');
+        return date("Y-m-d");
     }
 
-    public static function timestamp(string $format = 'default'): string
+    public static function timestamp(string $format = "default"): string
     {
         $formats = [
-            'default' => 'Y-m-d H:i:s',
-            'file' => 'Ymd_His',
-            'file-nospace' => 'YmdHis',
-            'cache' => 'Ymd',
+            "default" => "Y-m-d H:i:s",
+            "file" => "Ymd_His",
+            "file-nospace" => "YmdHis",
+            "cache" => "Ymd",
         ];
 
-        if ($format === 'cache') {
-            return date($formats[$format]) . '-1';    
+        if ($format === "cache") {
+            return date($formats[$format]) . "-1";    
         }
 
         return date($formats[$format]);
@@ -34,8 +34,8 @@ class Time
      */
     public static function nextCacheTimestamp(string $timestamp): string
     {
-        [$date, $index] = explode('-', $timestamp);
-        $today = date('Ymd');
+        [$date, $index] = explode("-", $timestamp);
+        $today = date("Ymd");
 
         // Bump date
         if ($date !== $today) return "{$today}-1";

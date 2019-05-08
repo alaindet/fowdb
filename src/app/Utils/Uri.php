@@ -2,7 +2,7 @@
 
 namespace App\Utils;
 
-class Uri
+abstract class Uri
 {
     /**
      * Assembles an absolute URL, with an optional query string
@@ -10,28 +10,28 @@ class Uri
      * @param string $uri The relative URI
      * @param array $qs The query string assoc array ( name => value(s) )
      */
-    public static function build(string $uri = '', array $qs = []): string
+    public static function build(string $uri = "", array $qs = []): string
     {
         // Client wants to go back
-        if ($uri === 'back') {
+        if ($uri === "back") {
 
             // Check if we can go back
-            if (isset($_SERVER['HTTP_REFERER'])) {
-                return $_SERVER['HTTP_REFERER'];
+            if (isset($_SERVER["HTTP_REFERER"])) {
+                return $_SERVER["HTTP_REFERER"];
             }
             
             // No referer is set, go to homepage
-            $uri = '/';
+            $uri = "/";
         }
 
         // Base URL for this website
-        $baseUrl = config('app.url');
+        $baseUrl = config("app.url");
 
         // Build the query string
         $queryString = self::buildQueryString($qs);
 
         // Remove unwanted left slash
-        $uri = ltrim($uri, '/');
+        $uri = ltrim($uri, "/");
 
         // Build final URI
         return "{$baseUrl}/{$uri}{$queryString}";
@@ -45,8 +45,8 @@ class Uri
      * 
      * INPUT
      * $qs = [
-     *   'id' => 123,
-     *   'set' => [ 'set1', 'set2' ],
+     *   "id" => 123,
+     *   "set" => [ "set1", "set2" ],
      * ];
      * 
      * OUTPUT
@@ -58,7 +58,7 @@ class Uri
     public static function buildQueryString(array $queryString = []): string
     {
         // Missing query string
-        if (empty($queryString)) return '';
+        if (empty($queryString)) return "";
 
         $result = [];
 
@@ -68,7 +68,7 @@ class Uri
             if (is_array($values)) {
                 $partial = [];
                 foreach ($values as $value) $partial[] = "{$key}[]={$value}";
-                $result[] = implode('&', $partial);
+                $result[] = implode("&", $partial);
             }
             
             // Single value
@@ -77,20 +77,20 @@ class Uri
             }
         }
 
-        return '?'.implode('&', $result);
+        return "?".implode("&", $result);
     }
 
     /**
      * Removes a query string
-     * Ex.: Read a card's image_path, remove qs, then remove it from filesystem
+     * Ex.: Read a card"s image_path, remove qs, then remove it from filesystem
      *
      * @param string $uri
      * @return string
      */
     public static function removeQueryString(string $uri): string
     {
-        $uri = ltrim($uri, '/');
-        $pos = strpos($uri, '?');
+        $uri = ltrim($uri, "/");
+        $pos = strpos($uri, "?");
         if (false !== $pos) $uri = substr($uri, 0, $pos);
         return $uri;
     }
@@ -108,7 +108,7 @@ class Uri
     ): string
     {
         // Split base URI from query string and hash fragment
-        $bits = explode('?', $uri);
+        $bits = explode("?", $uri);
 
         // No query string, return as it is
         if (!isset($bits[1])) return $uri;
@@ -116,9 +116,9 @@ class Uri
         [$baseUri, $queryString] = $bits;
 
         // Remove the hash fragment
-        $bits = explode('#', $queryString);
+        $bits = explode("#", $queryString);
 
-        if (!isset($bits[1])) $bits[1] = '';
+        if (!isset($bits[1])) $bits[1] = "";
 
         [$queryString, $fragment] = $bits;
 
@@ -139,8 +139,8 @@ class Uri
         $queryString = http_build_query($qsParameters);
 
         return $baseUri
-            . ($queryString !== '' ? "?{$queryString}" : '')
-            . ($fragment !== '' ? "#{$fragment}" : '');
+            . ($queryString !== "" ? "?{$queryString}" : "")
+            . ($fragment !== "" ? "#{$fragment}" : "");
     }
 
     /**

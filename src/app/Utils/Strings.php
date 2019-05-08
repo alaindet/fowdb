@@ -2,7 +2,7 @@
 
 namespace App\Utils;
 
-class Strings
+abstract class Strings
 {
     /**
      * Converts a PascalCaseString into a kebab-case-string
@@ -12,7 +12,7 @@ class Strings
      */
     public static function pascalToKebab(string $pascal): string
     {
-        return strtolower(preg_replace('/(?<!^)([A-Z])/', '-$1', $pascal));
+        return strtolower(preg_replace("/(?<!^)([A-Z])/", "-$1", $pascal));
     }
 
     /**
@@ -23,7 +23,7 @@ class Strings
      */
     public static function kebabToPascal(string $kebab): string
     {
-        return str_replace('-', '', ucwords($kebab, '-'));
+        return str_replace("-", "", ucwords($kebab, "-"));
     }
 
     /**
@@ -34,7 +34,7 @@ class Strings
      */
     public static function kebabToCamel(string $kebab): string
     {
-        $string = str_replace('-', '', ucwords($kebab, '-'));
+        $string = str_replace("-", "", ucwords($kebab, "-"));
         return strtolower($string[0]) . substr($string, 1);
     }
 
@@ -46,7 +46,7 @@ class Strings
      */
     public static function kebabToSnake(string $kebab): string
     {
-        return str_replace('-', '_', $kebab);
+        return str_replace("-", "_", $kebab);
     }
 
     /**
@@ -57,7 +57,7 @@ class Strings
      */
     public static function snakeToTitle(string $snake): string
     {
-        return ucwords(str_replace('_', ' ', $snake));
+        return ucwords(str_replace("_", " ", $snake));
     }
 
     /**
@@ -76,12 +76,12 @@ class Strings
         // Any whitespace to _, remove all non-alphanumeric characters
         return preg_replace(
             [
-                '/[\s]/',
-                '/[^_a-zA-Z0-9]/'
+                "/[\s]/",
+                "/[^_a-zA-Z0-9]/"
             ],
             [
-                '_',
-                ''
+                "_",
+                ""
             ],
             $lowercase ? strlower($input) : $input
         );
