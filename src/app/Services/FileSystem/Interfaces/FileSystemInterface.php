@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\FileSystem;
+namespace App\Services\FileSystem\Interfaces;
 
 interface FileSystemInterface
 {
