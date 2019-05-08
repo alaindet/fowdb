@@ -6,6 +6,7 @@ use App\Services\FileSystem\Interfaces\FileSystemInterface;
 use App\Services\FileSystem\Exceptions\FileSystemException;
 use App\Services\FileSystem\Exceptions\FileNotFoundException;
 use App\Services\FileSystem\Exceptions\DirectoryExistsException;
+use App\Utils\Json;
 use ErrorException;
 
 class FileSystem implements FileSystemInterface
@@ -97,7 +98,7 @@ class FileSystem implements FileSystemInterface
     {
         try {
             $json = file_get_contents($path);
-            return json_decode($json, $assoc = !$returnObject);
+            return ($returnObject) ? Json::toObject($json) : Json::toArray($json);
         } catch (ErrorException $exception) {
             throw new FileNotFoundException($path);
         }
