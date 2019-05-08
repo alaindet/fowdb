@@ -13,14 +13,14 @@ class SelectSqlStatement extends SqlStatement
     private $aux = [];
 
     public $clauses = [
-        "SELECT" => [],
-        "FROM" => "",
-        "WHERE" => [],
+        "SELECT"   => [],
+        "FROM"     => "",
+        "WHERE"    => [],
         "GROUP BY" => [],
-        "HAVING" => [],
+        "HAVING"   => [],
         "ORDER BY" => [],
-        "LIMIT" => -1,
-        "OFFSET" => -1,
+        "LIMIT"    => -1,
+        "OFFSET"   => -1,
     ];
 
     /**
@@ -33,7 +33,7 @@ class SelectSqlStatement extends SqlStatement
      */
     public function select($expressions): SelectSqlStatement
     {
-        $clause =& $this->clauses["SELECT"];
+        $clause = &$this->clauses["SELECT"];
 
         if (!is_array($expressions)) $clause[] = $expressions;
         else $clause = array_merge($clause, $expressions);

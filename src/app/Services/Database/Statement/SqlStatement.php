@@ -3,8 +3,9 @@
 namespace App\Services\Database\Statement;
 
 use App\Services\Database\Statement\StringableTrait;
+use App\Services\Database\Interfaces\SqlStatementInterface;
 
-abstract class SqlStatement
+abstract class SqlStatement implements SqlStatementInterface
 {
     /**
      * This trait exposes a single toString() method
