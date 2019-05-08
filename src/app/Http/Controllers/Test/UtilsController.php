@@ -70,4 +70,20 @@ class UtilsController extends Controller
 
         return log_html(compact('input', 'defaults', 'result'));
     }
+
+    public function arrayToObject(Request $request): string
+    {
+        $arr = [
+            "someProp" => "foo",
+            "bar" => [
+                "someNestedProp" => "baz",
+                "someNestedArray" => [1,2,3]
+            ],
+            "qux" => [4,5,6]
+        ];
+
+        $obj = Arrays::toObject($arr);
+
+        return log_html(compact("arr", "obj"), "arrayToObject");
+    }
 }

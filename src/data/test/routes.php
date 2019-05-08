@@ -52,6 +52,7 @@ $public = [
     ["GET", "array-whitelist", "UtilsController", "arrayWhitelist"],
     ["GET", "array-whitelist-keys", "UtilsController", "arrayWhitelistKeys"],
     ["GET", "array-defaults", "UtilsController", "arrayDefaults"],
+    ["GET", "array-to-object", "UtilsController", "arrayToObject"],
 
     // Collection utilities
     ["GET", "collection", "CollectionController", "index"],

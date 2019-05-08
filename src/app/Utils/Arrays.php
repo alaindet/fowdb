@@ -227,4 +227,20 @@ class Arrays
 
         return $input;
     }
+
+    public static function toObject(array $input): object
+    {
+        $jsonEncodeOptions = (
+            JSON_UNESCAPED_SLASHES |
+            JSON_UNESCAPED_UNICODE |
+            JSON_PARTIAL_OUTPUT_ON_ERROR |
+            JSON_PRESERVE_ZERO_FRACTION |
+            JSON_UNESCAPED_LINE_TERMINATORS
+        );
+
+        return json_decode(
+            json_encode($input, $jsonEncodeOptions),
+            $assoc = false
+        );
+    }
 }
