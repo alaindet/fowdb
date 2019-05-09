@@ -109,9 +109,11 @@ trait ItemsCollectionListOperationsTrait
 
     /**
      * Loops on all items and extract a single column from every item
-     * Each item becomes the value of the extracted column
+     * Every new item is the value of extracted single column
      * 
      * Optionally transforms current collection instead of returning new one
+     * 
+     * Works *ONLY* on object items
      * 
      * Ex.:
      * items: [ ['a' => 1], ['a' => 2], ['a' => 3] ]
@@ -134,6 +136,35 @@ trait ItemsCollectionListOperationsTrait
         }
         
         return (new ItemsCollection)->set($new);
+    }
+
+    /**
+     * Extracts multiple values from all items by key name
+     * Similar to pluck, but each item is a subset of the previous item
+     * 
+     * Works *ONLY* on object items
+     *
+     * @param array $columns
+     * @return ItemsCollectionInterface
+     */
+    public function extract(array $columns): ItemsCollectionInterface
+    {
+        $newItems = [];
+        for ($i = 0, $ii = count($this->items); $i < $ii; $i++) {
+            $newItem = new \stdClass();
+            for ($j = 0, $jj = count($columns); $j < $jj; $j++) {
+                $column = &$columns[$j];
+                $newItem->$column = $this->items[$i]->{$column};
+            }
+            $newItems[$i] = $newItem;
+        }
+
+        if ($this->transformThisCollection) {
+            $this->items = $newItems;
+            return $this;
+        }
+
+        return (new ItemsCollection)->set($newItems);
     }
 
     public function filter(callable $callback): ItemsCollectionInterface

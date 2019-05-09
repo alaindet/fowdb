@@ -12,6 +12,10 @@ interface ItemsCollectionListOperationsInterface
     public function reduce(callable $callback, $carry);
     public function filter(callable $callback): ItemsCollectionInterface;
     public function pluck(string $column): ItemsCollectionInterface;
+    public function extract(array $columns): ItemsCollectionInterface;
     public function sort(callable $callback): ItemsCollectionInterface;
-    public function transformThisCollection(bool $transform = true): ItemsCollectionInterface;
+
+    public function transformThisCollection(
+        bool $transform = true
+    ): ItemsCollectionInterface;
 }
