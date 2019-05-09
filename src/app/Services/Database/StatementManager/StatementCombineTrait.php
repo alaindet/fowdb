@@ -28,13 +28,23 @@ trait StatementCombineTrait
     ): void
     {
         foreach ($b->clauses as $name => $bClause) {
-            if (gettype($bClause) === "array") { // Concatenate clauses
+
+            // Skip clauses which are not set
+            if (!$b->isClauseSet($name)) {
+                continue;
+            }
+
+            // Concatenate multi-value clauses
+            if (gettype($bClause) === "array") {
                 $a->clauses[$name] = array_merge($a->clauses[$name], $bClause);
                 continue;
             }
-            if ($overrideOnSingleValue) { // Replace clause
+
+            // Replace single-value clauses?
+            if ($overrideOnSingleValue) {
                 $a->clauses[$name] = $bClause;
             }
+
         }
     }
 
@@ -71,6 +81,13 @@ trait StatementCombineTrait
     ): void
     {
         foreach ($b->clauses as $name => $value) {
+
+            // Skip clauses which are not set
+            if (!$b->isClauseSet($name)) {
+                continue;
+            }
+
+            // Replace
             $a->clauses[$name] = $value;
         }
     }

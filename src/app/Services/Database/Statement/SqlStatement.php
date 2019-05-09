@@ -81,6 +81,11 @@ abstract class SqlStatement implements SqlStatementInterface
         return $this;
     }
 
+    public function isClauseSet(string $clause): bool
+    {
+        return StatementManager::isClauseSet($this, $clause);
+    }
+
     /**
      * Returns the final valid SQL statement as a string
      * Calls the only public method of the Stringable trait

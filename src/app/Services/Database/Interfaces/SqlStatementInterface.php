@@ -16,4 +16,6 @@ interface SqlStatementInterface
     public function replaceWith(
         SqlStatementInterface $statement
     ): SqlStatementInterface;
+
+    public function isClauseSet(string $clause): bool;
 }
