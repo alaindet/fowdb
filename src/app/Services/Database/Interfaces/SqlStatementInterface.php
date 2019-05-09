@@ -10,7 +10,7 @@ interface SqlStatementInterface
 
     public function mergeWith(
         SqlStatementInterface $statement,
-        bool $fromBOnSingleValue
+        bool $overrideOnSingleValue = false
     ): SqlStatementInterface;
 
     public function replaceWith(

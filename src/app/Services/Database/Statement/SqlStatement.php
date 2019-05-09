@@ -57,18 +57,19 @@ abstract class SqlStatement implements SqlStatementInterface
 
     /**
      * Merges this statement with a provided one
-     * If $fromBOnSingleValue is TRUE, uses 
+     * If $overrideOnSingleValue is TRUE,
+     * uses clauses from new statement on single values
      *
      * @param SqlStatementInterface $statement
-     * @param bool $fromBOnSingleValue
+     * @param bool $overrideOnSingleValue
      * @return SqlStatementInterface
      */
     public function mergeWith(
         SqlStatementInterface $statement,
-        bool $fromBOnSingleValue = false
+        bool $overrideOnSingleValue = false
     ): SqlStatementInterface
     {
-        StatementManager::mergeWith($this, $statement, $fromBOnSingleValue);
+        StatementManager::mergeWith($this, $statement, $overrideOnSingleValue);
         return $this;
     }
 

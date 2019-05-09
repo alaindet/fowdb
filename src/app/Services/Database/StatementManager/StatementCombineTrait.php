@@ -14,17 +14,17 @@ trait StatementCombineTrait
      * Merges two statements $a and $b together, by altering $a
      * 
      * Multi-value clauses are concatenated ($a clause before $b clause)
-     * Single-value clauses are left untouched unless $fromBOnSingleValue is true
+     * Single-value clauses are left untouched unless $overrideOnSingleValue is true
      *
      * @param SqlStatementInterface $a
      * @param SqlStatementInterface $b
-     * @param bool $fromBOnSingleValue
+     * @param bool $overrideOnSingleValue
      * @return void
      */
     static public function mergeWith(
         SqlStatementInterface $a,
         SqlStatementInterface $b,
-        bool $fromBOnSingleValue = false
+        bool $overrideOnSingleValue = false
     ): void
     {
         foreach ($b->clauses as $name => $bClause) {
@@ -32,7 +32,7 @@ trait StatementCombineTrait
                 $a->clauses[$name] = array_merge($a->clauses[$name], $bClause);
                 continue;
             }
-            if ($fromBOnSingleValue) { // Replace clause
+            if ($overrideOnSingleValue) { // Replace clause
                 $a->clauses[$name] = $bClause;
             }
         }
