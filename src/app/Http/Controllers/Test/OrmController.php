@@ -93,29 +93,46 @@ class OrmController extends Controller
 
     public function customCollection(Request $request): string
     {
-        $entityClass = \App\Entity\CardType\CardType::class;
+        $entityClass = \App\Entity\CardRarity\CardRarity::class;
         $repo = EntityManager::getRepository($entityClass);
 
         // Unsorted
         // $collection = $repo->all();
+        // $toBeLogged = $collection->pluck("name")->toArray();
+        // return log_html($toBeLogged, "Custom SQL-sorted collection from repo");
 
-        // Sorted by code
+        // Sorted by name asc (in PHP)
         // $collection = $repo->all()->sort(
         //     function ($a, $b) {
         //         return $a->name < $b->name ? -1 : 1;
         //     }
         // );
+        // $toBeLogged = $collection->pluck("name")->toArray();
+        // return log_html($toBeLogged, "Custom SQL-sorted collection from repo");
 
-        // Sorted by SQL (merge base statement with custom one)
+        // Sorted by name asc (in SQL, via extra statement)
         $statement = StatementManager::new("select")
             ->orderBy("name ASC");
 
-        $collection = $repo
-            ->setMergeStatement($statement)
-            ->all();
+        // // Use extra statement once
+        // $repo->setMergeStatement($statement, $keep = false);
+        // $collection1 = $repo->all();
+        // $collection2 = $repo->all();
+        // $collection3 = $repo->all();
 
-        $toBeLogged = $collection->pluck("name")->toArray();
+        // Use extra statement until removed
+        $repo->setMergeStatement($statement, $keep = true);
+        $collection1 = $repo->all();
+        $collection2 = $repo->all();
+        $repo->removeExtraStatement();
+        $collection3 = $repo->all();
 
-        return log_html($toBeLogged, "Custom SQL-sorted collection from repo");
+        $log = [
+            "collection1" => $collection1->pluck("name")->toArray(),
+            "collection2" => $collection2->pluck("name")->toArray(),
+            "collection3" => $collection3->pluck("name")->toArray(),
+        ];
+
+        return log_html($log, "Custom SQL-sorted collections from repo");
     }
 }

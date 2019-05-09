@@ -25,6 +25,7 @@ trait RepositoryExtraStatementTrait
     /**
      * Tells how to combine the base and the extra statement
      * 
+     * 0 => nothing
      * 1 => merge extra multi-value clauses to base ones
      * 2 => merge extra multi-value clauses to base ones,
      *      replace base single-value clauses with extra ones
@@ -32,32 +33,57 @@ trait RepositoryExtraStatementTrait
      *
      * @var int
      */
-    private $extraStatementOperation;
+    private $extraStatementOperation = 0;
+
+    /**
+     * If TRUE, keep the extra statement in memory and use it until removed
+     * If FALSE, use the extra statement once and then automatically remove it
+     * 
+     * Default is to automatically remove it
+     *
+     * @var bool
+     */
+    private $extraStatementKeep = false;
 
     public function setMergeStatement(
-        SqlStatementInterface $statement
+        SqlStatementInterface $statement,
+        bool $keep = false
     ): self
     {
         $this->extraStatement = $statement;
         $this->extraStatementOperation = 1;
+        $this->extraStatementKeep = $keep;
         return $this;
     }
 
     public function setMergeOrReplaceStatement(
-        SqlStatementInterface $statement
+        SqlStatementInterface $statement,
+        bool $keep = false
     ): self
     {
         $this->extraStatement = $statement;
         $this->extraStatementOperation = 2;
+        $this->extraStatementKeep = $keep;
         return $this;
     }
 
     public function setReplaceStatement(
-        SqlStatementInterface $statement
+        SqlStatementInterface $statement,
+        bool $keep = false
     ): self
     {
         $this->extraStatement = $statement;
         $this->extraStatementOperation = 3;
+        $this->extraStatementKeep = $keep;
+        return $this;
+    }
+
+    public function removeExtraStatement(): self
+    {
+        $this->extraStatement = null;
+        $this->extraStatementOperation = 0;
+        $this->extraStatementKeep = false;
+
         return $this;
     }
 
@@ -90,6 +116,10 @@ trait RepositoryExtraStatementTrait
                 $baseStatement->replaceWith($this->extraStatement);
                 break;
 
+        }
+
+        if (!$this->extraStatementKeep) {
+            $this->removeExtraStatement();
         }
 
         return $baseStatement;
