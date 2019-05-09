@@ -11,12 +11,11 @@ use App\Services\Database\Statement\SelectSqlStatement;
 use App\Services\Database\Interfaces\PaginatorInterface;
 use App\Base\ORM\Exceptions\RelationshipNotFoundException;
 use App\Base\ORM\Interfaces\EntityMetaDataInterface;
+use App\Services\Database\StatementManager\StatementManager;
 
 /**
- * Base class:
- * App\Base\ORM\Repository\Repository
+ * From App\Base\ORM\Repository\Repository
  * 
- * From base class:
  * public $entityClass;
  * public $table;
  * public $foreignKey;
@@ -24,7 +23,7 @@ use App\Base\ORM\Interfaces\EntityMetaDataInterface;
  */
 trait RepositoryReadTrait
 {
-    private $paginator;
+    private $paginator = null;
 
     public function setPaginator(PaginatorInterface $paginator): self
     {
@@ -37,86 +36,151 @@ trait RepositoryReadTrait
         return $this->paginator;
     }
 
+    public function isPaginator(): bool
+    {
+        return $this->paginator !== null;
+    }
+
+    /**
+     * Returns all entities in the base table
+     * 
+     * It combines the base statement with an extra statement if it was set
+     * 
+     * @return ItemsCollectionInterface
+     */
     public function all(): ItemsCollectionInterface
     {
+        // Define base statement
         $statement = (new SelectSqlStatement)
             ->from($this->table);
 
-        if ($this->paginator !== null) {
+        // Combine it with an extra statement, if defined
+        if ($this->isExtraStatement()) {
+            $statement = $this->combineWithExtraStatement($statement);
+        }
+
+        // Use a paginator if defined
+        if ($this->isPaginator()) {
             return $this->paginator
                 ->setStatement($statement)
                 ->fetch($this->entityClass)
                 ->getResuts();
         }
 
+        // Do not use any paginator
         return Database::getInstance()
             ->select($statement)
+            ->bind($statement->getBoundValues())
             ->get($this->entityClass);
     }
 
+    /**
+     * Finds a single entity by its ID
+     *
+     * @param string|int $id
+     * @return EntityInterface|null
+     */
     public function findById($id): ?EntityInterface
     {   
         $statement = (new SelectSqlStatement)
             ->from($this->table)
-            ->where("id = :id");
+            ->where("id = :id")
+            ->setBoundValues([":id" => $id]);
 
         return Database::getInstance()
             ->select($statement)
-            ->bind([":id" => $id])
+            ->bind($statement->getBoundValues())
             ->first($this->entityClass);
     }
 
+    /**
+     * Finds a single entity with a single equality condition
+     * It combines the base statement with an extra statement if it was set
+     * 
+     * NOTE:
+     * Even if the condition returns more than one result,
+     * only the first is returned
+     * 
+     * Ex.: $cardsRepo->findBy("code", "ABC-123");
+     *
+     * @param string $field
+     * @param any $value
+     * @return EntityInterface|null
+     */
     public function findBy(string $field, $value): ?EntityInterface
     {
         $statement = (new SelectSqlStatement)
             ->from($this->table)
-            ->where("{$field} = :value");
+            ->where("{$field} = :value")
+            ->setBoundValues([":value" => $value]);
+
+        // Combine it with an extra statement, if defined
+        if ($this->isExtraStatement()) {
+            $statement = $this->combineWithExtraStatement($statement);
+        }
 
         return Database::getInstance()
             ->select($statement)
-            ->bind([":value" => $value])
+            ->bind($statement->getBoundValues())
             ->first($this->entityClass);
     }
 
+    /**
+     * Returns a collection of entities matching the provided equality condition
+     * It combines the base statement with an extra statement if it was set
+     *
+     * @param string $field
+     * @param any $value
+     * @return ItemsCollectionInterface
+     */
     public function findAllBy(string $field, $value): ItemsCollectionInterface
     {
         $statement = (new SelectSqlStatement)
             ->from($this->table)
-            ->where("{$field} = :value");
+            ->where("{$field} = :value")
+            ->setBoundValues([":value" => $value]);
 
-        if ($this->paginator !== null) {
+        // Combine it with an extra statement, if defined
+        if ($this->isExtraStatement()) {
+            $statement = $this->combineWithExtraStatement($statement);
+        }
+
+        // Use a paginator if defined
+        if ($this->isPaginator()) {
             return $this->paginator
                 ->setStatement($statement)
                 ->fetch($this->entityClass)
                 ->getResuts();
         }
 
+        // Do not use any paginator
         return Database::getInstance()
             ->select($statement)
-            ->bind([":value" => $value])
+            ->bind($statement->getBoundValues())
             ->get($this->entityClass);
     }
 
     /**
      * Fetches related entities based on this entity's relationships
+     * It combines the base statement with an extra statement if it was set
      *
-     * @param EntityInterface $sourceInstance
-     * @param string $targetClass
-     * @param array $targetFields Subset of fields of target entity class
+     * @param EntityInterface $sourceEntity
+     * @param string $targetEntityClass
+     * @param array $targetEntityFields Subset of fields of target entity class
      * @return EntityInterface|ItemsCollection
      */
     public function getRelated(
-        EntityInterface $sourceInstance,
-        string $targetClass,
-        array $targetFields = null
+        EntityInterface $sourceEntity,
+        string $targetEntityClass,
+        array $targetEntityFields = null
     )
     {
-        $relationship = $this->relationships[$targetClass] ?? null;
+        $relationship = $this->relationships[$targetEntityClass] ?? null;
 
         // ERROR: Missing relationship
         if ($relationship === null) {
             throw new RelationshipNotFoundException(
-                "Entity with class {$targetClass} not found or ".
+                "Entity with class {$targetEntityClass} not found or ".
                 "not related to {$this->entityClass}"
             );
         }
@@ -132,84 +196,92 @@ trait RepositoryReadTrait
             "n-1" => ["buildManyToOneStatement", "first"],
             "n-n" => ["buildManyToManyStatement", "get"],
         ];
-
-        $targetMetaData = EntityManager::getMetaData($targetClass);
-
         [$statementMethod, $databaseMethod] = $methods[$type];
+
+        // Meta data from target entity
+        $targetEntityMetaData = EntityManager::getMetaData($targetEntityClass);
+
+        // Build the SqlStatement object
         $statement = $this->{$statementMethod}(
-            $sourceInstance,
-            $targetMetaData,
-            $targetFields,
+            $sourceEntity,
+            $targetEntityMetaData,
+            $targetEntityFields,
             $joinTable
         );
 
-        if ($this->paginator !== null) {
+        // Combine it with an extra statement, if defined
+        if ($this->isExtraStatement()) {
+            $statement = $this->combineWithExtraStatement($statement);
+        }
+
+        // Use a paginator if defined
+        if ($this->isPaginator()) {
             return $this->paginator
                 ->setStatement($statement)
-                ->fetch($targetMetaData->entityClass)
-                ->getResults();
+                ->fetch($targetEntityMetaData->entityClass)
+                ->getResuts();
         }
 
         return Database::getInstance()
             ->select($statement)
             ->bind($statement->getBoundValues())
-            ->{$databaseMethod}($targetMetaData->entityClass);
+            ->{$databaseMethod}($targetEntityMetaData->entityClass);
     }
 
     private function buildOneToManyStatement(
-        EntityInterface $sourceInstance,
-        EntityMetaDataInterface $targetMetaData,
-        array $targetFields = null
+        EntityInterface $sourceEntity,
+        EntityMetaDataInterface $targetEntityMetaData,
+        array $targetEntityFields = null
     ): SelectSqlStatement
     {
-        return (new SelectSqlStatement)
-            ->select($targetFields ?? $targetMetaData->fields)
-            ->from($targetMetaData->table)
+        return StatementManager::new("select")
+            ->select($targetEntityFields ?? $targetEntityMetaData->fields)
+            ->from($targetEntityMetaData->table)
             ->where("{$this->foreignKey} = :id")
             ->setBoundValues([
-                ":id" => $sourceInstance->id
+                ":id" => $sourceEntity->id
             ]);
     }
 
     private function buildManyToOneStatement(
-        EntityInterface $sourceInstance,
-        EntityMetaDataInterface $targetMetaData,
-        array $targetFields = null
+        EntityInterface $sourceEntity,
+        EntityMetaDataInterface $targetEntityMetaData,
+        array $targetEntityFields = null
     ): SelectSqlStatement
     {
-        return (new SelectSqlStatement)
-            ->select($targetFields ?? $targetMetaData->fields)
-            ->from($targetMetaData->table)
+        return StatementManager::new("select")
+            ->select($targetEntityFields ?? $targetEntityMetaData->fields)
+            ->from($targetEntityMetaData->table)
             ->where("id = :id")
             ->setBoundValues([
-                ":id" => $sourceInstance->{$targetMetaData->foreignKey}
+                ":id" => $sourceEntity->{$targetEntityMetaData->foreignKey}
             ]);
     }
 
     private function buildManyToManyStatement(
-        EntityInterface $sourceInstance,
-        EntityMetaDataInterface $targetMetaData,
-        array $targetFields = null,
+        EntityInterface $sourceEntity,
+        EntityMetaDataInterface $targetEntityMetaData,
+        array $targetEntityFields = null,
         string $joinTable
     ): SelectSqlStatement
     {
-        $fields = $targetFields ?? $targetMetaData->fields;
-        $targetTableAlias = "t";
+        $fields = $targetEntityFields ?? $targetEntityMetaData->fields;
+        $targetEntityTableAlias = "t";
         $joinTableAlias = "j";
 
         foreach ($fields as &$field) {
-            $field = "{$targetTableAlias}.{$field}";
+            $field = "{$targetEntityTableAlias}.{$field}";
         }
 
-        return (new SelectSqlStatement)
+        return StatementManager::new("select")
             ->select($fields)
             ->from($joinTable, $joinTableAlias)
             ->innerJoin(
-                [$targetMetaData->table, $targetTableAlias],
+                [$targetEntityMetaData->table, $targetEntityTableAlias],
                 "id",
-                $targetMetaData->foreignKey
+                $targetEntityMetaData->foreignKey
             )
             ->where("j.{$this->foreignKey} = :id")
-            ->setBoundValues([":id" => $sourceInstance->id]);
+            ->setBoundValues([":id" => $sourceEntity->id]);
     }
 }

@@ -5,17 +5,19 @@ namespace App\Base\ORM\Repository;
 use App\Base\ORM\Interfaces\RepositoryInterface;
 use App\Base\ORM\Repository\RepositoryReadTrait;
 use App\Base\ORM\Repository\RepositoryWriteTrait;
+use App\Base\ORM\Repository\RepositoryExtraStatementTrait;
 
 /**
- * In concrete child class, override these
+ * In concrete child class, define these
  * 
- * public $entityClass; // Mandatory
- * public $table; // Mandatory
- * public $foreignKey;
- * public $relationships;
+ * public $entityClass;
+ * public $table;
+ * public $foreignKey; // Optional
+ * public $relationships; // Optional
  */
 abstract class Repository implements RepositoryInterface
 {
+    use RepositoryExtraStatementTrait;
     use RepositoryReadTrait;
     use RepositoryWriteTrait;
 

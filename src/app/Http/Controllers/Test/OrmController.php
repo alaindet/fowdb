@@ -8,22 +8,15 @@ use App\Views\Page;
 
 use App\Base\ORM\Manager\EntityManager;
 use App\Entity\Card\Card;
-use App\Entity\GameRuling\GameRuling;
 use App\Entity\GameCluster\GameCluster;
 use App\Entity\GameFormat\GameFormat;
 use App\Entity\PlayRestriction\PlayRestriction;
+use App\Services\Database\StatementManager\StatementManager;
 
 class OrmController extends Controller
 {
     public function relatedOneToMany(Request $request): string
     {
-        // Has game rulings
-        // $cardId = 1046;
-        // $target = GameRuling::class;
-        // $reducer = function ($entity) {
-        //     return $entity->date." - ".substr($entity->text, 0, 10)."...";
-        // };
-
         // Has play restrictions
         $cardId = 2735;
         $target = PlayRestriction::class;
@@ -96,5 +89,33 @@ class OrmController extends Controller
             "<h2>Related: {$target}</h2>".
             $targetEntitiesLog
         );
+    }
+
+    public function customCollection(Request $request): string
+    {
+        $entityClass = \App\Entity\CardType\CardType::class;
+        $repo = EntityManager::getRepository($entityClass);
+
+        // Unsorted
+        // $collection = $repo->all();
+
+        // Sorted by code
+        // $collection = $repo->all()->sort(
+        //     function ($a, $b) {
+        //         return $a->name < $b->name ? -1 : 1;
+        //     }
+        // );
+
+        // Sorted by SQL (merge base statement with custom one)
+        $statement = StatementManager::new("select")
+            ->orderBy("name ASC");
+
+        $collection = $repo
+            ->setMergeStatement($statement)
+            ->all();
+
+        $toBeLogged = $collection->pluck("name")->toArray();
+
+        return log_html($toBeLogged, "Custom SQL-sorted collection from repo");
     }
 }
