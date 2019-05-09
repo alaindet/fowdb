@@ -168,16 +168,7 @@ function repository(string $entityClass): EntityRepository
  */
 function statement(string $type): SqlStatement
 {
-	$class = [
-		'select' => \App\Services\Database\Statement\SelectSqlStatement::class,
-		'insert' => \App\Services\Database\Statement\InsertSqlStatement::class,
-		'update' => \App\Services\Database\Statement\UpdateSqlStatement::class,
-		'delete' => \App\Services\Database\Statement\DeleteSqlStatement::class,
-	][$type];
-
-	$statement = new $class;
-
-	return $statement;
+	return StatementsService::new($type);
 }
 
 

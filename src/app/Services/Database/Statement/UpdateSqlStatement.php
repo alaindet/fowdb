@@ -10,11 +10,11 @@ use App\Services\Database\Statement\SqlStatement;
 class UpdateSqlStatement extends SqlStatement
 {
     public $clauses = [
-        'UPDATE' => '',
-        'SET' => [],
-        'WHERE' => [],
-        'ORDER BY' => [],
-        'LIMIT' => -1,
+        "UPDATE"   => "",
+        "SET"      => [],
+        "WHERE"    => [],
+        "ORDER BY" => [],
+        "LIMIT"    => -1,
     ];
 
     /**
@@ -25,7 +25,7 @@ class UpdateSqlStatement extends SqlStatement
      */
     public function update(string $value): UpdateSqlStatement
     {
-        $this->clauses['UPDATE'] = $value;
+        $this->clauses["UPDATE"] = $value;
 
         return $this;
     }
@@ -51,7 +51,7 @@ class UpdateSqlStatement extends SqlStatement
     public function set(array $values): UpdateSqlStatement
     {
         foreach ($values as $column => $value) {
-            $this->clauses['SET'][$column] = $value;
+            $this->clauses["SET"][$column] = $value;
         }
 
         return $this;
@@ -80,24 +80,24 @@ class UpdateSqlStatement extends SqlStatement
      * If $condition is a string, $operator1 glues it to the previous conditions
      * 
      * @param string|array $conditions
-     * @param $operator1 Possible values: 'AND', 'OR'
-     * @param $operator2 Possible values: 'AND', 'OR'
+     * @param $operator1 Possible values: "AND", "OR"
+     * @param $operator2 Possible values: "AND", "OR"
      * @return UpdateSqlStatement
      */
     public function where(
         $conditions,
-        string $operator1 = 'AND',
-        string $operator2 = 'AND'
+        string $operator1 = "AND",
+        string $operator2 = "AND"
     ): UpdateSqlStatement
     {
         if (is_array($conditions)) {
 
-            $conditions = '('.implode(' '.$operator1.' ', $conditions).')';
-            $this->clauses['WHERE'][] = [$operator2, $conditions];
+            $conditions = "(".implode(" ".$operator1." ", $conditions).")";
+            $this->clauses["WHERE"][] = [$operator2, $conditions];
 
         } else {
 
-            $this->clauses['WHERE'][] = [$operator1, $conditions];
+            $this->clauses["WHERE"][] = [$operator1, $conditions];
 
         }
 
@@ -112,7 +112,7 @@ class UpdateSqlStatement extends SqlStatement
      */
     public function orderBy($columns): UpdateSqlStatement
     {
-        $clause =& $this->clauses['ORDER BY'];
+        $clause =& $this->clauses["ORDER BY"];
         if (!is_array($columns)) $clause[] = $columns;
         else $clause = array_merge($clause, $columns);
 
@@ -127,7 +127,7 @@ class UpdateSqlStatement extends SqlStatement
      */
     public function limit(int $limit): UpdateSqlStatement
     {
-        $this->clauses['LIMIT'] = $limit;
+        $this->clauses["LIMIT"] = $limit;
 
         return $this;
     }

@@ -7,6 +7,7 @@ use App\Http\Request\Request;
 use App\Views\Page;
 
 use App\Services\Database\Statement\SelectSqlStatement;
+use App\Services\Database\StatementManager\StatementManager;
 use App\Services\Database\Paginator;
 use App\Entity\Card\Card;
 
@@ -55,5 +56,23 @@ class DatabaseController extends Controller
             "<h2>Query</h2>".
             "<pre>".$statement->toString()."</pre>"
         );
+    }
+
+    public function statementMerge(Request $request): string
+    {
+        $a = StatementManager::new("select")
+            ->select(["field1, field2"])
+            ->from("table1");
+
+        $b = StatementManager::new("select")
+            ->select(["field3, field4"])
+            ->from("table2")
+            ->limit(10);
+
+        // $a->mergeWith($b);
+        // $a->mergeWith($b, $fromBOnSingleValue = true);
+        $a->replaceWith($b);
+
+        return $a->toString();
     }
 }

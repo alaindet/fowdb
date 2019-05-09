@@ -64,11 +64,13 @@ $public = [
 
     // Database
     ["GET", "database/pagination", "DatabaseController", "pagination"],
+    ["GET", "database/statement-merge", "DatabaseController", "statementMerge"],
 
     // ORM
     ["GET", "orm/related/1-n", "OrmController", "relatedOneToMany"],
     ["GET", "orm/related/n-1", "OrmController", "relatedManyToOne"],
     ["GET", "orm/related/n-n", "OrmController", "relatedManyToMany"],
+    ["GET", "orm/custom-collection", "OrmController", "customCollection"],
 
     // Lookup
     ["GET", "lookup", "LookupController", "index"],

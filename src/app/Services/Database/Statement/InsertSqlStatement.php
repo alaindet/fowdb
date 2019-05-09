@@ -10,8 +10,8 @@ use App\Services\Database\Statement\SqlStatement;
 class InsertSqlStatement extends SqlStatement
 {
     public $clauses = [
-        'INSERT INTO' => '',
-        'VALUES' => [],
+        "INSERT INTO" => "",
+        "VALUES"      => [],
     ];
 
     /**
@@ -22,7 +22,7 @@ class InsertSqlStatement extends SqlStatement
      */
     public function into(string $value): InsertSqlStatement
     {
-        $this->clauses['INSERT INTO'] = $value;
+        $this->clauses["INSERT INTO"] = $value;
 
         return $this;
     }
@@ -48,7 +48,7 @@ class InsertSqlStatement extends SqlStatement
     public function values(array $values): InsertSqlStatement
     {
         foreach ($values as $column => $value) {
-            $this->clauses['VALUES'][$column] = $value;
+            $this->clauses["VALUES"][$column] = $value;
         }
 
         return $this;
