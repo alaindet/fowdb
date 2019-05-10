@@ -31,14 +31,14 @@ class LoginController extends Controller
         $password = $request->input()->post('password');
 
         Authentication::login($username, $password);
-        alert('You signed in', 'success');
+        fd_alert('You signed in', 'success');
         redirect('profile');
     }
 
     public function logout()
     {
         Authentication::logout();
-        alert('You signed out', 'warning');
+        fd_alert('You signed out', 'warning');
         redirect('/');
     }
 }

@@ -23,7 +23,7 @@ class Card
 
         // ERROR: No card with that code!
         if (empty($cardsDb)) {
-            alert("No card found with code <strong>{$code}</strong>",'warning');
+            fd_alert("No card found with code <strong>{$code}</strong>",'warning');
             redirect('/');
         }
 

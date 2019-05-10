@@ -45,7 +45,7 @@ class CardsController extends Controller
 
         // ERROR: Cards not found!
         if (empty($results)) {
-            alert('No results. Please try changing your filters.', 'danger');
+            fd_alert('No results. Please try changing your filters.', 'danger');
             redirect('cards/search');
         }
 
