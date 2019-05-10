@@ -49,8 +49,8 @@ if (isset($card['atk']) && isset($card['def'])) {
 
 // CSN ------------------------------------------------------------------------
 $displayCsn = (
-  "<li>".lookup('clusters.id2name.'.$card['clusters_id'])."</li>".
-  "<li>".lookup('sets.id2name.'.$card['sets_id'])."</li>".
+  "<li>".lookup('clusters.id2name.id'.$card['clusters_id'])."</li>".
+  "<li>".lookup('sets.id2name.id'.$card['sets_id'])."</li>".
   "<li>".str_pad($card['num'], 3, '0', STR_PAD_LEFT)."</li>"
 );
 

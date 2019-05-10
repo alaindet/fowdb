@@ -7,18 +7,14 @@ use App\Http\Request\Request;
 use App\Http\Response\Redirect;
 use App\Services\Alert;
 use App\Views\Page;
-use App\Services\Resources\GameFormat\Crud\CreateService;
-use App\Services\Resources\GameFormat\Crud\DeleteService;
-use App\Services\Resources\GameFormat\Crud\UpdateService;
-
-use App\Entities\Play\Format\FormatsRepository;
-use App\Entities\Game\Cluster\ClustersRepository;
+use App\Services\Validation\Validation;
+use App\Entity\GameFormat\GameFormatRepository;
 
 class GameFormatsController extends Controller
 {
     public function index(Request $request): string
     {
-        $formats = (new FormatsRepository)
+        $formats = (new GameFormatRepository)
             ->all();
 
         return (new Page)
@@ -34,6 +30,7 @@ class GameFormatsController extends Controller
     {
         // Get all clusters as an array of ID => name
         $clusters = (new ClustersRepository)
+            ->sorting(['id DESC'])
             ->all()
             ->reduce(function($result, $cluster) {
                 $result[$cluster->id] = $cluster->name;
@@ -55,27 +52,47 @@ class GameFormatsController extends Controller
 
     public function create(Request $request): string
     {
-        dump($request->input()->post());
-
-        $request->validate('post', [
-            'id' => ['required','is:integer','!exists:game_formats,id'],
-            'name' => ['required'],
-            'code' => ['required','is:alphadash'],
-            'desc' => ['optional', 'is:text'],
-
-            'cluster-id' => ['required','is:integer','exists:game_clusters,id'],
-            'name' => ['required'],
-            'code' => ['required','is:alphanumeric'],
-            'count' => ['required','is:integer','between:1,255'],
-            'release-date' => ['required:0','is:date'],
-            'is-spoiler' => ['required:0','is:boolean'],
+        $request->validate([
+            'id' => [
+                'required',
+                'is:integer',
+                'not-exists:game_formats,id'
+            ],
+            'name' => [
+                'required',
+                'between:5,255',
+                'not-exists:game_formats,name'
+            ],
+            'code' => [
+                'required',
+                'is:alphadash',
+                'length:5',
+                'not-exists:game_formats,code'
+            ],
+            'desc' => [
+                'optional',
+                'is:text',
+                'min:10'
+            ],
+            'is-default' => [
+                'optional',
+                'is:boolean'
+            ],
+            'clusters' => [
+                'required',
+                'is:array',
+                'not-empty',
+                'are:integers'
+            ],
         ]);
 
         $service = new CreateService($request->input()->post());
         $service->processInput();
         $service->syncDatabase();
-        $service->syncFileSystem();
         $service->updateLookupData();
+
+        dump($service->debug());
+
         [$message, $uri] = $service->getFeedback();
 
         Alert::add($message, 'info');
@@ -105,7 +122,7 @@ class GameFormatsController extends Controller
 
     public function update(Request $request, string $id): string
     {
-        $request->validate('post', [
+        $request->validate([
             'cluster-id' => ['required','is:integer','exists:game_clusters,id'],
             'id' => ['required','is:integer','exists:game_sets,id'],
             'name' => ['required'],

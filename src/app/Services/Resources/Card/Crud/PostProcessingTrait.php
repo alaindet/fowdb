@@ -185,7 +185,7 @@ trait PostProcessingTrait
     {
         // Calculate the suffix
         ($this->new['back_side'] !== '0')
-            ? $suffix = lookup("backsides.id2code.{$this->new['back_side']}")
+            ? $suffix = lookup("backsides.id2code.id{$this->new['back_side']}")
             : $suffix = '';
 
         // Assemble the template for this card's image paths

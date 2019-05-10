@@ -13,10 +13,10 @@
 
 $isPrev = isset($prev);
 $isItem = isset($item);
-$isCard = isset($card); // This is just auxiliary data!
-$url = 'restrictions/' . ($isItem ? 'update/'.$item['id'] : 'create');
+$isCard = isset($card);
+$url = "restrictions/" . ($isItem ? "update/{$item["id"]}" : "create");
 
-$formats = lookup('formats.id2name');
+$formats = lookup("formats.id2name");
 $decks = \App\Models\PlayRestriction::$decksLabels;
 
 ?>
@@ -111,10 +111,9 @@ $decks = \App\Models\PlayRestriction::$decksLabels;
     <label class="col-sm-2 control-label">Format</label>
     <div class="col-sm-10">
       <select name="format-id" class="form-control" required>
-        <?php foreach ($formats as $id => $name):
-          ($sticky === $id)
-            ? $checked = 'selected'
-            : $checked = '';
+        <?php foreach ($formats as $idKey => $name):
+          $id = substr($idKey, 2); // Ex.: $idKey = "id1";
+          $checked = ($sticky === $id) ? "selected" : "";
         ?>
           <option
             value="<?=$id?>"
@@ -138,9 +137,7 @@ $decks = \App\Models\PlayRestriction::$decksLabels;
     <div class="col-sm-10">
       <select name="deck" class="form-control" required>
         <?php foreach ($decks as $id => $name):
-          ($sticky === $id)
-          ? $checked = 'selected'
-          : $checked = '';
+          $checked = ($sticky === $id) ? "selected" : "";
         ?>
           <option
             value="<?=$id?>"

@@ -139,7 +139,7 @@ class PlayRestrictionsController extends Controller
 
     public function create(Request $request): string
     {
-        $request->validate('post', [
+        $request->validate([
             'card-id' => ['required','is:integer','exists:cards,id'],
             'format-id' => ['required','is:integer','exists:game_formats,id'],
             'deck' => ['required','is:integer','enum:0,1,2,3'],
@@ -207,7 +207,7 @@ class PlayRestrictionsController extends Controller
 
     public function update(Request $request, string $id): string
     {
-        $request->validate('post', [
+        $request->validate([
             'card-id' => ['required','is:integer','exists:cards,id'],
             'format-id' => ['required','is:integer','exists:game_formats,id'],
             'deck' => ['required','is:integer','enum:0,1,2,3'],

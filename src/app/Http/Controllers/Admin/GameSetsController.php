@@ -29,10 +29,8 @@ class GameSetsController extends Controller
                         'c.name cluster_name',
                         'c.code cluster_code'
                     ])
-                    ->from(
-                        'game_sets s
-                        INNER JOIN game_clusters c ON s.clusters_id = c.id'
-                    )
+                    ->from("game_sets", "s")
+                    ->innerJoin(["game_clusters", "c"], "id", "clusters_id")
                     ->orderBy('s.id DESC')
             )
             ->page($request->input()->get('page') ?? 1)

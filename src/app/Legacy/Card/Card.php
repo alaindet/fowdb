@@ -120,8 +120,8 @@ class Card
             
             // $set -----------------------------------------------------------
             $setId =& $card['sets_id'];
-            $setCode = lookup("sets.id2code.{$setId}");
-            $setName = lookup("sets.id2name.{$setId}");
+            $setCode = lookup("sets.id2code.id{$setId}");
+            $setName = lookup("sets.id2name.id{$setId}");
             $link = url('cards', [ 'set' => $setCode ]);
             $set = (
                 '<a href="'.$link.'">'.
