@@ -24,7 +24,7 @@ $items = [
     ],
     'name' => 'INPUT_NAME',
     'size' => 'lg',
-    'state' => input()->get('INPUT_NAME'),
+    'state' => fd_input()->get('INPUT_NAME'),
     'items' => $items,
   ])?>
 

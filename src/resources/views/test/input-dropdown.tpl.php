@@ -21,7 +21,7 @@ $items = [
 
     'dropdown' => [
       'name' => 'THE_DROPDOWN',
-      'state' => input()->get('THE_DROPDOWN'),
+      'state' => fd_input()->get('THE_DROPDOWN'),
       'items' => $items,
       'css' => ['btn-lg'],
       'default' => [
@@ -32,7 +32,7 @@ $items = [
 
     'input' => [
       'name' => 'THE_INPUT',
-      'state' => input()->get('THE_INPUT'),
+      'state' => fd_input()->get('THE_INPUT'),
       'css' => ['input-lg'],
     ]
 

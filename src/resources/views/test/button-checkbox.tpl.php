@@ -10,7 +10,7 @@
     'name' => 'INPUT_NAME',
     'value' => 'INPUT_VALUE',
     'label' => 'INPUT_LABEL',
-    'state' => input()->has('INPUT_NAME', 'GET'),
+    'state' => fd_input()->has('INPUT_NAME', 'GET'),
     'css' => [
       'button' => ['mv-10', 'fd-btn-default']
     ]

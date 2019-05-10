@@ -20,7 +20,7 @@ $items = [
   <?=component('form/button-radio', [
     'name' => 'INPUT_NAME',
     'items' => $items,
-    'state' => input()->get('INPUT_NAME') ?? null,
+    'state' => fd_input()->get('INPUT_NAME') ?? null,
     'css' => [
       'button' => ['mv-10', 'fd-btn-default']
     ]
