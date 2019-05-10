@@ -34,8 +34,8 @@ $items = [
 ])?>
 
 <?php // LOG
-  if (input()->has($name)) {
-    echo log_html(input()->get($name), $name);
+  if (fd_input()->has($name)) {
+    echo log_html(fd_input()->get($name), $name);
   }
 ?>
 
