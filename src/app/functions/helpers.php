@@ -14,6 +14,7 @@ use App\Services\Database\StatementManager\StatementManager;
 use App\Services\Database\Statement\SqlStatement;
 use App\Services\Lookup\Lookup;
 use App\Utils\Logger;
+use App\Utils\Paths;
 use App\Utils\Strings;
 use App\Utils\Uri;
 use App\Views\Card\CardText;
@@ -198,8 +199,7 @@ function fd_statement(string $type): SqlStatement
  */
 function fd_path_cache(string $path = null): string
 {
-	$dir = (Configuration::getInstance())->get("dir.cache");
-	return isset($path) ? "{$dir}/{$path}" : $dir;
+	return Paths::inCacheDir($path);
 }
 
 /**
@@ -208,8 +208,7 @@ function fd_path_cache(string $path = null): string
  */
 function fd_path_data(string $path = null): string
 {
-	$dir = (Configuration::getInstance())->get("dir.data");
-	return isset($path) ? "{$dir}/{$path}" : $dir;
+	return Paths::inDataDir($path);
 }
 
 /**
@@ -218,8 +217,7 @@ function fd_path_data(string $path = null): string
  */
 function fd_path_root(string $path = null): string
 {
-	$dir = (Configuration::getInstance())->get("dir.root");
-	return isset($path) ? "{$dir}/{$path}" : $dir;
+	return Paths::inRootDir($path);
 }
 
 /**
@@ -228,8 +226,7 @@ function fd_path_root(string $path = null): string
  */
 function fd_path_src(string $path = null): string
 {
-	$dir = (Configuration::getInstance())->get("dir.src");
-	return isset($path) ? "{$dir}/{$path}" : $dir;
+	return Paths::inSrcDir($path);
 }
 
 /**
@@ -238,8 +235,7 @@ function fd_path_src(string $path = null): string
  */
 function fd_path_views(string $path = null): string
 {
-	$dir = (Configuration::getInstance())->get("dir.views");
-	return isset($path) ? "{$dir}/{$path}" : $dir;
+	return Paths::inViewsDir($path);
 }
 
 
