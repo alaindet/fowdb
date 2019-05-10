@@ -1,48 +1,60 @@
 <?php
 
-// Imports
-use App\Services\Database\Database;
-use App\Services\Configuration\Configuration;
+use App\Base\ORM\Interfaces\RepositoryInterface;
+use App\Base\ORM\Manager\EntityManager;
+use App\Exceptions\ViewsComponentException;
 use App\Http\Request\Input;
-use App\Services\Database\Statement\SqlStatement;
+use App\Http\Response\Redirect;
 use App\Legacy\Authorization as LegacyAuthorization;
-use App\Base\Entity\Manager\EntityManager;
-use App\Base\Entity\Repository\EntityRepository;
+use App\Services\Alert;
+use App\Services\Configuration\Configuration;
+use App\Services\CsrfToken;
+use App\Services\Database\Database;
+use App\Services\Database\StatementManager\StatementManager;
+use App\Services\Database\Statement\SqlStatement;
+use App\Services\Lookup\Lookup;
+use App\Utils\Logger;
+use App\Utils\Strings;
+use App\Utils\Uri;
+use App\Views\Card\CardText;
+use App\Views\Components;
+use App\Views\Page;
 
 /**
  * List of helper functions
+ * Any helper function fd_starts with "fd_"
  * 
  * SERVICES
  * ========
- * alert
- * auth
- * config
- * database
- * dump
- * input
- * lookup
- * redirect
- * repository
- * statement
+ * fd_alert
+ * fd_auth
+ * fd_config
+ * fd_database
+ * fd_dump
+ * fd_input
+ * fd_lookup
+ * fd_redirect
+ * fd_repository
+ * fd_statement
  * 
  * DIRECTORIES
  * ===========
- * path_cache
- * path_data
- * path_root
- * path_src
- * path_views
+ * fd_path_cache
+ * fd_path_data
+ * fd_path_root
+ * fd_path_src
+ * fd_path_views
  * 
  * VIEW
  * ====
- * asset
- * component
- * csrf_token
- * include_view
- * escape
- * log_html
- * render
- * url
+ * fd_asset
+ * fd_component
+ * fd_csrf_token
+ * fd_include_view
+ * fd_escape
+ * fd_log_html
+ * fd_render
+ * fd_url
  * 
  */
 
@@ -57,9 +69,9 @@ use App\Base\Entity\Repository\EntityRepository;
  * @param string $type
  * @return void
  */
-function alert(string $message, string $type = null): void
+function fd_alert(string $message, string $type = null): void
 {
-    \App\Services\Alert::add($message, $type);
+    Alert::add($message, $type);
 }
 
 /**
@@ -67,7 +79,7 @@ function alert(string $message, string $type = null): void
  *
  * @return LegacyAuthorization
  */
-function auth(): LegacyAuthorization
+function fd_auth(): LegacyAuthorization
 {
 	return LegacyAuthorization::getInstance();
 }
@@ -79,7 +91,7 @@ function auth(): LegacyAuthorization
  * @param any $value
  * @return mixed null|string|array
  */
-function config(string $name = null, $value = null)
+function fd_config(string $name = null, $value = null)
 {
 	$config = Configuration::getInstance();
 
@@ -102,7 +114,7 @@ function config(string $name = null, $value = null)
  *
  * @return Database
  */
-function database(): Database
+function fd_database(): Database
 {
     return Database::getInstance();
 }
@@ -115,10 +127,10 @@ function database(): Database
  * @param bool $wrap (Optional) Wraps the line
  * @return void
  */
-function dump($data, string $title = null, bool $wrap = false): void
+function fd_dump($data, string $title = null, bool $wrap = false): void
 {
 	ob_end_clean();
-	echo \App\Utils\Logger::html($data, $title, $wrap);
+	echo Logger::html($data, $title, $wrap);
 	die();
 }
 
@@ -127,7 +139,7 @@ function dump($data, string $title = null, bool $wrap = false): void
  * 
  * @return Input
  */
-function input(): Input
+function fd_input(): Input
 {
 	return Input::getInstance();
 }
@@ -138,9 +150,9 @@ function input(): Input
  * @param string $path Dot-separated path. Ex.: "rarities.id2code"
  * @return mixed string | array
  */
-function lookup(string $path = null)
+function fd_lookup(string $path = null)
 {
-    return (\App\Services\Lookup\Lookup::getInstance())->get($path);
+    return (Lookup::getInstance())->get($path);
 }
 
 /**
@@ -150,12 +162,18 @@ function lookup(string $path = null)
  * @param array $params
  * @return void
  */
-function redirect(string $uri = '', array $qs = []): void
+function fd_redirect(string $uri = "", array $qs = []): void
 {
-	\App\Http\Response\Redirect::to($uri, $qs);
+	Redirect::to($uri, $qs);
 }
 
-function repository(string $entityClass): EntityRepository
+/**
+ * Returns an entity repository instance from an entity class name
+ *
+ * @param string $entityClass
+ * @return RepositoryInterface
+ */
+function fd_repository(string $entityClass): RepositoryInterface
 {
 	return EntityManager::getRepository($entityClass);
 }
@@ -166,9 +184,9 @@ function repository(string $entityClass): EntityRepository
  * @param string $type
  * @return SqlStatement
  */
-function statement(string $type): SqlStatement
+function fd_statement(string $type): SqlStatement
 {
-	return StatementsService::new($type);
+	return StatementManager::new($type);
 }
 
 
@@ -178,9 +196,9 @@ function statement(string $type): SqlStatement
  * @param string Relative path to /src/data/cache/
  * @return string Absolute path
  */
-function path_cache(string $path = null): string
+function fd_path_cache(string $path = null): string
 {
-	$dir = (Configuration::getInstance())->get('dir.cache');
+	$dir = (Configuration::getInstance())->get("dir.cache");
 	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
@@ -188,9 +206,9 @@ function path_cache(string $path = null): string
  * @param string Relative path to /src/data/
  * @return string Absolute path
  */
-function path_data(string $path = null): string
+function fd_path_data(string $path = null): string
 {
-	$dir = (Configuration::getInstance())->get('dir.data');
+	$dir = (Configuration::getInstance())->get("dir.data");
 	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
@@ -198,9 +216,9 @@ function path_data(string $path = null): string
  * @param string Relative path to /
  * @return string Absolute path
  */
-function path_root(string $path = null): string
+function fd_path_root(string $path = null): string
 {
-	$dir = (Configuration::getInstance())->get('dir.root');
+	$dir = (Configuration::getInstance())->get("dir.root");
 	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
@@ -208,9 +226,9 @@ function path_root(string $path = null): string
  * @param string Relative path to /src/
  * @return string Absolute path
  */
-function path_src(string $path = null): string
+function fd_path_src(string $path = null): string
 {
-	$dir = (Configuration::getInstance())->get('dir.src');
+	$dir = (Configuration::getInstance())->get("dir.src");
 	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
@@ -218,9 +236,9 @@ function path_src(string $path = null): string
  * @param string Relative path to /src/resources/views/
  * @return string Absolute path
  */
-function path_views(string $path = null): string
+function fd_path_views(string $path = null): string
 {
-	$dir = (Configuration::getInstance())->get('dir.views');
+	$dir = (Configuration::getInstance())->get("dir.views");
 	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
@@ -234,21 +252,21 @@ function path_views(string $path = null): string
  * @param string $type
  * @return string
  */
-function asset(string $path, string $type = 'any'): string
+function fd_asset(string $path, string $type = "any"): string
 {
 	$config = Configuration::getInstance();
     
-	$url = $config->get('app.url');
+	$url = $config->get("app.url");
 
 	// Bypass query string if already present
-	if (strpos($path, '?')) return "{$url}/{$path}";
+	if (strpos($path, "?")) return "{$url}/{$path}";
 
     $version = [
-		'any' => $config->get('app.timestamp'),
-		'css' => $config->get('app.timestamp.css'),
-		'js'  => $config->get('app.timestamp.js'),
-		'png' => $config->get('app.timestamp.img'),
-		'jpg' => $config->get('app.timestamp.img'),
+		"any" => $config->get("app.timestamp"),
+		"css" => $config->get("app.timestamp.css"),
+		"js"  => $config->get("app.timestamp.js"),
+		"png" => $config->get("app.timestamp.img"),
+		"jpg" => $config->get("app.timestamp.img"),
     ][$type];
 
     return "{$url}/{$path}?{$version}";
@@ -262,19 +280,17 @@ function asset(string $path, string $type = 'any'): string
  * @param array $state The state to set, as associative array
  * @return string HTML rendering of the component
  */
-function component(string $name, array $state = null): string
+function fd_component(string $name, array $state = null): string
 {
-	$class = \App\Views\Components::$components[$name] ?? null;
+	$class = Components::$components[$name] ?? null;
 
 	// ERROR: Component name doesn't exist
 	if ($class === null) {
-		throw new \App\Exceptions\ViewsComponentException(
-			"Missing component \"{$name}\""
-		);
+		throw new ViewsComponentException("Missing component \"{$name}\"");
 	}
 
 	// Simple component (no logic, optional state)
-	if ($class === \App\Views\Components::SIMPLE_COMPONENT) {
+	if ($class === Components::SIMPLE_COMPONENT) {
 		return include_view("components/{$name}", $state);
 	}
 
@@ -289,9 +305,9 @@ function component(string $name, array $state = null): string
  *
  * @return string
  */
-function csrf_token(): string
+function fd_csrf_token(): string
 {
-	return \App\Services\CsrfToken::formInput();
+	return CsrfToken::formInput();
 }
 
 /**
@@ -300,13 +316,13 @@ function csrf_token(): string
  * @param string $path
  * @return string
  */
-function include_view(string $path, array $__variables = null): string
+function fd_include_view(string $path, array $__variables = null): string
 {
 	// Bind variables to this template only
 	if (!empty($__variables)) {
 		foreach ($__variables as $__name => $__value) {
 			if (strpos($__name, '-')) {
-                $__name = \App\Utils\Strings::kebabToSnake($__name);
+                $__name = Strings::kebabToSnake($__name);
             }
 			$$__name = $__value;
 		}
@@ -325,9 +341,9 @@ function include_view(string $path, array $__variables = null): string
  * @param string $string
  * @return string Escaped sequence
  */
-function escape(string $string): string
+function fd_escape(string $string): string
 {
-	return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+	return htmlspecialchars($string, ENT_QUOTES, "UTF-8");
 }
 
 /**
@@ -339,9 +355,9 @@ function escape(string $string): string
  * @param bool $wrap Wraps the line at the end of the viewport
  * @return string HTML-friendly log of provided data
  */
-function log_html($data, string $title = null, bool $wrap = false): string
+function fd_log_html($data, string $title = null, bool $wrap = false): string
 {
-	return \App\Utils\Logger::html($data, $title, $wrap);
+	return Logger::html($data, $title, $wrap);
 }
 
 /**
@@ -350,9 +366,9 @@ function log_html($data, string $title = null, bool $wrap = false): string
  * @param string $toRender
  * @return string
  */
-function render(string $toRender): string
+function fd_render(string $toRender): string
 {
-	return \App\Views\Card\CardText::render($toRender);
+	return CardText::render($toRender);
 }
 
 /**
@@ -362,37 +378,29 @@ function render(string $toRender): string
  * @param array $params
  * @return string
  */
-function url(string $to = null, array $params = []): string
+function fd_url(string $to = null, array $params = []): string
 {
-	return \App\Utils\Uri::build($to, $params);
+	return Uri::build($to, $params);
 }
-
-/**
- * Returns a compiled Twig page
- *
- * @param string $viewPath Path from the view dir, no extension Ex.: pages/card/index
- * @param array $variables Variables to bind to the view
- * @return string HTML output of the page
- */
 
 /**
  * Returns a rendered page to be output
  *
- * @param string $viewPath Relative to /src/resorces/views/, no extension
+ * @param string $templatePath Relative to /src/resorces/views/, no extension
  * @param string $title Title of the page
  * @param array $variables Variables to be used to render the template
  * @param boolean $minify Minify the HTML output
  * @return string Final HTML for the page
  */
-function view(
-	string $viewPath = null,
+function fd_view(
+	string $templatePath = null,
 	string $title = null,
 	array $variables = null,
 	bool $minify = true
 ): string
 {
-	return (new \App\Views\Page)
-		->template($template)
+	return (new Page)
+		->template($templatePath)
 		->title($title)
 		->variables($variables)
 		->minify($minify)
