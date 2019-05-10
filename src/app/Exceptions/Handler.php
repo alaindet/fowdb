@@ -50,8 +50,8 @@ class Handler
     public static function handler(Throwable $exception): void
     {
         // Bypass any processing, return an API error
-        if (config("current.mode") === "api") {
-            $respone = new JsonResponse;
+        if (fd_config("current.mode") === "api") {
+            $response = new JsonResponse;
             $response->setData([
                 "error" => 1,
                 "message" => $exception->getMessage()
@@ -84,7 +84,7 @@ class Handler
         ];
 
         // Show readable log of the exception
-        if (config("app.env") === "development") {
+        if (fd_config("app.env") === "development") {
             echo call_user_func(
                 [Logger::class, "html"], // Change to "cli" for CLI debugging
                 $data,

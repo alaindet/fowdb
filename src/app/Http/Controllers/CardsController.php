@@ -102,7 +102,7 @@ class CardsController extends Controller
 
         // Build Open Graph Protocol data for this page
         $card = $cards->first();
-        $appName = config('app.name');
+        $appName = fd_config('app.name');
         $title = "{$card->get('name')} ({$card->get('code')}) ~ {$appName}";
         $ogp = [
             'title' => $title,
@@ -118,7 +118,7 @@ class CardsController extends Controller
 
         // // Build Open Graph Protocol data for this page
         // $card = &$cards[0];
-        // $title = "{$card['name']} ({$card['code']}) ~ ".config('app.name');
+        // $title = "{$card['name']} ({$card['code']}) ~ ".fd_config('app.name');
         // $ogp = [
         //     'title' => $title,
         //     'url' => url('card/'.urlencode($card['code'])),

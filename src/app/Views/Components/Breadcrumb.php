@@ -20,7 +20,7 @@ class Breadcrumb extends Component
      */
     private function absoluteLinks(): void
     {   
-        $url = config('app.url');
+        $url = fd_config('app.url');
 
         foreach ($this->state as $link) {
             if ($link !== '#') {

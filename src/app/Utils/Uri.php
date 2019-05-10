@@ -25,7 +25,7 @@ abstract class Uri
         }
 
         // Base URL for this website
-        $baseUrl = config("app.url");
+        $baseUrl = fd_config("app.url");
 
         // Build the query string
         $queryString = self::buildQueryString($qs);

@@ -76,7 +76,7 @@ class Sitemap
         $this->lastModified = Time::date();
         $this->path = path_root('sitemap.xml');
         $this->gzipPath = path_root('sitemap.xml.gz');
-        $this->url = config('app.url');
+        $this->url = fd_config('app.url');
     }
 
     /**

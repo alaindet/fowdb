@@ -10,6 +10,6 @@ class GetEnvironmentCommand extends Command
 
     public function run(array $options, array $arguments): void
     {
-        $this->message = config('app.env');
+        $this->message = fd_config('app.env');
     }
 }

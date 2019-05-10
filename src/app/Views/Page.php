@@ -30,7 +30,7 @@ class Page
      */
     public function __construct()
     {
-        $this->title = config("app.name");
+        $this->title = fd_config("app.name");
         $this->mainTemplate = path_views("layout/main.tpl.php");
     }
 
@@ -129,11 +129,11 @@ class Page
 			if (isset($myOgp["image"])) {
 
                 $image = (new OpenGraphProtocolImage)
-                    ->url( $myOgp["image"]["url"] ?? config("ogp.image") )
-                    ->mimeType( config("ogp.image.type") )
-                    ->width( config("ogp.image.width") )
-                    ->height( config("ogp.image.height") )
-                    ->alt( $myOgp["image"]["alt"] ?? config("app.name") );
+                    ->url( $myOgp["image"]["url"] ?? fd_config("ogp.image") )
+                    ->mimeType( fd_config("ogp.image.type") )
+                    ->width( fd_config("ogp.image.width") )
+                    ->height( fd_config("ogp.image.height") )
+                    ->alt( $myOgp["image"]["alt"] ?? fd_config("app.name") );
 
 				$ogp->image($image);
 			}

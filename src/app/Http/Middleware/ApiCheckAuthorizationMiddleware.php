@@ -10,7 +10,7 @@ class ApiCheckAuthorizationMiddleware implements MiddlewareInterface
 {
     public function run(Request $request): void
     {
-        $requiredRole = config('current.access');
+        $requiredRole = fd_config('current.access');
 
         // Shortcut for public routes
         if ($requiredRole === 'public') return;
