@@ -3,26 +3,33 @@
 namespace App\Services\Lookup\Generators;
 
 use App\Services\Lookup\Interfaces\LookupDataGeneratorInterface;
-use App\Models\CardNarp;
+use App\Base\ORM\Manager\EntityManager;
+use App\Entity\CardNarp\CardNarp;
 
 class NarpsGenerator implements LookupDataGeneratorInterface
 {
-    public function generate(): array
+    public function generate(): object
     {
-        $items = (new CardNarp)->all();
-
-        $result = [
-            'id2code' => [],
-            'id2name' => []
+        $result = (object) [
+            "id2code" => new \stdClass(),
+            "id2name" => new \stdClass(),
         ];
 
-        return array_reduce($items, function ($result, $item) {
+        $repository = EntityManager::getRepository(CardNarp::class);
 
-            $result['id2code'][$item['value']] = $item['code'];
-            $result['id2name'][$item['value']] = $item['name'];
+        foreach ($repository->all() as $item) {
 
-            return $result;
+            // Watch out: id !== value (check the db)
+            $id = $item->value;
+            $idLabel = "id" . $item->value;
+            $name = $item->name;
+            $code = $item->code;
 
-        }, $result);
+            $result->id2code->{$idLabel} = $code;
+            $result->id2name->{$idLabel} = $name;
+
+        }
+
+        return $result;
     }
 }

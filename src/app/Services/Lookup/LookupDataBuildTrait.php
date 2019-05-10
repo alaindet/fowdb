@@ -3,22 +3,18 @@
 namespace App\Services\Lookup;
 
 use App\Utils\Strings;
-use App\Services\Lookup\Interfaces\LookupInterface;
+use App\Utils\Json;
+use App\Services\Lookup\Interfaces\LookupDataBuildInterface;
 use App\Services\FileSystem\FileSystem;
 use App\Services\FileSystem\Exceptions\FileNotFoundException;
 
 /**
- * Implements LookupCacheBuildInterface on Lookup service
- * 
  * From App\Services\Lookup\Lookup
  * ===============================
  * protected $features; // @var array
- * 
- * From App\Services\Lookup\LookupDataAccessTrait
- * ==============================================
  * protected $data; // @var array
  */
-trait LookupCacheBuildTrait
+trait LookupDataBuildTrait
 {
     /**
      * Location of the cache file
@@ -27,46 +23,43 @@ trait LookupCacheBuildTrait
      */
     private $cacheFilePath;
 
-    public function setCacheFilePath(string $path): LookupInterface
+    public function setCacheFilePath(string $path): LookupDataBuildInterface
     {
-        $this->cacheFilePath = $path;
+        $this->cacheFilePath = $path;        
         return $this;
     }
 
-    /**
-     * Loads the cached lookup file
-     *
-     * @return void
-     */
-    public function load(): LookupInterface
+    public function load(): LookupDataBuildInterface
     {
         try {
-            $fileContent = FileSystem::readFile($this->cacheFilePath);
-            $this->data = unserialize($fileContent);
+            $this->data = FileSystem::loadJsonFile($this->cacheFilePath);
         } catch (FileNotFoundException $exception) {
             $this->build();
         }
+
         return $this;
     }
 
     /**
      * Builds a new cache file, overwrites the old one if needed
      *
-     * @return LookupInterface
+     * @return LookupDataBuildInterface
      */
-    public function build(): LookupInterface
+    public function build(): LookupDataBuildInterface
     {
+        $this->data = new \stdClass();
         $this->generateAll();
         $this->store();
+
         return $this;
     }
 
     /**
      * Calls all feature generator classes, see Lookup::generate for more
-     *
-     * @return array
+     * 
+     * @return LookupDataBuildInterface
      */
-    public function generateAll(): LookupInterface
+    public function generateAll(): LookupDataBuildInterface
     {
         foreach ($this->features as $feature) {
             $this->generate($feature);
@@ -79,13 +72,13 @@ trait LookupCacheBuildTrait
      * Calls a specific generator class which updates data about given feature
      *
      * @param string $feature Ex.: 'attributes', 'types', etc.
-     * @return LookupInterface
+     * @return LookupDataBuildInterface
      */
-    public function generate(string $feature): LookupInterface
+    public function generate(string $feature): LookupDataBuildInterface
     {
-        $generatorClass = $this->generatorClass($feature);
-        $generator = new $generatorClass();
-        $this->data[$feature] = $generator->generate();
+        $generator = $this->getGeneratorClass($feature);
+        $this->data->{$feature} = (new $generator)->generate();
+        
         return $this;
     }
 
@@ -99,24 +92,22 @@ trait LookupCacheBuildTrait
      * @param string $feature
      * @return string
      */
-    private function generatorClass(string $feature): string
+    private function getGeneratorClass(string $feature): string
     {
-        return (
-            "\\App\\Services\\Lookup\\Generators\\".
-            Strings::kebabToPascal($feature).
-            "Generator"
-        );
+        $featureClass = Strings::kebabToPascal($feature);
+        return "\\App\\Services\\Lookup\\Generators\\{$featureClass}Generator";
     }
 
     /**
      * Stores all current lookup data in a cache file
      *
-     * @return LookupInterface
+     * @return LookupDataBuildInterface
      */
-    public function store(): LookupInterface
+    public function store(): LookupDataBuildInterface
     {
-        $fileContent = serialize($this->data);
+        $fileContent = Json::fromObject($this->data);
         FileSystem::saveFile($this->cacheFilePath, $fileContent);
+
         return $this;
     }
 }

@@ -3,44 +3,38 @@
 namespace App\Services\Lookup\Generators;
 
 use App\Services\Lookup\Interfaces\LookupDataGeneratorInterface;
+use App\Base\ORM\Manager\EntityManager;
+use App\Services\Database\StatementManager\StatementManager;
+use App\Entity\GameSet\GameSet;
 
 class SpoilersGenerator implements LookupDataGeneratorInterface
 {
-    public function generate(): array
+    public function generate(): object
     {
-        $items = database()
-            ->select(statement('select')
-                ->select(['id', 'code', 'name', 'count'])
-                ->from('game_sets')
-                ->where('is_spoiler = 1')
-                ->orderBy('id DESC')
-            )
-            ->get();
+        $result = (object) [
+            "sets"   => [],
+            "ids"    => [],
+            "names"  => [],
+            "codes"  => [],
+            "counts" => [],
+        ];
 
-        return array_reduce(
+        $replacement = StatementManager::new("select")
+            ->orderBy("id DESC");
 
-            // Collections
-            $items,
+        $repository = EntityManager::getRepository(GameSet::class);
+        $items = $repository
+            ->setReplaceStatement($replacement)
+            ->findAllBy("is_spoiler", 1);
 
-            // Reducer
-            function ($result, $item) {
-                $result['sets'][] = $item;
-                $result['ids'][] = $item['id'];
-                $result['names'][] = $item['name'];
-                $result['codes'][] = $item['code'];
-                $result['counts'][] = $item['count'];
-                return $result;
-            },
+        foreach ($items as $item) {
+            $result->sets[] = $item;
+            $result->ids[] = $item->id;
+            $result->names[] = $item->name;
+            $result->codes[] = $item->code;
+            $result->counts[] = $item->count;
+        }
 
-            // State
-            [
-                'sets' => [],
-                'ids' => [],
-                'names' => [],
-                'codes' => [],
-                'counts' => []
-            ]
-
-        );
+        return $result;
     }
 }
