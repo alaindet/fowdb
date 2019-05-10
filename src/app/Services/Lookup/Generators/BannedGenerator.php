@@ -3,38 +3,25 @@
 namespace App\Services\Lookup\Generators;
 
 use App\Services\Lookup\Interfaces\LookupDataGeneratorInterface;
-use App\Models\PlayRestriction;
+use App\Entity\PlayRestriction\PlayRestriction;
+use App\Entity\GameFormat\GameFormat;
 
 class BannedGenerator implements LookupDataGeneratorInterface
 {
-    public function generate(): array
+    /**
+     * Returns a map from format code to banned cards in that format
+     * Formats are multi-cluster *ONLY*
+     * 
+     * Ex.:
+     * {
+     *   "origin": [ 123, 124, 156, ... ],
+     *   "wandr": [...]
+     * }
+     *
+     * @return object
+     */
+    public function generate(): object
     {
-        $result = [];
-        $items = database()
-            ->select(statement('select')
-                ->select([
-                    'pr.id AS id',
-                    'pr.cards_id AS cards_id',
-                    'gf.code AS format_code',
-                    'pr.deck AS deck',
-                    'pr.copies AS copies'
-                ])
-                ->from(
-                    'play_restrictions pr
-                    INNER JOIN game_formats gf ON pr.formats_id = gf.id'
-                )
-                ->where(
-                    'gf.is_multi_cluster = 1'
-                )
-                ->orderBy([
-                    'pr.formats_id DESC',
-                    'pr.cards_id ASC',
-                    'pr.deck ASC',
-                    'pr.copies ASC'
-                ])
-            )
-            ->get();
-
         // STRUCTURE
         // =========
         // [
@@ -44,56 +31,29 @@ class BannedGenerator implements LookupDataGeneratorInterface
         //     ],
         //     ...
         // ]
-        foreach ($items as $item) {
-            
-            // Format
-            $format = &$item['format_code'];
-            if (!isset($result[$format])) {
-                $result[$format] = [];
-            }
+        $result = new \stdClass();
 
-            // Card
-            $card = &$item['cards_id'];
-            if (!in_array($card, $result[$format])) {
-                $result[$format][] = $card;
+        $formatsId2Code = repository(GameFormat::class)
+            ->setReplaceStatement(statement("select")->select(["id", "code"]))
+            ->findAllBy("is_multi_cluster", 1)
+            ->reduce(
+                function ($map, $format) use (&$result) {
+                    $map->{"id".$format->id} = $format->code;
+                    $result->{$format->code} = []; // WATCH OUT!
+                    return $map;
+                },
+                new \stdClass()
+            );
+
+        $playRestrictions = repository(PlayRestriction::class)->all();
+
+        foreach ($playRestrictions as $item) {
+            $formatIdLabel = "id" . $item->formats_id;
+            if (isset($formatsId2Code->{$formatIdLabel})) {
+                $formatCode = $formatsId2Code->{$formatIdLabel};
+                $result->{$formatCode}[] = $item->cards_id;
             }
-            
         }
-
-        // // STRUCTURE
-        // // =========
-        // // [
-        // //     format_code => [
-        // //         card_id => [
-        // //             deck_name => copies,
-        // //             ...
-        // //         ],
-        // //         ...
-        // //     ],
-        // //     ...
-        // // ]
-        // foreach ($items as $item) {
-
-        //     // Format
-        //     $format = &$item['format_code'];
-        //     if (!isset($result[$format])) {
-        //         $result[$format] = [];
-        //     }
-
-        //     // Card
-        //     $card = &$item['cards_id'];
-        //     if ((!isset($result[$format][$card]))) {
-        //         $result[$format][$card] = [];
-        //     }
-
-        //     // Deck => copies
-        //     $deckId = &$item['deck'];
-        //     $deck = PlayRestriction::$decksLabels[$deckId];
-        //     $deck = str_replace(' Deck', '', $deck); // 'Main Deck' => 'Main'
-        //     $copies = &$item['copies'];
-        //     $result[$format][$card][$deck] = $copies;
-
-        // }
 
         return $result;
     }

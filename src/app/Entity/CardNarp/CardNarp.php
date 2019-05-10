@@ -6,5 +6,8 @@ use App\Base\ORM\Entity\Entity;
 
 class CardNarp extends Entity
 {
-    protected $table = "card_narps";
+    public $id;
+    public $value;
+    public $code;
+    public $name;
 }

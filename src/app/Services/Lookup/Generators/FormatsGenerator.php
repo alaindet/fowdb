@@ -3,58 +3,53 @@
 namespace App\Services\Lookup\Generators;
 
 use App\Services\Lookup\Interfaces\LookupDataGeneratorInterface;
-use App\Entities\Play\Format\FormatsRepository;
+use App\Base\ORM\Manager\EntityManager;
+use App\Entity\GameFormat\GameFormat;
+use App\Entity\GameCluster\GameCluster;
+use function GuzzleHttp\Psr7\readline;
 
 class FormatsGenerator implements LookupDataGeneratorInterface
 {
-    public function generate(): array
+    public function generate(): object
     {
-        $state = [
-            'default' => '',
-            'code2id' => [],
-            'code2name' => [],
-            'code2clusters' => [],
-            'id2code' => [],
-            'id2name' => [],
-            'display' => [],
-            'id2clusters' => []
+        $result = (object) [
+            "id2code"       => new \stdClass(),
+            "id2name"       => new \stdClass(),
+            "id2clusters"   => new \stdClass(),
+            "code2id"       => new \stdClass(),
+            "code2name"     => new \stdClass(),
+            "default"       => "",
+            "display"       => new \stdClass(),
         ];
 
-        $reducer = function($result, $format) {
-            
-            // Set the cache flag: invalidate the cache!
-            // This forces any computed property to call the database
-            $format->useCache(false);
+        $repository = EntityManager::getRepository(GameFormat::class);
+        $items = $repository->all();
 
-            if ($format->is_default) {
-                $result['default'] = $format->code;
+        foreach ($items as $item) {
+
+            $idLabel = "id" . $item->id;
+
+            $clusters = $repository
+                ->getRelated($item, GameCluster::class)
+                ->extract(["id", "code", "name"])
+                ->toArray();
+
+            if ($item->is_default) {
+                $result->default = $item->code;
             }
 
-            if ($format->is_multi_cluster) {
-                $result['display'][$format->code] = $format->name;
+            if ($item->is_multi_cluster) {
+                $result->display->{$item->code} = $item->name;
             }
 
-            $result['code2id'][$format->code] = $format->id;
-            $result['code2name'][$format->code] = $format->name;
-            $result['id2code'][$format->id] = $format->code;
-            $result['id2name'][$format->id] = $format->name;
+            $result->code2id->{$item->code} = $item->id;
+            $result->code2name->{$item->code} = $item->name;
+            $result->id2code->{$idLabel} = $item->code;
+            $result->id2name->{$idLabel} = $item->name;
+            $result->id2clusters->{$idLabel} = $clusters;
 
-            $result['id2clusters'][$format->id] = $format->clusters
-                ->reduce(
-                    function($result, $cluster) {
-                        $result[] = [
-                            'id' => $cluster->id,
-                            'code' => $cluster->code,
-                            'name' => $cluster->name
-                        ];
-                        return $result;
-                    },
-                    $clusters = []
-                );
-
-            return $result;
-        };
-
-        return (new FormatsRepository)->all()->reduce($reducer, $state);
+        }
+        
+        return $result;
     }
 }

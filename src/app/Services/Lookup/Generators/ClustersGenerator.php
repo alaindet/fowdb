@@ -3,53 +3,54 @@
 namespace App\Services\Lookup\Generators;
 
 use App\Services\Lookup\Interfaces\LookupDataGeneratorInterface;
-use App\Entities\Game\Cluster\ClustersRepository;
+use App\Base\ORM\Manager\EntityManager;
+use App\Entity\GameCluster\GameCluster;
+use App\Entity\GameFormat\GameFormat;
+use App\Entity\GameSet\GameSet;
 
 class ClustersGenerator implements LookupDataGeneratorInterface
 {
-    public function generate(): array
+    public function generate(): object
     {
-        $state = [
-            'list' => [],
-            'code2name' => [],
-            'code2id' => [],
-            'id2code' => [],
-            'id2name' => [],
-            'id2formats' => [],
+        $result = (object) [
+            "list"       => new \stdClass(),
+            "code2name"  => new \stdClass(),
+            "code2id"    => new \stdClass(),
+            "id2code"    => new \stdClass(),
+            "id2name"    => new \stdClass(),
+            "id2formats" => new \stdClass(),
         ];
 
-        $reducer = function ($result, $cluster) {
+        $repository = EntityManager::getRepository(GameCluster::class);
+        $items = $repository->all();
 
-            $cluster->useCache(false);
+        foreach ($items as $item) {
 
-            $formats = $cluster->formats->reduce(function($result, $format) {
-                $result[] = [
-                    'id' => $format->id,
-                    'code' => $format->code,
-                    'name' => $format->name,
-                ];
-                return $result;
-            }, []);
-            
-            $sets = $cluster->sets->reduce(function($result, $set) {
-                $result[$set->code] = $set->name;
-                return $result;
-            }, []);
+            $idLabel = "id" . $item->id;
 
-            $result['id2code'][$cluster->id] = $cluster->code;
-            $result['id2name'][$cluster->id] = $cluster->name;
-            $result['code2name'][$cluster->code] = $cluster->name;
-            $result['code2id'][$cluster->code] = $cluster->id;
-            $result['id2formats'][$cluster->id] = $formats;
-            $result['list'][$cluster->code] = [
-                'name' => $cluster->name,
-                'sets' => $sets
-            ];
+            $formats = $repository
+                ->getRelated($item, GameFormat::class)
+                ->extract(["id", "code", "name"])
+                ->toArray();
 
-            return $result;
+            $sets = $repository
+                ->getRelated($item, GameSet::class)
+                ->extract(["id", "code", "name"])
+                ->toArray();
 
-        };
+            $result->id2code->{$idLabel} = $item->code;
+            $result->id2name->{$idLabel} = $item->name;
+            $result->id2formats->{$idLabel} = $formats;
+            $result->code2id->{$item->code} = $item->id;
+            $result->code2name->{$item->code} = $item->name;
 
-        return (new ClustersRepository)->all()->reduce($reducer, $state);
+            $listItem = new \stdClass();
+            $listItem->name = $item->name;
+            $listItem->sets = $sets;
+            $result->list->{$item->code} = $listItem;
+
+        }
+
+        return $result;
     }
 }

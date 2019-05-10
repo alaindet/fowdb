@@ -6,5 +6,9 @@ use App\Base\ORM\Entity\Entity;
 
 class CardType extends Entity
 {
-    protected $table = "card_types";
+    public $id;
+    public $bit;
+    public $code;
+    public $group;
+    public $name;
 }

@@ -6,5 +6,7 @@ use App\Base\ORM\Entity\Entity;
 
 class CardRarity extends Entity
 {
-    protected $table = "card_rarities";
+    public $id;
+    public $code;
+    public $name;
 }

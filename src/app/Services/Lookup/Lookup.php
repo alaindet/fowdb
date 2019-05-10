@@ -3,7 +3,7 @@
 namespace App\Services\Lookup;
 
 use App\Base\Singleton;
-use App\Services\Lookup\LookupCacheBuildTrait;
+use App\Services\Lookup\LookupDataBuildTrait;
 use App\Services\Lookup\LookupDataAccessTrait;
 use App\Services\Lookup\Interfaces\LookupInterface;
 
@@ -15,7 +15,7 @@ class Lookup implements LookupInterface
 {
     use Singleton;
     use LookupDataAccessTrait;
-    use LookupCacheBuildTrait;
+    use LookupDataBuildTrait;
 
     /**
      * List of available features
@@ -23,28 +23,34 @@ class Lookup implements LookupInterface
      * @var array
      */
     protected $features = [
-        'attributes',
-        'backsides',
-        'banned',
-        'clusters',
-        'costs',
-        'divinities',
-        'formats',
-        'narps',
-        'rarities',
-        'sets',
-        'sortables',
-        'spoilers',
-        'types',
+        "attributes",
+        "backsides",
+        "banned",
+        "clusters",
+        "costs",
+        "divinities",
+        "formats",
+        "narps",
+        "rarities",
+        "sets",
+        "sortables",
+        "spoilers",
+        "types",
     ];
+
+    /**
+     * All lookup data is stored here
+     *
+     * @var object
+     */
+    protected $data;
 
     /**
      * Define the cache file location and load it
      */
     private function __construct()
     {
-        $cacheFile = path_cache('lookup.txt');
-        $this->setCacheFilePath($cacheFile);
+        $this->setCacheFilePath(path_cache("lookup.json"));
         $this->load();
     }
 }

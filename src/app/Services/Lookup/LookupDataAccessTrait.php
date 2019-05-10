@@ -10,85 +10,56 @@ use App\Services\Lookup\Exceptions\MissingDataException;
  * From App\Services\Lookup\Lookup
  * ===============================
  * protected $features; // @var array
+ * protected $data; // @var array
  */
 trait LookupDataAccessTrait
 {
     /**
-     * All lookup data is stored here
-     *
-     * @var array
-     */
-    protected $data = [];
-
-    /**
      * Reads data from the cached data
      * 
-     * Ex.: $cache->get('rarities.id2code.1') => 'Common'
+     * Ex.: $cache->get("rarities.id2code") => array
      *
      * @param string $path Dot-notation path
-     * @return mixed string | string[]
+     * @return object|string|string[]
      */
-    public function get(string $path = null)
+    public function get(string $path)
     {
-        // ERROR: Missing name
-        if (!isset($path)) {
-            return $this->getAll();
-        }
-
         // Directly return data (not-nested data)
-        if (false === strpos($path, '.')) {
+        if (false === strpos($path, ".")) {
 
             // ERROR: Invalid path
-            if (!isset($this->data[$path])) {
+            if (!isset($this->data->{$path})) {
                 throw new MissingDataException($path);
             }
 
-            return $this->data[$path];
-
-        } 
-
-        // Split by the dot
-        $pathBits = explode('.', $path);
-
-        // Pop the first path bit, then dive 1 level deeper
-        $firstPathBit = array_shift($pathBits);
-
-        // ERROR: Invalid path
-        if (!in_array($firstPathBit, $this->features)) {
-            throw new MissingDataException($firstPathBit);
+            return $this->data->{$path};
         }
 
-        $result = $this->data[$firstPathBit];
+        $result = $this->data;
 
-        // Loop on all bits and dive deeper if needed
-        foreach ($pathBits as $pathBit) {
-
-            // ERROR: Invalid path
-            if (!isset($result[$pathBit])) {
-                $invalidPath = $firstPathBit.'.'.implode('.', $pathBits);
-                throw new MissingDataException($invalidPath);
+        foreach (explode(".", $path) as $pathStep) {
+            if (!isset($this->data->{$pathStep})) {
+                throw new MissingDataException($path);
             }
-
-            // Update the result and dive deeper
-            $result = $result[$pathBit];
+            $result = $result->{$pathStep};
         }
 
         return $result;
     }
 
     /**
-     * Returns all the cache array
+     * Returns all the cache data object
      *
-     * @return array
+     * @return object
      */
-    public function getAll(): array
+    public function getAll(): object
     {
         return $this->data;
     }
 
     public function exists(string $feature): bool
     {
-        return isset($this->data[$feature]);
+        return in_array($feature, $this->features);
     }
 
     /**
@@ -96,7 +67,7 @@ trait LookupDataAccessTrait
      *
      * @return array
      */
-    public function features(): array
+    public function getFeatures(): array
     {
         return $this->features;
     }
