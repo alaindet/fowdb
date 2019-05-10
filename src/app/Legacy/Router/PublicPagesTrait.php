@@ -8,55 +8,55 @@ trait PublicPagesTrait
 {
     public function buildSearchFormPage(): void
     {
-        redirect('cards/search');
+        fd_redirect("cards/search");
     }
 
     public function buildSearchPage(): void
     {
         $get = Input::getInstance()->get();
-        unset($get['do']);
+        unset($get["do"]);
 
-        redirect('cards', $get);
+        fd_redirect("cards", $get);
     }
 
     public function buildCardPage(): void
     {
-        $code = Input::getInstance()->get('code');
+        $code = Input::getInstance()->get("code");
 
-        redirect('card/'.$code);
+        fd_redirect("card/".$code);
     }
 
     public function buildSpoilerPage(): void
     {
-        redirect('spoiler');
+        fd_redirect("spoiler");
     }
 
     public function buildBanPage(): void
     {
-        redirect('banlist');
+        fd_redirect("banlist");
     }
 
     public function buildCrPage(): void
     {
-        $version = Input::getInstance()->get('v');
+        $version = Input::getInstance()->get("v");
 
         isset($version)
-            ? redirect('cr/'.$version)
-            : redirect('cr');
+            ? fd_redirect("cr/".$version)
+            : fd_redirect("cr");
     }
 
     public function buildErrataPage(): void
     {
-        redirect('errata');
+        fd_redirect("errata");
     }
 
     public function buildFormatsPage(): void
     {
-        redirect('formats');
+        fd_redirect("formats");
     }
 
     public function buildRacesPage(): void
     {
-        redirect('races');
+        fd_redirect("races");
     }
 }

@@ -11,34 +11,34 @@ class LoginController extends Controller
 {
     public function loginForm()
     {
-        // Redirect to the appropriate user's profile
-        if (fd_auth()->logged()) redirect('profile');
+        // Redirect to the appropriate user"s profile
+        if (fd_auth()->logged()) fd_redirect("profile");
 
         return (new Page)
-            ->template('pages/auth/login')
-            ->title('Login')
+            ->template("pages/auth/login")
+            ->title("Login")
             ->render();
     }
 
     public function login(Request $request)
     {
         $request->validate([
-            'username' => ['required','is:text'],
-            'password' => ['required','is:text'],
+            "username" => ["required","is:text"],
+            "password" => ["required","is:text"],
         ]);
 
-        $username = $request->input()->post('username', $escape = true);
-        $password = $request->input()->post('password');
+        $username = $request->input()->post("username", $escape = true);
+        $password = $request->input()->post("password");
 
         Authentication::login($username, $password);
-        fd_alert('You signed in', 'success');
-        redirect('profile');
+        fd_alert("You signed in", "success");
+        fd_redirect("profile");
     }
 
     public function logout()
     {
         Authentication::logout();
-        fd_alert('You signed out', 'warning');
-        redirect('/');
+        fd_alert("You signed out", "warning");
+        fd_redirect("/");
     }
 }

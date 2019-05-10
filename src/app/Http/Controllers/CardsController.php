@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
-use App\Models\Card as Model;
 use App\Services\Resources\Card\Search\Search;
-use App\Services\Resources\Card\Read\ReadService;
 use App\Views\Page;
 
 /**
@@ -18,10 +16,10 @@ class CardsController extends Controller
     public function searchForm(Request $request): string
     {
         return (new Page)
-            ->template('pages/public/cards/search/index-form')
-            ->title('Cards Search')
+            ->template("pages/public/cards/search/index-form")
+            ->title("Cards Search")
             ->options([
-                'scripts' => ['public/cards/search-form']
+                "scripts" => ["public/cards/search-form"]
             ])
             ->render();
     }
@@ -35,9 +33,9 @@ class CardsController extends Controller
 
         // // DEBUG
         // return log_html([
-        //     'params' => $request->input()->get(),
-        //     'sql' => $search->getStatement(),
-        //     'bind' => $search->getBoundData(),
+        //     "params" => $request->input()->get(),
+        //     "sql" => $search->getStatement(),
+        //     "bind" => $search->getBoundData(),
         // ]);
 
         $search->fetchResults();
@@ -45,20 +43,20 @@ class CardsController extends Controller
 
         // ERROR: Cards not found!
         if (empty($results)) {
-            fd_alert('No results. Please try changing your filters.', 'danger');
-            redirect('cards/search');
+            fd_alert("No results. Please try changing your filters.", "danger");
+            fd_redirect("cards/search");
         }
 
         return (new Page)
-            ->template('pages/public/cards/search/index-results')
-            ->title('Cards Search')
+            ->template("pages/public/cards/search/index-results")
+            ->title("Cards Search")
             ->options([
-                'scripts' => ['public/cards/search-results']
+                "scripts" => ["public/cards/search-results"]
             ])
             ->variables([
-                'results' => $results,
-                'filters' => $search->getParameters(),
-                'pagination' => $search->getPagination()
+                "results" => $results,
+                "filters" => $search->getParameters(),
+                "pagination" => $search->getPagination()
             ])
             ->render();
     }
@@ -66,8 +64,8 @@ class CardsController extends Controller
     public function searchHelp(): string
     {
         return (new Page)
-            ->template('pages/public/cards/search/index-help')
-            ->title('Cards Search Help')
+            ->template("pages/public/cards/search/index-help")
+            ->title("Cards Search Help")
             ->render();
     }
 
@@ -83,14 +81,14 @@ class CardsController extends Controller
      * NDR-002
      *
      * @param Request $request
-     * @param string $code The card's code
+     * @param string $code The card"s code
      * @return string
      */
     public function show(Request $request, string $code): string
     {
         // Validate and process input
         // Ex.: ABC-001+C => ABC-001C
-        $code = str_replace(' ', '', urldecode($code));
+        $code = str_replace(" ", "", urldecode($code));
 
         $cardsRepository = new \App\Entities\Card\CardsRepository;
         $cards = $cardsRepository->findAllByCode($code);
@@ -102,46 +100,30 @@ class CardsController extends Controller
 
         // Build Open Graph Protocol data for this page
         $card = $cards->first();
-        $appName = fd_config('app.name');
-        $title = "{$card->get('name')} ({$card->get('code')}) ~ {$appName}";
+        $appName = fd_config("app.name");
+        $title = "{$card->get("name")} ({$card->get("code")}) ~ {$appName}";
         $ogp = [
-            'title' => $title,
-            'url' => $card->get('link'),
-            'image' => [
-                'url' => $card->get('thumb-path'),
-                'alt' => $title
+            "title" => $title,
+            "url" => $card->get("link"),
+            "image" => [
+                "url" => $card->get("thumb-path"),
+                "alt" => $title
             ]
         ];
 
         // Find next card
         $nextCard = $cards->last()->getNext();
-
-        // // Build Open Graph Protocol data for this page
-        // $card = &$cards[0];
-        // $title = "{$card['name']} ({$card['code']}) ~ ".fd_config('app.name');
-        // $ogp = [
-        //     'title' => $title,
-        //     'url' => url('card/'.urlencode($card['code'])),
-        //     'image' => [
-        //         'url' => asset($card['thumb_path']),
-        //         'alt' => $title
-        //     ]
-        // ];
-
-        // // Calculate next card
-        // $lastCard = &$cards[count($cards)-1];
-        // $nextCard = (new Model)->getNext($lastCard['sorted_id']);
         
         return (new Page)
-            ->template('pages/public/cards/show/index')
+            ->template("pages/public/cards/show/index")
             ->title($title)
             ->variables([
-                'cards' => $cards,
-                'next_card' => $nextCard
+                "cards" => $cards,
+                "next_card" => $nextCard
             ])
             ->options([
-                'ogp' => $ogp,
-                'scripts' => ['public/cards/show'],
+                "ogp" => $ogp,
+                "scripts" => ["public/cards/show"],
             ])
             ->render();
     }

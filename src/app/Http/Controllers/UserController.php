@@ -13,17 +13,17 @@ class UserController extends Controller
     {
         $level = fd_auth()->level();
 
-        if ($level === Authorization::ROLE_ADMIN) redirect('admin');
-        if ($level === Authorization::ROLE_JUDGE) redirect('judge');
+        if ($level === Authorization::ROLE_ADMIN) fd_redirect("admin");
+        if ($level === Authorization::ROLE_JUDGE) fd_redirect("judge");
     }
 
     public function adminShowProfile(): string
     {
         return (new Page)
-            ->template('pages/admin/profile')
-            ->title('Admin Profile')
+            ->template("pages/admin/profile")
+            ->title("Admin Profile")
             ->variables([
-                'links' => $this->menuLinks(['judge', 'admin'])
+                "links" => $this->menuLinks(["judge", "admin"])
             ])
             ->render();
     }
@@ -31,10 +31,10 @@ class UserController extends Controller
     public function judgeShowProfile(): string
     {
         return (new Page)
-            ->template('pages/judge/profile')
-            ->title('Judge Profile')
+            ->template("pages/judge/profile")
+            ->title("Judge Profile")
             ->variables([
-                'links' => $this->menuLinks(['judge'])
+                "links" => $this->menuLinks(["judge"])
             ])
             ->render();
     }
@@ -42,22 +42,22 @@ class UserController extends Controller
     private function menuLinks(array $roles): array
     {
         $links = [
-            'judge' => [
-                url('cards/manage') => 'Game: Cards',
-                url('sets/manage') => 'Game: Sets',
-                url('clusters/manage') => 'Game: Clusters',
-                url('formats/manage') => 'Game: Formats',
-                url('rulings/manage') => 'Game: Rulings',
-                url('restrictions/manage') => 'Play: Banned and Limited cards',
-                url('cr/manage') => 'Play: Comprehensive Rules',
-                url('images/trim') => 'Tool: Trim an image',
+            "judge" => [
+                url("cards/manage") => "Game: Cards",
+                url("sets/manage") => "Game: Sets",
+                url("clusters/manage") => "Game: Clusters",
+                url("formats/manage") => "Game: Formats",
+                url("rulings/manage") => "Game: Rulings",
+                url("restrictions/manage") => "Play: Banned and Limited cards",
+                url("cr/manage") => "Play: Comprehensive Rules",
+                url("images/trim") => "Tool: Trim an image",
             ],
-            'admin' => [
-                url('artists') => 'Tool: Artists',
-                url('lookup') => 'Admin: Lookup data',
-                url('clint') => 'Admin: Clint commands',
-                url('hash') => 'Admin: Hash a string',
-                url('phpinfo') => 'Admin: PHP info',
+            "admin" => [
+                url("artists") => "Tool: Artists",
+                url("lookup") => "Admin: Lookup data",
+                url("clint") => "Admin: Clint commands",
+                url("hash") => "Admin: Hash a string",
+                url("phpinfo") => "Admin: PHP info",
             ],
         ];
 

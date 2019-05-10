@@ -27,7 +27,7 @@ class Card
                 "No card found with code <strong>{$code}</strong>",
                 "warning"
             );
-            redirect("/");
+            fd_redirect("/");
         }
 
         $results = true;
