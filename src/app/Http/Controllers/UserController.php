@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function showProfile()
     {
-        $level = auth()->level();
+        $level = fd_auth()->level();
 
         if ($level === Authorization::ROLE_ADMIN) redirect('admin');
         if ($level === Authorization::ROLE_JUDGE) redirect('judge');

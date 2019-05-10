@@ -16,7 +16,7 @@ class ApiCheckAuthorizationMiddleware implements MiddlewareInterface
         if ($requiredRole === 'public') return;
 
         // ERROR: Current user is not authorized
-        if (!auth()->check($requiredRole)) {
+        if (!fd_auth()->check($requiredRole)) {
             throw new ApiAuthorizationException();
         }
     }

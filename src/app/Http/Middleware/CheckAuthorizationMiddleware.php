@@ -16,6 +16,6 @@ class CheckAuthorizationMiddleware implements MiddlewareInterface
         if ($requiredRole === 'public') return;
 
         // ERROR: Current user is not authorized
-        if (!auth()->check($requiredRole)) throw new AuthorizationException();
+        if (!fd_alert()->check($requiredRole)) throw new AuthorizationException();
     }
 }

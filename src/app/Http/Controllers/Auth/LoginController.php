@@ -12,7 +12,7 @@ class LoginController extends Controller
     public function loginForm()
     {
         // Redirect to the appropriate user's profile
-        if (auth()->logged()) redirect('profile');
+        if (fd_auth()->logged()) redirect('profile');
 
         return (new Page)
             ->template('pages/auth/login')
