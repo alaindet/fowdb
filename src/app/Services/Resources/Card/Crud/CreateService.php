@@ -26,7 +26,7 @@ class CreateService extends CrudService
         }
 
         // Create a new card entity on the database
-        database()
+        fd_database()
             ->insert(
                 statement('insert')
                     ->table('cards')

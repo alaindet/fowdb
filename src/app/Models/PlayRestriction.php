@@ -57,7 +57,7 @@ class PlayRestriction extends Model
 
     public static function getBanlistPageData(): array
     {
-        return database()
+        return fd_database()
             ->select(
                 statement('select')
                     ->select([
@@ -95,7 +95,7 @@ class PlayRestriction extends Model
             throw new ModelException('Missing arguments');
         }
 
-        $items = database()
+        $items = fd_database()
             ->select(
                 statement('select')
                     ->select([

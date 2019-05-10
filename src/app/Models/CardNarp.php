@@ -36,7 +36,7 @@ class CardNarp extends Model
      */
     public static function getBaseIdByName(string $name): int
     {
-        $item = database()
+        $item = fd_database()
             ->select(
                 statement('select')
                     ->select('id')
@@ -59,7 +59,7 @@ class CardNarp extends Model
      */
     public static function getBaseCode(string $name): string
     {
-        $item = database()
+        $item = fd_database()
             ->select(
                 statement('select')
                     ->select('code')
@@ -89,7 +89,7 @@ class CardNarp extends Model
      */
     public static function getRelatedCards(string $name): array
     {
-        $items = database()
+        $items = fd_database()
             ->select(
                 statement('select')
                     ->select([

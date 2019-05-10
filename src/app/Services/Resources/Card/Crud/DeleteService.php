@@ -17,7 +17,7 @@ class DeleteService extends CrudService
         $bind = [':cardid' => $this->old['id']];
 
         // Remove from 'cards' table
-        database()
+        fd_database()
             ->delete(
                 statement('delete')
                     ->table('cards')

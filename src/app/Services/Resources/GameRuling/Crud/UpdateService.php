@@ -16,7 +16,7 @@ class UpdateService extends CrudService
     public function syncDatabase(): CrudServiceInterface
     {
         // Create ruling entity on the database
-        database()
+        fd_database()
             ->update(statement('update')
                 ->table('game_rulings')
                 ->values([

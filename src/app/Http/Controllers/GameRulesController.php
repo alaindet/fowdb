@@ -13,7 +13,7 @@ class GameRulesController extends Controller
 {
     public function index(Request $request): string
     {
-        $items = database()
+        $items = fd_database()
             ->select(
                 statement('select')
                     ->from('game_rules')

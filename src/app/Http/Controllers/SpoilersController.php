@@ -32,7 +32,7 @@ class SpoilersController extends Controller
                 ->where('sets_id = :setid')
                 ->orderBy('id DESC');
 
-            $cards = database()
+            $cards = fd_database()
                 ->select($statement)
                 ->bind([':setid' => $spoiler['id']])
                 ->get();

@@ -61,7 +61,7 @@ trait PostProcessingTrait
         }
 
         // Check for an existing card with this set/number combination
-        $existing = database()
+        $existing = fd_database()
             ->select($statement)
             ->bind($bind)
             ->get();
@@ -90,7 +90,7 @@ trait PostProcessingTrait
 
         if ($this->new['narp'] !== '0') return;
 
-        $existing = database()
+        $existing = fd_database()
             ->select(
                 statement('select')
                     ->select('id')

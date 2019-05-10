@@ -22,7 +22,7 @@ class GameRuling extends Model
         array $fieldsToRender = []
     ): array
     {
-        $resources = database()
+        $resources = fd_database()
             ->select(
                 statement('select')
                     ->select(isset($fields) ? implode(',', $fields) : '*')

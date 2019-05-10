@@ -27,7 +27,7 @@ class GameRulesUpdateService extends CrudService
             }
         }
 
-        database()
+        fd_database()
             ->update(
                 statement('update')
                     ->table('game_rules')

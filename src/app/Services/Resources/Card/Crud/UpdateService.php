@@ -44,7 +44,7 @@ class UpdateService extends CrudService
             }
         }
 
-        database()
+        fd_database()
             ->update(
                 statement('update')
                     ->table('cards')

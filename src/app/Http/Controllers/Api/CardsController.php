@@ -31,7 +31,7 @@ class CardsController extends Controller
         if (!isset($term) || $term === '') return $this->autocompleteError();
 
         // Fetch results from the database
-        $items = database()
+        $items = fd_database()
             ->select(
                 statement('select')
                     ->fields(['id', 'name', 'code', 'image_path'])

@@ -44,7 +44,7 @@ class GameRulesController extends Controller
 
     public function index(Request $request): string
     {
-        $database = database()
+        $database = fd_database()
             ->select(
                 statement('select')
                     ->select([

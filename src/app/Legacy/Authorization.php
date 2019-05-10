@@ -72,7 +72,7 @@ class Authorization
         // ERROR: No admin hash stored into session
         if (!Session::exists(self::NAME)) return self::ROLE_PUBLIC;
 
-        $user = database()
+        $user = fd_database()
             ->select(
                 statement('select')
                     ->select('roles_id')

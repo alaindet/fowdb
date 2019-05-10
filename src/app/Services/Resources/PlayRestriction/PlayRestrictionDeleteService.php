@@ -14,7 +14,7 @@ class PlayRestrictionDeleteService extends CrudService
 
     public function syncDatabase(): CrudServiceInterface
     {
-        database()
+        fd_database()
             ->delete(
                 statement('delete')
                     ->table('play_restrictions')

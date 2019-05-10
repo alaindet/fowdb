@@ -23,7 +23,7 @@ class CreateService extends CrudService
             }
         }
 
-        database()
+        fd_database()
             ->insert(
                 statement('insert')
                     ->table('game_sets')

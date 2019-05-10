@@ -15,7 +15,7 @@ class GameRulesDeleteService extends CrudService
     {
         $bind = [':id' => $this->old['id']];
 
-        database()
+        fd_database()
             ->delete(
                 statement('delete')
                     ->table('game_rules')

@@ -115,7 +115,7 @@ class Card extends Model
         array $fieldsToRender = []
     ): array
     {
-        $data = database()
+        $data = fd_database()
             ->select(statement('select')
                 ->select($fields)
                 ->from($this->table)
@@ -145,7 +145,7 @@ class Card extends Model
 
         if ((int) $card['narp'] === 0) return (int) $id;
 
-        $baseCard = database()
+        $baseCard = fd_database()
             ->select(statement('select')
                 ->select('id')
                 ->from($this->table)
@@ -160,7 +160,7 @@ class Card extends Model
     
     public function getBaseIdByName(string $name): int
     {
-        $baseCard = database()
+        $baseCard = fd_database()
             ->select(statement('select')
                 ->select('id')
                 ->from($this->table)
@@ -204,7 +204,7 @@ class Card extends Model
      */
     public static function buildAllSortId(): void
     {
-        database()->rawStatement(
+        fd_database()->rawStatement(
             "SET @index := 0;
             UPDATE
                 cards

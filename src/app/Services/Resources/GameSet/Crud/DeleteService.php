@@ -13,7 +13,7 @@ class DeleteService extends CrudService
 
     public function syncDatabase(): CrudServiceInterface
     {
-        database()
+        fd_database()
             ->delete(
                 statement('delete')
                     ->table('game_sets')
@@ -22,7 +22,7 @@ class DeleteService extends CrudService
             ->bind([':id' => $this->old['id']])
             ->execute();
 
-        database()->resetAutoIncrement('game_sets');
+        fd_database()->resetAutoIncrement('game_sets');
 
         return $this;
     }

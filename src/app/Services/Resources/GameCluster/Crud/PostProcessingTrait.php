@@ -38,7 +38,7 @@ trait PostProcessingTrait
      */
     private function checkExistingResourceOnCreate(): void
     {
-        $existing = database()
+        $existing = fd_database()
             ->select(
                 statement('select')
                     ->from('game_clusters')
@@ -71,7 +71,7 @@ trait PostProcessingTrait
      */
     private function checkExistingResourceOnUpdate(): void
     {
-        $existing = database()
+        $existing = fd_database()
             ->select(
                 statement('select')
                     ->from('game_clusters')

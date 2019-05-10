@@ -34,7 +34,7 @@ class FormatsController extends Controller
                 's.id DESC'
             ]);
 
-        $items = database()
+        $items = fd_database()
             ->select($statement)
             ->get();
 

@@ -32,7 +32,7 @@ trait DynamicRouteGeneratorsTrait
             ->from('cards')
             ->orderBy([ 'clusters_id DESC', 'sets_id DESC', 'num ASC' ]);
 
-        $items = database()
+        $items = fd_database()
             ->select($statement)
             ->get();
 
@@ -64,7 +64,7 @@ trait DynamicRouteGeneratorsTrait
             ->from('game_rules')
             ->orderBy([ 'date_validity DESC', 'id DESC' ]);
 
-        $items = database()
+        $items = fd_database()
             ->select($statement)
             ->get();
 

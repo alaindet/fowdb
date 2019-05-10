@@ -81,7 +81,7 @@ class GameRulingsController extends Controller
         $filters = $this->setFilters($request, $statement, $bind);
 
         // Get data from database
-        $database = database()
+        $database = fd_database()
             ->select($statement)
             ->bind($bind)
             ->page($request->input()->get('page') ?? 1)
@@ -112,7 +112,7 @@ class GameRulingsController extends Controller
                 ->where('id = :id')
                 ->limit(1);
 
-            $card = database()
+            $card = fd_database()
                 ->select($statement)
                 ->bind([':id' => $cardId])
                 ->first();
@@ -157,7 +157,7 @@ class GameRulingsController extends Controller
 
     public function updateForm(Request $request, string $id): string
     {
-        $item = database()
+        $item = fd_database()
             ->select(
                 statement('select')
                     ->select([
@@ -215,7 +215,7 @@ class GameRulingsController extends Controller
 
     public function deleteForm(Request $request, string $id): string
     {
-        $item = database()
+        $item = fd_database()
             ->select(
                 statement('select')
                     ->select([

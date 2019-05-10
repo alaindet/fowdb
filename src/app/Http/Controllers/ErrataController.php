@@ -24,7 +24,7 @@ class ErrataController extends Controller
             ->where('r.is_errata = 1')
             ->orderBy('r.date DESC');
 
-        $database = database()
+        $database = fd_database()
             ->select($statement)
             ->page($request->input()->get('page') ?? 1)
             ->paginationLink($request->getCurrentUrl());

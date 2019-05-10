@@ -86,7 +86,7 @@ class PlayRestrictionsController extends Controller
 
         $filters = $this->setFilters($request, $statement, $bind);
 
-        $database = database()
+        $database = fd_database()
             ->select($statement)
             ->bind($bind)
             ->page($request->input()->get('page') ?? 1)
@@ -176,7 +176,7 @@ class PlayRestrictionsController extends Controller
             )
             ->where('r.id = :id');
 
-        $item = database()
+        $item = fd_database()
             ->select($statement)
             ->bind([':id' => $id])
             ->first();
@@ -247,7 +247,7 @@ class PlayRestrictionsController extends Controller
             )
             ->where('r.id = :id');
 
-        $item = database()
+        $item = fd_database()
             ->select($statement)
             ->bind([':id' => $id])
             ->first();

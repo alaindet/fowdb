@@ -101,7 +101,7 @@ class GameFormatsController extends Controller
 
     public function updateForm(Request $request, string $id): string
     {
-        $clusters = database()
+        $clusters = fd_database()
             ->select(
                 statement('select')
                     ->from('game_clusters')
@@ -145,7 +145,7 @@ class GameFormatsController extends Controller
 
     public function deleteForm(Request $request, string $id): string
     {
-        $item = database()
+        $item = fd_database()
             ->select(
                 statement('select')
                     ->select([

@@ -14,7 +14,7 @@ class CreateService extends CrudService
     public function syncDatabase(): CrudServiceInterface
     {
         // Create ruling entity on the database
-        database()
+        fd_database()
             ->insert(statement('insert')
                 ->table('game_rulings')
                 ->values([

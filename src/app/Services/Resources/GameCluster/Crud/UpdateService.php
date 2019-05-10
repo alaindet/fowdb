@@ -29,7 +29,7 @@ class UpdateService extends CrudService
             ->values($placeholders)
             ->where('id = :id');
 
-        database()
+        fd_database()
             ->update($statement)
             ->bind($bind)
             ->execute();

@@ -294,7 +294,7 @@ trait ValidationRulesTrait
             ->where("{$column} = :value")
             ->limit(1);
 
-        $result = database()
+        $result = fd_database()
             ->select($statement)
             ->bind([":value" => $dataValue])
             ->first();
@@ -334,7 +334,7 @@ trait ValidationRulesTrait
             ->where("{$column} = :value")
             ->limit(1);
 
-        $result = database()
+        $result = fd_database()
             ->select($statement)
             ->bind([":value" => $dataValue])
             ->first();

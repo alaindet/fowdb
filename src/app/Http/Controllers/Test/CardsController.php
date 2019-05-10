@@ -72,7 +72,7 @@ class CardsController extends Controller
     {
         $filter = 'total_cost IS NULL';
 
-        $data = database()
+        $data = fd_database()
             ->select(
                 statement('select')
                     ->select(['type_bit', 'COUNT(*) as count'])

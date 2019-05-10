@@ -27,7 +27,7 @@ class PlayRestrictionUpdateService extends CrudService
             }
         }
 
-        database()
+        fd_database()
             ->update(
                 statement('update')
                     ->table('play_restrictions')

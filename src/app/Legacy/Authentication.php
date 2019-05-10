@@ -11,7 +11,7 @@ class Authentication
 
     public static function logout(): void
     {
-        database()
+        fd_database()
             ->update(
                 statement('update')
                     ->table('users')
@@ -28,7 +28,7 @@ class Authentication
     public static function login(string $username, string $password): void
     {
         // Read the admin info from the database
-        $user = database()
+        $user = fd_database()
             ->select(
                 statement('select')
                     ->fields('password')
@@ -51,7 +51,7 @@ class Authentication
         $token = password_hash($kindOfUnique, PASSWORD_BCRYPT);
 
         // Store the hash into the database
-        database()
+        fd_database()
             ->update(
                 statement('update')
                     ->table('users')

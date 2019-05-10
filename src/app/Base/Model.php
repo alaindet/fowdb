@@ -184,7 +184,7 @@ abstract class Model extends Base
         array $fields = null
     ): array
     {
-        return database()
+        return fd_database()
             ->select(
                 statement('select')
                     ->select(!empty($fields) ? implode(',', $fields) : '*')
@@ -204,7 +204,7 @@ abstract class Model extends Base
      */
     private function fetchAll(array $fields = null): array
     {
-        return database()
+        return fd_database()
             ->select(
                 statement('select')
                     ->select(!empty($fields) ? implode(',', $fields) : '*')

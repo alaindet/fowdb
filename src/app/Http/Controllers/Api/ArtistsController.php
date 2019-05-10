@@ -26,7 +26,7 @@ class ArtistsController extends Controller
         if (!isset($term)) return $response->setData($errorData)->render();
 
         // Fetch results from the database
-        $items = database()
+        $items = fd_database()
             ->select(
                 statement('select')
                     ->fields('DISTINCT artist_name')

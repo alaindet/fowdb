@@ -207,7 +207,7 @@ abstract class Search implements SearchInterface
     public function fetchResults(): SearchInterface
     {
         // Instantiate the database
-        $database = database()
+        $database = fd_database()
             ->select($this->statement)
             ->bind($this->bind)
             ->page($this->parameters['page'] ?? 1)

@@ -19,7 +19,7 @@ class GameClustersController extends Controller
 {
     public function index(Request $request): string
     {
-        $items = database()
+        $items = fd_database()
             ->select(
                 statement('select')
                     ->from('game_clusters')
@@ -42,7 +42,7 @@ class GameClustersController extends Controller
 
     public function apiShowAll(Request $request): string
     {
-        $items = database()
+        $items = fd_database()
             ->select(
                 statement('select')
                     ->from('game_clusters')

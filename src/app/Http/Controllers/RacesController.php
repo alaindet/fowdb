@@ -48,7 +48,7 @@ class RacesController extends Controller
     {
         $filter = $this->buildRaceFilter($what === 'races');
 
-        $data = database()
+        $data = fd_database()
             ->select(
                 statement('select')
                     ->fields('race')

@@ -19,7 +19,7 @@ class DeleteService extends CrudService
 
         $bind = [':id' => $this->old['id']];
 
-        database()
+        fd_database()
             ->delete($statement)
             ->bind($bind)
             ->execute();

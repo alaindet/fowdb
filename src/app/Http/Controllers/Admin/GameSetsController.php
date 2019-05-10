@@ -16,7 +16,7 @@ class GameSetsController extends Controller
 {
     public function index(Request $request): string
     {
-        $database = database()
+        $database = fd_database()
             ->select(
                 statement('select')
                     ->select([
@@ -50,7 +50,7 @@ class GameSetsController extends Controller
 
     public function createForm(Request $request): string
     {
-        $clusters = database()
+        $clusters = fd_database()
             ->select(
                 statement('select')
                     ->from('game_clusters')
@@ -93,7 +93,7 @@ class GameSetsController extends Controller
 
     public function updateForm(Request $request, string $id): string
     {
-        $clusters = database()
+        $clusters = fd_database)
             ->select(
                 statement('select')
                     ->from('game_clusters')
@@ -137,7 +137,7 @@ class GameSetsController extends Controller
 
     public function deleteForm(Request $request, string $id): string
     {
-        $item = database()
+        $item = fd_database()
             ->select(
                 statement('select')
                     ->select([

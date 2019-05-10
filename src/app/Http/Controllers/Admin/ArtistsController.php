@@ -31,7 +31,7 @@ class ArtistsController extends Controller
         $set = (new GameSet)->byId($setId, ['id', 'name', 'code']);
 
         // Fetch cards for this set
-        $cards = database()
+        $cards = fd_database()
             ->select(
                 statement('select')
                 ->select(['id','image_path','artist_name'])
@@ -93,7 +93,7 @@ class ArtistsController extends Controller
         $card = $model->byId($request->input()->post('card-id'));
 
         // Update card data
-        database()
+        fd_config()
             ->update(
                 statement('update')
                     ->table('cards')
