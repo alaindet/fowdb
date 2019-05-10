@@ -3,27 +3,27 @@
 // VARIABLES
 // $card
 
-$blank = asset('images/icons/blank.gif');
+$blank = asset("images/icons/blank.gif");
 
 // Cost -----------------------------------------------------------------------
-$displayCost = '';
-if (isset($card['attribute_cost'])) {
-  foreach (str_split($card['attribute_cost']) as $attribute) {
+$displayCost = "";
+if (isset($card["attribute_cost"])) {
+  foreach (str_split($card["attribute_cost"]) as $attribute) {
     $displayCost .= "<img src=\"{$blank}\" class=\"fd-icon-{$attribute}\">";
   }
 }
-if (isset($card['free_cost'])) {
-  $displayCost .= $card['free_cost'];
+if (isset($card["free_cost"])) {
+  $displayCost .= $card["free_cost"];
 }
-if ($displayCost === '') {
-  $displayCost = '(No cost)';
+if ($displayCost === "") {
+  $displayCost = "(No cost)";
 }
 
 // Attribute ------------------------------------------------------------------
-if (isset($card['attribute'])) {
+if (isset($card["attribute"])) {
   $displayAttribute = [];
-  $map = lookup('attributes.code2name');
-  foreach (explode('/', $card['attribute']) as $attribute) {
+  $map = fd_lookup("attributes.code2name");
+  foreach (explode("/", $card["attribute"]) as $attribute) {
     $label = $map[$attribute];
     $displayAttribute[] = (
       "<img ".
@@ -31,44 +31,44 @@ if (isset($card['attribute'])) {
         "class=\"fd-icon-{$attribute}\"> {$label}"
     );
   }
-  $displayAttribute = implode(', ', $displayAttribute);
+  $displayAttribute = implode(", ", $displayAttribute);
 } else {
-  $displayAttribute = '(No attribute)';
+  $displayAttribute = "(No attribute)";
 }
 
 // Type -----------------------------------------------------------------------
-$typeLabels = \App\Views\Card\Card::buildTypeLabels($card['type_bit']);
-$cardType = implode(' / ', $typeLabels);
+$typeLabels = \App\Views\Card\Card::buildTypeLabels($card["type_bit"]);
+$cardType = implode(" / ", $typeLabels);
 
 // ATK / DEF ------------------------------------------------------------------
-if (isset($card['atk']) && isset($card['def'])) {
-  $displayBattleValues = "{$card['atk']} / {$card['def']}";
+if (isset($card["atk"]) && isset($card["def"])) {
+  $displayBattleValues = "{$card["atk"]} / {$card["def"]}";
 } else {
-  $displayBattleValues = '(No battle values)';
+  $displayBattleValues = "(No battle values)";
 }
 
 // CSN ------------------------------------------------------------------------
 $displayCsn = (
-  "<li>".lookup('clusters.id2name.id'.$card['clusters_id'])."</li>".
-  "<li>".lookup('sets.id2name.id'.$card['sets_id'])."</li>".
-  "<li>".str_pad($card['num'], 3, '0', STR_PAD_LEFT)."</li>"
+  "<li>".fd_lookup("clusters.id2name.id".$card["clusters_id"])."</li>".
+  "<li>".fd_lookup("sets.id2name.id".$card["sets_id"])."</li>".
+  "<li>".str_pad($card["num"], 3, "0", STR_PAD_LEFT)."</li>"
 );
 
 ?>
 <div class="page-header">
   <h1>Delete card</h1>
-  <?=component('breadcrumb', [
-    'Admin' => url('profile'),
-    'Cards' => url('cards/manage'),
-    '(&larr; Card page)' => url('card/'.urlencode($card['code'])),
-    'Delete' => '#'
+  <?=component("breadcrumb", [
+    "Admin" => url("profile"),
+    "Cards" => url("cards/manage"),
+    "(&larr; Card page)" => url("card/".urlencode($card["code"])),
+    "Delete" => "#"
   ])?>
 </div>
 
 <!-- Form -->
 <div class="fd-box --more-margin">
   <form
-    action="<?=url("cards/delete/{$card['id']}")?>"
+    action="<?=url("cards/delete/{$card["id"]}")?>"
     method="post"
     class="form-horizontal"
   >
@@ -79,7 +79,7 @@ $displayCsn = (
       <label class="col-sm-2 control-label">Name</label>
       <div class="col-sm-10">
         <p class="fd-text-form-horizontal font-110">
-          <?="{$card['name']} ({$card['code']})"?>
+          <?="{$card["name"]} ({$card["code"]})"?>
         </p>
       </div>
     </div>
@@ -89,12 +89,12 @@ $displayCsn = (
       <label class="col-sm-2 control-label">Image</label>
       <div class="col-sm-10" id="card-image">
         <a
-          href="<?=asset($card['image_path'])?>"
+          href="<?=asset($card["image_path"])?>"
           data-lightbox="cards"
         >
           <span class="fd-zoomable-lg">
             <img
-              src="<?=asset($card['image_path'])?>"
+              src="<?=asset($card["image_path"])?>"
               width="200px"
             >
           </span>
@@ -147,7 +147,7 @@ $displayCsn = (
       <label class="col-sm-2 control-label">Race</label>
       <div class="col-sm-10 font-110">
         <p class="fd-text-form-horizontal font-110">
-          <?=$card['race'] ?? '(No race)'?>
+          <?=$card["race"] ?? "(No race)"?>
         </p>
       </div>
     </div>
@@ -167,7 +167,7 @@ $displayCsn = (
       <label class="col-sm-2 control-label">Text</label>
       <div class="col-sm-10">
         <p class="fd-text-form-horizontal font-110">
-          <?=$card['text']?>
+          <?=$card["text"]?>
         </p>
       </div>
     </div>

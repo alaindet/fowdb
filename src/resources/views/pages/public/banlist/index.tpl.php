@@ -4,7 +4,7 @@
 // $items
 
 // Format name 2 format code
-$formatCodes = array_flip(lookup('formats.code2name'));
+$formatCodes = array_flip(fd_lookup("formats.code2name"));
 
 ?>
 <?php foreach ($items as $formatName => $format):
@@ -46,17 +46,17 @@ $formatCodes = array_flip(lookup('formats.code2name'));
               <div class="fd-grid-2 fd-grid-sm-3 fd-grid-md-4 p-25">
 
                 <!-- Image -->
-                <a href="<?=$card['link']?>">
-                  <img src="<?=$card['image']?>" alt="<?=$card['name']?>" />
+                <a href="<?=$card["link"]?>">
+                  <img src="<?=$card["image"]?>" alt="<?=$card["name"]?>" />
                 </a>
 
                 <ul class="p-50">
 
                   <!-- Name -->
-                  <li><a href="<?=$card['link']?>"><?=$card['name']?></a></li>
+                  <li><a href="<?=$card["link"]?>"><?=$card["name"]?></a></li>
 
                   <!-- Code -->
-                  <li><em><?=$card['code']?></em></li>
+                  <li><em><?=$card["code"]?></em></li>
 
                 </ul>
               </div>

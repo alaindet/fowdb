@@ -13,7 +13,7 @@
 // Map attribute codes to HTML icons
 $items = [];
 $blank = asset("images/icons/blank.gif");
-$attributes = array_keys(lookup("attributes.display"));
+$attributes = array_keys(fd_lookup("attributes.display"));
 foreach ($attributes as $attribute) {
   $items[$attribute] = (
     "<img src=\"{$blank}\" class=\"fd-icon-{$attribute} --bigger\">"

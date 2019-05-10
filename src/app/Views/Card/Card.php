@@ -11,32 +11,32 @@ use App\Utils\Bitmask;
 class Card
 {
     /**
-     * Props to exclude on the 'display' element of cards
+     * Props to exclude on the "display" element of cards
      *
      * @var array
      */
     public static $excludeDisplay = [
-        'id',
-        'back_side',
-        'narp',
-        'image_path',
-        'thumb_path',
-        'rulings',
-        'sorted_id',
+        "id",
+        "back_side",
+        "narp",
+        "image_path",
+        "thumb_path",
+        "rulings",
+        "sorted_id",
     ];
 
     /**
-     * Returns a list of a card's formats, ex.: [ [name, code], [name, code] ]
+     * Returns a list of a card"s formats, ex.: [ [name, code], [name, code] ]
      * Based on its cluster
      * 
-     * @param string $cluster This card's cluster
+     * @param string $cluster This card"s cluster
      * @return array Clusters of this card
      */
     public static function formatsListByCluster(string $cluster): array
     {
-        $lookup = lookup('formats');
-        $codeToName = $lookup['code2name'];
-        $codeToClusters = $lookup['code2clusters'];
+        $lookup = fd_lookup("formats");
+        $codeToName = $lookup["code2name"];
+        $codeToClusters = $lookup["code2clusters"];
 
         // I need the array key, hence the custom Arrays::reduce
         return Arrays::reduce(
@@ -52,8 +52,8 @@ class Card
             ) use (&$cluster, &$codeToName) {
 				if (in_array($cluster, $formatClusters)) {
 					$result[] = [
-						'name' => $codeToName[$formatCode],
-						'code' => $formatCode
+						"name" => $codeToName[$formatCode],
+						"code" => $formatCode
 					];
 				}
 				return $result;
@@ -78,14 +78,14 @@ class Card
             ? $formats = self::formatsListByCluster($input)
             : $formats =& $input;
 
-        return implode(', ', Arrays::map($formats, function ($format) {
-            $link = url('cards', [ 'format' => [$format['code']] ]);
-            return "<a href=\"{$link}\">{$format['name']}</a>";
+        return implode(", ", Arrays::map($formats, function ($format) {
+            $link = url("cards", [ "format" => [$format["code"]] ]);
+            return "<a href=\"{$link}\">{$format["name"]}</a>";
         }));
     }
 
     /**
-     * Adds a 'display' element to card arrays to show info on card pages
+     * Adds a "display" element to card arrays to show info on card pages
      *
      * @param array $cards Reference to cards
      * @return void
@@ -98,15 +98,15 @@ class Card
                 if (
                     !in_array($key, self::$excludeDisplay) &&
                     $value !== null &&
-                    $value !== ''
+                    $value !== ""
                 ) {
                     $display[] = [
-                        'label' => Strings::snakeToTitle($key),
-                        'value' => $value
+                        "label" => Strings::snakeToTitle($key),
+                        "value" => $value
                     ];
                 }
             }
-            $card['display'] = $display;
+            $card["display"] = $display;
         }
     }
 
@@ -119,34 +119,34 @@ class Card
         $bitmask = (new Bitmask)->setMask(intval($type));
 
         // Remove costs
-        foreach ($removables['no-cost'] as $type) {
+        foreach ($removables["no-cost"] as $type) {
             if (!$bitmask->hasBitValue($type)) continue;
-            unset($card['cost']);
-            unset($card['total_cost']);
-            unset($card['attribute_cost']);
+            unset($card["cost"]);
+            unset($card["total_cost"]);
+            unset($card["attribute_cost"]);
             break;
         }
 
         // Remove attribute
-        foreach ($removables['no-attribute'] as $type) {
+        foreach ($removables["no-attribute"] as $type) {
             if (!$bitmask->hasBitValue($type)) continue;
-            unset($card['attribute_bit']);
+            unset($card["attribute_bit"]);
             break;
         }
 
         // Remove divinity
         $removeDivinity = false;
-        foreach ($removables['can-divinity'] as $type) {
+        foreach ($removables["can-divinity"] as $type) {
             if ($bitmask->hasBitValue($type)) $removeDivinity = false;
         }
-        if ($removeDivinity) unset($card['divinity']);
+        if ($removeDivinity) unset($card["divinity"]);
 
         // Remove ATK and DEF
         $removeAtkDef = true;
-        foreach ($removables['can-battle'] as $type) {
+        foreach ($removables["can-battle"] as $type) {
             if ($bitmask->hasBitValue($type)) $removeAtkDef = false;
         }
-        if ($removeAtkDef) unset($card['atk_def']);
+        if ($removeAtkDef) unset($card["atk_def"]);
 
         return $card;
     }
@@ -156,7 +156,7 @@ class Card
         $bitmask = (new Bitmask)->setMask($typeMask);
         $labels = [];
 
-        foreach (lookup('types.display') as $label => $bitval) {
+        foreach (fd_lookup("types.display") as $label => $bitval) {
             if ($bitmask->hasBitValue($bitval)) $labels[] = $label;
         }
 

@@ -6,39 +6,39 @@
 
 // STATE ----------------------------------------------------------------------
 $state = [
-  'partial-match' => isset($state['partial-match']),
-  'in-fields' => $state['in-fields'] ?? [],
-  'exclude' => $state['exclude'] ?? [],
-  'sort' => $state['sort'] ?? false,
-  'sort-dir' => isset($state['sort-dir']),
-  'format' => $state['format'] ?? lookup('formats.default'),
-  'type' => $state['type'] ?? [],
-  'type-all' => isset($state['type-all']),
-  'attribute' => $state['attribute'] ?? [],
-  'attribute-single' => isset($state['attribute-single']),
-  'attribute-multi' => isset($state['attribute-multi']),
-  'attribute-only' => isset($state['attribute-only']),
-  'attribute-all' => isset($state['attribute-all']),
-  'cost' => $state['cost'] ?? [],
-  'cost-x' => isset($state['cost-x']),
-  'set' => $state['set'] ?? null,
-  'cluster' => $state['cluster'] ?? null,
-  'rarity' => $state['rarity'] ?? [],
-  'race' => $state['race'] ?? null,
-  'illust' => $state['illust'] ?? null,
-  'atk' => $state['atk'] ?? null,
-  'def' => $state['def'] ?? null,
-  'atk-operator' => $state['atk-operator'] ?? 'equals',
-  'def-operator' => $state['def-operator'] ?? 'equals',
-  'back-side' => $state['back-side'] ?? [],
-  'divinity' => $state['divinity'] ?? [],
-  'quickcast' => isset($state['quickcast']),
+  "partial-match" => isset($state["partial-match"]),
+  "in-fields" => $state["in-fields"] ?? [],
+  "exclude" => $state["exclude"] ?? [],
+  "sort" => $state["sort"] ?? false,
+  "sort-dir" => isset($state["sort-dir"]),
+  "format" => $state["format"] ?? fd_lookup("formats.default"),
+  "type" => $state["type"] ?? [],
+  "type-all" => isset($state["type-all"]),
+  "attribute" => $state["attribute"] ?? [],
+  "attribute-single" => isset($state["attribute-single"]),
+  "attribute-multi" => isset($state["attribute-multi"]),
+  "attribute-only" => isset($state["attribute-only"]),
+  "attribute-all" => isset($state["attribute-all"]),
+  "cost" => $state["cost"] ?? [],
+  "cost-x" => isset($state["cost-x"]),
+  "set" => $state["set"] ?? null,
+  "cluster" => $state["cluster"] ?? null,
+  "rarity" => $state["rarity"] ?? [],
+  "race" => $state["race"] ?? null,
+  "illust" => $state["illust"] ?? null,
+  "atk" => $state["atk"] ?? null,
+  "def" => $state["def"] ?? null,
+  "atk-operator" => $state["atk-operator"] ?? "equals",
+  "def-operator" => $state["def-operator"] ?? "equals",
+  "back-side" => $state["back-side"] ?? [],
+  "divinity" => $state["divinity"] ?? [],
+  "quickcast" => isset($state["quickcast"]),
 ];
 
 ?>
 <div
   id="the-filters"
-  class="<?=$areResults ? ' hidden' : ''?>"
+  class="<?=$areResults ? " hidden" : ""?>"
 >
   <div class="fd-box --xs-less-padding">
 
@@ -81,64 +81,64 @@ $state = [
         <!-- Left filters -->
         <div class="col-sm-12 col-md-6 ph-0 sm-ph-100">
           <?=include_view(
-            'pages/public/cards/search/includes/form/filters/options',
-            ['state' => $state]
+            "pages/public/cards/search/includes/form/filters/options",
+            ["state" => $state]
           )?>
           <?=include_view(
-            'pages/public/cards/search/includes/form/filters/format',
-            ['state' => $state]
+            "pages/public/cards/search/includes/form/filters/format",
+            ["state" => $state]
           )?>
           <?=include_view(
-            'pages/public/cards/search/includes/form/filters/type',
-            ['state' => $state]
+            "pages/public/cards/search/includes/form/filters/type",
+            ["state" => $state]
           )?>
           <?=include_view(
-            'pages/public/cards/search/includes/form/filters/attribute',
-            ['state' => $state]
+            "pages/public/cards/search/includes/form/filters/attribute",
+            ["state" => $state]
           )?>
           <?=include_view(
-            'pages/public/cards/search/includes/form/filters/cost',
-            ['state' => $state]
+            "pages/public/cards/search/includes/form/filters/cost",
+            ["state" => $state]
           )?>
         </div>
 
         <!-- Right filters -->
         <div class="col-sm-12 col-md-6 ph-0 sm-ph-100">
           <?=include_view(
-            'pages/public/cards/search/includes/form/filters/set',
-            ['state' => $state]
+            "pages/public/cards/search/includes/form/filters/set",
+            ["state" => $state]
           )?>
           <?=include_view(
-            'pages/public/cards/search/includes/form/filters/cluster',
-            ['state' => $state]
+            "pages/public/cards/search/includes/form/filters/cluster",
+            ["state" => $state]
           )?>
           <?=include_view(
-            'pages/public/cards/search/includes/form/filters/rarity',
-            ['state' => $state]
+            "pages/public/cards/search/includes/form/filters/rarity",
+            ["state" => $state]
           )?>
           <?=include_view(
-            'pages/public/cards/search/includes/form/filters/race',
-            ['state' => $state]
+            "pages/public/cards/search/includes/form/filters/race",
+            ["state" => $state]
           )?>
           <?=include_view(
-            'pages/public/cards/search/includes/form/filters/illustrator',
-            ['state' => $state]
+            "pages/public/cards/search/includes/form/filters/illustrator",
+            ["state" => $state]
           )?>
           <?=include_view(
-            'pages/public/cards/search/includes/form/filters/atkdef',
-            ['state' => $state]
+            "pages/public/cards/search/includes/form/filters/atkdef",
+            ["state" => $state]
           )?>
           <?=include_view(
-            'pages/public/cards/search/includes/form/filters/back-side',
-            ['state' => $state]
+            "pages/public/cards/search/includes/form/filters/back-side",
+            ["state" => $state]
           )?>
           <?=include_view(
-            'pages/public/cards/search/includes/form/filters/divinity',
-            ['state' => $state]
+            "pages/public/cards/search/includes/form/filters/divinity",
+            ["state" => $state]
           )?>
           <?=include_view(
-            'pages/public/cards/search/includes/form/filters/flags',
-            ['state' => $state]
+            "pages/public/cards/search/includes/form/filters/flags",
+            ["state" => $state]
           )?>
         </div>
 

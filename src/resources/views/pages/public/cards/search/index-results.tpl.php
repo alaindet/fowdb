@@ -34,23 +34,23 @@
 // type-selected
 
 $areResults = !empty($results);
-$spoilerIds = lookup('spoilers.ids');
-$format = $filters['format'] ?? null;
-$bannedList = lookup("banned.{$format}") ?? [];
+$spoilerIds = fd_lookup("spoilers.ids");
+$format = $filters["format"] ?? null;
+$bannedList = fd_lookup("banned.{$format}") ?? [];
 
 ?>
 <div class="row">
 
   <!-- Form -->
   <div class="col-xs-12">
-    <?=include_view('pages/public/cards/search/includes/form/form', [
-      'areResults' => true,
-      'state' => $filters,
+    <?=include_view("pages/public/cards/search/includes/form/form", [
+      "areResults" => true,
+      "state" => $filters,
     ])?>
   </div>
 
   <!-- Options -->
-  <?=include_view('pages/public/cards/search/includes/results/options')?>
+  <?=include_view("pages/public/cards/search/includes/results/options")?>
   
   <div class="col-xs-12" id="the-results">
     <div class="fd-box --xs-less-padding">
@@ -78,10 +78,10 @@ $bannedList = lookup("banned.{$format}") ?? [];
       <div class="fd-box__content">
 
         <!-- Pagination (top) -->
-        <?php if ($pagination['has-pagination']): ?>
-          <?=$pagelinks = component('pagination', [
-            'pagination' => $pagination,
-            // 'no-label' => true
+        <?php if ($pagination["has-pagination"]): ?>
+          <?=$pagelinks = component("pagination", [
+            "pagination" => $pagination,
+            // "no-label" => true
           ])?>
         <?php endif; ?>
 
@@ -89,24 +89,24 @@ $bannedList = lookup("banned.{$format}") ?? [];
         <div class="fd-grid-items js-fd-card-items">
           <?php foreach ($results as $item):
 
-            $link = url('card/'.urlencode($item['code']));
+            $link = url("card/".urlencode($item["code"]));
 
-            $custom = '';
+            $custom = "";
 
-            if (in_array($item['sets_id'], $spoilerIds)) {
-              $custom = ' fd-card-item--spoiler';
+            if (in_array($item["sets_id"], $spoilerIds)) {
+              $custom = " fd-card-item--spoiler";
             }
 
-            if (in_array(intval($item['id']), $bannedList)) {
-              $custom = ' fd-card-item--banned';
+            if (in_array(intval($item["id"]), $bannedList)) {
+              $custom = " fd-card-item--banned";
             }
 
           ?>
             <div class="fd-card-item fd-grid fd-grid-3<?=$custom?>">
               <a href="<?=$link?>">
                 <img
-                  src="<?=asset($item['thumb_path'])?>"
-                  alt="<?=$item['name']?>"
+                  src="<?=asset($item["thumb_path"])?>"
+                  alt="<?=$item["name"]?>"
                 >
               </a>
             </div>
@@ -114,14 +114,14 @@ $bannedList = lookup("banned.{$format}") ?? [];
         </div>
 
         <!-- Pagination (bottom) -->
-        <?php if ($pagination['has-pagination']): ?>
+        <?php if ($pagination["has-pagination"]): ?>
           <div class="mv-50">
             <?=$pagelinks?>
           </div>
         <?php endif; ?>
 
         <!-- Top anchor -->
-        <div class="text-center"><?=component('top-anchor')?></div>
+        <div class="text-center"><?=component("top-anchor")?></div>
 
       </div><!-- /.fd-box__content -->
     </div><!-- /.fd-box -->

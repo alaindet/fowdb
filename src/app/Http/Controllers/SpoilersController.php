@@ -13,41 +13,41 @@ class SpoilersController extends Controller
     private function getSpoilerSets(): array
     {
         $items = [];
-        $map = lookup('sets.code2id');
+        $map = fd_lookup("sets.code2id");
 
-        foreach (lookup('spoilers.sets') as $spoiler) {
+        foreach (fd_lookup("spoilers.sets") as $spoiler) {
 
-            $statement = statement('select')
+            $statement = statement("select")
                 ->select([
-                    'id',
-                    'back_side',
-                    'code',
-                    'num',
-                    'name',
-                    'type_bit',
-                    'image_path',
-                    'thumb_path'
+                    "id",
+                    "back_side",
+                    "code",
+                    "num",
+                    "name",
+                    "type_bit",
+                    "image_path",
+                    "thumb_path"
                 ])
-                ->from('cards')
-                ->where('sets_id = :setid')
-                ->orderBy('id DESC');
+                ->from("cards")
+                ->where("sets_id = :setid")
+                ->orderBy("id DESC");
 
             $cards = fd_database()
                 ->select($statement)
-                ->bind([':setid' => $spoiler['id']])
+                ->bind([":setid" => $spoiler["id"]])
                 ->get();
 
             // Count just base faces
             $counter = 0;
             if (!empty($cards)) {
                 foreach ($cards as $card) {
-                    if ($card['back_side'] === '0') $counter++;
+                    if ($card["back_side"] === "0") $counter++;
                 }
             }
 
-            // Add 'spoiled' and 'cards' elements to set
-            $spoiler['spoiled'] = $counter;
-            $spoiler['cards'] = $cards;
+            // Add "spoiled" and "cards" elements to set
+            $spoiler["spoiled"] = $counter;
+            $spoiler["cards"] = $cards;
 
             // Add this set to existing sets
             $items[] = $spoiler;
@@ -59,22 +59,22 @@ class SpoilersController extends Controller
     public function index(Request $request): string
     {
         // ERROR: Missing spoilers at the moment
-        if (empty(lookup('spoilers.ids'))) {
+        if (empty(fd_lookup("spoilers.ids"))) {
             Alert::add(
-                'No spoilers on FoWDB at the moment, sorry.',
-                'warning'
+                "No spoilers on FoWDB at the moment, sorry.",
+                "warning"
             );
-            Redirect::to('/');
+            Redirect::to("/");
         }
 
         return (new Page)
-            ->template('pages/public/cards/spoiler/index')
-            ->title('Spoiler')
+            ->template("pages/public/cards/spoiler/index")
+            ->title("Spoiler")
             ->variables([
-                'items' => $this->getSpoilerSets()
+                "items" => $this->getSpoilerSets()
             ])
             ->options([
-                'scripts' => ['public/cards/spoiler']
+                "scripts" => ["public/cards/spoiler"]
             ])
             ->render();
     }

@@ -1,14 +1,14 @@
 <?php
 
-$clusters = lookup('clusters.list');
-$setsCode2Id = lookup('sets.code2id');
+$clusters = fd_lookup("clusters.list");
+$setsCode2Id = fd_lookup("sets.code2id");
 
 ?>
 <div class="page-header">
   <h1>Artists</h1>
-  <?=component('breadcrumb', [
-    'Admin' => url('admin'),
-    'Artists' => '#'
+  <?=component("breadcrumb", [
+    "Admin" => url("admin"),
+    "Artists" => "#"
   ])?>
 </div>
 
@@ -27,8 +27,8 @@ $setsCode2Id = lookup('sets.code2id');
         <option value=0>Select a set...</option>
 
         <?php foreach ($clusters as $cluster_code => $cluster): ?>
-          <optgroup label="<?=$cluster['name']?>">
-            <?php foreach($cluster['sets'] as $setcode => $setname):
+          <optgroup label="<?=$cluster["name"]?>">
+            <?php foreach($cluster["sets"] as $setcode => $setname):
               $setid = $setsCode2Id[$setcode];
             ?>
               <option value="<?=$setid?>">

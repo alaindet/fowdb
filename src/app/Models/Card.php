@@ -10,64 +10,64 @@ class Card extends Model
     use BuildHtmlAttribute;
 
     public $virtualAttributes = [
-        '*html-name' => 'getHtmlAttribute',
-        '*html-type' => 'getHtmlTypeAttribute',
-        '*html-cost' => 'getHtmlCostAttribute',
-        '*html-total-cost' => 'getHtmlTotalCostAttribute',
-        '*html-battle-stats' => 'getHtmlBattleStatsAttribute',
-        '*html-divinity' => 'getHtmlDivinityAttribute',
-        '*html-race' => 'getHtmlRaceAttribute',
-        '*html-attribute' => 'getHtmlAttributeAttribute',
-        '*html-text' => 'getHtmlTextAttribute',
-        '*html-flavor-test' => 'getHtmlFlavorTextAttribute',
-        '*html-code' => 'getHtmlCodeAttribute',
-        '*html-rarity' => 'getHtmlRarityAttribute',
-        '*html-artist' => 'getHtmlArtistAttribute',
-        '*html-set' => 'getHtmlSetAttribute',
-        '*html-cluster' => 'getHtmlClusterAttribute',
-        '*html-format' => 'getHtmlFormatAttribute',
-        '*html-banned' => 'getHtmlBannedAttribute',
-        '*narp' => 'getNarpAttribute',
-        '*rulings' => 'getRulingsAttribute'
+        "*html-name" => "getHtmlAttribute",
+        "*html-type" => "getHtmlTypeAttribute",
+        "*html-cost" => "getHtmlCostAttribute",
+        "*html-total-cost" => "getHtmlTotalCostAttribute",
+        "*html-battle-stats" => "getHtmlBattleStatsAttribute",
+        "*html-divinity" => "getHtmlDivinityAttribute",
+        "*html-race" => "getHtmlRaceAttribute",
+        "*html-attribute" => "getHtmlAttributeAttribute",
+        "*html-text" => "getHtmlTextAttribute",
+        "*html-flavor-test" => "getHtmlFlavorTextAttribute",
+        "*html-code" => "getHtmlCodeAttribute",
+        "*html-rarity" => "getHtmlRarityAttribute",
+        "*html-artist" => "getHtmlArtistAttribute",
+        "*html-set" => "getHtmlSetAttribute",
+        "*html-cluster" => "getHtmlClusterAttribute",
+        "*html-format" => "getHtmlFormatAttribute",
+        "*html-banned" => "getHtmlBannedAttribute",
+        "*narp" => "getNarpAttribute",
+        "*rulings" => "getRulingsAttribute"
     ];
 
-    public $table = 'cards';
+    public $table = "cards";
 
     public $numeric = [
-        'id',
-        'sorted_id',
-        'back_side',
-        'narp',
-        'clusters_id',
-        'sets_id',
-        'num',
-        'divinity',
-        'free_cost',
-        'total_cost',
-        'atk',
-        'def'
+        "id",
+        "sorted_id",
+        "back_side",
+        "narp",
+        "clusters_id",
+        "sets_id",
+        "num",
+        "divinity",
+        "free_cost",
+        "total_cost",
+        "atk",
+        "def"
     ];
 
     private $removables = [
-        'no-cost' => [
-            'Ruler',
-            'J-Ruler',
-            'Basic Magic Stone',
-            'Special Magic Stone',
-            'True Magic Stone'
+        "no-cost" => [
+            "Ruler",
+            "J-Ruler",
+            "Basic Magic Stone",
+            "Special Magic Stone",
+            "True Magic Stone"
         ],
-        'no-attribute' => [
-            'Basic Magic Stone',
-            'Special Magic Stone',
-            'True Magic Stone'
+        "no-attribute" => [
+            "Basic Magic Stone",
+            "Special Magic Stone",
+            "True Magic Stone"
         ],
-        'can-divinity' => [
-            'Rune',
-            'Master Rune',
+        "can-divinity" => [
+            "Rune",
+            "Master Rune",
         ],
-        'can-battle' => [
-            'J-Ruler',
-            'Resonator'
+        "can-battle" => [
+            "J-Ruler",
+            "Resonator"
         ]
     ];
 
@@ -97,7 +97,7 @@ class Card extends Model
     public function getRemovableFields(): array
     {
         $result = [];
-        $name2bitValue = lookup('types.display');
+        $name2bitValue = fd_lookup("types.display");
 
         foreach ($this->removables as $label => $displayTypes) {
             $result[$label] = [];
@@ -116,14 +116,14 @@ class Card extends Model
     ): array
     {
         $data = fd_database()
-            ->select(statement('select')
+            ->select(statement("select")
                 ->select($fields)
                 ->from($this->table)
-                ->where('code = :code')
+                ->where("code = :code")
                 ->limit(3)
             )
-            ->bind([':code' => $code])
-            // ->bind([':code' => "{$code}%"])
+            ->bind([":code" => $code])
+            // ->bind([":code" => "{$code}%"])
             ->get();
 
         // Return raw data (default)
@@ -141,50 +141,50 @@ class Card extends Model
 
     public function getBaseIdById(string $id): int
     {
-        $card = $this->byId($id, ['narp', 'name']);
+        $card = $this->byId($id, ["narp", "name"]);
 
-        if ((int) $card['narp'] === 0) return (int) $id;
+        if ((int) $card["narp"] === 0) return (int) $id;
 
         $baseCard = fd_database()
-            ->select(statement('select')
-                ->select('id')
+            ->select(statement("select")
+                ->select("id")
                 ->from($this->table)
-                ->where(['name = :name'])
+                ->where(["name = :name"])
                 ->limit(1)
             )
-            ->bind([':name' => $card['name']])
+            ->bind([":name" => $card["name"]])
             ->first();
 
-        return (int) $baseCard['id'];
+        return (int) $baseCard["id"];
     }
     
     public function getBaseIdByName(string $name): int
     {
         $baseCard = fd_database()
-            ->select(statement('select')
-                ->select('id')
+            ->select(statement("select")
+                ->select("id")
                 ->from($this->table)
-                ->where('name = :name')
-                ->where('narp = 0')
+                ->where("name = :name")
+                ->where("narp = 0")
                 ->limit(1)
             )
-            ->bind([':name' => $name])
+            ->bind([":name" => $name])
             ->first();
 
         // ERROR: Invalid card name
         if (empty($baseCard)) {
-            throw new CardModelException('Invalid card name');
+            throw new CardModelException("Invalid card name");
         }
 
-        return (int) $baseCard['id'];
+        return (int) $baseCard["id"];
     }
 
     /**
-     * Returns data of the "next" resource based on the 'sorted_id' attribute
+     * Returns data of the "next" resource based on the "sorted_id" attribute
      * of the "previous" resource
      *
      * @param integer|string $previousSortedId The base sorted ID
-     * @return array Next card's data
+     * @return array Next card"s data
      */
     public function getNext(
         $previousSortedId,
@@ -194,7 +194,7 @@ class Card extends Model
     {
         $sortedId = intval($previousSortedId) + 1;
 
-        return $this->byField('sorted_id', $sortedId, $fields, $fieldsToRender);
+        return $this->byField("sorted_id", $sortedId, $fields, $fieldsToRender);
     }
 
     /**

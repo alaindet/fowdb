@@ -16,7 +16,7 @@ $isItem = isset($item);
 $isCard = isset($card);
 $url = "restrictions/" . ($isItem ? "update/{$item["id"]}" : "create");
 
-$formats = lookup("formats.id2name");
+$formats = fd_lookup("formats.id2name");
 $decks = \App\Models\PlayRestriction::$decksLabels;
 
 ?>

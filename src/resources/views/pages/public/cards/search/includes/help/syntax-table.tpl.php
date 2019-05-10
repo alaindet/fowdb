@@ -1,6 +1,6 @@
 <?php
 
-$blank = asset('images/icons/blank.gif');
+$blank = asset("images/icons/blank.gif");
 
 ?>
 <div class="table-responsive">
@@ -17,7 +17,7 @@ $blank = asset('images/icons/blank.gif');
     <tbody>
 
       <!-- Will symbols -->
-      <?php foreach (lookup('attributes.code2name') as $code => $name): ?>
+      <?php foreach (fd_lookup("attributes.code2name") as $code => $name): ?>
         <tr>
           <td class="text-monospace">{<?=$code?>}</td>
           <td><img src="<?=$blank?>" class="fd-icon-<?=$code?>"></td>
@@ -99,8 +99,8 @@ $blank = asset('images/icons/blank.gif');
           [Break] Break ability&lt;hr&gt;Other text...
         </td>
         <td>
-          <span class='fd-mark-break'>Break</span>
-          <span class='fd-mark-break-text'>Break ability</span>
+          <span class="fd-mark-break">Break</span>
+          <span class="fd-mark-break-text">Break ability</span>
           <p></p>
           Other text...
         </td>
