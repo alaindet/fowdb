@@ -96,7 +96,7 @@ class Handler
         // The last hope: log the exception into a log file
         $serializedData = serialize($data);
         $hash = md5($serializedData);
-        $filename = path_data("logs/exceptions/{$hash}.txt");
+        $filename = fd_path_data("logs/exceptions/{$hash}.txt");
         if (!FileSystem::existsFile($filename)) {
             FileSystem::saveFile($filename, $serializedData);
         }

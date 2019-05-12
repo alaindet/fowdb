@@ -44,7 +44,7 @@ class GameRulesUpdateService extends CrudService
     {
         $paths = [
             'old-src' => $this->old['*source_path'],
-            'new-src' => path_data("resources/cr/{$this->new['version']}.txt"),
+            'new-src' => fd_path_data("resources/cr/{$this->new['version']}.txt"),
             'old-doc' => $this->old['*doc_path'],
             'new-doc' => path_root($this->new['doc_path']),
         ];

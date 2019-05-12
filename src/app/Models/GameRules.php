@@ -56,6 +56,6 @@ class GameRules extends Model
 
     protected function getSourcePathAttribute(array &$resource): string
     {
-        return path_data('resources/cr/'.$resource['version'].'.txt');
+        return fd_path_data('resources/cr/'.$resource['version'].'.txt');
     }
 }

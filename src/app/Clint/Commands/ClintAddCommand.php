@@ -114,7 +114,7 @@ class ClintAddCommand extends Command
 
     private function updateCommandsListFile(): void
     {
-        $path = path_data('app/clint.php');
+        $path = fd_path_data('app/clint.php');
         $content = FileSystem::readFile($path);
 
         $target = "\n\n];";

@@ -92,8 +92,8 @@ class Sitemap
         if ($backup) {
             $basename = 'sitemap_backup_'.Time::timestamp('file').'.xml';
             $basenameGzip = 'sitemap_backup_'.Time::timestamp('file').'.xml.gz';
-            $backupPath = path_data('backup/'.$basename);
-            $backupGzipPath = path_data('backup/'.$basenameGzip);
+            $backupPath = fd_path_data('backup/'.$basename);
+            $backupGzipPath = fd_path_data('backup/'.$basenameGzip);
 
             FileSystem::renameFile($this->path, $backupPath);
             FileSystem::renameFile($this->gzipPath, $backupGzipPath);

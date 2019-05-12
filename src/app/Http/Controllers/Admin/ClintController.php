@@ -78,7 +78,7 @@ class ClintController extends Controller
     public function executeCommand(Request $request, $command)
     {
         $info = $this->commands[$command];
-        $classes = FileSystem::loadFile(path_data('app/clint.php'));
+        $classes = FileSystem::loadFile(fd_path_data('app/clint.php'));
         $class = $classes[$info['name']];
         $command = new $class();
         $command->run($info['options'] ?? [], $info['arguments'] ?? []);
