@@ -27,7 +27,7 @@ class GameRulesCreateService extends CrudService
 
         fd_database()
             ->insert(
-                statement('insert')
+                fd_statement('insert')
                     ->table('game_rules')
                     ->values($placeholders)
             )

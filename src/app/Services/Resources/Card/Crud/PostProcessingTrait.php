@@ -41,7 +41,7 @@ trait PostProcessingTrait
      */
     public function checkExistingNumber(): void
     {
-        $statement = statement("select")
+        $statement = fd_statement("select")
             ->select("id")
             ->from("cards")
             ->where("sets_id = :set")
@@ -92,7 +92,7 @@ trait PostProcessingTrait
 
         $existing = fd_database()
             ->select(
-                statement("select")
+                fd_statement("select")
                     ->select("id")
                     ->from("cards")
                     ->where("name = :name")

@@ -62,7 +62,7 @@ class PlayRestrictionsController extends Controller
 
     public function index(Request $request): string
     {
-        $statement = statement('select')
+        $statement = fd_statement('select')
             ->select([
                 'r.id id',
                 'r.deck deck',
@@ -157,7 +157,7 @@ class PlayRestrictionsController extends Controller
 
     public function updateForm(Request $request, string $id): string
     {
-        $statement = statement('select')
+        $statement = fd_statement('select')
             ->select([
                 'r.id id',
                 'r.deck deck',
@@ -228,7 +228,7 @@ class PlayRestrictionsController extends Controller
 
     public function deleteForm(Request $request, string $id): string
     {
-        $statement = statement('select')
+        $statement = fd_statement('select')
             ->select([
                 'r.id id',
                 'r.deck deck',

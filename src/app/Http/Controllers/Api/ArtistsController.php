@@ -28,7 +28,7 @@ class ArtistsController extends Controller
         // Fetch results from the database
         $items = fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->fields('DISTINCT artist_name')
                     ->from('cards')
                     ->where('artist_name LIKE :artist')

@@ -12,7 +12,7 @@ class FormatsController extends Controller
     {
         $formats = [];
 
-        $statement = statement('select')
+        $statement = fd_statement('select')
             ->select([
                 'f.name fname',
                 'f.code fcode',

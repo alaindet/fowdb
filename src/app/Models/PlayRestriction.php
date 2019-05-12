@@ -59,7 +59,7 @@ class PlayRestriction extends Model
     {
         return fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->select([
                         'f.name format_name',
                         'f.code format_code',
@@ -97,7 +97,7 @@ class PlayRestriction extends Model
 
         $items = fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->select([
                         'f.name as name',
                         'r.deck as deck',

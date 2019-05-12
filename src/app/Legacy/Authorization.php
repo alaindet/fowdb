@@ -74,7 +74,7 @@ class Authorization
 
         $user = fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->select('roles_id')
                     ->from('users')
                     ->where('remember_token = :hash')

@@ -29,7 +29,7 @@ class GameRulesUpdateService extends CrudService
 
         fd_database()
             ->update(
-                statement('update')
+                fd_statement('update')
                     ->table('game_rules')
                     ->values($placeholders)
                     ->where('id = :id')

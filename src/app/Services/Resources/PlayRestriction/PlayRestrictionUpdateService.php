@@ -29,7 +29,7 @@ class PlayRestrictionUpdateService extends CrudService
 
         fd_database()
             ->update(
-                statement('update')
+                fd_statement('update')
                     ->table('play_restrictions')
                     ->values($placeholders)
                     ->where('id = :id')

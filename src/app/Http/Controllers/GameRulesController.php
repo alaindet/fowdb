@@ -15,7 +15,7 @@ class GameRulesController extends Controller
     {
         $items = fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->from('game_rules')
                     ->orderBy([
                         'date_validity DESC',

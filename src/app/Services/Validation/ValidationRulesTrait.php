@@ -288,7 +288,7 @@ trait ValidationRulesTrait
     {
         [$table, $column] = explode(",", $ruleValue);
 
-        $statement = statement("select")
+        $statement = fd_statement("select")
             ->select($column)
             ->from($table)
             ->where("{$column} = :value")
@@ -328,7 +328,7 @@ trait ValidationRulesTrait
     {   
         [$table, $column] = explode(",", $ruleValue);
 
-        $statement = statement("select")
+        $statement = fd_statement("select")
             ->select($column)
             ->from($table)
             ->where("{$column} = :value")

@@ -116,7 +116,7 @@ class Card extends Model
     ): array
     {
         $data = fd_database()
-            ->select(statement("select")
+            ->select(fd_statement("select")
                 ->select($fields)
                 ->from($this->table)
                 ->where("code = :code")
@@ -146,7 +146,7 @@ class Card extends Model
         if ((int) $card["narp"] === 0) return (int) $id;
 
         $baseCard = fd_database()
-            ->select(statement("select")
+            ->select(fd_statement("select")
                 ->select("id")
                 ->from($this->table)
                 ->where(["name = :name"])
@@ -161,7 +161,7 @@ class Card extends Model
     public function getBaseIdByName(string $name): int
     {
         $baseCard = fd_database()
-            ->select(statement("select")
+            ->select(fd_statement("select")
                 ->select("id")
                 ->from($this->table)
                 ->where("name = :name")

@@ -186,7 +186,7 @@ abstract class Model extends Base
     {
         return fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->select(!empty($fields) ? implode(',', $fields) : '*')
                     ->from($this->table)
                     ->where("{$field} = :value")
@@ -206,7 +206,7 @@ abstract class Model extends Base
     {
         return fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->select(!empty($fields) ? implode(',', $fields) : '*')
                     ->from($this->table)
             )

@@ -13,7 +13,7 @@ class DeleteService extends CrudService
 
     public function syncDatabase(): CrudServiceInterface
     {
-        $statement = statement('delete')
+        $statement = fd_statement('delete')
             ->table('game_rulings')
             ->where('id = :id');
 

@@ -46,7 +46,7 @@ class GameRulesController extends Controller
     {
         $database = fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->select([
                         'id',
                         'date_created',

@@ -10,7 +10,7 @@ class ErrataController extends Controller
 {
     public function index(Request $request): string
     {
-        $statement = statement('select')
+        $statement = fd_statement('select')
             ->select([
                 'c.name card_name',
                 'c.code card_code',

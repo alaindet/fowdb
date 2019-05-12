@@ -24,7 +24,7 @@ class GameRuling extends Model
     {
         $resources = fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->select(isset($fields) ? implode(',', $fields) : '*')
                     ->from($this->table)
                     ->where('cards_id = :cardid')

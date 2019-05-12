@@ -46,7 +46,7 @@ class UpdateService extends CrudService
 
         fd_database()
             ->update(
-                statement('update')
+                fd_statement('update')
                     ->table('cards')
                     ->values($placeholders)
                     ->where('id = :id')

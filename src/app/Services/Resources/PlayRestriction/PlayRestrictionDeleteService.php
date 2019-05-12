@@ -16,7 +16,7 @@ class PlayRestrictionDeleteService extends CrudService
     {
         fd_database()
             ->delete(
-                statement('delete')
+                fd_statement('delete')
                     ->table('play_restrictions')
                     ->where('id = :id')
             )

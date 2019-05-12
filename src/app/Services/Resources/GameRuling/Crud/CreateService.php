@@ -15,7 +15,7 @@ class CreateService extends CrudService
     {
         // Create ruling entity on the database
         fd_database()
-            ->insert(statement('insert')
+            ->insert(fd_statement('insert')
                 ->table('game_rulings')
                 ->values([
                     'cards_id' => ':cardid',

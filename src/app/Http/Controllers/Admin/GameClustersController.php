@@ -21,7 +21,7 @@ class GameClustersController extends Controller
     {
         $items = fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->from('game_clusters')
                     ->orderBy('id DESC')
             )
@@ -44,7 +44,7 @@ class GameClustersController extends Controller
     {
         $items = fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->from('game_clusters')
                     ->orderBy('id DESC')
             )

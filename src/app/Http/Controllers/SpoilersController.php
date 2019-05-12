@@ -17,7 +17,7 @@ class SpoilersController extends Controller
 
         foreach (fd_lookup("spoilers.sets") as $spoiler) {
 
-            $statement = statement("select")
+            $statement = fd_statement("select")
                 ->select([
                     "id",
                     "back_side",

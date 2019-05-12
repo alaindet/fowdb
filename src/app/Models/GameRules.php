@@ -29,7 +29,7 @@ class GameRules extends Model
     {
         $resource = fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->select(isset($fields) ? implode(',', $fields) : '*')
                     ->from($this->table)
                     ->where('version = :version')

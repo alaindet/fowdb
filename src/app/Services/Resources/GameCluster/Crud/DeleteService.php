@@ -15,7 +15,7 @@ class DeleteService extends CrudService
     {
         fd_database()
             ->delete(
-                statement('delete')
+                fd_statement('delete')
                     ->table('game_clusters')
                     ->where('id = :id')
             )

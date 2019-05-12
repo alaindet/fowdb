@@ -19,7 +19,7 @@ class DeleteService extends CrudService
         // Remove from 'cards' table
         fd_database()
             ->delete(
-                statement('delete')
+                fd_statement('delete')
                     ->table('cards')
                     ->where('id = :cardid')
             )

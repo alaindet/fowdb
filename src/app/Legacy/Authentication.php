@@ -13,7 +13,7 @@ class Authentication
     {
         fd_database()
             ->update(
-                statement('update')
+                fd_statement('update')
                     ->table('users')
                     ->values(['remember_token' => ':notoken'])
                     ->where('remember_token = :token')
@@ -30,7 +30,7 @@ class Authentication
         // Read the admin info from the database
         $user = fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->fields('password')
                     ->from('users')
                     ->where('username = :name')
@@ -53,7 +53,7 @@ class Authentication
         // Store the hash into the database
         fd_database()
             ->update(
-                statement('update')
+                fd_statement('update')
                     ->table('users')
                     ->values(['remember_token' => ':token'])
                     ->where('username = :name')

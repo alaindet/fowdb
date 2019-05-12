@@ -17,7 +17,7 @@ class GameRulesDeleteService extends CrudService
 
         fd_database()
             ->delete(
-                statement('delete')
+                fd_statement('delete')
                     ->table('game_rules')
                     ->where('id = :id')
             )

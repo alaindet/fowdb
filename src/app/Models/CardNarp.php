@@ -38,7 +38,7 @@ class CardNarp extends Model
     {
         $item = fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->select('id')
                     ->from('cards')
                     ->where('narp = 0')
@@ -61,7 +61,7 @@ class CardNarp extends Model
     {
         $item = fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->select('code')
                     ->from('cards')
                     ->where('narp = 0')
@@ -91,7 +91,7 @@ class CardNarp extends Model
     {
         $items = fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->select([
                         'narp',
                         'code'

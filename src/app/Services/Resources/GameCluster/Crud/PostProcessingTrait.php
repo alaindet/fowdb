@@ -40,7 +40,7 @@ trait PostProcessingTrait
     {
         $existing = fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->from('game_clusters')
                     ->where('id = :id', 'OR')
                     ->where('name = :name', 'OR')
@@ -73,7 +73,7 @@ trait PostProcessingTrait
     {
         $existing = fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->from('game_clusters')
                     ->where('NOT(id = :id)')
                     ->where([

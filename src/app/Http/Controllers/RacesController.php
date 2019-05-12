@@ -50,7 +50,7 @@ class RacesController extends Controller
 
         $data = fd_database()
             ->select(
-                statement("select")
+                fd_statement("select")
                     ->fields("race")
                     ->fields("count(id) amount")
                     ->fields("type_bit")

@@ -17,7 +17,7 @@ class UpdateService extends CrudService
     {
         // Create ruling entity on the database
         fd_database()
-            ->update(statement('update')
+            ->update(fd_statement('update')
                 ->table('game_rulings')
                 ->values([
                     'date' => ':date',

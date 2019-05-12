@@ -26,7 +26,7 @@ class CreateService extends CrudService
         // Create cluster entity on the database
         fd_database()
             ->insert(
-                statement('insert')
+                fd_statement('insert')
                     ->table('game_clusters')
                     ->values($placeholders)
             )

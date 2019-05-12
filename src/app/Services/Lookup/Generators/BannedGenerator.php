@@ -34,7 +34,7 @@ class BannedGenerator implements LookupDataGeneratorInterface
         $result = new \stdClass();
 
         $formatsId2Code = fd_repository(GameFormat::class)
-            ->setReplaceStatement(statement("select")->select(["id", "code"]))
+            ->setReplaceStatement(fd_statement("select")->select(["id", "code"]))
             ->findAllBy("is_multi_cluster", 1)
             ->reduce(
                 function ($map, $format) use (&$result) {

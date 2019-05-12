@@ -33,7 +33,7 @@ class ArtistsController extends Controller
         // Fetch cards for this set
         $cards = fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                 ->select(['id','image_path','artist_name'])
                 ->from('cards')
                 ->where('sets_id = :setid')
@@ -95,7 +95,7 @@ class ArtistsController extends Controller
         // Update card data
         fd_config()
             ->update(
-                statement('update')
+                fd_statement('update')
                     ->table('cards')
                     ->values([ 'artist_name' => ':artist' ])
                     ->where('id = :id')

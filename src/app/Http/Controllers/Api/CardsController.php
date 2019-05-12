@@ -33,7 +33,7 @@ class CardsController extends Controller
         // Fetch results from the database
         $items = fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->fields(['id', 'name', 'code', 'image_path'])
                     ->from('cards')
                     ->where('name LIKE :name')

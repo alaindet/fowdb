@@ -57,7 +57,7 @@ class GameRulingsController extends Controller
 
     public function index(Request $request): string
     {
-        $statement = statement('select')
+        $statement = fd_statement('select')
             ->select([
                 'c.id as card_id',
                 'c.code as card_code',
@@ -106,7 +106,7 @@ class GameRulingsController extends Controller
 
         // User passed a card id (Ex.: from card page)
         if (isset($cardId)) {
-            $statement = statement('select')
+            $statement = fd_statement('select')
                 ->select(['id', 'name', 'code', 'image_path'])
                 ->from('cards')
                 ->where('id = :id')
@@ -159,7 +159,7 @@ class GameRulingsController extends Controller
     {
         $item = fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->select([
                         'c.id card_id',
                         'c.name card_name',
@@ -217,7 +217,7 @@ class GameRulingsController extends Controller
     {
         $item = fd_database()
             ->select(
-                statement('select')
+                fd_statement('select')
                     ->select([
                         'c.id card_id',
                         'c.name card_name',
