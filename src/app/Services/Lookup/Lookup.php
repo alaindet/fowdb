@@ -50,7 +50,7 @@ class Lookup implements LookupInterface
      */
     private function __construct()
     {
-        $this->setCacheFilePath(path_cache("lookup.json"));
+        $this->setCacheFilePath(fd_path_cache("lookup.json"));
         $this->load();
     }
 }
