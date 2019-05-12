@@ -15,7 +15,7 @@
 
 <div class="fd-box --more-margin">
   <div class="fd-box__content">
-    <?=include_view('pages/admin/cr/includes/form', [
+    <?=fd_include_view('pages/admin/cr/includes/form', [
       'item' => null,
       'prev' => $previous ?? null
     ])?>

@@ -13,7 +13,7 @@
 </h2>
 
 <!-- Syntax table -->
-<?=include_view('pages/public/cards/search/includes/help/syntax-table')?>
+<?=fd_include_view('pages/public/cards/search/includes/help/syntax-table')?>
 
 <h2>
   <a href="#tips-tricks" name="tips-tricks" class="link-as-text link-hash">

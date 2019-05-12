@@ -44,7 +44,7 @@ abstract class Component
     protected function renderTemplate(array $__variables = []): string
     {
         // Shorter but slower (?)
-        // return include_view("components/{$this->filename}", $__variables);
+        // return fd_include_view("components/{$this->filename}", $__variables);
 
         // Declare scoped variables
         foreach ($__variables as $__name => $__value) {

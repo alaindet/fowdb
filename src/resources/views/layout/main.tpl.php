@@ -48,9 +48,9 @@
 
 <body>
 	<a name="top"></a>
-  <header><?=include_view('includes/header')?></header>
+  <header><?=fd_include_view('includes/header')?></header>
   <main><?=$fowdb_content?></main>
-  <footer><?=include_view('includes/footer')?></footer>
+  <footer><?=fd_include_view('includes/footer')?></footer>
 
   <!-- jQuery 2.2.4 -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" defer></script>

@@ -7,7 +7,7 @@
 <div class="row">
 
   <!-- Options -->
-  <?=include_view('pages/public/cards/search/includes/results/options', [
+  <?=fd_include_view('pages/public/cards/search/includes/results/options', [
     'spoilers' => $items
   ])?>
 

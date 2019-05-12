@@ -52,7 +52,7 @@ $hasItems = !empty($items);
 
   <!-- Items list -->
   <div class="col-xs-12">
-    <?=include_view('pages/admin/cr/includes/index-list', [
+    <?=fd_include_view('pages/admin/cr/includes/index-list', [
       'items' => $items
     ])?>
   </div>

@@ -44,7 +44,7 @@
 
     <!-- Search bar -->
     <div class="col-xs-12 mb-50">
-      <?=include_view('pages/public/cards/search/includes/form/searchbar', [
+      <?=fd_include_view('pages/public/cards/search/includes/form/searchbar', [
         'areResults' => $areResults,
         'state' => $state,
       ])?>
@@ -52,7 +52,7 @@
 
     <!-- Filters -->
     <div class="col-xs-12">
-      <?=include_view('pages/public/cards/search/includes/form/filters', [
+      <?=fd_include_view('pages/public/cards/search/includes/form/filters', [
         'areResults' => $areResults,
         'state' => $state,
       ])?>

@@ -32,7 +32,7 @@
 // type-selected
 
 ?>
-<?=include_view('pages/public/cards/search/includes/form/form', [
+<?=fd_include_view('pages/public/cards/search/includes/form/form', [
   'areResults' => false,
   'state' => null
 ])?>

@@ -287,7 +287,7 @@ function fd_component(string $name, array $state = null): string
 
 	// Simple component (no logic, optional state)
 	if ($class === Components::SIMPLE_COMPONENT) {
-		return include_view("components/{$name}", $state);
+		return fd_include_view("components/{$name}", $state);
 	}
 
 	// Return rendered HTML component

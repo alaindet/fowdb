@@ -80,23 +80,23 @@ $state = [
 
         <!-- Left filters -->
         <div class="col-sm-12 col-md-6 ph-0 sm-ph-100">
-          <?=include_view(
+          <?=fd_include_view(
             "pages/public/cards/search/includes/form/filters/options",
             ["state" => $state]
           )?>
-          <?=include_view(
+          <?=fd_include_view(
             "pages/public/cards/search/includes/form/filters/format",
             ["state" => $state]
           )?>
-          <?=include_view(
+          <?=fd_include_view(
             "pages/public/cards/search/includes/form/filters/type",
             ["state" => $state]
           )?>
-          <?=include_view(
+          <?=fd_include_view(
             "pages/public/cards/search/includes/form/filters/attribute",
             ["state" => $state]
           )?>
-          <?=include_view(
+          <?=fd_include_view(
             "pages/public/cards/search/includes/form/filters/cost",
             ["state" => $state]
           )?>
@@ -104,39 +104,39 @@ $state = [
 
         <!-- Right filters -->
         <div class="col-sm-12 col-md-6 ph-0 sm-ph-100">
-          <?=include_view(
+          <?=fd_include_view(
             "pages/public/cards/search/includes/form/filters/set",
             ["state" => $state]
           )?>
-          <?=include_view(
+          <?=fd_include_view(
             "pages/public/cards/search/includes/form/filters/cluster",
             ["state" => $state]
           )?>
-          <?=include_view(
+          <?=fd_include_view(
             "pages/public/cards/search/includes/form/filters/rarity",
             ["state" => $state]
           )?>
-          <?=include_view(
+          <?=fd_include_view(
             "pages/public/cards/search/includes/form/filters/race",
             ["state" => $state]
           )?>
-          <?=include_view(
+          <?=fd_include_view(
             "pages/public/cards/search/includes/form/filters/illustrator",
             ["state" => $state]
           )?>
-          <?=include_view(
+          <?=fd_include_view(
             "pages/public/cards/search/includes/form/filters/atkdef",
             ["state" => $state]
           )?>
-          <?=include_view(
+          <?=fd_include_view(
             "pages/public/cards/search/includes/form/filters/back-side",
             ["state" => $state]
           )?>
-          <?=include_view(
+          <?=fd_include_view(
             "pages/public/cards/search/includes/form/filters/divinity",
             ["state" => $state]
           )?>
-          <?=include_view(
+          <?=fd_include_view(
             "pages/public/cards/search/includes/form/filters/flags",
             ["state" => $state]
           )?>

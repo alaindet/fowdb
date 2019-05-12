@@ -88,7 +88,7 @@ if ($hasFilters && $hasItems) {
 
   <!-- Items list -->
   <div class="col-xs-12">
-    <?=include_view('pages/admin/restrictions/includes/index-list', [
+    <?=fd_include_view('pages/admin/restrictions/includes/index-list', [
       'items' => $items
     ])?>
   </div>

@@ -177,4 +177,4 @@
   </div>
 </div>
 
-<?=include_view('pages/admin/rulings/includes/conventions')?>
+<?=fd_include_view('pages/admin/rulings/includes/conventions')?>
