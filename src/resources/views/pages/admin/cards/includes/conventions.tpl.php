@@ -31,7 +31,7 @@
           <li>
             Attribute (Reset: Select
               <img
-                src="<?=asset('images/icons/blank.gif')?>"
+                src="<?=fd_asset('images/icons/blank.gif')?>"
                 class="fd-icon-no --bigger"
               >
             )

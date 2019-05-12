@@ -9,7 +9,7 @@
   var app_css_missingCard = '.fdb-card-missing';
 
   // Application data ---------------------------------------------------------
-  // // TO DO: Implement PHP's custom asset() function in JavaScript also
+  // // TO DO: Implement PHP's custom fd_asset() function in JavaScript also
   var app_data_mobileBreakpoint = 768;
   var app_data_blankImage = 'images/in-pages/search/more.jpg';
   var app_data_cardPattern = /fdb-card-/;

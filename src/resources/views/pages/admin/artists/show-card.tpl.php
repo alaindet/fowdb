@@ -8,7 +8,7 @@
 // card-id
 // artist-name
 
-$card_image = asset($card['image_path']);
+$card_image = fd_asset($card['image_path']);
 
 ?>
 <div class="page-header">

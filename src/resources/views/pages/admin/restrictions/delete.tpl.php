@@ -4,7 +4,7 @@
 // $item
 
 $cardLabel = "{$item['card_name']} ({$item['card_code']})";
-$cardImage = asset($item['card_image']);
+$cardImage = fd_asset($item['card_image']);
 
 ?>
 <div class="page-header">

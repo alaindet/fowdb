@@ -25,7 +25,7 @@ class PlayRestriction
                 [
                     'name' => $item['card_name'],
                     'code' => $item['card_code'],
-                    'image' => asset($item['card_image'], 'jpg'),
+                    'image' => fd_asset($item['card_image'], 'jpg'),
                     'link' => url('card/'.urlencode($item['card_code']))
                 ],
 

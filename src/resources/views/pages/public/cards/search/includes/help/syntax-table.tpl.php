@@ -1,6 +1,6 @@
 <?php
 
-$blank = asset("images/icons/blank.gif");
+$blank = fd_asset("images/icons/blank.gif");
 
 ?>
 <div class="table-responsive">

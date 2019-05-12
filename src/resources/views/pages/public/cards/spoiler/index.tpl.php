@@ -95,7 +95,7 @@
                   >
                     <a href="<?=$link?>" target="_self">
                       <img
-                        src="<?=asset($item['thumb_path'])?>"
+                        src="<?=fd_asset($item['thumb_path'])?>"
                         alt="<?=$item['name']?>"
                       >
                     </a>

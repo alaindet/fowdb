@@ -3,7 +3,7 @@
 // VARIABLES
 // $card
 
-$blank = asset("images/icons/blank.gif");
+$blank = fd_asset("images/icons/blank.gif");
 
 // Cost -----------------------------------------------------------------------
 $displayCost = "";
@@ -89,12 +89,12 @@ $displayCsn = (
       <label class="col-sm-2 control-label">Image</label>
       <div class="col-sm-10" id="card-image">
         <a
-          href="<?=asset($card["image_path"])?>"
+          href="<?=fd_asset($card["image_path"])?>"
           data-lightbox="cards"
         >
           <span class="fd-zoomable-lg">
             <img
-              src="<?=asset($card["image_path"])?>"
+              src="<?=fd_asset($card["image_path"])?>"
               width="200px"
             >
           </span>

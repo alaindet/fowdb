@@ -12,7 +12,7 @@
 
 // Map attribute codes to HTML icons
 $items = [];
-$blank = asset("images/icons/blank.gif");
+$blank = fd_asset("images/icons/blank.gif");
 $attributes = array_keys(fd_lookup("attributes.display"));
 foreach ($attributes as $attribute) {
   $items[$attribute] = (

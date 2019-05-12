@@ -65,7 +65,7 @@ class CardText
 
 		$text = str_replace(
 			'images/icons/blank.gif',
-			asset('images/icons/blank.gif'),
+			fd_asset('images/icons/blank.gif'),
 			$text
 		);
 

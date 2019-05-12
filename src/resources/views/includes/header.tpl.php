@@ -151,6 +151,6 @@ if (fd_alert()->check("user") > 0) {
 
 <div id="logo" class="mb-100">
 	<a href="<?=url("/")?>">
-		<img src="<?=asset("images/logo.png")?>">
+		<img src="<?=fd_asset("images/logo.png")?>">
 	</a>
 </div>

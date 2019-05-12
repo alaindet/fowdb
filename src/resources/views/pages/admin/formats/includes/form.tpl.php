@@ -86,12 +86,19 @@ $url = $isItem ? "formats/update/{$item->id}" : "formats/create";
         ?>"
         required
       >
+      <div class="well">
+        Must be exactly <strong>5</strong> characters long.
+      </div>
     </div>
   </div>
 
   <!-- Description ======================================================== -->
   <div class="form-group">
-    <label class="col-sm-2 control-label">Description</label>
+    <label class="col-sm-2 control-label">
+      Description
+      <br>
+      <small>(Optional)</small>
+    </label>
     <div class="col-sm-10">
       <textarea
         name="desc"
@@ -115,7 +122,7 @@ $url = $isItem ? "formats/update/{$item->id}" : "formats/create";
       : $checked = ''
   ?>
   <div class="form-group">
-    <label class="col-sm-2 control-label">Default?</label>
+    <label class="col-sm-2 control-label">Default</label>
     <div class="col-sm-10 font-110">
       <div class="checkbox">
         <label for="is-default">
@@ -147,11 +154,13 @@ $url = $isItem ? "formats/update/{$item->id}" : "formats/create";
         'items' => $clusters,
         'state' => $state,
         'css' => [
-          'button' => ['btn-xs', 'font-105', 'mv-10', 'fd-btn-default']
+          'button' => ['font-120', 'mv-50', 'fd-btn-default', 'display-block']
         ],
       ])?>
     </div>
   </div>
+
+  <hr class="fd-hr">
 
   <!-- Submit ============================================================= -->
   <div class="form-group">
@@ -163,7 +172,7 @@ $url = $isItem ? "formats/update/{$item->id}" : "formats/create";
           Update
 
         <?php else: ?>
-
+        
           <i class="fa fa-plus"></i>
           Create
 

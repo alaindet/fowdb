@@ -70,13 +70,13 @@ $decks = \App\Models\PlayRestriction::$decksLabels;
 
         <!-- Image -->
         <a
-          href="<?=asset($card['image'])?>"
+          href="<?=fd_asset($card['image'])?>"
           data-lightbox="cards"
           data-title="<?="{$card['name']} ({$card['code']})"?>"
         >
           <span class="fd-zoomable-lg">
           <img
-            src="<?=asset($card['image'])?>"
+            src="<?=fd_asset($card['image'])?>"
             width="200px"
             class="img-responsive"
           >

@@ -105,7 +105,7 @@ $bannedList = fd_lookup("banned.{$format}") ?? [];
             <div class="fd-card-item fd-grid fd-grid-3<?=$custom?>">
               <a href="<?=$link?>">
                 <img
-                  src="<?=asset($item["thumb_path"])?>"
+                  src="<?=fd_asset($item["thumb_path"])?>"
                   alt="<?=$item["name"]?>"
                 >
               </a>

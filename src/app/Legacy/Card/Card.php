@@ -92,7 +92,7 @@ class Card
                     $temp[] = (
                         "<a href=\"{$link}\">".
                             "<img ".
-                                "src=\"".asset("images/icons/blank.gif")."\" ".
+                                "src=\"".fd_asset("images/icons/blank.gif")."\" ".
                                 "class=\"fd-icon-{$codes[$i]}\"".
                             ">&nbsp;".
                             $names[$i].

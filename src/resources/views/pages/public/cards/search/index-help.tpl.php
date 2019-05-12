@@ -35,6 +35,6 @@
     The button <span class="btn btn-xs fd-btn-default">Only selected</span> into the <em>Attribute</em> search filters will match only cards with attributes selected on said filter. Best paired with <span class="btn btn-xs fd-btn-default">Only Multi-Attribute</span> to match only multi-attribute cards containing only selected attributes. <em>Ex.: </em> You want fire/wind cards but you definetely don't want to match water/wind cards also.
   </li>
   <li>
-    When selecting any attrbute in the <em>Attribute</em> search filter, unless you specifically select the <em>Void</em> icon <img src="<?=asset('images/icons/blank.gif')?>" class="fd-icon-v">, all attribute-less cards are excluded.
+    When selecting any attrbute in the <em>Attribute</em> search filter, unless you specifically select the <em>Void</em> icon <img src="<?=fd_asset('images/icons/blank.gif')?>" class="fd-icon-v">, all attribute-less cards are excluded.
   </li>
 </ul>

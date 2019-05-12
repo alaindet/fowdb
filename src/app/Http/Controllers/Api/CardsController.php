@@ -60,7 +60,7 @@ class CardsController extends Controller
 
                 // Extra information
                 'id' => $item['id'],
-                'image' => asset($item['image_path'], 'jpg'),
+                'image' => fd_asset($item['image_path'], 'jpg'),
                 'link' => url('card/'.urlencode($item['code']))
 
             ];

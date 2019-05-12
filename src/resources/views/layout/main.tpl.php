@@ -37,10 +37,10 @@
 	<script src="https://use.fontawesome.com/f5164b39df.js" defer></script>
 
   <!-- My CSS -->
-	<link href="<?=asset('css/app.min.css', 'css')?>" rel="stylesheet" type="text/css" defer>
+	<link href="<?=fd_asset('css/app.min.css', 'css')?>" rel="stylesheet" type="text/css" defer>
 
 	<!-- Favicon -->
-	<link rel="shortcut icon" href="<?=asset('favicon.ico', 'png')?>">
+	<link rel="shortcut icon" href="<?=fd_asset('favicon.ico', 'png')?>">
 
   <!-- Title -->
 	<title><?=$title?></title>
@@ -86,7 +86,7 @@
 
   <!-- My scripts -->
   <?php foreach ($scripts as $script): ?>
-    <script src="<?=asset("js/{$script}.min.js", 'js')?>" defer></script>
+    <script src="<?=fd_asset("js/{$script}.min.js", 'js')?>" defer></script>
   <?php endforeach; ?>
 </body>
 </html>

@@ -73,13 +73,13 @@
 
             <!-- Image -->
             <a
-              href="<?=asset($card['image_path'])?>"
+              href="<?=fd_asset($card['image_path'])?>"
               data-lightbox="cards"
               data-title="<?="{$card['name']} ({$card['code']})"?>"
             >
               <span class="fd-zoomable-lg">
                 <img
-                  src="<?=asset($card['image_path'])?>"
+                  src="<?=fd_asset($card['image_path'])?>"
                   width="200px"
                   class="img-responsive"
                 >
