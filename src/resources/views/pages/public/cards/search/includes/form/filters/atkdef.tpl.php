@@ -23,7 +23,7 @@ $defaultDefOperator = 'equals';
   <!-- Attack =========================================================== -->
   <div class="col-xs-12 col-sm-6 ph-0 pr-50">
     <h3 class="font-110">Attack</h3>
-    <?=component('form/input-dropdown', [
+    <?=fd_component('form/input-dropdown', [
       'dropdown' => [
         'name' => 'atk-operator',
         'state' => $state['atk-operator'],
@@ -43,7 +43,7 @@ $defaultDefOperator = 'equals';
   <!-- Defense ========================================================== -->
   <div class="col-xs-12 col-sm-6 ph-0 pl-50">
     <h3 class="font-110">Defense</h3>
-    <?=component('form/input-dropdown', [
+    <?=fd_component('form/input-dropdown', [
       'input' => [
         'name' => 'def',
         'state' => $state['def']

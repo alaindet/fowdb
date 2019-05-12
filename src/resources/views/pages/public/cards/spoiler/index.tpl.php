@@ -106,7 +106,7 @@
 
           </div>
         <?php endforeach; ?>
-        <?=component('top-anchor')?>
+        <?=fd_component('top-anchor')?>
       </div><!-- /.fd-box__content -->
     </div><!-- /.fd-box -->
   </div><!-- /.col-xs-12 -->

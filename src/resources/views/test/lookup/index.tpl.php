@@ -6,7 +6,7 @@
 ?>
 <div class="page-header">
   <h1>Test lookup data</h1>
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     'Test' => url('test'),
     'Lookup' => '#'
   ])?>
@@ -51,6 +51,6 @@
 <?php if (isset($log)): ?>
   <div class="col-xs-12 col-sm-9">
     <?=$log?>
-    <?=component('top-anchor')?>
+    <?=fd_component('top-anchor')?>
   </div>
 <?php endif; ?>

@@ -14,14 +14,14 @@ foreach (fd_lookup("clusters.list") as $item) {
 ?>
 <h3 class="font-110">
   Set
-  <?=component("form/select-multiple-handle", [
+  <?=fd_component("form/select-multiple-handle", [
     "target" => "#filter-set",
     "state" => isset($state["set"]) && is_array($state["set"]),
     "css" => ["btn", "btn-xs", "fd-btn-default"]
   ])?>
 </h3>
 <div class="row sm-ph-100">
-  <?=component("form/select-multiple-items", [
+  <?=fd_component("form/select-multiple-items", [
     "id" => "filter-set",
     "name" => "set",
     "css" => ["input-lg"],

@@ -57,7 +57,7 @@ $displayCsn = (
 ?>
 <div class="page-header">
   <h1>Delete card</h1>
-  <?=component("breadcrumb", [
+  <?=fd_component("breadcrumb", [
     "Admin" => url("profile"),
     "Cards" => url("cards/manage"),
     "(&larr; Card page)" => url("card/".urlencode($card["code"])),

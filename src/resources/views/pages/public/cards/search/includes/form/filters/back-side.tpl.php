@@ -9,7 +9,7 @@
 ?>
 <h3 class="font-110">Back Side</h3>
 <div class="row sm-ph-100">
-  <?=component("form/button-checkboxes", [
+  <?=fd_component("form/button-checkboxes", [
     "name" => "back-side",
     "items" => fd_lookup("backsides.code2name"),
     "state" => $state["back-side"],

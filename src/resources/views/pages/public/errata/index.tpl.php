@@ -27,7 +27,7 @@
 
     <!-- Pagination (top) -->
     <div class="col-xs-12 col-sm-6">
-      <?=$pagelinks = component('pagination', [
+      <?=$pagelinks = fd_component('pagination', [
         'pagination' => $pagination,
         'no-label' => true,
       ])?>
@@ -63,7 +63,7 @@
 
     <!-- Top anchor -->
     <div class="col-xs-12">
-      <?=component('top-anchor')?>
+      <?=fd_component('top-anchor')?>
     </div>
 
 	</div>

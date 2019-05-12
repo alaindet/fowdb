@@ -12,7 +12,7 @@
 ?>
 <div class="page-header">
   <h1>Create a new ruling</h1>
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     'Admin' => url('profile'),
     'Rulings' => url('rulings/manage'),
     'Create' => '#'
@@ -50,7 +50,7 @@
           
           <?php else: // Search autocomplete ?>
             
-            <?=component('form/input-clear', [
+            <?=fd_component('form/input-clear', [
               'classes' => 'input-lg text-monospace',
               'name' => 'card-name',
               'id' => 'card-name-autocomplete',

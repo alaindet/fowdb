@@ -19,4 +19,4 @@
   <?php endforeach; ?>
 </ul>
 
-<?=component('logout')?>
+<?=fd_component('logout')?>

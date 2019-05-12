@@ -6,7 +6,7 @@
 ?>
 <div class="page-header">
   <h1>Formats</h1>
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     'Admin' => url('profile'),
     'Formats' => '#'
   ])?>
@@ -35,7 +35,7 @@
 
   <!-- Top anchor -->
   <div class="col-xs-12">
-    <?=component('top-anchor')?>
+    <?=fd_component('top-anchor')?>
   </div>
   
 </div>

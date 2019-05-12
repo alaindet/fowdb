@@ -1,6 +1,6 @@
 <div class="page-header">
   <h1>Cards search help</h1>
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     '&larr; Cards search' => url('/'),
     'Help' => '#'
   ])?>

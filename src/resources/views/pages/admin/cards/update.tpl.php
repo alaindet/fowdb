@@ -10,7 +10,7 @@
     Update card
     <small><?=$card['name']?> (<?=$card['code']?>)</small>
   </h1>
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     'Admin' => url('profile'),
     'Cards' => url('cards/manage'),
     '(&larr; Card page)' => url('card/'.urlencode($card['code'])),

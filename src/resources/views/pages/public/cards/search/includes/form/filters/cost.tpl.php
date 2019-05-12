@@ -12,7 +12,7 @@
 <div class="row sm-ph-100">
 
   <!-- Normal costs -->
-  <?=component("form/button-checkboxes", [
+  <?=fd_component("form/button-checkboxes", [
     "name" => "cost",
     "state" => $state["cost"],
     "items" => fd_lookup("costs"),
@@ -26,7 +26,7 @@
   <hr class="fd-hr mv-25">
 
   <!-- X cost -->
-  <?=component("form/button-checkbox", [
+  <?=fd_component("form/button-checkbox", [
     "name" => "cost-x",
     "state" => $state["cost-x"],
     "label" => "Must have X cost",

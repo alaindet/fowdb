@@ -9,7 +9,7 @@ $items = [
 
 ?>
 
-<?=component('breadcrumb', [
+<?=fd_component('breadcrumb', [
   'Test' => url('test'),
   'button-checkboxes' => '#'
 ])?>
@@ -17,7 +17,7 @@ $items = [
 <form action="<?=url('test/button-checkboxes')?>" method="get">
   
   <!-- component -->
-  <?=component('form/button-checkboxes', [
+  <?=fd_component('form/button-checkboxes', [
     'name' => 'INPUT_NAME',
     'items' => $items,
     'state' => fd_input()->get('INPUT_NAME') ?? [],

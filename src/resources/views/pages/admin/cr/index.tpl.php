@@ -9,7 +9,7 @@ $hasItems = !empty($items);
 ?>
 <div class="page-header">
   <h1>Comprehensive Rules</h1>
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     'Admin' => url('profile'),
     'Comprehensive Rules' => '#'
   ])?>
@@ -44,7 +44,7 @@ $hasItems = !empty($items);
   <!-- Pagination (top) -->
   <?php if ($pagination['has-pagination']): ?>
     <div class="col-xs-12">
-      <?=$pagelinks = component('pagination', [
+      <?=$pagelinks = fd_component('pagination', [
         'pagination' => $pagination,
       ])?>
     </div>
@@ -59,7 +59,7 @@ $hasItems = !empty($items);
 
   <!-- Top anchor -->
   <div class="col-xs-12">
-    <?=component('top-anchor')?>
+    <?=fd_component('top-anchor')?>
   </div>
 
   <!-- Pagination (bottom) -->

@@ -28,7 +28,7 @@ $items = [
 ?>
 
 <!-- Breadcrumb -->
-<?=component('breadcrumb', [
+<?=fd_component('breadcrumb', [
   'Test' => url('test'),
   'select-multiple' => '#'
 ])?>
@@ -42,7 +42,7 @@ $items = [
 <form action="<?=url('test/select-multiple')?>" method="get">
 
   <!-- The handle -->
-  <?=component('form/select-multiple-handle', [
+  <?=fd_component('form/select-multiple-handle', [
     'target' => '#the-select',
     'css' => ['btn-lg', 'fd-btn-default'],
     'state' => isset($_GET[$name]) && is_array($_GET[$name]),
@@ -51,7 +51,7 @@ $items = [
   <hr class="fd-hr">
 
   <!-- The select -->
-  <?=component('form/select-multiple-items', [
+  <?=fd_component('form/select-multiple-items', [
     'id' => 'the-select',
     'name' => $name,
     'items' => $items,

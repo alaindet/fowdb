@@ -1,4 +1,4 @@
-<?=component('breadcrumb', [
+<?=fd_component('breadcrumb', [
   'Test' => url('test'),
   'button-checkbox' => '#'
 ])?>
@@ -6,7 +6,7 @@
 <form action="<?=url('test/button-checkbox')?>" method="get">
   
   <!-- component -->
-  <?=component('form/button-checkbox', [
+  <?=fd_component('form/button-checkbox', [
     'name' => 'INPUT_NAME',
     'value' => 'INPUT_VALUE',
     'label' => 'INPUT_LABEL',

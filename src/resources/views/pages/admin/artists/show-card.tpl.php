@@ -13,7 +13,7 @@ $card_image = fd_asset($card['image_path']);
 ?>
 <div class="page-header">
   <h1>Artists</h1>
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     'Admin' => url('profile'),
     'Artists' => url('artists'),
     'Set' => url("artists/set/{$card['sets_id']}"),

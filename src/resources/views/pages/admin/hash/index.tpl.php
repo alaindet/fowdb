@@ -8,7 +8,7 @@
 ?>
 <div class="page-header">
   <h1>Hash a string <small>(BCRYPT)</small></h1>
-  <?=component('breadcrumb', $breadcrumbs)?>
+  <?=fd_component('breadcrumb', $breadcrumbs)?>
 </div>
 
 <form

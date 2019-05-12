@@ -14,7 +14,7 @@ if (is_array($state["format"])) {
 ?>
 <h3 class="font-110">Format</h3>
 <div class="row sm-ph-100">
-  <?=component("form/button-radio", [
+  <?=fd_component("form/button-radio", [
     "name" => "format",
     "items" => fd_lookup("formats.display"),
     "state" => $state["format"],

@@ -6,7 +6,7 @@
 ?>
 <div class="page-header">
   <h1>Clint commands</h1>
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     'Admin' => url('admin'),
     'Clint' => '#'
   ])?>

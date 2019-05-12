@@ -10,7 +10,7 @@
     Update restriction
     <small><?=$item['card_name']?> (<?=$item['card_code']?>)</small>
   </h1>
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     'Admin' => url('profile'),
     'Restrictions' => url('restrictions/manage'),
     '(&larr; Card page)' => url('card/'.urlencode($item['card_code'])),

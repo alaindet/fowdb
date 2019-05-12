@@ -21,7 +21,7 @@
 ?>
 <div class="page-header">
   <h1>Update ruling</h1>
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     'Admin' => url('profile'),
     'Rulings' => url('rulings/manage'),
     '(&larr; Card page)' => url('card/'.urlencode($card_code)),

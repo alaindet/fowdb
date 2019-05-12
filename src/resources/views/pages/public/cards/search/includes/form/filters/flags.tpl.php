@@ -9,7 +9,7 @@
 ?>
 <h3 class="font-110">Divinity</h3>
 <div class="row sm-ph-100">
-  <?=component('form/button-checkboxes', [
+  <?=fd_component('form/button-checkboxes', [
     'name' => null, // There are multiple input names!
     'state' => [
       'quickcast' => $state['quickcast'],

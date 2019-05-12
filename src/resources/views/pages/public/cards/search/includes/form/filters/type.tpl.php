@@ -16,7 +16,7 @@ $items = array_combine($types, $types);
 <div class="row sm-ph-100">
 
   <!-- Buttons -->
-  <?=component("form/button-checkboxes", [
+  <?=fd_component("form/button-checkboxes", [
     "name" => "type",
     "items" => $items,
     "state" => $state["type"],
@@ -29,7 +29,7 @@ $items = array_combine($types, $types);
   <hr class="fd-hr mv-25">
 
   <!-- Must have all selected -->
-  <?=component("form/button-checkboxes", [
+  <?=fd_component("form/button-checkboxes", [
     "name" => null,
     "state" => [
       $state["type-all"] ? "type-all" : null,

@@ -9,7 +9,7 @@
 ?>
 <div class="page-header">
   <h1>Lookup data</h1>
-  <?=component('breadcrumb', $breadcrumb)?>
+  <?=fd_component('breadcrumb', $breadcrumb)?>
 </div>
 
 <p>
@@ -53,6 +53,6 @@
 <?php if (isset($log)): ?>
   <div class="col-xs-12 col-sm-9">
     <?=$log?>
-    <?=component('top-anchor')?>
+    <?=fd_component('top-anchor')?>
   </div>
 <?php endif; ?>

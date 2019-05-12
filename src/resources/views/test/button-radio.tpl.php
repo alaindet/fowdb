@@ -9,7 +9,7 @@ $items = [
 
 ?>
 
-<?=component('breadcrumb', [
+<?=fd_component('breadcrumb', [
   'Test' => url('test'),
   'button-radio' => '#'
 ])?>
@@ -17,7 +17,7 @@ $items = [
 <form action="<?=url('test/button-radio')?>" method="get">
   
   <!-- component -->
-  <?=component('form/button-radio', [
+  <?=fd_component('form/button-radio', [
     'name' => 'INPUT_NAME',
     'items' => $items,
     'state' => fd_input()->get('INPUT_NAME') ?? null,

@@ -12,7 +12,7 @@ $cardImage = fd_asset($item['card_image']);
     Delete restriction
     <small><?=$cardLabel?></small>
   </h1>
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     'Admin' => url('profile'),
     'Restrictions' => url('restrictions/manage'),
     '(&larr; Card page)' => url('card/'.urlencode($item['card_code'])),

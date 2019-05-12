@@ -9,7 +9,7 @@ $items = [
 
 ?>
 
-<?=component('breadcrumb', [
+<?=fd_component('breadcrumb', [
   'Test' => url('test'),
   'button-dropdown' => '#'
 ])?>
@@ -17,7 +17,7 @@ $items = [
 <form action="<?=url('test/button-dropdown')?>" method="get">
   
   <!-- component -->
-  <?=component('form/button-dropdown', [
+  <?=fd_component('form/button-dropdown', [
     'default' => [
       'face' => 'DEFAULT_FACE',
       'value' => 'DEFAULT_VALUE'

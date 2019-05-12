@@ -32,7 +32,7 @@ $pagination126 = changePage($pagination, 126);
   <h1>Pagination</h1>
 
   <!-- Breadcrumbs -->
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     'Test' => url('test'),
     'pagination' => '#'
   ])?>
@@ -40,8 +40,8 @@ $pagination126 = changePage($pagination, 126);
 </div>
 
 <!-- Pagination -->
-<?=component('pagination', [ 'pagination' => $pagination1 ])?>
-<?=component('pagination', [ 'pagination' => $pagination2 ])?>
-<?=component('pagination', [ 'pagination' => $pagination100 ])?>
-<?=component('pagination', [ 'pagination' => $pagination125 ])?>
-<?=component('pagination', [ 'pagination' => $pagination126 ])?>
+<?=fd_component('pagination', [ 'pagination' => $pagination1 ])?>
+<?=fd_component('pagination', [ 'pagination' => $pagination2 ])?>
+<?=fd_component('pagination', [ 'pagination' => $pagination100 ])?>
+<?=fd_component('pagination', [ 'pagination' => $pagination125 ])?>
+<?=fd_component('pagination', [ 'pagination' => $pagination126 ])?>

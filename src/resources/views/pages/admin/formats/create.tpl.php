@@ -8,7 +8,7 @@
 ?>
 <div class="page-header">
   <h1>Create a new format</h1>
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     'Admin' => url('profile'),
     'Formats' => url('formats/manage'),
     'Create' => '#'

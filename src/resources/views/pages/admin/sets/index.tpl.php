@@ -7,7 +7,7 @@
 ?>
 <div class="page-header">
   <h1>Sets</h1>
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     'Admin' => url('profile'),
     'Sets' => '#'
   ])?>
@@ -30,7 +30,7 @@
   <!-- Pagination (top) -->
   <?php if ($pagination['has-pagination']): ?>
     <div class="col-xs-12">
-      <?=$pagelinks = component('pagination', [
+      <?=$pagelinks = fd_component('pagination', [
         'pagination' => $pagination,
       ])?>
     </div>
@@ -45,7 +45,7 @@
 
   <!-- Top anchor -->
   <div class="col-xs-12">
-    <?=component('top-anchor')?>
+    <?=fd_component('top-anchor')?>
   </div>
 
   <?php if ($pagination['has-pagination']): ?>

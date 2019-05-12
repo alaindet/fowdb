@@ -7,7 +7,7 @@
 ?>
 <div class="page-header">
   <h1>Create a new set</h1>
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     'Admin' => url('profile'),
     'Sets' => url('sets/manage'),
     'Create' => '#'

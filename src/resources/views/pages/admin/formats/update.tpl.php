@@ -11,7 +11,7 @@
     Update set
     <small><?=$item['name']?> (<?=$item['code']?>)</small>
   </h1>
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     'Admin' => url('profile'),
     'Sets' => url('sets/manage'),
     'Update' => '#'

@@ -81,13 +81,13 @@ if ($isCard) {
       <?php if ($isCard): ?>
         
         <a
-          href="<?=asset($card['image_path'])?>"
+          href="<?=fd_asset($card['image_path'])?>"
           data-lightbox="cards"
           data-title="<?="{$card['name']} ({$card['code']})"?>"
         >
           <span class="fd-zoomable-lg">
             <img
-              src="<?=asset($card['thumb_path'])?>"
+              src="<?=fd_asset($card['thumb_path'])?>"
               width="200px"
             >
           </span>
@@ -231,7 +231,7 @@ if ($isCard) {
               <?=$checked?>
             >
             <img
-              src="<?=asset('images/icons/blank.gif')?>"
+              src="<?=fd_asset('images/icons/blank.gif')?>"
               class="fd-icon-<?=$lookup['attributes']['name2code'][$name]?> --bigger"
               alt="<?=$name?>"
             >

@@ -79,7 +79,7 @@ $bannedList = fd_lookup("banned.{$format}") ?? [];
 
         <!-- Pagination (top) -->
         <?php if ($pagination["has-pagination"]): ?>
-          <?=$pagelinks = component("pagination", [
+          <?=$pagelinks = fd_component("pagination", [
             "pagination" => $pagination,
             // "no-label" => true
           ])?>
@@ -121,7 +121,7 @@ $bannedList = fd_lookup("banned.{$format}") ?? [];
         <?php endif; ?>
 
         <!-- Top anchor -->
-        <div class="text-center"><?=component("top-anchor")?></div>
+        <div class="text-center"><?=fd_component("top-anchor")?></div>
 
       </div><!-- /.fd-box__content -->
     </div><!-- /.fd-box -->

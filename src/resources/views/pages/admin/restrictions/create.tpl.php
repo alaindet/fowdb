@@ -7,7 +7,7 @@
 ?>
 <div class="page-header">
   <h1>Create a new restriction</h1>
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     'Admin' => url('profile'),
     'Restrictions' => url('restrictions/manage'),
     'Create' => '#'

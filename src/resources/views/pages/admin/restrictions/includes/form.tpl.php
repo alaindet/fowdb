@@ -48,7 +48,7 @@ $decks = \App\Models\PlayRestriction::$decksLabels;
       
       <?php else: // Search autocomplete ?>
       
-        <?=component('form/input-clear', [
+        <?=fd_component('form/input-clear', [
           'classes' => 'input-lg text-monospace',
           'name' => 'card-name',
           'id' => 'card-name-autocomplete',

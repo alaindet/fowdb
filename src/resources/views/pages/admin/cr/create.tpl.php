@@ -6,7 +6,7 @@
 ?>
 <div class="page-header">
   <h1>Create new comprehensive rules</h1>
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     'Admin' => url('profile'),
     'Comprehensive Rules' => url('cr/manage'),
     'Create' => '#'

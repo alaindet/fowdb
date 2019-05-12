@@ -13,7 +13,7 @@
 ?>
 <div class="page-header">
   <h1>Delete ruling</h1>
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     'Admin' => url('profile'),
     'Rulings' => url('rulings/manage'),
     'Delete' => '#'

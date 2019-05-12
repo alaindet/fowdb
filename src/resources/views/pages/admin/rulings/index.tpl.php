@@ -23,7 +23,7 @@ if ($hasFilters && $hasItems) {
       $links['Rulings'] = url('rulings/manage');
       $links['&larr; Clear filter'] = '#';
     }
-    echo component('breadcrumb', $links);
+    echo fd_component('breadcrumb', $links);
   ?>
 
 </div>
@@ -79,7 +79,7 @@ if ($hasFilters && $hasItems) {
   <!-- Pagination (top) -->
   <?php if ($pagination['has-pagination']): ?>
     <div class="col-xs-12">
-      <?=$pagelinks = component('pagination', [
+      <?=$pagelinks = fd_component('pagination', [
         'pagination' => $pagination,
       ])?>
     </div>
@@ -94,7 +94,7 @@ if ($hasFilters && $hasItems) {
 
   <!-- Top anchor -->
   <div class="col-xs-12">
-    <?=component('top-anchor')?>
+    <?=fd_component('top-anchor')?>
   </div>
 
   <!-- Pagination (bottom) -->

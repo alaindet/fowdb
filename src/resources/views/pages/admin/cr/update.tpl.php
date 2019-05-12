@@ -7,7 +7,7 @@
 ?>
 <div class="page-header">
   <h1>Update comprehensive rules</h1>
-  <?=component('breadcrumb', [
+  <?=fd_component('breadcrumb', [
     'Admin' => url('profile'),
     'Comprehensive Rules' => url('cr/manage'),
     'Update' => '#',

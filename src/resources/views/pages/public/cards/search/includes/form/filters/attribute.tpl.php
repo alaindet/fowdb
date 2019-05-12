@@ -25,7 +25,7 @@ foreach ($attributes as $attribute) {
 <div class="row sm-ph-100">
 
   <!-- Buttons with icons -->
-  <?=component("form/button-checkboxes", [
+  <?=fd_component("form/button-checkboxes", [
     "name" => "attribute",
     "state" => $state["attribute"],
     "items" => $items,
@@ -38,7 +38,7 @@ foreach ($attributes as $attribute) {
   <hr class="fd-hr mv-25">
 
   <!-- Button flags -->
-  <?=component("form/button-checkboxes", [
+  <?=fd_component("form/button-checkboxes", [
     "name" => null,
     "state" => [
       $state["attribute-single"] ? "attribute-single" : null,
