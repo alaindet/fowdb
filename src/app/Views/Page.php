@@ -31,7 +31,7 @@ class Page
     public function __construct()
     {
         $this->title = fd_config("app.name");
-        $this->mainTemplate = path_views("layout/main.tpl.php");
+        $this->mainTemplate = fd_path_views("layout/main.tpl.php");
     }
 
     /**
@@ -80,7 +80,7 @@ class Page
      */
     public function template(string $name): Page
     {
-        $this->template = path_views("{$name}.tpl.php");
+        $this->template = fd_path_views("{$name}.tpl.php");
 
         return $this;
     }

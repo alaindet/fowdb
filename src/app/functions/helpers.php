@@ -206,7 +206,7 @@ function fd_path_cache(string $path = null): string
  * @param string Relative path to /src/data/
  * @return string Absolute path
  */
-function fd_fd_path_data(string $path = null): string
+function fd_path_data(string $path = null): string
 {
 	return Paths::inDataDir($path);
 }
@@ -215,7 +215,7 @@ function fd_fd_path_data(string $path = null): string
  * @param string Relative path to /
  * @return string Absolute path
  */
-function fd_fd_path_root(string $path = null): string
+function fd_path_root(string $path = null): string
 {
 	return Paths::inRootDir($path);
 }
@@ -224,7 +224,7 @@ function fd_fd_path_root(string $path = null): string
  * @param string Relative path to /src/
  * @return string Absolute path
  */
-function fd_fd_path_src(string $path = null): string
+function fd_path_src(string $path = null): string
 {
 	return Paths::inSrcDir($path);
 }
@@ -326,7 +326,7 @@ function fd_include_view(string $path, array $__variables = null): string
 
 	// Load and render this template as a string
 	ob_start();
-	include path_views("{$path}.tpl.php");
+	include fd_path_views("{$path}.tpl.php");
 	return ob_get_clean();
 }
 
