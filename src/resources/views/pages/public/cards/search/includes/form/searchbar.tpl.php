@@ -15,7 +15,7 @@ $value = $state['q'] ?? '';
   <!-- Syntax help button -->
   <span class="input-group-btn">
     <a
-      href="<?=url('cards/search/help')?>"
+      href="<?=fd_url('cards/search/help')?>"
       class="btn btn-lg fd-btn-default"
     >
       <i class="fa fa-info"></i>

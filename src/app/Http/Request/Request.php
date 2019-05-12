@@ -130,7 +130,7 @@ class Request
             ? $queryString = ""
             : $queryString = "?{$this->queryString}";
 
-        return url($this->path) . $queryString;
+        return fd_url($this->path) . $queryString;
     }
 
     /**

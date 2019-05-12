@@ -32,7 +32,7 @@
             <!-- Update -->
             <a
               class="btn btn-xs fd-btn-default fd-btn-warning-hover"
-              href="<?=url('sets/update/'.$item['set_id'])?>"
+              href="<?=fd_url('sets/update/'.$item['set_id'])?>"
             >
               <i class="fa fa-pencil"></i>
               Update
@@ -41,7 +41,7 @@
             <!-- Delete -->
             <a
               class="btn btn-xs fd-btn-default fd-btn-danger-hover"
-              href="<?=url('sets/delete/'.$item['set_id'])?>"
+              href="<?=fd_url('sets/delete/'.$item['set_id'])?>"
             >
               <i class="fa fa-trash"></i>
               Delete

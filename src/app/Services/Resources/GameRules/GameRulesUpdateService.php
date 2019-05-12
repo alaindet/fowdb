@@ -91,7 +91,7 @@ class GameRulesUpdateService extends CrudService
             '</strong>.'
         );
 
-        $uri = url('cr/manage');
+        $uri = fd_url('cr/manage');
 
         return [$message, $uri];
     }

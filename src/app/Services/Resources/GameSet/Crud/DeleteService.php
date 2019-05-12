@@ -53,7 +53,7 @@ class DeleteService extends CrudService
             "</strong> deleted."
         );
 
-        $uri = url('sets/manage');
+        $uri = fd_url('sets/manage');
 
         return [$message, $uri];
     }

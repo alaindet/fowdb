@@ -37,7 +37,7 @@
     <div class="col-xs-12">
       <div class="list-group fd-list-group">
         <?php foreach ($items as $item):
-          $link = url('card/'.urlencode($item['card_code']));
+          $link = fd_url('card/'.urlencode($item['card_code']));
         ?>
           <div class="list-group-item">
             <h4 class="list-group-item-heading">

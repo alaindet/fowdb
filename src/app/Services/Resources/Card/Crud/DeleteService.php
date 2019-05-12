@@ -56,7 +56,7 @@ class DeleteService extends CrudService
     {
         $label = "{$this->old['name']} ({$this->old['code']})";
         $message = "Card <strong>{$label}</strong> deleted.";
-        $uri = url('cards/manage');
+        $uri = fd_url('cards/manage');
 
         return [$message, $uri];
     }

@@ -39,7 +39,7 @@ foreach ($cards as $card):
 				
 				<!-- Update ======================================================= -->
         <a
-          href="<?=url("cards/update/{$card['id']}")?>"
+          href="<?=fd_url("cards/update/{$card['id']}")?>"
 					class="btn btn-warning"
         >
           Update card
@@ -48,7 +48,7 @@ foreach ($cards as $card):
 
 				<!-- Delete ======================================================= -->
         <a
-          href="<?=url("cards/delete/{$card['id']}")?>"
+          href="<?=fd_url("cards/delete/{$card['id']}")?>"
           class="btn btn-danger"
         >
           Delete card
@@ -56,7 +56,7 @@ foreach ($cards as $card):
 				
 				<!-- Add ruling =================================================== -->
         <a
-          href="<?=url('rulings/create', ['card' => $card['id']])?>"
+          href="<?=fd_url('rulings/create', ['card' => $card['id']])?>"
           class="btn fd-btn-default"
         >
           Add ruling
@@ -65,7 +65,7 @@ foreach ($cards as $card):
 				<!-- Show rulings ================================================= -->
 				<?php if ($hasRulings): ?>
 					<a
-						href="<?=url('rulings/manage', ['card' => $card['id']])?>"
+						href="<?=fd_url('rulings/manage', ['card' => $card['id']])?>"
 						class="btn fd-btn-default"
 					>
 						Show rulings
@@ -74,7 +74,7 @@ foreach ($cards as $card):
 
 				<!-- Add restriction ============================================== -->
 				<a
-          href="<?=url('restrictions/create', ['card' => $card['id']])?>"
+          href="<?=fd_url('restrictions/create', ['card' => $card['id']])?>"
           class="btn fd-btn-default"
         >
           Add restriction
@@ -83,7 +83,7 @@ foreach ($cards as $card):
 				<!-- Show restrictions ============================================ -->
 				<?php if (isset($card['banned'])): ?>
 					<a
-						href="<?=url('restrictions/manage', ['card' => $card['id']])?>"
+						href="<?=fd_url('restrictions/manage', ['card' => $card['id']])?>"
 						class="btn fd-btn-default"
 					>
 						Show restrictions
@@ -128,7 +128,7 @@ foreach ($cards as $card):
 		?>
 			<div class="col-xs-12 text-center sm-text-right mv-50">
 				<a
-					href="<?=url("card/{$next_card['code']}")?>"
+					href="<?=fd_url("card/{$next_card['code']}")?>"
 					class="btn btn-lg fd-btn-default"
 				>
 					<?=$next_card['code']?>
@@ -151,7 +151,7 @@ foreach ($cards as $card):
 					<ul class="list-group">
 						<?php foreach ($cards as $code): ?>
 					  	<li class="list-group-item">
-								<a href="<?=url('card/'.$code)?>">
+								<a href="<?=fd_url('card/'.$code)?>">
 									<?=$code?>
 								</a>
 							</li>
@@ -196,7 +196,7 @@ foreach ($cards as $card):
 						    		
 										<!-- Edit -->
 										<a
-											href="<?=url("rulings/update/{$item['id']}")?>"
+											href="<?=fd_url("rulings/update/{$item['id']}")?>"
 											class="btn btn-sm btn-warning"
                     >
                       Update
@@ -204,7 +204,7 @@ foreach ($cards as $card):
 
 										<!-- Delete -->
 						    		<a
-											href="<?=url("rulings/delete/{$item['id']}")?>"
+											href="<?=fd_url("rulings/delete/{$item['id']}")?>"
 											class="btn btn-sm btn-danger"
                     >
                       Delete

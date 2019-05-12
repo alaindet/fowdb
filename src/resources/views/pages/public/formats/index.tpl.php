@@ -12,7 +12,7 @@
     <h2>
       <a
         class=" link-as-text"
-        href="<?=url('cards', ['format' => [$f['code']]])?>"
+        href="<?=fd_url('cards', ['format' => [$f['code']]])?>"
       >
         <?=$f['name']?>
       </a>
@@ -23,7 +23,7 @@
           <h4>
             <a
               class=" link-as-text"
-              href="<?=url('cards', ['format' => [$c['code']]])?>"
+              href="<?=fd_url('cards', ['format' => [$c['code']]])?>"
             >
               <?=$c['name']?>
             </a>
@@ -34,7 +34,7 @@
                   <div class="formats-set-label">
                     <?=strtoupper($scode)?>
                   </div>
-                  <a href="<?=url('cards', ['set' => $scode])?>">
+                  <a href="<?=fd_url('cards', ['set' => $scode])?>">
                     <?=$sname?>
                   </a>
                 </li>

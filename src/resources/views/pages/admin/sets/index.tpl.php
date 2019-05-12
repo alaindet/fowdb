@@ -8,7 +8,7 @@
 <div class="page-header">
   <h1>Sets</h1>
   <?=fd_component('breadcrumb', [
-    'Admin' => url('profile'),
+    'Admin' => fd_url('profile'),
     'Sets' => '#'
   ])?>
 </div>
@@ -18,7 +18,7 @@
   <!-- Create a new set -->
   <div class="col-xs-12">
     <a
-      href="<?=url('sets/create')?>"
+      href="<?=fd_url('sets/create')?>"
       class="btn btn-lg fd-btn-default fd-btn-success-hover"
     >
       <i class="fa fa-plus"></i>

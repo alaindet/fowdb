@@ -6,7 +6,7 @@
 
       <div class="fd-box__content">
         <form
-          action="<?=url('login')?>"
+          action="<?=fd_url('login')?>"
           method="post"
           role="form"
         >

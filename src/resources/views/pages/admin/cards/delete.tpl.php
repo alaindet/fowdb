@@ -58,9 +58,9 @@ $displayCsn = (
 <div class="page-header">
   <h1>Delete card</h1>
   <?=fd_component("breadcrumb", [
-    "Admin" => url("profile"),
-    "Cards" => url("cards/manage"),
-    "(&larr; Card page)" => url("card/".urlencode($card["code"])),
+    "Admin" => fd_url("profile"),
+    "Cards" => fd_url("cards/manage"),
+    "(&larr; Card page)" => fd_url("card/".urlencode($card["code"])),
     "Delete" => "#"
   ])?>
 </div>
@@ -68,7 +68,7 @@ $displayCsn = (
 <!-- Form -->
 <div class="fd-box --more-margin">
   <form
-    action="<?=url("cards/delete/{$card["id"]}")?>"
+    action="<?=fd_url("cards/delete/{$card["id"]}")?>"
     method="post"
     class="form-horizontal"
   >

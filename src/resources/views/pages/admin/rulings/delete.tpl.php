@@ -14,8 +14,8 @@
 <div class="page-header">
   <h1>Delete ruling</h1>
   <?=fd_component('breadcrumb', [
-    'Admin' => url('profile'),
-    'Rulings' => url('rulings/manage'),
+    'Admin' => fd_url('profile'),
+    'Rulings' => fd_url('rulings/manage'),
     'Delete' => '#'
   ])?>
 </div>
@@ -23,7 +23,7 @@
 <div class="fd-box --more-margin">
   <div class="fd-box__content">
     <form
-      action="<?=url("rulings/delete/{$ruling_id}")?>"
+      action="<?=fd_url("rulings/delete/{$ruling_id}")?>"
       method="post"
       class="form-horizontal"
     >

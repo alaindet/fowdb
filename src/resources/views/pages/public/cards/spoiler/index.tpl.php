@@ -86,7 +86,7 @@
             ><!--
               <?php if (!empty($set['cards'])): ?>
                 <?php foreach ($set['cards'] as $item):
-                  $link = url('card/'.urlencode($item['code']));
+                  $link = fd_url('card/'.urlencode($item['code']));
                 ?>
                   --><div
                     class="fd-card-item fd-grid fd-grid-3"

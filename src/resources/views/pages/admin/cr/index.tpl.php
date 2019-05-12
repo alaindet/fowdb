@@ -10,7 +10,7 @@ $hasItems = !empty($items);
 <div class="page-header">
   <h1>Comprehensive Rules</h1>
   <?=fd_component('breadcrumb', [
-    'Admin' => url('profile'),
+    'Admin' => fd_url('profile'),
     'Comprehensive Rules' => '#'
   ])?>
 </div>
@@ -20,7 +20,7 @@ $hasItems = !empty($items);
   <!-- Create a new resource -->
   <div class="col-xs-12">
     <a
-      href="<?=url('cr/create')?>"
+      href="<?=fd_url('cr/create')?>"
       class="btn btn-lg fd-btn-default fd-btn-success-hover"
     >
       <i class="fa fa-plus"></i>

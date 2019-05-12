@@ -27,7 +27,7 @@ class LookupController extends Controller
             ->variables([
                 'features' => $this->lookup->features(),
                 'breadcrumb' => [
-                    'Admin' => url('profile'),
+                    'Admin' => fd_url('profile'),
                     'Lookup' => '#'
                 ]
             ])
@@ -62,8 +62,8 @@ class LookupController extends Controller
                 'features' => $this->lookup->features(),
                 'log' => fd_log_html($data, 'Lookup data: '.$feature),
                 'breadcrumb' => [
-                    'Admin' => url('profile'),
-                    'Lookup' => url('lookup'),
+                    'Admin' => fd_url('profile'),
+                    'Lookup' => fd_url('lookup'),
                     'Read: '.$feature => '#'
                 ]
             ])

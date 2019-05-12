@@ -3,7 +3,7 @@
 // VARIABLES
 // urls
 
-$baseUrl = url('');
+$baseUrl = fd_url('');
 
 $items = [];
 foreach ($urls as $url) {

@@ -7,7 +7,7 @@ $setsCode2Id = fd_lookup("sets.code2id");
 <div class="page-header">
   <h1>Artists</h1>
   <?=fd_component("breadcrumb", [
-    "Admin" => url("admin"),
+    "Admin" => fd_url("admin"),
     "Artists" => "#"
   ])?>
 </div>

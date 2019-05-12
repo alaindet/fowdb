@@ -21,7 +21,7 @@ $decks = \App\Models\PlayRestriction::$decksLabels;
 
 ?>
 <form
-  action="<?=url($url)?>"
+  action="<?=fd_url($url)?>"
   method="post"
   class="form-horizontal"
   id="validate-this-form"
@@ -86,7 +86,7 @@ $decks = \App\Models\PlayRestriction::$decksLabels;
         <!-- Link -->
         <br>
         <a
-          href="<?=url('card/'.urlencode($card['code']))?>"
+          href="<?=fd_url('card/'.urlencode($card['code']))?>"
           class="btn btn-link"
         >
           <i class="fa fa-external-link"></i>

@@ -7,8 +7,8 @@
 <div class="page-header">
   <h1>Create a new card</h1>
   <?=fd_component('breadcrumb', [
-    'Admin' => url('profile'),
-    'Cards' => url('cards/manage'),
+    'Admin' => fd_url('profile'),
+    'Cards' => fd_url('cards/manage'),
     'Create' => '#'
   ])?>
 </div>

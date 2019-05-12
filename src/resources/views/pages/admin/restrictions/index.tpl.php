@@ -18,11 +18,11 @@ if ($hasFilters && $hasItems) {
   <h1>Restricted cards: banned and limited</h1>
   <?php
     $links = [
-      'Admin' => url('profile'),
+      'Admin' => fd_url('profile'),
       'Restrictions' => '#'
     ];
     if ($hasFilters) {
-      $links['Restrictions'] = url('restrictions/manage');
+      $links['Restrictions'] = fd_url('restrictions/manage');
       $links['&larr; Clear filter'] = '#';
     }
     echo fd_component('breadcrumb', $links);
@@ -34,7 +34,7 @@ if ($hasFilters && $hasItems) {
   <!-- Create a new restriction -->
   <div class="col-xs-12">
     <a
-      href="<?=url('restrictions/create')?>"
+      href="<?=fd_url('restrictions/create')?>"
       class="btn btn-lg fd-btn-default fd-btn-success-hover"
     >
       <i class="fa fa-plus"></i>
@@ -61,7 +61,7 @@ if ($hasFilters && $hasItems) {
       <h2>
         Filters
         <a
-          href="<?=url('restrictions/manage')?>"
+          href="<?=fd_url('restrictions/manage')?>"
           class="font-100 text-italic"
         >
           (Reset)

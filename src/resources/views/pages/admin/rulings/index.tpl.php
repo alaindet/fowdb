@@ -16,11 +16,11 @@ if ($hasFilters && $hasItems) {
   <h1>Rulings</h1>
   <?php
     $links = [
-      'Admin' => url('profile'),
+      'Admin' => fd_url('profile'),
       'Rulings' => '#'
     ];
     if ($hasFilters) {
-      $links['Rulings'] = url('rulings/manage');
+      $links['Rulings'] = fd_url('rulings/manage');
       $links['&larr; Clear filter'] = '#';
     }
     echo fd_component('breadcrumb', $links);
@@ -33,7 +33,7 @@ if ($hasFilters && $hasItems) {
   <!-- Create a new ruling -->
   <div class="col-xs-12">
     <a
-      href="<?=url('rulings/create')?>"
+      href="<?=fd_url('rulings/create')?>"
       class="btn btn-lg fd-btn-default fd-btn-success-hover"
     >
       <i class="fa fa-plus"></i>
@@ -60,7 +60,7 @@ if ($hasFilters && $hasItems) {
       <h2>
         Filters
         <a
-          href="<?=url('restrictions/manage')?>"
+          href="<?=fd_url('restrictions/manage')?>"
           class="font-100 text-italic"
         >
           (Reset)

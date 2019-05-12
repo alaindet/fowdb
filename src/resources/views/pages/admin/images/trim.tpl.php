@@ -10,7 +10,7 @@
 
 <div class="well well-lg">
 	<form
-    action="<?=url('images/trim')?>"
+    action="<?=fd_url('images/trim')?>"
     method="post"
     enctype="multipart/form-data"
   >

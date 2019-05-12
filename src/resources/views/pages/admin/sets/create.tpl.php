@@ -8,8 +8,8 @@
 <div class="page-header">
   <h1>Create a new set</h1>
   <?=fd_component('breadcrumb', [
-    'Admin' => url('profile'),
-    'Sets' => url('sets/manage'),
+    'Admin' => fd_url('profile'),
+    'Sets' => fd_url('sets/manage'),
     'Create' => '#'
   ])?>
 </div>

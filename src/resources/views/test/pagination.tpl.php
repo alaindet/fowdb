@@ -33,7 +33,7 @@ $pagination126 = changePage($pagination, 126);
 
   <!-- Breadcrumbs -->
   <?=fd_component('breadcrumb', [
-    'Test' => url('test'),
+    'Test' => fd_url('test'),
     'pagination' => '#'
   ])?>
 

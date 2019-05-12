@@ -29,7 +29,7 @@ $items = [
 
 <!-- Breadcrumb -->
 <?=fd_component('breadcrumb', [
-  'Test' => url('test'),
+  'Test' => fd_url('test'),
   'select-multiple' => '#'
 ])?>
 
@@ -39,7 +39,7 @@ $items = [
   }
 ?>
 
-<form action="<?=url('test/select-multiple')?>" method="get">
+<form action="<?=fd_url('test/select-multiple')?>" method="get">
 
   <!-- The handle -->
   <?=fd_component('form/select-multiple-handle', [

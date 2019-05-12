@@ -107,7 +107,7 @@ if (fd_alert()->check("user") > 0) {
 							<ul class="dropdown-menu">
 								<?php foreach ($props["dropdown"] as &$item): ?>
 									<li>
-                    <a href="<?=url($item["url"])?>">
+                    <a href="<?=fd_url($item["url"])?>">
                       <?=$item["label"]?>
                     </a>
                   </li>
@@ -116,7 +116,7 @@ if (fd_alert()->check("user") > 0) {
 						</li>
           <?php else: // Normal link ?>
 						<li>
-							<a href="<?=url($props["url"])?>">
+							<a href="<?=fd_url($props["url"])?>">
 								<i class="<?=$props["icon"]?>"></i>
 								<?=$label?>
 							</a>
@@ -150,7 +150,7 @@ if (fd_alert()->check("user") > 0) {
 </div>
 
 <div id="logo" class="mb-100">
-	<a href="<?=url("/")?>">
+	<a href="<?=fd_url("/")?>">
 		<img src="<?=fd_asset("images/logo.png")?>">
 	</a>
 </div>

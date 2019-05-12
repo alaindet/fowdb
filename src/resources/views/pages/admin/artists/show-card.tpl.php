@@ -14,9 +14,9 @@ $card_image = fd_asset($card['image_path']);
 <div class="page-header">
   <h1>Artists</h1>
   <?=fd_component('breadcrumb', [
-    'Admin' => url('profile'),
-    'Artists' => url('artists'),
-    'Set' => url("artists/set/{$card['sets_id']}"),
+    'Admin' => fd_url('profile'),
+    'Artists' => fd_url('artists'),
+    'Set' => fd_url("artists/set/{$card['sets_id']}"),
     'Card' => '#',
   ])?>
 </div>
@@ -38,7 +38,7 @@ $card_image = fd_asset($card['image_path']);
   <div class="col-xs-12 col-sm-7">
 
     <form
-      action="<?=url('artists/store')?>""
+      action="<?=fd_url('artists/store')?>""
       method="post"
       class="form-horizontal"
     >
@@ -82,7 +82,7 @@ $card_image = fd_asset($card['image_path']);
 
       <!-- Go to card page -->
       <a
-        href="<?=url('card/'.$card['code'])?>"
+        href="<?=fd_url('card/'.$card['code'])?>"
         class="btn fd-btn-default btn-block btn-lg"
         target="_blank"
       >
@@ -93,7 +93,7 @@ $card_image = fd_asset($card['image_path']);
       <!-- Go to next card -->
       <?php if (!empty($next_card)): ?>
         <a
-          href="<?=url('artists/card/'.$next_card['id'])?>"
+          href="<?=fd_url('artists/card/'.$next_card['id'])?>"
           class="btn fd-btn-default btn-block btn-lg"
         >
           <i class="fa fa-arrow-right"></i>

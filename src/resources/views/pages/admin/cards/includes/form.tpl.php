@@ -67,7 +67,7 @@ if ($isCard) {
 
 ?>
 <form
-  action="<?=url($url)?>"
+  action="<?=fd_url($url)?>"
   method="post"
   enctype="multipart/form-data"
   class="form-horizontal"

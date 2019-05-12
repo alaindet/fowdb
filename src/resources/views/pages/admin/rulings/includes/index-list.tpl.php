@@ -31,7 +31,7 @@
             <!-- Update -->
             <a
               class="btn btn-xs fd-btn-default fd-btn-warning-hover"
-              href="<?=url('rulings/update/'.$item['ruling_id'])?>"
+              href="<?=fd_url('rulings/update/'.$item['ruling_id'])?>"
             >
               <i class="fa fa-pencil"></i>
               Update
@@ -40,7 +40,7 @@
             <!-- Delete -->
             <a
               class="btn btn-xs fd-btn-default fd-btn-danger-hover"
-              href="<?=url('rulings/delete/'.$item['ruling_id'])?>"
+              href="<?=fd_url('rulings/delete/'.$item['ruling_id'])?>"
             >
               <i class="fa fa-trash"></i>
               Delete
@@ -51,13 +51,13 @@
           <!-- Card -->
           <td>
             <a
-              href="<?=url('card/'.urlencode($item['card_code']))?>"
+              href="<?=fd_url('card/'.urlencode($item['card_code']))?>"
               class="btn btn-xs fd-btn-default"
               target="_blank"
             >
               <i class="fa fa-external-link"></i>
             </a>
-            <a href="<?=url('rulings/manage', ['card' => $item['card_id']])?>">
+            <a href="<?=fd_url('rulings/manage', ['card' => $item['card_id']])?>">
               <span class="text-muted">(<?=$item['card_code']?>)</span>
               <?=$item['card_name']?>
             </a>

@@ -10,11 +10,11 @@ $items = [
 ?>
 
 <?=fd_component('breadcrumb', [
-  'Test' => url('test'),
+  'Test' => fd_url('test'),
   'input-dropdown' => '#'
 ])?>
 
-<form action="<?=url('test/input-dropdown')?>" method="get">
+<form action="<?=fd_url('test/input-dropdown')?>" method="get">
   
   <!-- component -->
   <?=fd_component('form/input-dropdown', [

@@ -20,7 +20,7 @@
 <div class="col-xs-12 col-sm-3">
 
   <!-- Regenerate all -->
-  <a href="<?=url('lookup/build')?>" class="btn btn-lg fd-btn-primary">
+  <a href="<?=fd_url('lookup/build')?>" class="btn btn-lg fd-btn-primary">
     <i class="fa fa-database"></i>
     Regenerate all
   </a>
@@ -31,7 +31,7 @@
   <ul class="fd-list --spaced">
 
     <li>
-      <a href="<?=url('lookup/read')?>">
+      <a href="<?=fd_url('lookup/read')?>">
         Read all
       </a>
     </li>
@@ -39,7 +39,7 @@
 
     <?php foreach ($features as $_feat): ?>
       <li>
-        <a href="<?=url('lookup/read/'.$_feat)?>">
+        <a href="<?=fd_url('lookup/read/'.$_feat)?>">
           Read <?=$_feat?>
         </a>
       </li>

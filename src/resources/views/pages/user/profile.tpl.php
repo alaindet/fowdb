@@ -5,14 +5,14 @@
 <ul>
 
   <li>
-    <a href="<?=url('admin')?>">
+    <a href="<?=fd_url('admin')?>">
       <i class="fa fa-rocket"></i>
       Administrator
     </a>
   </li>
 
   <li>
-    <a href="<?=url('judge')?>">
+    <a href="<?=fd_url('judge')?>">
       <i class="fa fa-book"></i>
       Judgde
     </a>

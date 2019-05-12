@@ -116,7 +116,7 @@ class UpdateService extends CrudService
      */
     public function getFeedback(): array
     {
-        $link = $uri = url('card/'.urlencode($this->new['code']));
+        $link = $uri = fd_url('card/'.urlencode($this->new['code']));
 
         $message = (
             "Card ".

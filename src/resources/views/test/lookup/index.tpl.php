@@ -7,7 +7,7 @@
 <div class="page-header">
   <h1>Test lookup data</h1>
   <?=fd_component('breadcrumb', [
-    'Test' => url('test'),
+    'Test' => fd_url('test'),
     'Lookup' => '#'
   ])?>
 </div>
@@ -16,7 +16,7 @@
 <div class="col-xs-12">
 
   <!-- Regenerate all -->
-  <a href="<?=url('test/lookup/build')?>" class="btn btn-lg fd-btn-primary">
+  <a href="<?=fd_url('test/lookup/build')?>" class="btn btn-lg fd-btn-primary">
     <i class="fa fa-database"></i>
     Regenerate all
   </a>
@@ -27,7 +27,7 @@
   <ul class="fd-list --spaced font-110">
 
     <li>
-      <a href="<?=url('test/lookup/read')?>">
+      <a href="<?=fd_url('test/lookup/read')?>">
         Read all
       </a>
     </li>
@@ -38,8 +38,8 @@
     ?>
       <li>
         <span class="text-monospace"><?=$displayFeat?></span>
-        <a href="<?=url('test/lookup/read/'.$_feat)?>">read</a>
-        <a href="<?=url('test/lookup/build/'.$_feat)?>">build</a>
+        <a href="<?=fd_url('test/lookup/read/'.$_feat)?>">read</a>
+        <a href="<?=fd_url('test/lookup/build/'.$_feat)?>">build</a>
       </li>
     <?php endforeach; ?>
 

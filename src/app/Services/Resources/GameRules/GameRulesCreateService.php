@@ -67,13 +67,13 @@ class GameRulesCreateService extends CrudService
     {
         $message = (
             'New comprehensive rules <strong>'.
-                '<a href="'.url('cr/'.$this->new['version']).'">'.
+                '<a href="'.fd_url('cr/'.$this->new['version']).'">'.
                     'ver. '.$this->new['version'].
                 '</a>'.
             '</strong> (valid from '.$this->new['date_validity'].') created.'
         );
 
-        $uri = url('cr/manage');
+        $uri = fd_url('cr/manage');
 
         return [$message, $uri];
     }

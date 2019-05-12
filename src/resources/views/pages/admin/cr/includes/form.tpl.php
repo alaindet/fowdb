@@ -16,7 +16,7 @@ $url = 'cr/' . ($isItem ? 'update/'.$item['id'] : 'create');
 
 ?>
 <form
-  action="<?=url($url)?>"
+  action="<?=fd_url($url)?>"
   method="post"
   enctype="multipart/form-data"
   class="form-horizontal"
@@ -56,7 +56,7 @@ $url = 'cr/' . ($isItem ? 'update/'.$item['id'] : 'create');
       <!-- View existing .txt file -->
       <?php if ($isItem): ?>
         <a
-          href="<?=url('cr/file/'.$item['id'])?>"
+          href="<?=fd_url('cr/file/'.$item['id'])?>"
           class="btn btn-lg fd-btn-default mv-100"
         >
           Download source file &rarr; <?=$item['version']?>.txt

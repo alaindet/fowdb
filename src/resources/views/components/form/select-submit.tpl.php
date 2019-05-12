@@ -9,7 +9,7 @@
 ?>
 <form
   method="get"
-  action="<?=url($targetUrl)?>"
+  action="<?=fd_url($targetUrl)?>"
   class="form form-inline"
 >
   <?php if(isset($hidden)): // Hidden values ?>

@@ -89,7 +89,7 @@ $bannedList = fd_lookup("banned.{$format}") ?? [];
         <div class="fd-grid-items js-fd-card-items">
           <?php foreach ($results as $item):
 
-            $link = url("card/".urlencode($item["code"]));
+            $link = fd_url("card/".urlencode($item["code"]));
 
             $custom = "";
 

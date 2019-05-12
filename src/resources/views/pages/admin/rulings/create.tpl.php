@@ -13,8 +13,8 @@
 <div class="page-header">
   <h1>Create a new ruling</h1>
   <?=fd_component('breadcrumb', [
-    'Admin' => url('profile'),
-    'Rulings' => url('rulings/manage'),
+    'Admin' => fd_url('profile'),
+    'Rulings' => fd_url('rulings/manage'),
     'Create' => '#'
   ])?>
 </div>
@@ -22,7 +22,7 @@
 <div class="fd-box --more-margin">
   <div class="fd-box__content">
     <form
-      action="<?=url('rulings/create')?>"
+      action="<?=fd_url('rulings/create')?>"
       method="post"
       class="form-horizontal"
       id="validate-this-form"
@@ -89,7 +89,7 @@
             <!-- Link -->
             <br>
             <a
-              href="<?=url('card/'.urlencode($card['code']))?>"
+              href="<?=fd_url('card/'.urlencode($card['code']))?>"
               class="btn btn-link"
             >
               <i class="fa fa-external-link"></i>

@@ -61,7 +61,7 @@ class CreateService extends CrudService
             "</strong> created."
         );
 
-        $uri = url('sets/manage');
+        $uri = fd_url('sets/manage');
 
         return [$message, $uri];
     }

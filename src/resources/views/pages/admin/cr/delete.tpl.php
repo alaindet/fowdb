@@ -7,16 +7,16 @@
 <div class="page-header">
   <h1>Delete comprehensive rules</h1>
   <?=fd_component('breadcrumb', [
-    'Admin' => url('profile'),
-    'Comprehensive Rules' => url('cr/manage'),
+    'Admin' => fd_url('profile'),
+    'Comprehensive Rules' => fd_url('cr/manage'),
     'Delete' => '#',
-    'Show' => url('cr/'.$item['version'])
+    'Show' => fd_url('cr/'.$item['version'])
   ])?>
 </div>
 
 <div class="fd-box --more-margin pv-100">
   <form
-    action="<?=url("cr/delete/{$item['id']}")?>"
+    action="<?=fd_url("cr/delete/{$item['id']}")?>"
     method="post"
     class="form-horizontal"
   >
@@ -27,7 +27,7 @@
       <label class="col-sm-2 control-label">Source file</label>
       <div class="col-sm-10">
         <a
-          href="<?=url('cr/file/'.$item['id'])?>"
+          href="<?=fd_url('cr/file/'.$item['id'])?>"
           class="btn btn-lg fd-btn-default"
         >
           Download source file &rarr; <?=$item['version']?>.txt

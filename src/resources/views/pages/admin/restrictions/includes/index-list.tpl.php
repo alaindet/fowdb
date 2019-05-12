@@ -32,7 +32,7 @@ $decks = \App\Models\PlayRestriction::$decksLabels;
             <!-- Update -->
             <a
               class="btn btn-xs fd-btn-default fd-btn-warning-hover"
-              href="<?=url('restrictions/update/'.$item['id'])?>"
+              href="<?=fd_url('restrictions/update/'.$item['id'])?>"
             >
               <i class="fa fa-pencil"></i>
               Update
@@ -41,7 +41,7 @@ $decks = \App\Models\PlayRestriction::$decksLabels;
             <!-- Delete -->
             <a
               class="btn btn-xs fd-btn-default fd-btn-danger-hover"
-              href="<?=url('restrictions/delete/'.$item['id'])?>"
+              href="<?=fd_url('restrictions/delete/'.$item['id'])?>"
             >
               <i class="fa fa-trash"></i>
               Delete
@@ -52,14 +52,14 @@ $decks = \App\Models\PlayRestriction::$decksLabels;
           <!-- Card -->
           <td>
             <a
-              href="<?=url('card/'.urlencode($item['card_code']))?>"
+              href="<?=fd_url('card/'.urlencode($item['card_code']))?>"
               class="btn btn-xs fd-btn-default"
               target="_blank"
             >
               <i class="fa fa-external-link"></i>
             </a>
             <a
-              href="<?=url('restrictions/manage', ['card' => $item['card_id']])?>"
+              href="<?=fd_url('restrictions/manage', ['card' => $item['card_id']])?>"
               class="link-as-text"
             >
               <span class="text-muted">(<?=$item['card_code']?>)</span>
@@ -70,7 +70,7 @@ $decks = \App\Models\PlayRestriction::$decksLabels;
           <!-- Format -->
           <td>
             <a
-              href="<?=url('restrictions/manage', ['format' => $item['format_id']])?>"
+              href="<?=fd_url('restrictions/manage', ['format' => $item['format_id']])?>"
               class="link-as-text"
             >
               <?=$item['format_name']?>
@@ -80,7 +80,7 @@ $decks = \App\Models\PlayRestriction::$decksLabels;
           <!-- Deck -->
           <td>
             <a
-              href="<?=url('restrictions/manage', ['deck' => $item['deck']])?>"
+              href="<?=fd_url('restrictions/manage', ['deck' => $item['deck']])?>"
               class="link-as-text"
             >
               <?=$decks[$item['deck']]?>
@@ -90,7 +90,7 @@ $decks = \App\Models\PlayRestriction::$decksLabels;
           <!-- Copies -->
           <td>
             <a
-              href="<?=url('restrictions/manage', ['copies' => $item['copies']])?>"
+              href="<?=fd_url('restrictions/manage', ['copies' => $item['copies']])?>"
               class="link-as-text"
             >
               <?=$item['copies']?>

@@ -43,21 +43,21 @@ class UserController extends Controller
     {
         $links = [
             "judge" => [
-                url("cards/manage") => "Game: Cards",
-                url("sets/manage") => "Game: Sets",
-                url("clusters/manage") => "Game: Clusters",
-                url("formats/manage") => "Game: Formats",
-                url("rulings/manage") => "Game: Rulings",
-                url("restrictions/manage") => "Play: Banned and Limited cards",
-                url("cr/manage") => "Play: Comprehensive Rules",
-                url("images/trim") => "Tool: Trim an image",
+                fd_url("cards/manage") => "Game: Cards",
+                fd_url("sets/manage") => "Game: Sets",
+                fd_url("clusters/manage") => "Game: Clusters",
+                fd_url("formats/manage") => "Game: Formats",
+                fd_url("rulings/manage") => "Game: Rulings",
+                fd_url("restrictions/manage") => "Play: Banned and Limited cards",
+                fd_url("cr/manage") => "Play: Comprehensive Rules",
+                fd_url("images/trim") => "Tool: Trim an image",
             ],
             "admin" => [
-                url("artists") => "Tool: Artists",
-                url("lookup") => "Admin: Lookup data",
-                url("clint") => "Admin: Clint commands",
-                url("hash") => "Admin: Hash a string",
-                url("phpinfo") => "Admin: PHP info",
+                fd_url("artists") => "Tool: Artists",
+                fd_url("lookup") => "Admin: Lookup data",
+                fd_url("clint") => "Admin: Clint commands",
+                fd_url("hash") => "Admin: Hash a string",
+                fd_url("phpinfo") => "Admin: PHP info",
             ],
         ];
 

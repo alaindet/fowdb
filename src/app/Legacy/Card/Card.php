@@ -73,7 +73,7 @@ class Card
             $cost = empty($card["total_cost"]) ? "0" : $attributecost.$freecost;
 
             // $totalCost -----------------------------------------------------
-            $link = url("cards", ["total_cost" => [$card["total_cost"]]]);
+            $link = fd_url("cards", ["total_cost" => [$card["total_cost"]]]);
             $totalCost = "<a href=\"{$link}\">{$card["total_cost"]}</a>";
             
             // $attribute -----------------------------------------------------
@@ -88,7 +88,7 @@ class Card
 
                 $temp = [];
                 for ($i = 0, $ii = count($names); $i < $ii; $i++) {
-                    $link = url("cards", ["attribute" => [$codes[$i]]]);
+                    $link = fd_url("cards", ["attribute" => [$codes[$i]]]);
                     $temp[] = (
                         "<a href=\"{$link}\">".
                             "<img ".
@@ -114,7 +114,7 @@ class Card
             if (!empty($card["race"])) {
                 $raceValue = implode(" / ", array_map(
                     function ($race) {
-                        $link = url("cards", [ "race" => $race ]);
+                        $link = fd_url("cards", [ "race" => $race ]);
                         return "<a href=\"{$link}\">{$race}</a>";
                     },
                     explode("/", $card["race"])
@@ -125,7 +125,7 @@ class Card
             $setId =& $card["sets_id"];
             $setCode = fd_lookup("sets.id2code.id{$setId}");
             $setName = fd_lookup("sets.id2name.id{$setId}");
-            $link = url("cards", [ "set" => $setCode ]);
+            $link = fd_url("cards", [ "set" => $setCode ]);
             $set = (
                 "<a href=\"".$link."\">".
                     strtoupper($setCode)." - ".$setName.
@@ -135,7 +135,7 @@ class Card
             // $artist --------------------------------------------------------
             $artist = null;
             if (isset($card["artist_name"])) {
-                $link = url("cards", ["artist" => $card["artist_name"]]);
+                $link = fd_url("cards", ["artist" => $card["artist_name"]]);
                 $artist = "<a href=\"{$link}\">{$card["artist_name"]}</a>";
             }
 
@@ -224,7 +224,7 @@ class Card
             $rarityCode =& $card["rarity"];
             $rarityName = fd_lookup("rarities.code2name.{$rarityCode}");
             if (isset($card["rarity"])) {
-                $link = url("cards", [ "rarity" => [$card["rarity"]] ]);
+                $link = fd_url("cards", [ "rarity" => [$card["rarity"]] ]);
                 $rarity = (
                     "<a href=\"".$link."\">".
                         strtoupper($rarityCode)." - ".$rarityName.
@@ -258,7 +258,7 @@ class Card
             // $divinity ------------------------------------------------------
             $divinity = null;
             if (isset($card["divinity"])) {
-                $link = url("cards", ["divinity" => [$card["divinity"]]]);
+                $link = fd_url("cards", ["divinity" => [$card["divinity"]]]);
                 $divinity = "<a href=\"{$link}\">{$card["divinity"]}</a>";
             }
 

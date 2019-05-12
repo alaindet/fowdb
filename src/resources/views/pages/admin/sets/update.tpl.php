@@ -12,8 +12,8 @@
     <small><?=$item['name']?> (<?=$item['code']?>)</small>
   </h1>
   <?=fd_component('breadcrumb', [
-    'Admin' => url('profile'),
-    'Sets' => url('sets/manage'),
+    'Admin' => fd_url('profile'),
+    'Sets' => fd_url('sets/manage'),
     'Update' => '#'
   ])?>
 </div>

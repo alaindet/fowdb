@@ -26,7 +26,7 @@ class PlayRestriction
                     'name' => $item['card_name'],
                     'code' => $item['card_code'],
                     'image' => fd_asset($item['card_image'], 'jpg'),
-                    'link' => url('card/'.urlencode($item['card_code']))
+                    'link' => fd_url('card/'.urlencode($item['card_code']))
                 ],
 
                 // Levels

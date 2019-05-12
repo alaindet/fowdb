@@ -15,7 +15,7 @@ class HashController extends Controller
             ->title('Hash a string')
             ->variables([
                 'breadcrumbs' => [
-                    'Admin' => url('profile'),
+                    'Admin' => fd_url('profile'),
                     'Hash' => '#'
                 ]
             ])
@@ -32,8 +32,8 @@ class HashController extends Controller
             ->title('Hash a string')
             ->variables([
                 'breadcrumbs' => [
-                    'Admin' => url('profile'),
-                    'Hash' => url('hash'),
+                    'Admin' => fd_url('profile'),
+                    'Hash' => fd_url('hash'),
                     'Result' => '#'
                 ],
                 'input' => $input,

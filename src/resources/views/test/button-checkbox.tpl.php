@@ -1,9 +1,9 @@
 <?=fd_component('breadcrumb', [
-  'Test' => url('test'),
+  'Test' => fd_url('test'),
   'button-checkbox' => '#'
 ])?>
 
-<form action="<?=url('test/button-checkbox')?>" method="get">
+<form action="<?=fd_url('test/button-checkbox')?>" method="get">
   
   <!-- component -->
   <?=fd_component('form/button-checkbox', [

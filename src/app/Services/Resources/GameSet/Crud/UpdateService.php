@@ -82,7 +82,7 @@ class UpdateService extends CrudService
             "</strong>."
         );
 
-        $uri = url('sets/manage');
+        $uri = fd_url('sets/manage');
 
         return [$message, $uri];
     }

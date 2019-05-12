@@ -15,7 +15,7 @@ trait CardPropertiesTrait
 
         // Build HTML
         foreach ($labels as $label) {
-            $link = url('cards', ['type' => [$label]]);
+            $link = fd_url('cards', ['type' => [$label]]);
             $htmlBits[] = "<a href=\"{$link}\">{$label}</a>";
         }
         $html = implode(' / ', $htmlBits);

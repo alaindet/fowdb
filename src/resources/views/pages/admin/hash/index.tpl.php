@@ -12,7 +12,7 @@
 </div>
 
 <form
-  action="<?=url('hash')?>"
+  action="<?=fd_url('hash')?>"
   method="post"
   class="form form-inline"
 >

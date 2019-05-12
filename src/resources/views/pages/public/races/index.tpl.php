@@ -21,7 +21,7 @@
   <!-- Sort =============================================================== -->
   <div class="col-xs-12">
     <form
-      action="<?=url('races')?>"
+      action="<?=fd_url('races')?>"
       class="form form-inline"
       method="GET"
     >
@@ -79,7 +79,7 @@
 		<ul>
 			<?php
 				foreach ($races as $race => $amount):
-					$link = url('cards', ['race' => urlencode($race)]);
+					$link = fd_url('cards', ['race' => urlencode($race)]);
 			?>
 				<li>
 					<a href="<?=$link?>"><?=$race?></a>
@@ -103,7 +103,7 @@
 		<ul>
 			<?php
 				foreach ($traits as $trait => $amount):
-          $link = url('cards', ['race' => urlencode($trait)]);
+          $link = fd_url('cards', ['race' => urlencode($trait)]);
 			?>
 				<li>
 					<a href="<?=$link?>"><?=$trait?></a>

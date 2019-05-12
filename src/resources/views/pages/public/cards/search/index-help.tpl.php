@@ -1,7 +1,7 @@
 <div class="page-header">
   <h1>Cards search help</h1>
   <?=fd_component('breadcrumb', [
-    '&larr; Cards search' => url('/'),
+    '&larr; Cards search' => fd_url('/'),
     'Help' => '#'
   ])?>
 </div>

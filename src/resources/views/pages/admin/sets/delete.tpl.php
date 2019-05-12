@@ -13,8 +13,8 @@
     <small><?=$item['name']?> (<?=$item['code']?>)</small>
   </h1>
   <?=fd_component('breadcrumb', [
-    'Admin' => url('profile'),
-    'Sets' => url('sets/manage'),
+    'Admin' => fd_url('profile'),
+    'Sets' => fd_url('sets/manage'),
     'Delete' => '#'
   ])?>
 </div>
@@ -26,7 +26,7 @@
     <div class="fd-box__content">
       
       <form
-        action="<?=url("sets/delete/{$item['id']}")?>"
+        action="<?=fd_url("sets/delete/{$item['id']}")?>"
         method="post"
         class="form-horizontal"
       >

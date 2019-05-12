@@ -22,9 +22,9 @@
 <div class="page-header">
   <h1>Update ruling</h1>
   <?=fd_component('breadcrumb', [
-    'Admin' => url('profile'),
-    'Rulings' => url('rulings/manage'),
-    '(&larr; Card page)' => url('card/'.urlencode($card_code)),
+    'Admin' => fd_url('profile'),
+    'Rulings' => fd_url('rulings/manage'),
+    '(&larr; Card page)' => fd_url('card/'.urlencode($card_code)),
     'Update' => '#'
   ])?>
 </div>
@@ -32,7 +32,7 @@
 <div class="fd-box --more-margin">
   <div class="fd-box__content">
     <form
-      action="<?=url("rulings/update/{$ruling_id}")?>"
+      action="<?=fd_url("rulings/update/{$ruling_id}")?>"
       method="post"
       class="form-horizontal"
     >
@@ -70,7 +70,7 @@
           <!-- Link -->
           <br>
           <a
-            href="<?=url('card/'.urlencode($card_code))?>"
+            href="<?=fd_url('card/'.urlencode($card_code))?>"
             class="btn btn-link"
           >
             <i class="fa fa-external-link"></i>

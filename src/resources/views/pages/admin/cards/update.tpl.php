@@ -11,9 +11,9 @@
     <small><?=$card['name']?> (<?=$card['code']?>)</small>
   </h1>
   <?=fd_component('breadcrumb', [
-    'Admin' => url('profile'),
-    'Cards' => url('cards/manage'),
-    '(&larr; Card page)' => url('card/'.urlencode($card['code'])),
+    'Admin' => fd_url('profile'),
+    'Cards' => fd_url('cards/manage'),
+    '(&larr; Card page)' => fd_url('card/'.urlencode($card['code'])),
     'Update' => '#'
   ])?>
 </div>

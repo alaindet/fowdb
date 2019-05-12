@@ -41,11 +41,11 @@ class PlayRestrictionDeleteService extends CrudService
             'Restriction for card <strong>'.
             "{$card['name']} ({$card['code']})".
             '</strong> deleted. Go back to the <strong>'.
-            '<a href="'.url('restrictions/manage').'">Restrictions</a>'.
+            '<a href="'.fd_url('restrictions/manage').'">Restrictions</a>'.
             '</strong> page.'
         );
 
-        $uri = url('card/'.urlencode($card['code']));
+        $uri = fd_url('card/'.urlencode($card['code']));
 
         return [$message, $uri];
     }

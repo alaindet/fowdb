@@ -29,7 +29,7 @@
             <!-- Update -->
             <a
               class="btn btn-xs fd-btn-default fd-btn-warning-hover"
-              href="<?=url('cr/update/'.$item['id'])?>"
+              href="<?=fd_url('cr/update/'.$item['id'])?>"
             >
               <i class="fa fa-pencil"></i>
               Update
@@ -38,7 +38,7 @@
             <!-- Delete -->
             <a
               class="btn btn-xs fd-btn-default fd-btn-danger-hover"
-              href="<?=url('cr/delete/'.$item['id'])?>"
+              href="<?=fd_url('cr/delete/'.$item['id'])?>"
             >
               <i class="fa fa-trash"></i>
               Delete
@@ -47,7 +47,7 @@
             <!-- Download source -->
             <a
               class="btn btn-xs fd-btn-default fd-btn-danger-hover"
-              href="<?=url('cr/file/'.$item['id'])?>"
+              href="<?=fd_url('cr/file/'.$item['id'])?>"
             >
               <i class="fa fa-download"></i>
               Source
@@ -64,7 +64,7 @@
           <!-- Version ==================================================== -->
           <td>
             <a
-              href="<?=url('cr/'.$item['version'])?>"
+              href="<?=fd_url('cr/'.$item['version'])?>"
               class="btn btn-xs fd-btn-default"
               target="_blank"
             >

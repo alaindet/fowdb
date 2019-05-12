@@ -22,7 +22,7 @@
 			<p class="list-group-item-text font-110">
 				<?=$item['date_validity']?>
 				<a
-					href="<?=url('cr/' . $item['version'])?>"
+					href="<?=fd_url('cr/' . $item['version'])?>"
 					target="_self"
 				>
 					Comprehensive Rules ver. <?=$item['version']?>

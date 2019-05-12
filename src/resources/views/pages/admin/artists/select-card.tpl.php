@@ -8,8 +8,8 @@
 <div class="page-header">
   <h1>Artists</h1>
   <?=fd_component('breadcrumb', [
-    'Admin' => url('profile'),
-    'Artists' => url('artists'),
+    'Admin' => fd_url('profile'),
+    'Artists' => fd_url('artists'),
     'Set' => '#'
   ])?>
 </div>
@@ -23,7 +23,7 @@
     <?php foreach ($cards as $card): ?>
       <div class="fd-card-item fd-grid fd-grid-10">
         <a
-          href="<?=url("artists/card/{$card['id']}")?>"
+          href="<?=fd_url("artists/card/{$card['id']}")?>"
           target="_self"
         >
           <img

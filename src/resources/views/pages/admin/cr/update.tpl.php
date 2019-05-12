@@ -8,10 +8,10 @@
 <div class="page-header">
   <h1>Update comprehensive rules</h1>
   <?=fd_component('breadcrumb', [
-    'Admin' => url('profile'),
-    'Comprehensive Rules' => url('cr/manage'),
+    'Admin' => fd_url('profile'),
+    'Comprehensive Rules' => fd_url('cr/manage'),
     'Update' => '#',
-    'Show' => url('cr/'.$item['version'])
+    'Show' => fd_url('cr/'.$item['version'])
   ])?>
 </div>
 

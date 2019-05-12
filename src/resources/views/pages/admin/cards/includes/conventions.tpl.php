@@ -60,7 +60,7 @@
   <div class="fd-box__title"><h2>Syntax</h2></div>
   <div class="fd-box__content">
     <p>
-      As seen on <a href="<?=url('cards/search/help#syntax')?>">Cards search help</a>
+      As seen on <a href="<?=fd_url('cards/search/help#syntax')?>">Cards search help</a>
     </p>
     <?=fd_include_view('pages/public/cards/search/includes/help/syntax-table')?>
   </div>

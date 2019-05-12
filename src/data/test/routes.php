@@ -148,7 +148,7 @@ foreach ($routes as $role => &$routesGroup) {
     foreach ($routesGroup as &$route) {
         $route[1] = ($route[1] === "") ? "test" : "test/" . $route[1];
         $route[2] = "Test\\" . $route[2];
-        $urls[] = url($route[1]);
+        $urls[] = fd_url($route[1]);
     }
 }
 

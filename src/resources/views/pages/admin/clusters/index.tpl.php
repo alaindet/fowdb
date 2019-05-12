@@ -7,7 +7,7 @@
 <div class="page-header">
   <h1>Clusters</h1>
   <?=fd_component('breadcrumb', [
-    'Admin' => url('profile'),
+    'Admin' => fd_url('profile'),
     'Clusters' => '#'
   ])?>
 </div>

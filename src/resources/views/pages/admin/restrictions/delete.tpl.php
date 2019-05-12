@@ -13,9 +13,9 @@ $cardImage = fd_asset($item['card_image']);
     <small><?=$cardLabel?></small>
   </h1>
   <?=fd_component('breadcrumb', [
-    'Admin' => url('profile'),
-    'Restrictions' => url('restrictions/manage'),
-    '(&larr; Card page)' => url('card/'.urlencode($item['card_code'])),
+    'Admin' => fd_url('profile'),
+    'Restrictions' => fd_url('restrictions/manage'),
+    '(&larr; Card page)' => fd_url('card/'.urlencode($item['card_code'])),
     'Update' => '#'
   ])?>
 </div>
@@ -23,7 +23,7 @@ $cardImage = fd_asset($item['card_image']);
 <div class="fd-box --more-margin">
   <div class="fd-box__content">
     <form
-      action="<?=url("restrictions/delete/{$item['id']}")?>"
+      action="<?=fd_url("restrictions/delete/{$item['id']}")?>"
       method="post"
       class="form-horizontal"
     >

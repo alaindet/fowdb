@@ -54,7 +54,7 @@ class GameRulesDeleteService extends CrudService
             '</strong> deleted.'
         );
 
-        $uri = url('cr/manage');
+        $uri = fd_url('cr/manage');
 
         return [$message, $uri];
     }

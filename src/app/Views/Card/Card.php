@@ -79,7 +79,7 @@ class Card
             : $formats =& $input;
 
         return implode(", ", Arrays::map($formats, function ($format) {
-            $link = url("cards", [ "format" => [$format["code"]] ]);
+            $link = fd_url("cards", [ "format" => [$format["code"]] ]);
             return "<a href=\"{$link}\">{$format["name"]}</a>";
         }));
     }

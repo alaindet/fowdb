@@ -8,8 +8,8 @@
 <div class="page-header">
   <h1>Create a new restriction</h1>
   <?=fd_component('breadcrumb', [
-    'Admin' => url('profile'),
-    'Restrictions' => url('restrictions/manage'),
+    'Admin' => fd_url('profile'),
+    'Restrictions' => fd_url('restrictions/manage'),
     'Create' => '#'
   ])?>
 </div>

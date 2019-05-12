@@ -36,7 +36,7 @@
 ?>
 <form
   method="GET"
-  action="<?=url('cards')?>"
+  action="<?=fd_url('cards')?>"
   class="form"
   id="the-form"
 >

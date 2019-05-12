@@ -21,7 +21,7 @@ $nextId = \App\Models\GameSet::nextAvailableId();
 
 ?>
 <form
-  action="<?=url($url)?>"
+  action="<?=fd_url($url)?>"
   method="post"
   class="form-horizontal"
 >

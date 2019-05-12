@@ -71,13 +71,13 @@ class CreateService extends CrudService
     {
         $message = (
             'New card <strong> '.
-                '<a href="'.url('card/'.urlencode($this->new['code'])).'">'.
+                '<a href="'.fd_url('card/'.urlencode($this->new['code'])).'">'.
                     "{$this->new['name']} ({$this->new['code']})".
                 '</a>'.
             '</strong> created.'
         );
 
-        $uri = url('cards/create');
+        $uri = fd_url('cards/create');
 
         return [$message, $uri];
     }
