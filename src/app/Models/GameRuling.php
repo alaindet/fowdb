@@ -39,7 +39,7 @@ class GameRuling extends Model
         // Render fields
         foreach ($resources as &$resource) {
             foreach ($fieldsToRender as $field) {
-                $resource[$field] = render($resource[$field]);
+                $resource[$field] = fd_render($resource[$field]);
             }
         }
 

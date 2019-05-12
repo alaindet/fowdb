@@ -132,7 +132,7 @@ class Card extends Model
         // Render fields
         foreach ($data as &$item) {
             foreach ($fieldsToRender as $field) {
-                $item[$field] = render($item[$field]);
+                $item[$field] = fd_render($item[$field]);
             }
         }
 

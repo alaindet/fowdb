@@ -47,13 +47,13 @@ class Card
             $freecost = "";
             if (!empty($card["free_cost"])) {
                 if ($card["free_cost"] > 0) {
-                    $freecost = render("{".$card["free_cost"]."}");
+                    $freecost = fd_render("{".$card["free_cost"]."}");
                 } else {
                     $xCosts = "";
                     for ($i = $card["free_cost"]; $i < 0; $i++) {
                         $xCosts .= "{x}";
                     }
-                    $freecost = render($xCosts);
+                    $freecost = fd_render($xCosts);
                 }
             }
 
@@ -63,7 +63,7 @@ class Card
                 $attributecost = array_reduce(
                     str_split($card["attribute_cost"]),
                     function ($tot, $attr) {
-                        return $tot .= render("{".$attr."}");
+                        return $tot .= fd_render("{".$attr."}");
                     },
                     ""
                 );
@@ -277,7 +277,7 @@ class Card
                 "divinity" => $divinity,
                 $raceLabel => $raceValue,
                 "attribute" => $attribute,
-                "text" => !empty($card["text"]) ? render($card["text"]) : null,
+                "text" => !empty($card["text"]) ? fd_render($card["text"]) : null,
                 "flavor_text" => $flavorText,
                 "code" => $card["code"],
                 "rarity" => $rarity,

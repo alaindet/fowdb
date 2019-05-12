@@ -47,7 +47,7 @@
               </a>
             </h4>
             <p class="list-group-item-text">
-              <?=render($item['ruling_text'])?>
+              <?=fd_render($item['ruling_text'])?>
             </p>
           </div>
         <?php endforeach; ?>

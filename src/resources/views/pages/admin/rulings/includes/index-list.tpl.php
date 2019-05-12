@@ -78,7 +78,7 @@
 
           <!-- Ruling text -->
           <td>
-            <?=render(substr($item['ruling_text'], 0, 30).'[...]')?>
+            <?=fd_render(substr($item['ruling_text'], 0, 30).'[...]')?>
           </td>
 
         </tr>
