@@ -38,8 +38,8 @@ class CreateService extends CrudService
     public function syncFileSystem(): CrudServiceInterface
     {
         $partial = $this->new['clusters_id'] . '/' . $this->new['code'];
-        $cardsDirectory =  path_root('images/cards/'  . $partial);
-        $thumbsDirectory = path_root('images/thumbs/' . $partial);
+        $cardsDirectory =  fd_path_root('images/cards/'  . $partial);
+        $thumbsDirectory = fd_path_root('images/thumbs/' . $partial);
 
         FileSystem::createDirectory($cardsDirectory);
         FileSystem::createDirectory($thumbsDirectory);

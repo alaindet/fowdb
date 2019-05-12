@@ -51,7 +51,7 @@ class GameRules extends Model
 
     protected function getDocPathAttribute(array &$resource): string
     {
-        return path_root($resource['doc_path']);
+        return fd_path_root($resource['doc_path']);
     }
 
     protected function getSourcePathAttribute(array &$resource): string

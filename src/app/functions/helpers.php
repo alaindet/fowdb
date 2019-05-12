@@ -215,7 +215,7 @@ function fd_fd_path_data(string $path = null): string
  * @param string Relative path to /
  * @return string Absolute path
  */
-function fd_path_root(string $path = null): string
+function fd_fd_path_root(string $path = null): string
 {
 	return Paths::inRootDir($path);
 }

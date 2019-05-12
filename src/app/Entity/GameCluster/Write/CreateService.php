@@ -60,7 +60,7 @@ class CreateService extends WriteService
     {
         $config = Configuration::getInstance();
         $sizes = explode(",", $config->get("dir.resolutions"));
-        $format = path_root("images/cards/%s/{$this->new->code}");
+        $format = fd_path_root("images/cards/%s/{$this->new->code}");
 
         foreach ($sizes as $size) {
             FileSystem::createDirectory(sprintf($format, $size));

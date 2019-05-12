@@ -49,15 +49,15 @@ class CreateService extends CrudService
         (new ImageManager)
             ->make($image['tmp_name'])
             ->resize(480, 670)
-            ->insert(path_root('images/watermark/watermark480.png'))
-            ->save(path_root($this->new['image_path']), 80);
+            ->insert(fd_path_root('images/watermark/watermark480.png'))
+            ->save(fd_path_root($this->new['image_path']), 80);
 
         // Create thumbnail image
         (new ImageManager)
             ->make($image['tmp_name'])
             ->resize(280, 391)
-            ->insert(path_root('images/watermark/watermark280.png'))
-            ->save(path_root($this->new['thumb_path']), 80);
+            ->insert(fd_path_root('images/watermark/watermark280.png'))
+            ->save(fd_path_root($this->new['thumb_path']), 80);
 
         return $this;
     }

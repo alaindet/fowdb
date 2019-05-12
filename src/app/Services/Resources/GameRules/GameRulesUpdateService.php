@@ -46,7 +46,7 @@ class GameRulesUpdateService extends CrudService
             'old-src' => $this->old['*source_path'],
             'new-src' => fd_path_data("resources/cr/{$this->new['version']}.txt"),
             'old-doc' => $this->old['*doc_path'],
-            'new-doc' => path_root($this->new['doc_path']),
+            'new-doc' => fd_path_root($this->new['doc_path']),
         ];
 
         // Rename files (source .txt and public .html) on version change

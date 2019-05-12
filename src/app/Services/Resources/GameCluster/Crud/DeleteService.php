@@ -29,8 +29,8 @@ class DeleteService extends CrudService
 
     public function syncFileSystem(): CrudServiceInterface
     {
-        $cardsDirectory =  path_root('images/cards/'.$this->old['id']);
-        $thumbsDirectory = path_root('images/thumbs/'.$this->old['id']);
+        $cardsDirectory =  fd_path_root('images/cards/'.$this->old['id']);
+        $thumbsDirectory = fd_path_root('images/thumbs/'.$this->old['id']);
 
         FileSystem::deleteDirectory($cardsDirectory);
         FileSystem::deleteDirectory($thumbsDirectory);

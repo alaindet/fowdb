@@ -30,8 +30,8 @@ class DeleteService extends CrudService
     public function syncFileSystem(): CrudServiceInterface
     {
         $partial = $this->old['clusters_id'] . '/' . $this->old['code'];
-        $cardsDirectory =  path_root('images/cards/'  . $partial);
-        $thumbsDirectory = path_root('images/thumbs/' . $partial);
+        $cardsDirectory =  fd_path_root('images/cards/'  . $partial);
+        $thumbsDirectory = fd_path_root('images/thumbs/' . $partial);
 
         FileSystem::deleteDirectory($cardsDirectory);
         FileSystem::deleteDirectory($thumbsDirectory);

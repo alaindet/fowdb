@@ -40,7 +40,7 @@ class DeleteService extends CrudService
         ];
 
         foreach ($paths as $path) {
-            $absolutePath = path_root(Uri::removeQueryString($path));
+            $absolutePath = fd_path_root(Uri::removeQueryString($path));
             FileSystem::deleteFile($absolutePath);
         }
 

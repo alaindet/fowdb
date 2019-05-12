@@ -47,12 +47,12 @@ class UpdateService extends CrudService
 
             $paths = [
                 'images' => [
-                    'old' => path_root('images/cards/'.$partialOld),
-                    'new' => path_root('images/cards/'.$partialNew)
+                    'old' => fd_path_root('images/cards/'.$partialOld),
+                    'new' => fd_path_root('images/cards/'.$partialNew)
                 ],
                 'thumbnails' => [
-                    'old' => path_root('images/thumbs/'.$partialOld),
-                    'new' => path_root('images/thumbs/'.$partialNew)
+                    'old' => fd_path_root('images/thumbs/'.$partialOld),
+                    'new' => fd_path_root('images/thumbs/'.$partialNew)
                 ]
             ];
 
