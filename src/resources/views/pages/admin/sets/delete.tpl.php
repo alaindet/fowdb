@@ -30,7 +30,7 @@
         method="post"
         class="form-horizontal"
       >
-        <?=csrf_token()?>
+        <?=fd_csrf_token()?>
 
         <!-- Cluster ====================================================== -->
         <div class="form-group">

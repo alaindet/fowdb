@@ -27,7 +27,7 @@ $cardImage = fd_asset($item['card_image']);
       method="post"
       class="form-horizontal"
     >
-      <?=csrf_token()?>
+      <?=fd_csrf_token()?>
 
       <!-- Card Name ====================================================== -->
       <div class="form-group">

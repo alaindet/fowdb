@@ -20,7 +20,7 @@
     method="post"
     class="form-horizontal"
   >
-    <?=csrf_token()?>
+    <?=fd_csrf_token()?>
 
     <!-- Source file ====================================================== -->
     <div class="form-group">

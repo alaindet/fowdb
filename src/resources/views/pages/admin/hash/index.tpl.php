@@ -16,7 +16,7 @@
   method="post"
   class="form form-inline"
 >
-  <?=csrf_token()?>
+  <?=fd_csrf_token()?>
 
   <input
     type="text"

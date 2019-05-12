@@ -72,7 +72,7 @@ if ($isCard) {
   enctype="multipart/form-data"
   class="form-horizontal"
 >
-  <?=csrf_token()?>
+  <?=fd_csrf_token()?>
 
   <!-- Image ============================================================== -->
   <div class="form-group">

@@ -14,7 +14,7 @@
     method="post"
     enctype="multipart/form-data"
   >
-    <?=csrf_token()?>
+    <?=fd_csrf_token()?>
 
 		<!-- Browse -->
 		<div class="form-group">

@@ -21,7 +21,7 @@ $url = 'cr/' . ($isItem ? 'update/'.$item['id'] : 'create');
   enctype="multipart/form-data"
   class="form-horizontal"
 >
-  <?=csrf_token()?>
+  <?=fd_csrf_token()?>
 
   <?php if ($isItem): ?>
     <!-- ID ============================================================= -->

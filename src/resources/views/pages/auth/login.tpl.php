@@ -10,7 +10,7 @@
           method="post"
           role="form"
         >
-          <?=csrf_token()?>
+          <?=fd_csrf_token()?>
               
           <fieldset>
               

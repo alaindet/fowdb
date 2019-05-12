@@ -72,7 +72,7 @@ $displayCsn = (
     method="post"
     class="form-horizontal"
   >
-    <?=csrf_token()?>
+    <?=fd_csrf_token()?>
 
     <!-- Name -->
     <div class="form-group">

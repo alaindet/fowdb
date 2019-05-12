@@ -26,7 +26,7 @@ $decks = \App\Models\PlayRestriction::$decksLabels;
   class="form-horizontal"
   id="validate-this-form"
 >
-  <?=csrf_token()?>
+  <?=fd_csrf_token()?>
 
   <!-- Card ID ============================================================ -->
   <input

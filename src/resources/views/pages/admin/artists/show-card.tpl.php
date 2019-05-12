@@ -42,7 +42,7 @@ $card_image = fd_asset($card['image_path']);
       method="post"
       class="form-horizontal"
     >
-      <?=csrf_token()?>
+      <?=fd_csrf_token()?>
 
       <!-- Card ID -->
       <input
