@@ -10,7 +10,7 @@ class ListCommand extends Command
 
     public function run(array $options, array $arguments): void
     {
-        $filename = path_src('app/Clint/descriptions/_all.md');
+        $filename = fd_path_src('app/Clint/descriptions/_all.md');
         $description = file_get_contents($filename);
 
         $this->title = 'FoWDB Clint CLI tool';

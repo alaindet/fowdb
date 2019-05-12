@@ -30,7 +30,7 @@ class Template
 
     public function setFilePath(string $path): Template
     {
-        $this->filePath = path_src("app/Clint/templates/{$path}.tpl");
+        $this->filePath = fd_path_src("app/Clint/templates/{$path}.tpl");
         return $this;
     }
 

@@ -31,8 +31,8 @@ class SwitchEnvironmentCommand extends Command
         }
 
         $target = $this->targets[$arguments[0]];
-        $currentEnv = path_src('.env');
-        $targetEnv = path_src(".env.{$target}");
+        $currentEnv = fd_path_src('.env');
+        $targetEnv = fd_path_src(".env.{$target}");
 
         FileSystem::deleteFile($currentEnv);
         FileSystem::copyFile($targetEnv, $currentEnv);

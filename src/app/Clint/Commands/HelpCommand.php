@@ -17,7 +17,7 @@ class HelpCommand extends Command
 
         $name = $arguments[0];
         $kebabName = str_replace(':', '-', $name);
-        $filename = path_src("app/Clint/descriptions/{$kebabName}.md");
+        $filename = fd_path_src("app/Clint/descriptions/{$kebabName}.md");
 
         // ERROR: Missing description file
         if (!file_exists($filename)) throw new DescriptionNotFound($name);

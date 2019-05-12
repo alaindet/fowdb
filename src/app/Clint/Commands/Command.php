@@ -36,6 +36,6 @@ abstract class Command implements CommandInterface
 
     protected function path(string $path): string
     {
-        return path_src('/app/Clint/'.$path);
+        return fd_path_src('/app/Clint/'.$path);
     }
 }
