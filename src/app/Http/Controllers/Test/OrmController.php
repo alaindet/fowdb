@@ -99,7 +99,7 @@ class OrmController extends Controller
         // Unsorted
         // $collection = $repo->all();
         // $toBeLogged = $collection->pluck("name")->toArray();
-        // return log_html($toBeLogged, "Custom SQL-sorted collection from repo");
+        // return fd_log_html($toBeLogged, "Custom SQL-sorted collection from repo");
 
         // Sorted by name asc (in PHP)
         // $collection = $repo->all()->sort(
@@ -108,7 +108,7 @@ class OrmController extends Controller
         //     }
         // );
         // $toBeLogged = $collection->pluck("name")->toArray();
-        // return log_html($toBeLogged, "Custom SQL-sorted collection from repo");
+        // return fd_log_html($toBeLogged, "Custom SQL-sorted collection from repo");
 
         // Sorted by name asc (in SQL, via extra statement)
         $statement = StatementManager::new("select")
@@ -133,6 +133,6 @@ class OrmController extends Controller
             "collection3" => $collection3->pluck("name")->toArray(),
         ];
 
-        return log_html($log, "Custom SQL-sorted collections from repo");
+        return fd_log_html($log, "Custom SQL-sorted collections from repo");
     }
 }

@@ -17,7 +17,7 @@ class UtilsController extends Controller
 
         $result = Arrays::whitelist($input, $whitelist);
 
-        return log_html(compact('input', 'whitelist', 'result'));
+        return fd_log_html(compact('input', 'whitelist', 'result'));
     }
 
     public function arrayWhitelistKeys(Request $request): string
@@ -45,7 +45,7 @@ class UtilsController extends Controller
 
         $result = Arrays::whitelistKeys($input, $whitelist);
 
-        return log_html(compact('input', 'whitelist', 'result'));
+        return fd_log_html(compact('input', 'whitelist', 'result'));
     }
 
     public function arrayDefaults(Request $request): string
@@ -68,7 +68,7 @@ class UtilsController extends Controller
 
         $result = Arrays::defaults($input, $defaults);
 
-        return log_html(compact('input', 'defaults', 'result'));
+        return fd_log_html(compact('input', 'defaults', 'result'));
     }
 
     public function arrayToObject(Request $request): string
@@ -84,6 +84,6 @@ class UtilsController extends Controller
 
         $obj = Arrays::toObject($arr);
 
-        return log_html(compact("arr", "obj"), "arrayToObject");
+        return fd_log_html(compact("arr", "obj"), "arrayToObject");
     }
 }

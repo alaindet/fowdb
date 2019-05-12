@@ -32,7 +32,7 @@ class CardsController extends Controller
         $search->processParameters();
 
         // // DEBUG
-        // return log_html([
+        // return fd_log_html([
         //     "params" => $request->input()->get(),
         //     "sql" => $search->getStatement(),
         //     "bind" => $search->getBoundData(),

@@ -39,7 +39,7 @@ class CollectionController extends Controller
 
         $collection->set($items);
 
-        return log_html(
+        return fd_log_html(
             $collection
                 // ->each(function($item) {
                 //     $item->age += 1;
@@ -113,6 +113,6 @@ class CollectionController extends Controller
             )
             ->toArray();
 
-        return log_html($collection, "Sorted by \"val\" property");
+        return fd_log_html($collection, "Sorted by \"val\" property");
     }
 }

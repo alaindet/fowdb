@@ -35,7 +35,7 @@ $items = [
 
 <?php // LOG
   if (fd_input()->has($name)) {
-    echo log_html(fd_input()->get($name), $name);
+    echo fd_log_html(fd_input()->get($name), $name);
   }
 ?>
 
