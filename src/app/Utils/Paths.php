@@ -2,6 +2,8 @@
 
 namespace App\Utils;
 
+use App\Services\Configuration\Configuration;
+
 abstract class Paths
 {
     static public function inCacheDir(string $path = null): string
