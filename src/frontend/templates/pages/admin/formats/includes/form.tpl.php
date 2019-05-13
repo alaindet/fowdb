@@ -20,11 +20,11 @@ $url = $isItem ? "formats/update/{$item->id}" : "formats/create";
 
 ?>
 <form
-  action="<?=url($url)?>"
+  action="<?=fd_url($url)?>"
   method="post"
   class="form-horizontal"
 >
-  <?=csrf_token()?>
+  <?=fd_csrf_token()?>
 
   <!-- ID ================================================================= -->
   <div class="form-group">
@@ -149,7 +149,7 @@ $url = $isItem ? "formats/update/{$item->id}" : "formats/create";
   <div class="form-group">
     <label class="col-sm-2 control-label">Clusters</label>
     <div class="col-sm-10">
-      <?=component('form/button-checkboxes', [
+      <?=fd_component('form/button-checkboxes', [
         'name' => 'clusters',
         'items' => $clusters,
         'state' => $state,

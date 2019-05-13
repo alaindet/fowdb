@@ -9,8 +9,8 @@
 <div class="page-header">
   <h1>Create a new format</h1>
   <?=fd_component('breadcrumb', [
-    'Admin' => url('profile'),
-    'Formats' => url('formats/manage'),
+    'Admin' => fd_url('profile'),
+    'Formats' => fd_url('formats/manage'),
     'Create' => '#'
   ])?>
 </div>
@@ -20,7 +20,7 @@
   <!-- Form -->
   <div class="fd-box --more-margin">
     <div class="fd-box__content">
-      <?=include_view('pages/admin/formats/includes/form', [
+      <?=fd_include_view('pages/admin/formats/includes/form', [
         'item' => null,
         'nextAvailableId' => $nextAvailableId,
         'prev' => $previous ?? null,
@@ -36,7 +36,7 @@
       <a name="rules"></a>
     </div>
     <div class="fd-box__content">
-      <?=include_view('pages/admin/formats/includes/form-rules')?>
+      <?=fd_include_view('pages/admin/formats/includes/form-rules')?>
     </div>
   </div>
 

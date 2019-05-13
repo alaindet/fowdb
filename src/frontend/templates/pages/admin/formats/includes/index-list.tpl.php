@@ -31,7 +31,7 @@
             <!-- Update -->
             <a
               class="btn btn-xs fd-btn-default fd-btn-warning-hover"
-              href="<?=url('formats/update/'.$item->id)?>"
+              href="<?=fd_url('formats/update/'.$item->id)?>"
             >
               <i class="fa fa-pencil"></i>
               Update
@@ -40,7 +40,7 @@
             <!-- Delete -->
             <a
               class="btn btn-xs fd-btn-default fd-btn-danger-hover"
-              href="<?=url('formats/delete/'.$item->id)?>"
+              href="<?=fd_url('formats/delete/'.$item->id)?>"
             >
               <i class="fa fa-trash"></i>
               Delete
@@ -50,7 +50,7 @@
 
           <!-- Name -->
           <td>
-            <a href="<?=url('cards', ['format' => $item->code])?>">
+            <a href="<?=fd_url('cards', ['format' => $item->code])?>">
               <?=$item->name?>
             </a>
           </td>
@@ -81,7 +81,7 @@
             <ul class="fd-list">
               <?php foreach($item->clusters as $cluster): ?>
                 <li>
-                  <a href="<?=url('cards', ['cluster' => $cluster->code])?>">
+                  <a href="<?=fd_url('cards', ['cluster' => $cluster->code])?>">
                     <?=$cluster->name?>
                   </a>
                 </li>
