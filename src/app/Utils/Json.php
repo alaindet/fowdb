@@ -15,7 +15,8 @@ abstract class Json
             JSON_UNESCAPED_UNICODE |
             JSON_PARTIAL_OUTPUT_ON_ERROR |
             JSON_PRESERVE_ZERO_FRACTION |
-            JSON_UNESCAPED_LINE_TERMINATORS
+            JSON_UNESCAPED_LINE_TERMINATORS |
+            JSON_FORCE_OBJECT
         );
     }
 
@@ -32,7 +33,8 @@ abstract class Json
             JSON_UNESCAPED_UNICODE |
             JSON_PARTIAL_OUTPUT_ON_ERROR |
             JSON_PRESERVE_ZERO_FRACTION |
-            JSON_UNESCAPED_LINE_TERMINATORS
+            JSON_UNESCAPED_LINE_TERMINATORS |
+            JSON_FORCE_OBJECT
         );
     }
 
