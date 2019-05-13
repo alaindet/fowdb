@@ -6,6 +6,7 @@ use App\Base\Singleton;
 use App\Services\Lookup\LookupDataBuildTrait;
 use App\Services\Lookup\LookupDataAccessTrait;
 use App\Services\Lookup\Interfaces\LookupInterface;
+use App\Utils\Paths;
 
 /**
  * This library generates, reads and stores domain-specific data
@@ -50,7 +51,7 @@ class Lookup implements LookupInterface
      */
     private function __construct()
     {
-        $this->setCacheFilePath(fd_path_cache("lookup.json"));
+        $this->setCacheFilePath(Paths::inCacheDir("lookup.json"));
         $this->load();
     }
 }

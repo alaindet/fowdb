@@ -40,11 +40,9 @@ use App\Views\Page;
  * 
  * DIRECTORIES
  * ===========
- * fd_path_cache
  * fd_path_data
  * fd_path_root
  * fd_path_src
- * fd_path_templates
  * 
  * VIEW
  * ====
@@ -192,15 +190,6 @@ function fd_statement(string $type): SqlStatement
 
 
 // DIRECTORIES ----------------------------------------------------------------
-
-/**
- * @param string Relative path to /src/data/cache/
- * @return string Absolute path
- */
-function fd_path_cache(string $path = null): string
-{
-	return Paths::inCacheDir($path);
-}
 
 /**
  * @param string Relative path to /src/data/
