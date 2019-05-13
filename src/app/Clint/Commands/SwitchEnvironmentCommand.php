@@ -7,15 +7,16 @@ use App\Clint\Exceptions\MissingArgumentException;
 use App\Clint\Exceptions\InvalidArgumentException;
 use App\Services\FileSystem\FileSystem;
 use App\Services\Configuration\Configuration;
+use App\Utils\Paths;
 
 class SwitchEnvironmentCommand extends Command
 {
-    public $name = 'env:switch';
+    public $name = "env:switch";
     private $targets = [
-        'development' => 'development',
-        'dev'         => 'development',
-        'production'  => 'production',
-        'prod'        => 'production',
+        "development" => "development",
+        "dev"         => "development",
+        "production"  => "production",
+        "prod"        => "production",
     ];
 
     public function run(array $options, array $arguments): void
@@ -31,8 +32,8 @@ class SwitchEnvironmentCommand extends Command
         }
 
         $target = $this->targets[$arguments[0]];
-        $currentEnv = fd_path_src('.env');
-        $targetEnv = fd_path_src(".env.{$target}");
+        $currentEnv = Paths::inSrcDir(".env");
+        $targetEnv = Paths::inSrcDir(".env.{$target}");
 
         FileSystem::deleteFile($currentEnv);
         FileSystem::copyFile($targetEnv, $currentEnv);

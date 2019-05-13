@@ -5,10 +5,11 @@ namespace App\Clint\Commands;
 use App\Clint\Commands\Command;
 use App\Clint\Exceptions\DescriptionNotFoundException as DescriptionNotFound;
 use App\Clint\Exceptions\MissingArgumentException as MissingArgument;
+use App\Utils\Paths;
 
 class HelpCommand extends Command
 {
-    public $name = 'help';
+    public $name = "help";
 
     public function run(array $options, array $arguments): void
     {
@@ -17,7 +18,7 @@ class HelpCommand extends Command
 
         $name = $arguments[0];
         $kebabName = str_replace(':', '-', $name);
-        $filename = fd_path_src("app/Clint/descriptions/{$kebabName}.md");
+        $filename = Paths::inSrcDir("app/Clint/descriptions/{$kebabName}.md");
 
         // ERROR: Missing description file
         if (!file_exists($filename)) throw new DescriptionNotFound($name);

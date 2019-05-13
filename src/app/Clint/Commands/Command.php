@@ -4,6 +4,7 @@ namespace App\Clint\Commands;
 
 use App\Clint\CommandInterface;
 use App\Services\FileSystem\FileSystem;
+use App\Utils\Paths;
 
 abstract class Command implements CommandInterface
 {
@@ -36,6 +37,6 @@ abstract class Command implements CommandInterface
 
     protected function path(string $path): string
     {
-        return fd_path_src('/app/Clint/'.$path);
+        return Paths::inSrcDir("/app/Clint/{$path}");
     }
 }

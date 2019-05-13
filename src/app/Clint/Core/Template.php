@@ -3,6 +3,7 @@
 namespace App\Clint\Core;
 
 use App\Services\FileSystem\FileSystem;
+use App\Utils\Paths;
 
 class Template
 {
@@ -30,7 +31,7 @@ class Template
 
     public function setFilePath(string $path): Template
     {
-        $this->filePath = fd_path_src("app/Clint/templates/{$path}.tpl");
+        $this->filePath = Paths::inSrcDir("app/Clint/templates/{$path}.tpl");
         return $this;
     }
 

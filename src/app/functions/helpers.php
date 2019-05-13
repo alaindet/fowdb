@@ -41,7 +41,6 @@ use App\Views\Page;
  * DIRECTORIES
  * ===========
  * fd_path_root
- * fd_path_src
  * 
  * VIEW
  * ====
@@ -197,15 +196,6 @@ function fd_statement(string $type): SqlStatement
 function fd_path_root(string $path = null): string
 {
 	return Paths::inRootDir($path);
-}
-
-/**
- * @param string Relative path to /src/
- * @return string Absolute path
- */
-function fd_path_src(string $path = null): string
-{
-	return Paths::inSrcDir($path);
 }
 
 // VIEW -----------------------------------------------------------------------
