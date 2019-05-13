@@ -2,6 +2,8 @@
 
 namespace App\Utils;
 
+use App\Utils\Json;
+
 abstract class Arrays
 {
     /**
@@ -12,7 +14,7 @@ abstract class Arrays
      * @param array $b
      * @return array
      */
-    public static function union(array $a, array $b): array
+    static public function union(array $a, array $b): array
     {
         return array_unique(array_merge($a, $b));
     }
@@ -26,7 +28,7 @@ abstract class Arrays
      * @param bool $preserveKeys FALSE: use new numeric keys instead of original keys
      * @return array
      */
-    public static function map(
+    static public function map(
         array $array,
         callable $callback,
         bool $preserveKeys = true
@@ -48,14 +50,12 @@ abstract class Arrays
      * @param array $array
      * @param callable $callback
      * @param mixed $result Initial value
-     * @param bool $preserveKeys FALSE: use new numeric keys instead of original keys
      * @return mixed Same type as $carry
      */
-    public static function reduce(
+    static public function reduce(
         array $array,
         callable $callback,
-        $result = null,
-        bool $preserveKeys = true
+        $result = null
     )
     {
         // Use the array's first value if no carry is passed
@@ -79,7 +79,7 @@ abstract class Arrays
      * @param bool $preserveKeys FALSE: use new numeric keys instead of original keys
      * @return array Filtered array
      */
-    public static function filter(
+    static public function filter(
         array $array,
         callable $callback,
         bool $preserveKeys = true
@@ -102,9 +102,11 @@ abstract class Arrays
      * @param array $array
      * @return array
      */
-    public static function filterNull(array $array): array
+    static public function filterNull(array $array): array
     {
-        return self::filter($array, function ($i) { return isset($i); });
+        return self::filter($array, function ($i) {
+            return $i !== null;
+        });
     }
 
     /**
@@ -121,7 +123,7 @@ abstract class Arrays
      * @param string ...$nestedKeys List of strings
      * @return void
      */
-    public static function addNested(
+    static public function addNested(
         array &$array,
         $value,
         ...$nestedKeys
@@ -142,7 +144,7 @@ abstract class Arrays
      * @param array $whitelist
      * @return array
      */
-    public static function whitelist(
+    static public function whitelist(
         array $array,
         array $whitelist
     ): array
@@ -157,7 +159,7 @@ abstract class Arrays
      * @param array $whitelist
      * @return array
      */
-    public static function whitelistKeys(
+    static public function whitelistKeys(
         array $toFilter,
         array $whitelist
     ): array
@@ -196,7 +198,7 @@ abstract class Arrays
      * @param array $defaults
      * @return array
      */
-    public static function defaults(
+    static public function defaults(
         array $input,
         array $defaults
     ): array
@@ -219,7 +221,7 @@ abstract class Arrays
      * @param $input mixed Anything to be converted into an array
      * @return array
      */
-    public static function makeArray($input): array
+    static public function makeArray($input): array
     {
         if (!is_array($input)) {
             $input = [$input];
@@ -228,8 +230,43 @@ abstract class Arrays
         return $input;
     }
 
-    public static function toObject(array $input): object
+    /**
+     * Turns an object into an array
+     * 
+     * NOTE:
+     * - Methods are ignored
+     * - A public property is just addedas a key => value pair to final array
+     * - A protected property has "*" prepended to key
+     * - A private property has class name prepended to key
+     * 
+     * Ex.:
+     * class Foo { public $pub = 1; protected $prot = 2; private $priv = 3; }
+     * $a = (array) (new Foo());
+     * print_r($a, true); // [ pub => 1, *prot => 2, Foopriv => 3 ]
+     *
+     * @param object $object
+     * @return array
+     */
+    static public function fromObject(object $object): array
     {
-        return Json::toObject(Json::fromArray($input));
+        return (array) $object;
+    }
+
+    static public function toObject(
+        array $array,
+        bool $deepClone = true
+    ): object
+    {
+        return Objects::fromArray($array, $deepClone);
+    }
+
+    static public function fromJson(string $json): array
+    {
+        return json_decode($json, $assoc = true);
+    }
+
+    static public function toJson(array $input): string
+    {
+        return Json::fromArray($input);
     }
 }

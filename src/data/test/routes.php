@@ -84,6 +84,17 @@ $public = [
     ["GET", "cards/properties/html/{code}", "CardsController", "propsHtml"],
     ["GET", "cards/types-list", "CardsController", "typesList"],
 
+    // Input
+    ["GET", "input/all", "InputController", "all"],
+
+    // Type conversion
+    ["GET", "types/array-to-object", "TypesController", "arrayToObject"],
+    ["GET", "types/array-to-json", "TypesController", "arrayToJson"],
+    ["GET", "types/object-to-array", "TypesController", "objectToArray"],
+    ["GET", "types/object-to-json", "TypesController", "objectToJson"],
+    ["GET", "types/json-to-array", "TypesController", "jsonToArray"],
+    ["GET", "types/json-to-object", "TypesController", "jsonToObject"],
+
     // Validation service
     ["GET", "validate/empty", "ValidationController", "emptyRule"],
     ["GET", "validate/exists", "ValidationController", "existsRule"],
