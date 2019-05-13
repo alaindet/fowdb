@@ -10,7 +10,7 @@ use App\Services\Alert;
 use App\Services\Resources\GameRules\GameRulesCreateService;
 use App\Services\Resources\GameRules\GameRulesDeleteService;
 use App\Services\Resources\GameRules\GameRulesUpdateService;
-use App\Views\Page;
+use App\Views\Page\Page;
 use App\Exceptions\ModelNotFoundException;
 use App\Http\Response\PlainTextResponse;
 use App\Services\Validation\Validation;

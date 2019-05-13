@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Test;
 use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Services\Session\Session;
-use App\Views\Page;
+use App\Views\Page\Page;
 
 class HomeController extends Controller
 {

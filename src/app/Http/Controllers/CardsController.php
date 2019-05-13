@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Services\Resources\Card\Search\Search;
-use App\Views\Page;
+use App\Views\Page\Page;
 use App\Services\Alert;
 use App\Services\Configuration\Configuration;
 

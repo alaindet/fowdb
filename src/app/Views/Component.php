@@ -43,9 +43,6 @@ abstract class Component
      */
     protected function renderTemplate(array $__variables = []): string
     {
-        // Shorter but slower (?)
-        // return fd_include_template("components/{$this->filename}", $__variables);
-
         // Declare scoped variables
         foreach ($__variables as $__name => $__value) {
             if (strpos($__name, '-')) {

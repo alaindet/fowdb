@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Test;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
-use App\Views\Page;
+use App\Views\Page\Page;
 
 class ComponentsController extends Controller
 {

@@ -9,7 +9,7 @@ use App\Services\Alert;
 use App\Services\Resources\GameRuling\Crud\CreateService;
 use App\Services\Resources\GameRuling\Crud\DeleteService;
 use App\Services\Resources\GameRuling\Crud\UpdateService;
-use App\Views\Page;
+use App\Views\Page\Page;
 use App\Services\Database\Statement\SqlStatement;
 
 class GameRulingsController extends Controller

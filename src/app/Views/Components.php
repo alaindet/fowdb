@@ -2,9 +2,9 @@
 
 namespace App\Views;
 
-use \App\Views\Components\Pagination;
-use \App\Views\Components\InputDropdown;
-use \App\Views\Components\Breadcrumb;
+use App\Views\Components\Pagination;
+use App\Views\Components\InputDropdown;
+use App\Views\Components\Breadcrumb;
 
 class Components
 {

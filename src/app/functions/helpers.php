@@ -18,7 +18,7 @@ use App\Utils\Strings;
 use App\Utils\Uri;
 use App\Views\Entities\Card\CardText;
 use App\Views\Components;
-use App\Views\Page;
+use App\Views\Page\Page;
 
 /**
  * List of helper functions

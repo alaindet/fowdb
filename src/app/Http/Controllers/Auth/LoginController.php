@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
-use App\Views\Page;
+use App\Views\Page\Page;
 use App\Legacy\Authentication;
 use App\Services\Alert;
 

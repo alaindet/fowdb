@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
-use App\Views\Page;
+use App\Views\Page\Page;
 use App\Legacy\Authorization;
 
 class UserController extends Controller

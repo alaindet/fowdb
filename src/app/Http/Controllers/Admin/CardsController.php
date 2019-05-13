@@ -10,7 +10,7 @@ use App\Services\Alert;
 use App\Services\Resources\Card\Crud\CreateService;
 use App\Services\Resources\Card\Crud\DeleteService;
 use App\Services\Resources\Card\Crud\UpdateService;
-use App\Views\Page;
+use App\Views\Page\Page;
 use App\Services\Validation\Validation;
 
 /**

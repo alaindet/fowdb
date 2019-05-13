@@ -11,7 +11,7 @@ use App\Models\GameCluster as Model;
 use App\Services\CsrfToken;
 use App\Services\Resources\GameCluster\Crud\DeleteService;
 use App\Services\Resources\GameCluster\Crud\UpdateService;
-use App\Views\Page;
+use App\Views\Page\Page;
 
 class GameClustersController extends Controller
 {

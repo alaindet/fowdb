@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
-use App\Views\Page;
+use App\Views\Page\Page;
 use Intervention\Image\ImageManagerStatic;
 
 class ImagesController extends Controller

@@ -8,7 +8,7 @@ use App\Services\Lookup\Lookup;
 use App\Http\Response\Redirect;
 use App\Services\Alert;
 use App\Http\Response\JsonResponse;
-use App\Views\Page;
+use App\Views\Page\Page;
 
 class LookupController extends Controller
 {

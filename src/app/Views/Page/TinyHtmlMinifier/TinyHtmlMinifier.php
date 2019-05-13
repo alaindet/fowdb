@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Views\TinyHtmlMinifier;
+namespace App\Views\Page\TinyHtmlMinifier;
 
 class TinyHtmlMinifier
 {

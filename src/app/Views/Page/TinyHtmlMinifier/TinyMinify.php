@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Views\TinyHtmlMinifier;
+namespace App\Views\Page\TinyHtmlMinifier;
 
-use App\Views\TinyHtmlMinifier\TinyHtmlMinifier;
+use App\Views\Page\TinyHtmlMinifier\TinyHtmlMinifier;
 
 class TinyMinify
 {

@@ -6,7 +6,7 @@ use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Entities\Card\CardsRepository;
 use App\Utils\Arrays;
-use App\Views\Page;
+use App\Views\Page\Page;
 
 class CardsController extends Controller
 {

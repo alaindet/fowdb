@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Views;
+namespace App\Views\Page;
 
-use App\Views\TinyHtmlMinifier\TinyMinify;
+use App\Services\Configuration\Configuration;
 use App\Services\OpenGraphProtocol\OpenGraphProtocol;
 use App\Services\OpenGraphProtocol\OpenGraphProtocolImage;
 use App\Utils\Paths;
-use App\Services\Configuration\Configuration;
+use App\Views\Page\PageInterface;
+use App\Views\Page\TinyHtmlMinifier\TinyMinify;
 
 /**
  * This class renders the HTML to be shown to the user
@@ -17,7 +18,7 @@ use App\Services\Configuration\Configuration;
  *   Ex.: What dependencies to load, what page script to load, OGP tags,
  *   the page title
  */
-class Page
+class Page implements PageInterface
 {
     private $config;
 
@@ -41,9 +42,9 @@ class Page
     /**
      * Sets the title
      *
-     * @return Page
+     * @return PageInterface
      */
-    public function title(string $title): Page
+    public function title(string $title): PageInterface
     {
         $this->title = "{$title} ~ {$this->title}";
 
@@ -54,9 +55,9 @@ class Page
      * Sets the variables accessible to the page script and its includes only
      *
      * @param array $variables
-     * @return Page
+     * @return PageInterface
      */
-    public function variables(array $variables): Page
+    public function variables(array $variables): PageInterface
     {
         $this->variables = $variables;
 
@@ -67,9 +68,9 @@ class Page
      * Sets the variables accessible to the main container template only
      *
      * @param array $options
-     * @return Page
+     * @return PageInterface
      */
-    public function options(array $options): Page
+    public function options(array $options): PageInterface
     {
         $this->options = $options;
 
@@ -80,9 +81,9 @@ class Page
      * Sets the template to render
      *
      * @param string $name
-     * @return Page
+     * @return PageInterface
      */
-    public function template(string $name): Page
+    public function template(string $name): PageInterface
     {
         $this->template = Paths::inTemplatesDir("{$name}.tpl.php");
 
@@ -93,9 +94,9 @@ class Page
      * Sets the minification flag
      *
      * @param boolean $minify
-     * @return Page
+     * @return PageInterface
      */
-    public function minify(bool $minify): Page
+    public function minify(bool $minify): PageInterface
     {
         $this->minify = $minify;
 
@@ -182,11 +183,11 @@ class Page
         // Prefixed variable names should be be altered by client script
         $defaultOptions = [
             "dependencies" => [],
-            "fowdb_content" => $content,
-            "fowdb_ogp" => $this->openGraphProtocol(),
-            "scripts" => [],
-            "state" => [],
-            "title" => $this->title,
+            "fd_content"   => $content,
+            "fd_ogp"       => $this->openGraphProtocol(),
+            "scripts"      => [],
+            "state"        => [],
+            "title"        => $this->title,
         ];
 
         $this->options = array_merge($defaultOptions, $this->options);

@@ -1,8 +1,8 @@
 <?php
 
 // VARIABLES
-// $fowdb_content
-// $fowdb_ogp
+// $fd_content
+// $fd_ogp
 // $scripts
 // $state
 // $title
@@ -11,11 +11,11 @@
 
 ?>
 <!DOCTYPE html>
-<html lang="en" prefix="<?=$fowdb_ogp->getHtmlPrefix()?>">
+<html lang="en" prefix="<?=$fd_ogp->getHtmlPrefix()?>">
 <head>
 
   <!-- Meta tags -->
-	<?=$fowdb_ogp->toHtml()?>
+	<?=$fd_ogp->toHtml()?>
 	<meta property="fb:app_id" content="<?=fd_config("facebook.id")?>">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,7 +49,7 @@
 <body>
 	<a name="top"></a>
   <header><?=fd_include_template("includes/header")?></header>
-  <main><?=$fowdb_content?></main>
+  <main><?=$fd_content?></main>
   <footer><?=fd_include_template("includes/footer")?></footer>
 
   <!-- jQuery 2.2.4 -->
