@@ -20,7 +20,7 @@
 
 <div class="fd-box --more-margin">
   <div class="fd-box__content">
-    <?=fd_include_view('pages/admin/restrictions/includes/form', [
+    <?=fd_include_template('pages/admin/restrictions/includes/form', [
       'item' => $item,
       'card' => $card ?? null,
       'prev' => $previous ?? null

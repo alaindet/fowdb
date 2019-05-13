@@ -37,10 +37,10 @@
 	<script src="https://use.fontawesome.com/f5164b39df.js" defer></script>
 
   <!-- My CSS -->
-	<link href="<?=fd_asset('css/app.min.css', 'css')?>" rel="stylesheet" type="text/css" defer>
+	<link href="<?=fd_asset("assets/css/app.min.css", "css")?>" rel="stylesheet" type="text/css" defer>
 
 	<!-- Favicon -->
-	<link rel="shortcut icon" href="<?=fd_asset('favicon.ico', 'png')?>">
+	<link rel="shortcut icon" href="<?=fd_asset("favicon.ico", "png")?>">
 
   <!-- Title -->
 	<title><?=$title?></title>
@@ -48,9 +48,9 @@
 
 <body>
 	<a name="top"></a>
-  <header><?=fd_include_view('includes/header')?></header>
+  <header><?=fd_include_template("includes/header")?></header>
   <main><?=$fowdb_content?></main>
-  <footer><?=fd_include_view('includes/footer')?></footer>
+  <footer><?=fd_include_template("includes/footer")?></footer>
 
   <!-- jQuery 2.2.4 -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" defer></script>
@@ -80,7 +80,7 @@
       $state,
       JSON_FORCE_OBJECT | JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES
     )?>;
-    window.BASE_URL = "<?=fd_config('app.url')?>";
+    window.BASE_URL = "<?=fd_config("app.url")?>";
     window.APP = {};
   </script>
 

@@ -149,4 +149,4 @@
   </div>
 </div>
 
-<?=fd_include_view('pages/admin/rulings/includes/conventions')?>
+<?=fd_include_template('pages/admin/rulings/includes/conventions')?>

@@ -87,7 +87,7 @@ if ($hasFilters && $hasItems) {
 
   <!-- Rulings -->
   <div class="col-xs-12">
-    <?=fd_include_view('pages/admin/rulings/includes/index-list', [
+    <?=fd_include_template('pages/admin/rulings/includes/index-list', [
       'items' => $items
     ])?>
   </div>

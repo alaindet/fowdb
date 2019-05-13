@@ -9,7 +9,7 @@
     <i class="fa fa-envelope"></i>
   </a>
   |
-  <a href="<?=url('login')?>" class="link-as-text menu-admin">
+  <a href="<?=fd_url("login")?>" class="link-as-text menu-admin">
     <i class="fa fa-user"></i>
   </a>
   |

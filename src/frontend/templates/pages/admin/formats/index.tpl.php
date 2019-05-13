@@ -28,7 +28,7 @@
 
   <!-- Formats list -->
   <div class="col-xs-12">
-    <?=fd_include_view('pages/admin/formats/includes/index-list', [
+    <?=fd_include_template('pages/admin/formats/includes/index-list', [
       'items' => $items
     ])?>
   </div>

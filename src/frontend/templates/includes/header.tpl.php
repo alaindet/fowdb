@@ -37,7 +37,7 @@ $links = [
 ];
 
 // Add admin links
-if (fd_alert()->check("user") > 0) {
+if (fd_auth()->check("user") > 0) {
   $admin = [
     "Profile" => [
       "url" => "/profile",

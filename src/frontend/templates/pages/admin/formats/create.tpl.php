@@ -20,7 +20,7 @@
   <!-- Form -->
   <div class="fd-box --more-margin">
     <div class="fd-box__content">
-      <?=fd_include_view('pages/admin/formats/includes/form', [
+      <?=fd_include_template('pages/admin/formats/includes/form', [
         'item' => null,
         'nextAvailableId' => $nextAvailableId,
         'prev' => $previous ?? null,
@@ -36,7 +36,7 @@
       <a name="rules"></a>
     </div>
     <div class="fd-box__content">
-      <?=fd_include_view('pages/admin/formats/includes/form-rules')?>
+      <?=fd_include_template('pages/admin/formats/includes/form-rules')?>
     </div>
   </div>
 

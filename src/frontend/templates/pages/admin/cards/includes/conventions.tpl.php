@@ -62,6 +62,6 @@
     <p>
       As seen on <a href="<?=fd_url('cards/search/help#syntax')?>">Cards search help</a>
     </p>
-    <?=fd_include_view('pages/public/cards/search/includes/help/syntax-table')?>
+    <?=fd_include_template('pages/public/cards/search/includes/help/syntax-table')?>
   </div>
 </div>

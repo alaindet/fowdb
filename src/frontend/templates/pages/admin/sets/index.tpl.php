@@ -38,7 +38,7 @@
 
   <!-- Sets list -->
   <div class="col-xs-12">
-    <?=fd_include_view('pages/admin/sets/includes/index-list', [
+    <?=fd_include_template('pages/admin/sets/includes/index-list', [
       'items' => $items
     ])?>
   </div>

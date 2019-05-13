@@ -23,7 +23,7 @@
   <!-- Form -->
   <div class="fd-box --more-margin --darker-headings">
     <div class="fd-box__content">
-      <?=fd_include_view('pages/admin/cards/includes/form', [
+      <?=fd_include_template('pages/admin/cards/includes/form', [
         'card' => $card,
         'prev' => $previous ?? null
       ])?>
@@ -31,6 +31,6 @@
   </div>
 
   <!-- Conventions -->
-  <?=fd_include_view('pages/admin/cards/includes/conventions')?>
+  <?=fd_include_template('pages/admin/cards/includes/conventions')?>
 
 </div>

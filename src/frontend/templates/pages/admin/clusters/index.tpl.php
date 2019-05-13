@@ -29,13 +29,13 @@
 
   <!-- Items -->
   <div class="col-xs-12">
-    <?=fd_include_view(
+    <?=fd_include_template(
       'pages/admin/clusters/includes/index-list',
       [ 'items' => $items ]
     )?>
   </div>
 
   <!-- Modal -->
-  <?=fd_include_view('pages/admin/clusters/includes/modal')?>
+  <?=fd_include_template('pages/admin/clusters/includes/modal')?>
   
 </div>

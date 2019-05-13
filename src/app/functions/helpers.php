@@ -51,7 +51,7 @@ use App\Views\Page;
  * fd_asset
  * fd_component
  * fd_csrf_token
- * fd_include_view
+ * fd_include_template
  * fd_escape
  * fd_log_html
  * fd_render
@@ -277,7 +277,7 @@ function fd_component(string $name, array $state = null): string
 
 	// Simple component (no logic, optional state)
 	if ($class === Components::SIMPLE_COMPONENT) {
-		return fd_include_view("components/{$name}", $state);
+		return fd_include_template("components/{$name}", $state);
 	}
 
 	// Return rendered HTML component
@@ -302,7 +302,7 @@ function fd_csrf_token(): string
  * @param string $path
  * @return string
  */
-function fd_include_view(string $path, array $__variables = null): string
+function fd_include_template(string $path, array $__variables = null): string
 {
 	// Bind variables to this template only
 	if (!empty($__variables)) {

@@ -19,7 +19,7 @@
   <!-- Form -->
   <div class="fd-box --more-margin">
     <div class="fd-box__content">
-      <?=fd_include_view('pages/admin/sets/includes/form', [
+      <?=fd_include_template('pages/admin/sets/includes/form', [
         'item' => null,
         'prev' => $previous ?? null,
         'clusters' => $clusters

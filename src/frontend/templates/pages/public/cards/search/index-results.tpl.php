@@ -43,14 +43,14 @@ $bannedList = fd_lookup("banned.{$format}") ?? [];
 
   <!-- Form -->
   <div class="col-xs-12">
-    <?=fd_include_view("pages/public/cards/search/includes/form/form", [
+    <?=fd_include_template("pages/public/cards/search/includes/form/form", [
       "areResults" => true,
       "state" => $filters,
     ])?>
   </div>
 
   <!-- Options -->
-  <?=fd_include_view("pages/public/cards/search/includes/results/options")?>
+  <?=fd_include_template("pages/public/cards/search/includes/results/options")?>
   
   <div class="col-xs-12" id="the-results">
     <div class="fd-box --xs-less-padding">
