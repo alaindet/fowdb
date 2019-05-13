@@ -3,6 +3,7 @@
 namespace App\Views\Components;
 
 use App\Views\Component;
+use App\Services\Configuration\Configuration;
 
 class Breadcrumb extends Component
 {
@@ -20,10 +21,10 @@ class Breadcrumb extends Component
      */
     private function absoluteLinks(): void
     {   
-        $url = fd_config('app.url');
+        $url = (Configuration::getInstance())->get("app.url");
 
         foreach ($this->state as $link) {
-            if ($link !== '#') {
+            if ($link !== "#") {
                 $link = $url . $link;
             }
         }
@@ -38,6 +39,6 @@ class Breadcrumb extends Component
     {
         $this->absoluteLinks();
         
-        return $this->renderTemplate(['links' => $this->state]);
+        return $this->renderTemplate(["links" => $this->state]);
     }
 }

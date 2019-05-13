@@ -6,6 +6,7 @@ use App\Views\TinyHtmlMinifier\TinyMinify;
 use App\Services\OpenGraphProtocol\OpenGraphProtocol;
 use App\Services\OpenGraphProtocol\OpenGraphProtocolImage;
 use App\Utils\Paths;
+use App\Services\Configuration\Configuration;
 
 /**
  * This class renders the HTML to be shown to the user
@@ -18,6 +19,8 @@ use App\Utils\Paths;
  */
 class Page
 {
+    private $config;
+
     private $title;
     private $variables = [];
     private $options = [];
@@ -30,7 +33,8 @@ class Page
      */
     public function __construct()
     {
-        $this->title = fd_config("app.name");
+        $this->config = Configuration::getInstance();
+        $this->title = $this->config->get("app.name");
         $this->mainTemplate = Paths::inTemplatesDir("layout/main.tpl.php");
     }
 
@@ -41,7 +45,7 @@ class Page
      */
     public function title(string $title): Page
     {
-        $this->title = $title . " ~ " . $this->title;
+        $this->title = "{$title} ~ {$this->title}";
 
         return $this;
     }
@@ -128,14 +132,17 @@ class Page
 			// Update image
 			if (isset($myOgp["image"])) {
 
+                $defaultUrl = $this->config->get("ogp.image");
+                $defaultAlt = $this->config->get("app.name");
                 $image = (new OpenGraphProtocolImage)
-                    ->url( $myOgp["image"]["url"] ?? fd_config("ogp.image") )
-                    ->mimeType( fd_config("ogp.image.type") )
-                    ->width( fd_config("ogp.image.width") )
-                    ->height( fd_config("ogp.image.height") )
-                    ->alt( $myOgp["image"]["alt"] ?? fd_config("app.name") );
+                    ->url($myOgp["image"]["url"] ?? $defaultUrl)
+                    ->mimeType($this->config->get("ogp.image.type"))
+                    ->width($this->config->get("ogp.image.width"))
+                    ->height($this->config->get("ogp.image.height"))
+                    ->alt($myOgp["image"]["alt"] ?? $defaultAlt);
 
-				$ogp->image($image);
+                $ogp->image($image);
+                
 			}
         }
         

@@ -15,6 +15,7 @@ use ErrorException;
 use Throwable;
 use App\Utils\Paths;
 use App\Utils\Time;
+use App\Services\Configuration\Configuration;
 
 class Handler
 {
@@ -49,8 +50,10 @@ class Handler
      */
     public static function handler(Throwable $exception): void
     {
+        $config = Configuration::getInstance();
+
         // Bypass any processing, return an API error
-        if (fd_config("current.mode") === "api") {
+        if ($config->get("current.mode") === "api") {
             $response = new JsonResponse;
             $response->setData([
                 "error" => 1,
@@ -84,7 +87,7 @@ class Handler
         ];
 
         // Show readable log of the exception
-        if (fd_config("app.env") === "development") {
+        if ($config->get("app.env") === "development") {
             echo call_user_func(
                 [Logger::class, "html"], // Change to "cli" for CLI debugging
                 $data,

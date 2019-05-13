@@ -93,7 +93,7 @@ class ArtistsController extends Controller
         $card = $model->byId($request->input()->post('card-id'));
 
         // Update card data
-        fd_config()
+        fd_database()
             ->update(
                 fd_statement('update')
                     ->table('cards')

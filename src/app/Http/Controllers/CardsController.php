@@ -7,6 +7,7 @@ use App\Http\Request\Request;
 use App\Services\Resources\Card\Search\Search;
 use App\Views\Page;
 use App\Services\Alert;
+use App\Services\Configuration\Configuration;
 
 /**
  * Contains actions for PUBLIC routes only
@@ -101,7 +102,7 @@ class CardsController extends Controller
 
         // Build Open Graph Protocol data for this page
         $card = $cards->first();
-        $appName = fd_config("app.name");
+        $appName = (Configuration::getInstance())->get("app.name");
         $title = "{$card->get("name")} ({$card->get("code")}) ~ {$appName}";
         $ogp = [
             "title" => $title,

@@ -16,7 +16,7 @@
 
   <!-- Meta tags -->
 	<?=$fowdb_ogp->toHtml()?>
-	<meta property="fb:app_id" content="<?=fd_config('facebook.id')?>">
+	<meta property="fb:app_id" content="<?=fd_config("facebook.id")?>">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">

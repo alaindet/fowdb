@@ -6,6 +6,7 @@ use App\Http\Request\Request;
 use App\Http\Response\Router;
 use App\Http\Response\Dispatcher;
 use App\Utils\Paths;
+use App\Services\Configuration\Configuration;
 
 require __DIR__ . "/src/bootstrap.php";
 
@@ -26,11 +27,14 @@ if (isset($_GET["p"]) || isset($_GET["do"])) {
     return (new LegacyRouter)->run();
 }
 
+// Instantiate the configuration service
+$config = Configuration::getInstance();
+
 // Generate HTTP request
 $request = (new Request)
     ->setBaseUrl("/")
     ->setMethod($_SERVER["REQUEST_METHOD"] ?? "GET")
-    ->setHost($_SERVER["HTTP_HOST"] ?? fd_config("app.host"))
+    ->setHost($_SERVER["HTTP_HOST"] ?? $config->get("app.host"))
     ->setScheme($_SERVER["REQUEST_SCHEME"] ?? "http")
     ->setHttpPort(80)
     ->setHttpsPort(443)
@@ -50,9 +54,8 @@ $route = (new Router)
     ->match();
 
 // Store current state for this request
-fd_config()
-    ->set("current.access", $route["_access"])
-    ->set("current.mode", "web");
+$config->set("current.access", $route["_access"]);
+$config->set("current.mode", "web");
 
 // Initialize the dispatcher
 $response = (new Dispatcher)

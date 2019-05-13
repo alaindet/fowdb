@@ -6,7 +6,6 @@ use App\Exceptions\ViewsComponentException;
 use App\Http\Request\Input;
 use App\Http\Response\Redirect;
 use App\Legacy\Authorization as LegacyAuthorization;
-use App\Services\Alert;
 use App\Services\Configuration\Configuration;
 use App\Services\CsrfToken;
 use App\Services\Database\Database;
@@ -63,29 +62,9 @@ function fd_auth(): LegacyAuthorization
 	return LegacyAuthorization::getInstance();
 }
 
-/**
- * Returns or sets configuration data
- *
- * @param string $name
- * @param any $value
- * @return mixed null|string|array
- */
-function fd_config(string $name = null, $value = null)
+function fd_config(string $key)
 {
-	$config = Configuration::getInstance();
-
-	// Return configuration service
-	if ($name === null) {
-		return $config;
-	}
-
-	// Return configuration value
-	if ($value === null) {
-		return (Configuration::getInstance())->get($name);
-	}
-
-	// Set value on configurations
-	(Configuration::getInstance())->set($name, $value);
+	return (Configuration::getInstance())->get($key);
 }
 
 /**

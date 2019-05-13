@@ -2,6 +2,8 @@
 
 namespace App\Utils;
 
+use App\Services\Configuration\Configuration;
+
 abstract class Uri
 {
     /**
@@ -25,7 +27,7 @@ abstract class Uri
         }
 
         // Base URL for this website
-        $baseUrl = fd_config("app.url");
+        $baseUrl = (Configuration::getInstance())->get("app.url");
 
         // Build the query string
         $queryString = self::buildQueryString($qs);
