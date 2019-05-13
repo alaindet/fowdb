@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Exceptions\SessionException;
+use App\Services\Session\Exceptions\SessionException;
 use App\Base\Base as BaseClass;
 
 class Session extends BaseClass

@@ -2,12 +2,12 @@
 
 namespace App\Legacy;
 
-use App\Services\Session;
-use App\Exceptions\AuthenticationException;
+use App\Services\Session\Session;
+use App\Legacy\Exceptions\AuthenticationException;
 
 class Authentication
 {
-    const NAME = 'admin-hash';
+    const NAME = "admin-hash";
 
     public static function logout(): void
     {

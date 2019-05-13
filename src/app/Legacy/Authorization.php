@@ -3,8 +3,8 @@
 namespace App\Legacy;
 
 use App\Base\Singleton;
-use App\Services\Session;
-use App\Exceptions\AuthorizationException;
+use App\Services\Session\Session;
+use App\Legacy\Exceptions\AuthorizationException;
 
 class Authorization
 {

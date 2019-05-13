@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\Services\Session\Exception;
 
 use App\Base\Exception;
 

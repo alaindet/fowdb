@@ -2,7 +2,7 @@
 
 namespace App\Base;
 
-use App\Base\CrudServiceInterface;
+use App\Base\Crud\Interfaces\CrudServiceInterface;
 use App\Services\Lookup\Lookup;
 
 abstract class CrudService implements CrudServiceInterface

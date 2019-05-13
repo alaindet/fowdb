@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Base;
+namespace App\Base\Crud\Interfaces;
 
 interface CrudServiceInterface
 {

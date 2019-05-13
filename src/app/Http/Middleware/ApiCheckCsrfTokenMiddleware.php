@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use App\Http\Request\Request;
 use App\Http\Middleware\MiddlewareInterface;
 use App\Services\CsrfToken;
-use App\Exceptions\ApiCsrfTokenException;
+use App\Http\Middleware\Exceptions\ApiCsrfTokenException;
 
 class ApiCheckCsrfTokenMiddleware implements MiddlewareInterface
 {
@@ -15,9 +15,13 @@ class ApiCheckCsrfTokenMiddleware implements MiddlewareInterface
         $token = $request->input()->post(CsrfToken::NAME);
 
         // ERROR: Missing token
-        if (!isset($token)) throw new ApiCsrfTokenException();
+        if (!isset($token)) {
+            throw new ApiCsrfTokenException();
+        }
 
         // ERROR: Invalid token
-        if (!CsrfToken::check($token)) throw new ApiCsrfTokenException();
+        if (!CsrfToken::check($token)) {
+            throw new ApiCsrfTokenException();
+        }
     }
 }

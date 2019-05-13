@@ -2,7 +2,7 @@
 
 namespace App\Services\Resources\Card\Crud;
 
-use App\Exceptions\CrudException;
+use App\Base\Crud\Exceptions\CrudException;
 use App\Models\GameSet;
 use App\Models\Card;
 use App\Utils\Bitmask;

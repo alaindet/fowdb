@@ -2,7 +2,7 @@
 
 namespace App\Services\Resources\GameSet\Crud;
 
-use App\Exceptions\CrudException;
+use App\Base\Crud\Exceptions\CrudException;
 
 /**
  * This trait manipulates data after all Cluster input processors executed

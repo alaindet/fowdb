@@ -2,12 +2,11 @@
 
 namespace App\Services;
 
-use App\Base\Base as BaseClass;
-use App\Services\Session;
+use App\Services\Session\Session;
 
-class CsrfToken extends BaseClass
+class CsrfToken
 {
-    const NAME = '_token';
+    const NAME = "_token";
 
     /**
      * Checks if token currently exists into the session

@@ -9,6 +9,9 @@ abstract class Exception extends BuiltinException
 {
     use BaseTrait;
 
+    public const REDIRECT_HOME = "/";
+    public const REDIRECT_BACK = "back";
+
     /**
      * URI to get redirected to in case the exception implements Alertable
      * 
@@ -16,7 +19,7 @@ abstract class Exception extends BuiltinException
      *
      * @var string
      */
-    public $redirectTo = '/';
+    public $redirectTo = self::REDIRECT_HOME;
 
     public function getRedirectUrl(): string
     {

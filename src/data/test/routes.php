@@ -152,6 +152,6 @@ foreach ($routes as $role => &$routesGroup) {
     }
 }
 
-\App\Services\Session::set("test-routes", $urls);
+\App\Services\Session\Session::set("test-routes", $urls);
 
 return $routes;

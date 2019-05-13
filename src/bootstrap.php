@@ -1,12 +1,12 @@
 <?php
 
-use \App\Services\OpenGraphProtocol\OpenGraphProtocol;
-use \App\Services\OpenGraphProtocol\OpenGraphProtocolImage;
-use \App\Services\CsrfToken;
-use \App\Services\Session;
-use \App\Legacy\Authorization;
-use \App\Services\Configuration\Configuration;
-use \App\Exceptions\Handler;
+use App\Services\OpenGraphProtocol\OpenGraphProtocol;
+use App\Services\OpenGraphProtocol\OpenGraphProtocolImage;
+use App\Services\CsrfToken;
+use App\Services\Session\Session;
+use App\Legacy\Authorization;
+use App\Services\Configuration\Configuration;
+use App\Base\Exceptions\Handler;
 
 // Load required files
 require __DIR__ . '/vendor/autoload.php';

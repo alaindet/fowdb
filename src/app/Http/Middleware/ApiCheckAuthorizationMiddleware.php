@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Http\Request\Request;
 use App\Http\Middleware\MiddlewareInterface;
-use App\Exceptions\ApiAuthorizationException;
+use App\Http\Middleware\Exceptions\ApiAuthorizationException;
 use App\Services\Configuration\Configuration;
 
 class ApiCheckAuthorizationMiddleware implements MiddlewareInterface

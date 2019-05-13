@@ -2,7 +2,7 @@
 
 namespace App\Http\Response;
 
-use App\Exceptions\RouterException;
+use App\Http\Response\Exceptions\RouterException;
 use App\Http\Request\Request;
 
 use Symfony\Component\Routing\Matcher\UrlMatcher as SymfonyUrlMatcher;

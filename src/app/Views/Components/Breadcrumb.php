@@ -12,7 +12,7 @@ class Breadcrumb extends Component
      *
      * @var string
      */
-    public $filename = 'breadcrumb';
+    public $filename = "breadcrumb";
 
     /**
      * Turns links into absolute links based on URL stored in configuration

@@ -3,7 +3,6 @@
 namespace App\Services\Resources\Card\Crud;
 
 use App\Base\InputProcessor as BaseInputProcessor;
-use App\Exceptions\CrudException;
 use App\Services\Resources\Card\Crud\PostProcessingTrait;
 use App\Utils\Bitmask;
 

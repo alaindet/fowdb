@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Exceptions\CardModelException;
+use App\Models\Exceptions\CardModelException;
 use App\Base\Model;
 
 class Card extends Model

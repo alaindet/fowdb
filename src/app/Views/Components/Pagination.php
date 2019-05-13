@@ -3,7 +3,6 @@
 namespace App\Views\Components;
 
 use App\Views\Component;
-use App\Exceptions\ViewComponentException;
 
 /**
  * Template file

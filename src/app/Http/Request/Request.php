@@ -4,10 +4,9 @@ namespace App\Http\Request;
 
 use App\Http\Request\Input;
 use App\Http\Request\InputObject;
-use App\Services\Alert;
 use App\Services\Validation\Validation;
 use App\Services\Configuration\Configuration;
-use App\Utils\Arrays;
+use App\Utils\Uri;
 
 class Request
 {
@@ -19,7 +18,6 @@ class Request
     private $httpsPort;
     private $path;
     private $queryString;
-    private $validationException = ValidationException::class;
 
     public function setBaseUrl(string $baseUrl = null): Request
     {
@@ -124,13 +122,13 @@ class Request
         return InputObject::getInstance();
     }
 
-    public function getCurrentUrl(bool $withQueryString = false): string
+    public function getCurrentUrl(): string
     {
         (empty($this->queryString))
             ? $queryString = ""
             : $queryString = "?{$this->queryString}";
 
-        return fd_url($this->path) . $queryString;
+        return Uri::build($this->path) . $queryString;
     }
 
     /**

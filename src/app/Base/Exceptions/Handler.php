@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\Base\Exceptions;
 
-use App\Exceptions\Alertable;
-use App\Exceptions\Previousable;
+use App\Base\Exceptions\Alertable;
+use App\Base\Exceptions\Previousable;
 use App\Http\Request\Input;
 use App\Http\Response\JsonResponse;
 use App\Http\Response\Redirect;
 use App\Services\Alert;
 use App\Services\FileSystem\FileSystem;
-use App\Services\Session;
+use App\Services\Session\Session;
 use App\Utils\Logger;
 use ErrorException;
 use Throwable;

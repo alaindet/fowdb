@@ -4,7 +4,7 @@ namespace App\Http\Request;
 
 use App\Base\Base;
 use App\Base\Singleton;
-use App\Services\Session;
+use App\Services\Session\Session;
 
 class InputObject extends Base
 {

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Services\Session;
+use App\Services\Session\Session;
 
 class Alert
 {

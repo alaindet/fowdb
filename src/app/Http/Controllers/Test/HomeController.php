@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Test;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
-use App\Services\Session;
+use App\Services\Session\Session;
 use App\Views\Page;
 
 class HomeController extends Controller
