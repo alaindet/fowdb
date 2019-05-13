@@ -10,6 +10,7 @@ use Intervention\Image\ImageManager;
 use App\Services\FileSystem\FileSystem;
 use App\Utils\Arrays;
 use App\Utils\Uri;
+use App\Utils\Paths;
 
 class UpdateService extends CrudService
 {
@@ -72,7 +73,7 @@ class UpdateService extends CrudService
             'new-image' => $this->new['image_path'],
             'new-thumb' => $this->new['thumb_path']
         ], function ($path) {
-            return fd_path_root(Uri::removeQueryString($path));
+            return Paths::inRootDir(Uri::removeQueryString($path));
         });
 
         // Update this card's image paths
@@ -95,14 +96,14 @@ class UpdateService extends CrudService
             (new ImageManager)
                 ->make($this->image['tmp_name'])
                 ->resize(480, 670)
-                ->insert(fd_path_root('images/watermark/watermark480.png'))
+                ->insert(Paths::inRootDir('images/watermark/watermark480.png'))
                 ->save($paths['new-image'], 80);
 
             // Store LQ image (apply watermark)
             (new ImageManager)
                 ->make($this->image['tmp_name'])
                 ->resize(280, 391)
-                ->insert(fd_path_root('images/watermark/watermark280.png'))
+                ->insert(Paths::inRootDir('images/watermark/watermark280.png'))
                 ->save($paths['new-thumb'], 80);
         }
 

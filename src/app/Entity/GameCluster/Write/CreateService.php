@@ -9,6 +9,7 @@ use App\Entity\GameCluster\GameCluster;
 use App\Services\Configuration\Configuration;
 use App\Base\ORM\Write\WriteServiceInterface;
 use App\Services\FileSystem\FileSystem;
+use App\Utils\Paths;
 
 class CreateService extends WriteService
 {
@@ -60,7 +61,7 @@ class CreateService extends WriteService
     {
         $config = Configuration::getInstance();
         $sizes = explode(",", $config->get("dir.resolutions"));
-        $format = fd_path_root("images/cards/%s/{$this->new->code}");
+        $format = Paths::inRootDir("images/cards/%s/{$this->new->code}");
 
         foreach ($sizes as $size) {
             FileSystem::createDirectory(sprintf($format, $size));

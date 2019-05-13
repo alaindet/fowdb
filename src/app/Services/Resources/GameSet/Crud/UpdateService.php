@@ -7,6 +7,7 @@ use App\Base\CrudServiceInterface;
 use App\Services\Resources\GameSet\Crud\InputProcessor;
 use App\Models\GameSet as Model;
 use App\Services\FileSystem\FileSystem;
+use App\Utils\Paths;
 
 class UpdateService extends CrudService
 {
@@ -47,12 +48,12 @@ class UpdateService extends CrudService
 
             $paths = [
                 'images' => [
-                    'old' => fd_path_root('images/cards/'.$partialOld),
-                    'new' => fd_path_root('images/cards/'.$partialNew)
+                    'old' => Paths::inRootDir('images/cards/'.$partialOld),
+                    'new' => Paths::inRootDir('images/cards/'.$partialNew)
                 ],
                 'thumbnails' => [
-                    'old' => fd_path_root('images/thumbs/'.$partialOld),
-                    'new' => fd_path_root('images/thumbs/'.$partialNew)
+                    'old' => Paths::inRootDir('images/thumbs/'.$partialOld),
+                    'new' => Paths::inRootDir('images/thumbs/'.$partialNew)
                 ]
             ];
 

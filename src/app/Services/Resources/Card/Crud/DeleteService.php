@@ -7,6 +7,7 @@ use App\Base\CrudServiceInterface;
 use App\Models\Card as Model;
 use App\Services\FileSystem\FileSystem;
 use App\Utils\Uri;
+use App\Utils\Paths;
 
 class DeleteService extends CrudService
 {
@@ -40,7 +41,7 @@ class DeleteService extends CrudService
         ];
 
         foreach ($paths as $path) {
-            $absolutePath = fd_path_root(Uri::removeQueryString($path));
+            $absolutePath = Paths::inRootDir(Uri::removeQueryString($path));
             FileSystem::deleteFile($absolutePath);
         }
 

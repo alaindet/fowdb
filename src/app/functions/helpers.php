@@ -38,10 +38,6 @@ use App\Views\Page;
  * fd_repository
  * fd_statement
  * 
- * DIRECTORIES
- * ===========
- * fd_path_root
- * 
  * VIEW
  * ====
  * fd_asset
@@ -184,18 +180,6 @@ function fd_repository(string $entityClass): RepositoryInterface
 function fd_statement(string $type): SqlStatement
 {
 	return StatementManager::new($type);
-}
-
-
-// DIRECTORIES ----------------------------------------------------------------
-
-/**
- * @param string Relative path to /
- * @return string Absolute path
- */
-function fd_path_root(string $path = null): string
-{
-	return Paths::inRootDir($path);
 }
 
 // VIEW -----------------------------------------------------------------------

@@ -6,6 +6,7 @@ use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
 use App\Models\GameSet as Model;
 use App\Services\FileSystem\FileSystem;
+use App\Utils\Paths;
 
 class DeleteService extends CrudService
 {
@@ -30,8 +31,8 @@ class DeleteService extends CrudService
     public function syncFileSystem(): CrudServiceInterface
     {
         $partial = $this->old['clusters_id'] . '/' . $this->old['code'];
-        $cardsDirectory =  fd_path_root('images/cards/'  . $partial);
-        $thumbsDirectory = fd_path_root('images/thumbs/' . $partial);
+        $cardsDirectory =  Paths::inRootDir('images/cards/'  . $partial);
+        $thumbsDirectory = Paths::inRootDir('images/thumbs/' . $partial);
 
         FileSystem::deleteDirectory($cardsDirectory);
         FileSystem::deleteDirectory($thumbsDirectory);

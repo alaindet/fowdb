@@ -7,6 +7,7 @@ use App\Base\CrudServiceInterface;
 use App\Models\Card as Model;
 use App\Services\Resources\Card\Crud\InputProcessor;
 use Intervention\Image\ImageManager;
+use App\Utils\Paths;
 
 class CreateService extends CrudService
 {
@@ -49,15 +50,15 @@ class CreateService extends CrudService
         (new ImageManager)
             ->make($image['tmp_name'])
             ->resize(480, 670)
-            ->insert(fd_path_root('images/watermark/watermark480.png'))
-            ->save(fd_path_root($this->new['image_path']), 80);
+            ->insert(Paths::inRootDir('images/watermark/watermark480.png'))
+            ->save(Paths::inRootDir($this->new['image_path']), 80);
 
         // Create thumbnail image
         (new ImageManager)
             ->make($image['tmp_name'])
             ->resize(280, 391)
-            ->insert(fd_path_root('images/watermark/watermark280.png'))
-            ->save(fd_path_root($this->new['thumb_path']), 80);
+            ->insert(Paths::inRootDir('images/watermark/watermark280.png'))
+            ->save(Paths::inRootDir($this->new['thumb_path']), 80);
 
         return $this;
     }
