@@ -6,6 +6,7 @@ use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Views\Page;
 use App\Legacy\Authentication;
+use App\Services\Alert;
 
 class LoginController extends Controller
 {
@@ -31,14 +32,14 @@ class LoginController extends Controller
         $password = $request->input()->post("password");
 
         Authentication::login($username, $password);
-        fd_alert("You signed in", "success");
+        Alert::add("You signed in", "success");
         fd_redirect("profile");
     }
 
     public function logout()
     {
         Authentication::logout();
-        fd_alert("You signed out", "warning");
+        Alert::add("You signed out", "warning");
         fd_redirect("/");
     }
 }

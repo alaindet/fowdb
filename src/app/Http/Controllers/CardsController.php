@@ -6,6 +6,7 @@ use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Services\Resources\Card\Search\Search;
 use App\Views\Page;
+use App\Services\Alert;
 
 /**
  * Contains actions for PUBLIC routes only
@@ -43,7 +44,7 @@ class CardsController extends Controller
 
         // ERROR: Cards not found!
         if (empty($results)) {
-            fd_alert("No results. Please try changing your filters.", "danger");
+            Alert::add("No results. Please try changing your filters.", "danger");
             fd_redirect("cards/search");
         }
 

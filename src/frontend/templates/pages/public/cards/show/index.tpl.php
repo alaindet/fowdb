@@ -33,7 +33,7 @@ foreach ($cards as $card):
 		</div>
 
 		<?php // Admin buttons ----------------------------------------------------
-			if (fd_alert()->check($auth_levels)):
+			if (fd_auth()->check($auth_levels)):
 		?>
 			<div class="col-xs-12 text-center sm-text-left mb-100">
 				
@@ -192,7 +192,7 @@ foreach ($cards as $card):
 										Share
 									</a>
 
-					    		<?php if (fd_alert()->check($auth_levels)): ?>
+					    		<?php if (fd_auth()->check($auth_levels)): ?>
 						    		
 										<!-- Edit -->
 										<a

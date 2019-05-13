@@ -11,6 +11,7 @@ use App\Utils\Arrays;
 use App\Views\Card\Card as View;
 use App\Utils\BitmaskFlags;
 use App\Legacy\Card\CardPropertiesTrait;
+use App\Services\Alert;
 
 class Card
 {
@@ -23,7 +24,7 @@ class Card
 
         // ERROR: No card with that code!
         if (empty($cardsDb)) {
-            fd_alert(
+            Alert::add(
                 "No card found with code <strong>{$code}</strong>",
                 "warning"
             );

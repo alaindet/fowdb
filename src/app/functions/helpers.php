@@ -27,7 +27,6 @@ use App\Views\Page;
  * 
  * SERVICES
  * ========
- * fd_alert
  * fd_auth
  * fd_config
  * fd_database
@@ -53,19 +52,6 @@ use App\Views\Page;
 
 
 // SERVICES -------------------------------------------------------------------
-
-/**
- * Adds an alert to be shown. If redirect is used after this, it's shown
- * on the next request, otherwise it's shown on the current page
- *
- * @param string $message
- * @param string $type
- * @return void
- */
-function fd_alert(string $message, string $type = null): void
-{
-    Alert::add($message, $type);
-}
 
 /**
  * LEGACY: Returns the authorization singleton
