@@ -2,10 +2,10 @@
 
 namespace App\Views;
 
-use App\Exceptions\TemplateException;
 use App\Views\TinyHtmlMinifier\TinyMinify;
 use App\Services\OpenGraphProtocol\OpenGraphProtocol;
 use App\Services\OpenGraphProtocol\OpenGraphProtocolImage;
+use App\Utils\Paths;
 
 /**
  * This class renders the HTML to be shown to the user
@@ -31,7 +31,7 @@ class Page
     public function __construct()
     {
         $this->title = fd_config("app.name");
-        $this->mainTemplate = fd_path_views("layout/main.tpl.php");
+        $this->mainTemplate = Paths::inTemplatesDir("layout/main.tpl.php");
     }
 
     /**
@@ -80,7 +80,7 @@ class Page
      */
     public function template(string $name): Page
     {
-        $this->template = fd_path_views("{$name}.tpl.php");
+        $this->template = Paths::inTemplatesDir("{$name}.tpl.php");
 
         return $this;
     }

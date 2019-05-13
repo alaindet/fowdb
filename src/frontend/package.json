@@ -4,7 +4,7 @@
   "description": "Building tools for FoWDB",
   "main": "index.js",
   "scripts": {
-    "build-css": "node-sass --output-style=compressed scss/app.scss ../../../css/app.min.css",
+    "build-css": "node-sass --output-style=compressed scss/app.scss ../../css/app.min.css",
     "build-js": "node ./js/build.js",
     "watch-build-js": "nodemon ./js/build.js --dev"
   },

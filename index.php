@@ -29,7 +29,7 @@ if (isset($_GET["p"]) || isset($_GET["do"])) {
 $request = (new Request)
     ->setBaseUrl("/")
     ->setMethod($_SERVER["REQUEST_METHOD"] ?? "GET")
-    ->setHost($_SERVER["HTTP_HOST"] ?? config("app.host"))
+    ->setHost($_SERVER["HTTP_HOST"] ?? fd_config("app.host"))
     ->setScheme($_SERVER["REQUEST_SCHEME"] ?? "http")
     ->setHttpPort(80)
     ->setHttpsPort(443)
@@ -37,10 +37,10 @@ $request = (new Request)
     ->setQueryString($_SERVER["QUERY_STRING"]);
 
 // Read the routes
-$routes = FileSystem::loadFile(path_data("app/routes.php"));
+$routes = FileSystem::loadFile(fd_path_data("app/routes.php"));
 
-// // TEST
-// require __DIR__ . "/src/add-test-routes.php";
+// TEST
+require __DIR__ . "/src/add-test-routes.php";
 
 // Map request to its route
 $route = (new Router)
@@ -49,7 +49,7 @@ $route = (new Router)
     ->match();
 
 // Store current state for this request
-config()
+fd_config()
     ->set("current.access", $route["_access"])
     ->set("current.mode", "web");
 

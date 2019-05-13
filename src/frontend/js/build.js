@@ -46,7 +46,7 @@ app.directorySeparator = app.args.windows ? '\\' : '/';
 
 // Define all folders
 const dev = sanitizePath(__dirname, '/'); // Temporary dir separator: Unix
-const prod = dev.replace('/src/resources/assets/js', '/js');
+const prod = dev.replace('/src/frontend/js', '/assets/js');
 app.paths = {
   dev: sanitizePath(dev),
   prod: sanitizePath(prod),
@@ -170,7 +170,9 @@ function makeDirectories(filePath) {
   const _fs = app.dependencies.fs;
   const _path = app.dependencies.path;
   const dir = _path.dirname(filePath);
-  if (_fs.existsSync(dir)) return true;
+  if (_fs.existsSync(dir)) {
+    return true;
+  }
   makeDirectories(dir);
   _fs.mkdirSync(dir);
 }

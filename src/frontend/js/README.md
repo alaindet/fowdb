@@ -2,7 +2,7 @@
 
 ## What is a *page script* on FoWDB
 
-The somewhat legacy definition here of a *page script* is that of a single JavaScript file loaded on a specific URI it exclusively belongs to (the page). For example, the cards search page will have its own `search.min.js` page script, as well as the spoiler page and so on. This provides the functionality needed for that page only.
+The somewhat legacy definition here of a *page script* is that of a single JavaScript file loaded on a specific URL it exclusively belongs to (the page). For example, the cards search page will have its own `search.min.js` page script, as well as the spoiler page and so on. This provides the functionality needed for that page only.
 
 Since there are not so many dependencies or no dependencies at all (apart from some 3rd-party ones like jQuery) and since JavaScript on FoWDB just enhances the page without building it (for now, I know modern frameworks exist!), I'm sure these *page scripts* will rarely change once deployed and can safely get cached into the browser.
 
@@ -18,9 +18,9 @@ npm run watch-build-js -- --page=foo
 ```
 
 ## Conventions
-- **dev** directory => `/src/resources/assets/js`
-- **prod** directory => `/js`
-- All filenames used here, unless specificed, are relative to the **dev** directory. Ex.: `/pages/foo.js` is `/src/resources/assets/js/pages/foo.js`
+- **dev** directory => `/src/frontend/js/`
+- **prod** directory => `/assets/js/`
+- All filenames used here, unless specificed, are relative to the **dev** directory. Ex.: `/pages/foo.js` is `/src/frontend/js/pages/foo.js`
 - File tree of the **dev** directory is
   ```
   /
@@ -36,8 +36,8 @@ npm run watch-build-js -- --page=foo
     build.js
     README.md
   ```
-  Anything like `...` is any arbitrary combination of directories and/or files depending on how you define them
-- Dependencies can "export" their functionality by adding methods and properties to a common `window.APP` object which is always defined on any page, or bind handlers to elements in a IIFE (they're compression-friendly with UglifyJS)
+  Anything like `...` up here is any arbitrary combination of directories and/or files depending on how you define them
+- Dependencies can "export" their functionality by adding methods and properties to a common `window.APP` object which is always defined on any page, or bind handlers to elements in a IIFE (they're compression-friendly with UglifyJS3)
 - Dependencies filenames should be in kebab-case, while their definition into the file should be in camelCase. Ex.:
   ```
   // /dependencies/functions/numbers/foo-bar.js
@@ -98,7 +98,7 @@ npm run watch-build-js -- --page=foo
 
 - The build file
   ```
-  // /src/resources/assets/js/pages/foo/bar.build.json
+  // /src/frontend/js/pages/foo/bar.build.json
   
   {
       "output": "foo/bar",
@@ -115,7 +115,7 @@ npm run watch-build-js -- --page=foo
 
 - The page script
   ```
-  // /src/resources/assets/js/pages/foo/bar.js
+  // /src/frontend/js/pages/foo/bar.js
   
   console.log("This is the foo/bar page");
   // @partial: pages/foo/partials/my-partial
@@ -123,7 +123,7 @@ npm run watch-build-js -- --page=foo
 
 - The partial script
   ```
-  // /src/resources/assets/js/pages/foo/partials/my-partial.js
+  // /src/frontend/js/pages/foo/partials/my-partial.js
   
   console.log("And this is foo/partial/my-partial");
   ```
@@ -135,7 +135,7 @@ npm run watch-build-js -- --page=foo
 
 - The output file
   ```
-  // /js/foo/bar.js
+  // /assets/js/foo/bar.js
   
   console.log("This is the foo/bar page");
   console.log("And this is foo/partial/my-partial");

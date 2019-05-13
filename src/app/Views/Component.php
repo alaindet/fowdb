@@ -2,8 +2,8 @@
 
 namespace App\Views;
 
-use App\Base\Base;
 use App\Utils\Strings;
+use App\Utils\Paths;
 
 abstract class Component
 {
@@ -57,7 +57,7 @@ abstract class Component
         // Turn on the buffer to catch the rendered component,
         // Then return it as HTML string
         ob_start();
-        include fd_path_views("components/{$this->filename}.tpl.php");
+        include Paths::inTemplatesDir("components/{$this->filename}.tpl.php");
         return ob_get_clean();
     }
 }

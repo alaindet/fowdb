@@ -44,7 +44,7 @@ use App\Views\Page;
  * fd_path_data
  * fd_path_root
  * fd_path_src
- * fd_path_views
+ * fd_path_templates
  * 
  * VIEW
  * ====
@@ -229,16 +229,6 @@ function fd_path_src(string $path = null): string
 	return Paths::inSrcDir($path);
 }
 
-/**
- * @param string Relative path to /src/resources/views/
- * @return string Absolute path
- */
-function fd_path_views(string $path = null): string
-{
-	return Paths::inViewsDir($path);
-}
-
-
 // VIEW -----------------------------------------------------------------------
 
 /**
@@ -326,7 +316,7 @@ function fd_include_view(string $path, array $__variables = null): string
 
 	// Load and render this template as a string
 	ob_start();
-	include fd_path_views("{$path}.tpl.php");
+	include Paths::inTemplatesDir("{$path}.tpl.php");
 	return ob_get_clean();
 }
 

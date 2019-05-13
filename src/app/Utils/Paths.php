@@ -26,9 +26,9 @@ abstract class Paths
         return self::prependWithDir("dir.src", $path);
     }
 
-    static public function inViewsDir(string $path = null): string
+    static public function inTemplatesDir(string $path = null): string
     {
-        return self::prependWithDir("dir.views", $path);
+        return self::prependWithDir("dir.templates", $path);
     }
 
     static private function prependWithDir(
