@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Views;
+namespace App\Views\Entities;
 
 use App\Utils\Arrays;
 use App\Models\PlayRestriction as Model;

@@ -6,7 +6,7 @@ use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Views\Page;
 use App\Models\PlayRestriction as Model;
-use App\Views\PlayRestriction as View;
+use App\Views\Entities\PlayRestriction as View;
 use App\Http\Response\Redirect;
 use App\Services\Alert;
 

@@ -16,7 +16,7 @@ use App\Utils\Logger;
 use App\Utils\Paths;
 use App\Utils\Strings;
 use App\Utils\Uri;
-use App\Views\Card\CardText;
+use App\Views\Entities\Card\CardText;
 use App\Views\Components;
 use App\Views\Page;
 

@@ -10,8 +10,6 @@ use App\Services\Resources\PlayRestriction\PlayRestrictionCreateService;
 use App\Services\Resources\PlayRestriction\PlayRestrictionDeleteService;
 use App\Services\Resources\PlayRestriction\PlayRestrictionUpdateService;
 use App\Views\Page;
-use App\Models\PlayRestriction as Model;
-use App\Views\PlayRestriction as View;
 use App\Services\Database\Statement\SqlStatement;
 use App\Models\Card as CardModel;
 

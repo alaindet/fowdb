@@ -37,7 +37,7 @@ if (isset($card["attribute"])) {
 }
 
 // Type -----------------------------------------------------------------------
-$typeLabels = \App\Views\Card\Card::buildTypeLabels($card["type_bit"]);
+$typeLabels = \App\Views\Entities\Card\Card::buildTypeLabels($card["type_bit"]);
 $cardType = implode(" / ", $typeLabels);
 
 // ATK / DEF ------------------------------------------------------------------

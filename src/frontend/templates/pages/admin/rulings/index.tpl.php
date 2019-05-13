@@ -8,7 +8,7 @@
 $hasItems = !empty($items);
 $hasFilters = !empty($filters);
 if ($hasFilters && $hasItems) {
-  \App\Views\Ruling::buildFiltersLabels($filters, $items[0]);
+  \App\Views\Entities\Ruling::buildFiltersLabels($filters, $items[0]);
 }
 
 ?>

@@ -10,7 +10,7 @@
 $hasItems = !empty($items);
 $hasFilters = !empty($filters);
 if ($hasFilters && $hasItems) {
-  \App\Views\PlayRestriction::buildFiltersLabels($filters, $items[0]);
+  \App\Views\Entities\PlayRestriction::buildFiltersLabels($filters, $items[0]);
 }
 
 ?>

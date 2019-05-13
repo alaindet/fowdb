@@ -8,7 +8,7 @@ use App\Models\Card as Model;
 use App\Models\CardType;
 use App\Models\GameRuling;
 use App\Utils\Arrays;
-use App\Views\Card\Card as View;
+use App\Views\Entities\Card\Card as View;
 use App\Utils\BitmaskFlags;
 use App\Legacy\Card\CardPropertiesTrait;
 use App\Services\Alert;

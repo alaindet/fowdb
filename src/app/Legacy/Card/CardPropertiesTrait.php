@@ -2,8 +2,6 @@
 
 namespace App\Legacy\Card;
 
-use App\Views\Card\Card as View;
-
 trait CardPropertiesTrait
 {
     protected static function buildTypeProperty(

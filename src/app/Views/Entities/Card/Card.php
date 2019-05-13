@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Views\Card;
+namespace App\Views\Entities\Card;
 
-use App\Legacy\Helpers;
 use App\Utils\Arrays;
 use App\Utils\Strings;
 use App\Models\Card as Model;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Views\Card;
+namespace App\Views\Entities\Card;
 
 class CardText
 {
