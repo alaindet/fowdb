@@ -1,7 +1,7 @@
 <?php
 
 // Grab test routes
-$testRoutesPath = fd_path_data('test/routes.php');
+$testRoutesPath = \App\Utils\Paths::inDataDir("test/routes.php");
 $testRoutes = \App\Services\FileSystem\FileSystem::loadFile($testRoutesPath);
 
 // Merge test routes with existing ones

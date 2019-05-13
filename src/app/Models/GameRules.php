@@ -3,14 +3,15 @@
 namespace App\Models;
 
 use App\Base\Model;
+use App\Utils\Paths;
 
 class GameRules extends Model
 {
-    public $table = 'game_rules';
+    public $table = "game_rules";
 
     public $virtualAttributes = [
-        '*doc_path' => 'getDocPathAttribute',
-        '*source_path' => 'getSourcePathAttribute',
+        "*doc_path" => "getDocPathAttribute",
+        "*source_path" => "getSourcePathAttribute",
     ];
 
     /**
@@ -29,13 +30,13 @@ class GameRules extends Model
     {
         $resource = fd_database()
             ->select(
-                fd_statement('select')
-                    ->select(isset($fields) ? implode(',', $fields) : '*')
+                fd_statement("select")
+                    ->select(isset($fields) ? implode(",", $fields) : "*")
                     ->from($this->table)
-                    ->where('version = :version')
+                    ->where("version = :version")
                     ->limit(1)
             )
-            ->bind([':version' => $version])
+            ->bind([":version" => $version])
             ->first();
 
         // Return raw data (default)
@@ -51,11 +52,11 @@ class GameRules extends Model
 
     protected function getDocPathAttribute(array &$resource): string
     {
-        return fd_path_root($resource['doc_path']);
+        return Paths::inRoorDir($resource["doc_path"]);
     }
 
     protected function getSourcePathAttribute(array &$resource): string
     {
-        return fd_path_data('resources/cr/'.$resource['version'].'.txt');
+        return Paths::inDataDir("resources/cr/{$resource["version"]}.txt");
     }
 }

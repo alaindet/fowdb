@@ -8,6 +8,7 @@ use App\Models\GameRules as Model;
 use App\Services\Resources\GameRules\GameRulesInputProcessor as InputProcessor;
 use App\Services\Resources\GameRules\DocumentConverter;
 use App\Services\FileSystem\FileSystem;
+use App\Utils\Paths;
 
 class GameRulesUpdateService extends CrudService
 {
@@ -44,9 +45,9 @@ class GameRulesUpdateService extends CrudService
     {
         $paths = [
             'old-src' => $this->old['*source_path'],
-            'new-src' => fd_path_data("resources/cr/{$this->new['version']}.txt"),
+            'new-src' => Paths::inDataDir("resources/cr/{$this->new['version']}.txt"),
             'old-doc' => $this->old['*doc_path'],
-            'new-doc' => fd_path_root($this->new['doc_path']),
+            'new-doc' => Paths::inRootDir($this->new['doc_path']),
         ];
 
         // Rename files (source .txt and public .html) on version change

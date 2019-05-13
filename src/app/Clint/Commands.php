@@ -4,6 +4,7 @@ namespace App\Clint;
 
 use App\Clint\CommandInterface;
 use App\Services\FileSystem\FileSystem;
+use App\Utils\Paths;
 
 class Commands
 {
@@ -11,7 +12,7 @@ class Commands
 
     public function __construct()
     {
-        $this->list = FileSystem::loadFile(fd_path_data('app/clint.php'));
+        $this->list = FileSystem::loadFile(Paths::inDataDir("app/clint.php"));
     }
 
     public function exists(string $name): bool

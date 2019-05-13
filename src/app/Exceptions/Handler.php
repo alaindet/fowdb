@@ -2,9 +2,7 @@
 
 namespace App\Exceptions;
 
-use App\Base\Exception;
 use App\Exceptions\Alertable;
-use App\Exceptions\Jsonable;
 use App\Exceptions\Previousable;
 use App\Http\Request\Input;
 use App\Http\Response\JsonResponse;
@@ -15,6 +13,8 @@ use App\Services\Session;
 use App\Utils\Logger;
 use ErrorException;
 use Throwable;
+use App\Utils\Paths;
+use App\Utils\Time;
 
 class Handler
 {
@@ -95,8 +95,9 @@ class Handler
 
         // The last hope: log the exception into a log file
         $serializedData = serialize($data);
+        $time = Time::timestamp("file-nospace");
         $hash = md5($serializedData);
-        $filename = fd_path_data("logs/exceptions/{$hash}.txt");
+        $filename = Paths::inDataDir("logs/exceptions/{$hash}.txt");
         if (!FileSystem::existsFile($filename)) {
             FileSystem::saveFile($filename, $serializedData);
         }

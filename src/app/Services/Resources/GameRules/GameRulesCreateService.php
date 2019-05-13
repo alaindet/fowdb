@@ -7,6 +7,7 @@ use App\Base\CrudServiceInterface;
 use App\Models\GameRules as Model;
 use App\Services\Resources\GameRules\GameRulesInputProcessor as InputProcessor;
 use App\Services\Resources\GameRules\DocumentConverter;
+use App\Utils\Paths;
 
 class GameRulesCreateService extends CrudService
 {
@@ -43,8 +44,8 @@ class GameRulesCreateService extends CrudService
 
         // Calculate paths
         $inputSourcePath = $file['tmp_name'];
-        $docPath = fd_path_root($this->new['doc_path']);
-        $sourcePath = fd_path_data("resources/cr/{$this->new['version']}.txt");
+        $docPath = Paths::inRootDir($this->new['doc_path']);
+        $sourcePath = Paths::inDataDir("resources/cr/{$this->new['version']}.txt");
 
         // Convert input .txt into output .html and store it
         (new DocumentConverter)

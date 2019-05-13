@@ -6,6 +6,7 @@ use App\Clint\Commands\Command;
 use App\Services\FileSystem\FileSystem;
 use App\Utils\Strings;
 use App\Clint\Core\Template;
+use App\Utils\Paths;
 
 class ClintAddCommand extends Command
 {
@@ -114,7 +115,7 @@ class ClintAddCommand extends Command
 
     private function updateCommandsListFile(): void
     {
-        $path = fd_path_data('app/clint.php');
+        $path = Paths::inDataDir("app/clint.php");
         $content = FileSystem::readFile($path);
 
         $target = "\n\n];";

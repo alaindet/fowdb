@@ -5,6 +5,7 @@ use App\Services\FileSystem\FileSystem;
 use App\Http\Request\Request;
 use App\Http\Response\Router;
 use App\Http\Response\Dispatcher;
+use App\Utils\Paths;
 
 require __DIR__ . "/src/bootstrap.php";
 
@@ -37,7 +38,7 @@ $request = (new Request)
     ->setQueryString($_SERVER["QUERY_STRING"]);
 
 // Read the routes
-$routes = FileSystem::loadFile(fd_path_data("app/routes.php"));
+$routes = FileSystem::loadFile(Paths::inDataDir("app/routes.php"));
 
 // TEST
 require __DIR__ . "/src/add-test-routes.php";

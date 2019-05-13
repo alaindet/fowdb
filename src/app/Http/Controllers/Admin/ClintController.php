@@ -8,69 +8,70 @@ use App\Http\Response\Redirect;
 use App\Services\Alert;
 use App\Views\Page;
 use App\Services\FileSystem\FileSystem;
+use App\Utils\Paths;
 
 class ClintController extends Controller
 {
     private $commands = [
-        'config-build' => [
-            'label' => 'Rebuild configuration cache',
-            'name' => 'config:build'
+        "config-build" => [
+            "label" => "Rebuild configuration cache",
+            "name" => "config:build"
         ],
-        'config-clear' => [
-            'label' => 'Clear configuration cache',
-            'name' => 'config:clear'
+        "config-clear" => [
+            "label" => "Clear configuration cache",
+            "name" => "config:clear"
         ],
-        'env-to-production' => [
-            'label' => 'Switch environment to production',
-            'name' => 'env:switch',
-            'arguments' => ['production']
+        "env-to-production" => [
+            "label" => "Switch environment to production",
+            "name" => "env:switch",
+            "arguments" => ["production"]
         ],
-        'env-to-development' => [
-            'label' => 'Switch environment to development',
-            'name' => 'env:switch',
-            'arguments' => ['development']
+        "env-to-development" => [
+            "label" => "Switch environment to development",
+            "name" => "env:switch",
+            "arguments" => ["development"]
         ],
-        'lookup-cache' => [
-            'label' => 'Cache lookup data',
-            'name' => 'lookup:cache'
+        "lookup-cache" => [
+            "label" => "Cache lookup data",
+            "name" => "lookup:cache"
         ],
-        'sitemap-make' => [
-            'label' => 'Regenerate sitemap.xml',
-            'name' => 'sitemap:make'
+        "sitemap-make" => [
+            "label" => "Regenerate sitemap.xml",
+            "name" => "sitemap:make"
         ],
-        'timestamp-js' => [
-            'label' => 'Update Timestamp: JS',
-            'name' => 'config:timestamp',
-            'arguments' => ['js']
+        "timestamp-js" => [
+            "label" => "Update Timestamp: JS",
+            "name" => "config:timestamp",
+            "arguments" => ["js"]
         ],
-        'timestamp-css' => [
-            'label' => 'Update Timestamp: CSS',
-            'name' => 'config:timestamp',
-            'arguments' => ['css']
+        "timestamp-css" => [
+            "label" => "Update Timestamp: CSS",
+            "name" => "config:timestamp",
+            "arguments" => ["css"]
         ],
-        'timestamp-img' => [
-            'label' => 'Update Timestamp: Image',
-            'name' => 'config:timestamp',
-            'arguments' => ['img']
+        "timestamp-img" => [
+            "label" => "Update Timestamp: Image",
+            "name" => "config:timestamp",
+            "arguments" => ["img"]
         ],
-        'timestamp-generic' => [
-            'label' => 'Update Timestamp: Generic',
-            'name' => 'config:timestamp',
-            'arguments' => ['generic']
+        "timestamp-generic" => [
+            "label" => "Update Timestamp: Generic",
+            "name" => "config:timestamp",
+            "arguments" => ["generic"]
         ],
-        'cards-sort' => [
-            'label' => 'Regenerate all cards \'sorted_id\'',
-            'name' => 'cards:sort',
+        "cards-sort" => [
+            "label" => "Regenerate all cards \"sorted_id\"",
+            "name" => "cards:sort",
         ],
     ];
     
     public function showForm(): string
     {
         return (new Page)
-            ->template('pages/admin/clint/index')
-            ->title('Clint commands')
+            ->template("pages/admin/clint/index")
+            ->title("Clint commands")
             ->variables([
-                'commands' => $this->commands
+                "commands" => $this->commands
             ])
             ->render();
     }
@@ -78,12 +79,12 @@ class ClintController extends Controller
     public function executeCommand(Request $request, $command)
     {
         $info = $this->commands[$command];
-        $classes = FileSystem::loadFile(fd_path_data('app/clint.php'));
-        $class = $classes[$info['name']];
+        $classes = FileSystem::loadFile(Paths::inDataDir("app/clint.php"));
+        $class = $classes[$info["name"]];
         $command = new $class();
-        $command->run($info['options'] ?? [], $info['arguments'] ?? []);
+        $command->run($info["options"] ?? [], $info["arguments"] ?? []);
 
-        Alert::add($command->message(), 'info');
-        Redirect::to('clint');
+        Alert::add($command->message(), "info");
+        Redirect::to("clint");
     }
 }
