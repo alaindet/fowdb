@@ -3,18 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Base\Controller;
-use App\Http\Request\Request;
 use App\Views\Page\Page;
 use App\Legacy\Authorization;
+use App\Http\Response\Redirect;
 
 class UserController extends Controller
 {
     public function showProfile()
     {
-        $level = fd_auth()->level();
+        $auth = Authorization::getInstance();
+        $level = $auth->level();
 
-        if ($level === Authorization::ROLE_ADMIN) fd_redirect("admin");
-        if ($level === Authorization::ROLE_JUDGE) fd_redirect("judge");
+        if ($level === Authorization::ROLE_ADMIN) {
+            Redirect::to("admin");
+        }
+
+        if ($level === Authorization::ROLE_JUDGE) {
+            Redirect::to("judge");
+        }
     }
 
     public function adminShowProfile(): string

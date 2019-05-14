@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Http\Request\Request;
 use App\Http\Middleware\MiddlewareInterface;
 use App\Http\Middleware\Exceptions\ApiAuthorizationException;
+use App\Legacy\Authorization;
 use App\Services\Configuration\Configuration;
 
 class ApiCheckAuthorizationMiddleware implements MiddlewareInterface
@@ -19,7 +20,7 @@ class ApiCheckAuthorizationMiddleware implements MiddlewareInterface
         }
 
         // ERROR: Current user is not authorized
-        if (!fd_auth()->check($requiredRole)) {
+        if (!(Authorization::getInstance())->check($requiredRole)) {
             throw new ApiAuthorizationException();
         }
     }

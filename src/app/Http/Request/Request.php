@@ -2,11 +2,10 @@
 
 namespace App\Http\Request;
 
-use App\Http\Request\Input;
-use App\Http\Request\InputObject;
+use App\Http\Request\Input\InputManager;
 use App\Services\Validation\Validation;
-use App\Services\Configuration\Configuration;
 use App\Utils\Uri;
+use App\Http\Request\Input\InputObject;
 
 class Request
 {
@@ -19,9 +18,9 @@ class Request
     private $path;
     private $queryString;
 
-    public function setBaseUrl(string $baseUrl = null): Request
+    public function setBaseUrl(string $baseUrl): Request
     {
-        if (isset($baseUrl)) $this->baseUrl = $baseUrl;
+        $this->baseUrl = $baseUrl;
         return $this;
     }
 
@@ -30,9 +29,9 @@ class Request
         return $this->baseUrl;
     }
 
-    public function setMethod(string $method = null): Request
+    public function setMethod(string $method): Request
     {
-        if (isset($method)) $this->method = $method;
+        $this->method = $method;
         return $this;
     }
 
@@ -41,9 +40,9 @@ class Request
         return $this->method;
     }
 
-    public function setHost(string $host = null): Request
+    public function setHost(string $host): Request
     {
-        if (isset($host)) $this->host = $host;
+        $this->host = $host;
         return $this;
     }
 
@@ -52,9 +51,9 @@ class Request
         return $this->host;
     }
     
-    public function setScheme(string $scheme = null): Request
+    public function setScheme(string $scheme): Request
     {
-        if (isset($scheme)) $this->scheme = $scheme;
+        $this->scheme = $scheme;
         return $this;
     }
 
@@ -63,9 +62,9 @@ class Request
         return $this->scheme;
     }
 
-    public function setHttpPort(int $httpPort = null): Request
+    public function setHttpPort(int $httpPort): Request
     {
-        if (isset($httpPort)) $this->httpPort = $httpPort;
+        $this->httpPort = $httpPort;
         return $this;
     }
 
@@ -74,9 +73,9 @@ class Request
         return $this->httpPort;
     }
 
-    public function setHttpsPort(int $httpsPort = null): Request
+    public function setHttpsPort(int $httpsPort): Request
     {
-        if (isset($httpsPort)) $this->httpsPort = $httpsPort;
+        $this->httpsPort = $httpsPort;
         return $this;
     }
 
@@ -85,22 +84,24 @@ class Request
         return $this->httpsPort;
     }
 
-    public function setQueryString(string $queryString = null): Request
+    public function setQueryString(string $queryString): Request
     {
-        if (isset($queryString)) $this->queryString = $queryString;
+        $this->queryString = $queryString;
         return $this;
     }
 
-    public function getQueryString(): string
+    public function getQueryString(): ?string
     {
         return $this->queryString;
     }
 
-    public function setPath(string $path = null): Request
+    public function setPath(string $path): Request
     {
         if (isset($path)) {
-            $pos = strpos($path, '?');
-            if ($pos !== false) $path = substr($path, 0, $pos);
+            $pos = strpos($path, "?");
+            if ($pos !== false) {
+                $path = substr($path, 0, $pos);
+            }
             $this->path = $path;
         }
 
@@ -112,35 +113,23 @@ class Request
         return $this->path;
     }
 
-    public function input(): Input
+    public function getInput(): InputObject
     {
-        return Input::getInstance();
+        return (InputManager::getInstance())->getInput();
     }
 
-    public function inputObject(): InputObject
+    public function hasInput(string $key, string $method = null): bool
     {
-        return InputObject::getInstance();
+        return (InputManager::getInstance())->exists($key, $method);
     }
 
-    public function getCurrentUrl(): string
+    public function getCurrentUrl(bool $withQueryString = true): string
     {
-        (empty($this->queryString))
-            ? $queryString = ""
-            : $queryString = "?{$this->queryString}";
+        if (!$withQueryString && $this->queryString === null) {
+            return Uri::build($this->getPath());
+        }
 
-        return Uri::build($this->path) . $queryString;
-    }
-
-    /**
-     * Activates JSON validation errors (used in API)
-     *
-     * @return Request
-     */
-    public function api(): Request
-    {
-        Configuration::getInstance()->set('api', true);
-
-        return $this;
+        return Uri::build($this->getPath()) . "?" . $this->getQueryString();
     }
 
     /**
@@ -153,11 +142,20 @@ class Request
      */
     public function validate(array $rules): void
     {
-        $method = $this->method;
-        $data = $this->input()->$method();
+        $data = $this->getInput()->{$this->method}();
         $validation = new Validation;
         $validation->setData($data);
         $validation->setRules($rules);
         $validation->validate();
+    }
+
+    /**
+     * Alias
+     *
+     * @return Input
+     */
+    public function input(): Input
+    {
+        return Input::getInstance();
     }
 }

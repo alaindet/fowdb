@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Test;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
-use App\Views\Page\Page;
 use App\Base\Items\ItemsCollection;
 use App\Base\Items\Item;
 

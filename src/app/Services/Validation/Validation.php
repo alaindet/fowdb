@@ -4,7 +4,6 @@ namespace App\Services\Validation;
 
 use App\Services\Validation\ValidationRulesTrait;
 use App\Services\Validation\Exceptions\ValidationException;
-use App\Services\Validation\Exceptions\ApiValidationException;
 use App\Base\Errors\ErrorsBag;
 
 /**
@@ -20,8 +19,8 @@ class Validation
      * 
      * Ex.:
      * [
-     *   'id' => 42,
-     *   'is-spoiler' => 1
+     *   "id" => 42,
+     *   "is-spoiler" => 1
      * ]
      *
      * @var array|object
@@ -43,8 +42,8 @@ class Validation
      * 
      * Ex.:
      * [
-     *   'id' => ['required','is:integer','exists:game_sets,id'],
-     *   'is-spoiler' => ['optional','is:boolean'],
+     *   "id" => ["required","is:integer","exists:game_sets,id"],
+     *   "is-spoiler" => ["optional","is:boolean"],
      * ]
      *
      * @var array
@@ -73,26 +72,26 @@ class Validation
      * @var array
      */
     private $validators = [
-        '!empty'       => 'validateNotEmptyRule',
-        'not-empty'    => 'validateNotEmptyRule',
-        '!exists'      => 'validateNotExistsRule',
-        'not-exists'   => 'validateNotExistsRule',
-        '!required'    => 'validateOptionalRule',
-        'not-required' => 'validateOptionalRule',
-        'are'          => 'validateAreRule',
-        'between'      => 'validateBetweenRule',
-        'enum'         => 'validateEnumRule',
-        'equals'       => 'validateEqualsRule',
-        'except'       => 'validateExceptRule',
-        'exists'       => 'validateExistsRule',
-        'length'       => 'validateLengthRule',
-        'is'           => 'validateIsRule',
-        'match'        => 'validateMatchRule',
-        'max'          => 'validateMaxRule',
-        'min'          => 'validateMinRule',
-        'optional'     => 'validateOptionalRule',
-        'required'     => 'validateRequiredRule',
-        'requires'     => 'validateRequiresRule',
+        "!empty"       => "validateNotEmptyRule",
+        "not-empty"    => "validateNotEmptyRule",
+        "!exists"      => "validateNotExistsRule",
+        "not-exists"   => "validateNotExistsRule",
+        "!required"    => "validateOptionalRule",
+        "not-required" => "validateOptionalRule",
+        "are"          => "validateAreRule",
+        "between"      => "validateBetweenRule",
+        "enum"         => "validateEnumRule",
+        "equals"       => "validateEqualsRule",
+        "except"       => "validateExceptRule",
+        "exists"       => "validateExistsRule",
+        "length"       => "validateLengthRule",
+        "is"           => "validateIsRule",
+        "match"        => "validateMatchRule",
+        "max"          => "validateMaxRule",
+        "min"          => "validateMinRule",
+        "optional"     => "validateOptionalRule",
+        "required"     => "validateRequiredRule",
+        "requires"     => "validateRequiresRule",
     ];
 
     public function __construct()
@@ -135,10 +134,10 @@ class Validation
     protected function getDataValueByKey(string $key): any
     {
         if ($this->dataIsArray) {
-            return $this->data[$dataKey] ?? null;
+            return $this->data[$key] ?? null;
         }
 
-        return $this->data->{$dataKey} ?? null;
+        return $this->data->{$key} ?? null;
     }
 
     /**
@@ -153,7 +152,7 @@ class Validation
             $dataValue = $this->getDataValueByKey($dataKey);
 
             foreach ($validationRules as $validationRule) {
-                $bits = explode(':', $validationRule, 2);
+                $bits = explode(":", $validationRule, 2);
                 $ruleName = $bits[0];
                 $ruleValue = $bits[1] ?? null;
 
@@ -167,7 +166,7 @@ class Validation
         }
 
         if ($this->errors->isNotEmpty()) {
-            throw new ValidationException($errors);
+            throw new ValidationException($this->errors);
             return false;
         }
 

@@ -86,6 +86,7 @@ $public = [
 
     // Input
     ["GET", "input/all", "InputController", "all"],
+    ["GET", "input/exists/{key}", "InputController", "exists"],
 
     // Type conversion
     ["GET", "types/array-to-object", "TypesController", "arrayToObject"],

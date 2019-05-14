@@ -11,15 +11,15 @@ use App\Http\Request\Request;
 class Middlewares
 {
     private $all = [
-        'auth'  => CheckAuthorizationMiddleware::class,
-        'token' => CheckCsrfTokenMiddleware::class,
-        'api' => ApiEnvironmentMiddleware::class,
-        'api-auth' => ApiCheckAuthorizationMiddleware::class,
-        'api-token' => ApiCheckCsrfTokenMiddleware::class,
+        "auth"  => CheckAuthorizationMiddleware::class,
+        "token" => CheckCsrfTokenMiddleware::class,
+        "api" => ApiEnvironmentMiddleware::class,
+        "api-auth" => ApiCheckAuthorizationMiddleware::class,
+        "api-token" => ApiCheckCsrfTokenMiddleware::class,
     ];
 
     private $defaults = [
-        'auth'  => CheckAuthorizationMiddleware::class,
+        "auth"  => CheckAuthorizationMiddleware::class,
     ];
 
     private $list = [];
@@ -42,7 +42,7 @@ class Middlewares
             $name = &$list[$i];
 
             // Remove middleware, ex.: !token
-            if ($name[0] === '!') {
+            if ($name[0] === "!") {
                 $_name = substr($name, 1);
                 if (isset($this->list[$_name])) unset($this->list[$_name]);
             }

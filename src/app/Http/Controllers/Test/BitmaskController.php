@@ -4,10 +4,8 @@ namespace App\Http\Controllers\Test;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
-use App\Views\Page\Page;
 
 use App\Utils\Bitmask;
-use App\Utils\BitmaskFlags;
 
 class BitmaskController extends Controller
 {
