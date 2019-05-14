@@ -1,11 +1,8 @@
 <?php
 
-use App\Base\ORM\Interfaces\RepositoryInterface;
-use App\Base\ORM\Manager\EntityManager;
 use App\Exceptions\ViewsComponentException;
 use App\Http\Request\Input;
 use App\Http\Response\Redirect;
-use App\Legacy\Authorization as LegacyAuthorization;
 use App\Services\Configuration\Configuration;
 use App\Services\CsrfToken;
 use App\Services\Database\Database;
@@ -32,8 +29,6 @@ use App\Views\Page\Page;
  * fd_dump
  * fd_input
  * fd_lookup
- * fd_redirect
- * fd_repository
  * fd_statement
  * 
  * VIEW
@@ -111,29 +106,6 @@ function fd_input(): Input
 function fd_lookup(string $path = null)
 {
     return (Lookup::getInstance())->get($path);
-}
-
-/**
- * Redirects to given URI, accepts an array of values to build the query string
- *
- * @param string $to
- * @param array $params
- * @return void
- */
-function fd_redirect(string $uri = "", array $qs = []): void
-{
-	Redirect::to($uri, $qs);
-}
-
-/**
- * Returns an entity repository instance from an entity class name
- *
- * @param string $entityClass
- * @return RepositoryInterface
- */
-function fd_repository(string $entityClass): RepositoryInterface
-{
-	return EntityManager::getRepository($entityClass);
 }
 
 /**

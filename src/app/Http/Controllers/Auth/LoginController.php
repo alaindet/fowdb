@@ -7,13 +7,17 @@ use App\Http\Request\Request;
 use App\Views\Page\Page;
 use App\Legacy\Authentication;
 use App\Services\Alert;
+use App\Legacy\Authorization;
+use App\Http\Response\Redirect;
 
 class LoginController extends Controller
 {
     public function loginForm()
     {
         // Redirect to the appropriate user"s profile
-        if (fd_auth()->logged()) fd_redirect("profile");
+        if ((Authorization::getInstance())->isLogged()) {
+            Redirect::to("profile");
+        }
 
         return (new Page)
             ->template("pages/auth/login")
@@ -28,18 +32,19 @@ class LoginController extends Controller
             "password" => ["required","is:text"],
         ]);
 
-        $username = $request->input()->post("username", $escape = true);
-        $password = $request->input()->post("password");
+        $post = $request->getInput()->post;
+        $username = $post->username;
+        $password = $post->password;
 
         Authentication::login($username, $password);
         Alert::add("You signed in", "success");
-        fd_redirect("profile");
+        Redirect::to("profile");
     }
 
     public function logout()
     {
         Authentication::logout();
         Alert::add("You signed out", "warning");
-        fd_redirect("/");
+        Redirect::to("/");
     }
 }

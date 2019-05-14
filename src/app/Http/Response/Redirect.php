@@ -2,7 +2,6 @@
 
 namespace App\Http\Response;
 
-use App\Services\Config;
 use App\Utils\Uri;
 
 class Redirect
@@ -11,12 +10,13 @@ class Redirect
      * Redirects to a given location
      *
      * @param string $uri
-     * @param array $qs
+     * @param array|object $qs
      * @return void
      */
-    public static function to(string $uri = '', array $queryString = []): void
+    static public function to(string $uri = "", $queryString = null): void
     {
-        header('Location: ' . Uri::build($uri, $queryString));
+        $uri = Uri::build($uri, $queryString);
+        header("Location: {$uri}");
         die();
     }
 
@@ -27,9 +27,9 @@ class Redirect
      * @param string $absoluteUri
      * @return void
      */
-    public static function toAbsoluteUrl(string $absoluteUri): void
+    static public function toAbsoluteUrl(string $absoluteUri): void
     {
-        header('Location: ' . $absoluteUri);
+        header("Location: {$absoluteUri}");
         die();
     }
 
@@ -38,8 +38,8 @@ class Redirect
      *
      * @return void
      */
-    public static function back(): void
+    static public function back(): void
     {
-        self::to($_SERVER['HTTP_REFERER'] ?? '/');
+        self::to($_SERVER["HTTP_REFERER"] ?? "/");
     }
 }

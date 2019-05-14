@@ -66,7 +66,7 @@ class CollectionController extends Controller
 
     public function formatToClusters(): string
     {
-        $repo = fd_repository(GameFormat::class);
+        $repo = EntityManager::getRepository(GameFormat::class);
 
         $data = [
             "format-first" => $repo->findById(1)->name,

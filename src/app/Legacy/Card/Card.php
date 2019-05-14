@@ -12,6 +12,7 @@ use App\Views\Entities\Card\Card as View;
 use App\Utils\BitmaskFlags;
 use App\Legacy\Card\CardPropertiesTrait;
 use App\Services\Alert;
+use App\Http\Response\Redirect;
 
 class Card
 {
@@ -28,7 +29,7 @@ class Card
                 "No card found with code <strong>{$code}</strong>",
                 "warning"
             );
-            fd_redirect("/");
+            Redirect::to("/");
         }
 
         $results = true;

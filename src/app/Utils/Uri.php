@@ -10,9 +10,9 @@ abstract class Uri
      * Assembles an absolute URL, with an optional query string
      * 
      * @param string $uri The relative URI
-     * @param array $qs The query string assoc array ( name => value(s) )
+     * @param array|object $qs The query string assoc array or object
      */
-    public static function build(string $uri = "", array $qs = []): string
+    public static function build(string $uri = "", $qs = null): string
     {
         // Client wants to go back
         if ($uri === "back") {
@@ -40,7 +40,7 @@ abstract class Uri
     }
 
     /**
-     * Builds a query string from an associative array
+     * Builds a query string from an associative array or object
      * Supports parameters with multiple values
      * 
      * Ex.:
@@ -54,32 +54,17 @@ abstract class Uri
      * OUTPUT
      * ?id=123&set[]=set1&set[]=set2
      *
-     * @param array $qs
+     * @param array|object $params
      * @return string
      */
-    public static function buildQueryString(array $queryString = []): string
+    public static function buildQueryString($params = null): string
     {
-        // Missing query string
-        if (empty($queryString)) return "";
-
-        $result = [];
-
-        foreach ($queryString as $key => $values) {
-
-            // Multiple values
-            if (is_array($values)) {
-                $partial = [];
-                foreach ($values as $value) $partial[] = "{$key}[]={$value}";
-                $result[] = implode("&", $partial);
-            }
-            
-            // Single value
-            else {
-                $result[] = "{$key}={$values}";
-            }
+        // No parameters
+        if ($params === null) {
+            return "";
         }
 
-        return "?".implode("&", $result);
+        return "?".http_build_query($params);
     }
 
     /**
@@ -93,7 +78,9 @@ abstract class Uri
     {
         $uri = ltrim($uri, "/");
         $pos = strpos($uri, "?");
-        if (false !== $pos) $uri = substr($uri, 0, $pos);
+        if (false !== $pos) {
+            $uri = substr($uri, 0, $pos);
+        }
         return $uri;
     }
 
@@ -101,48 +88,59 @@ abstract class Uri
      * Remove a small portion of a query string
      *
      * @param string $uri The URI to process
-     * @param string|array $parameters One or a list of parameters
+     * @param string|array $removeTheseParams One or a list of parameters
      * @return string
      */
     public static function removeQueryStringParameter(
         string $uri,
-        $parameters
+        $removeTheseParams
     ): string
     {
         // Split base URI from query string and hash fragment
-        $bits = explode("?", $uri);
+        $splitByQuestionMark = explode("?", $uri);
 
         // No query string, return as it is
-        if (!isset($bits[1])) return $uri;
+        if (!isset($splitByQuestionMark[1])) {
+            return $uri;
+        }
 
-        [$baseUri, $queryString] = $bits;
+        [$baseUri, $queryString] = $splitByQuestionMark;
 
         // Remove the hash fragment
-        $bits = explode("#", $queryString);
+        $splitByHash = explode("#", $queryString);
 
-        if (!isset($bits[1])) $bits[1] = "";
+        (isset($splitByHash[1]))
+            ? [$queryString, $fragment] = $splitByHash
+            : [$queryString, $fragment] = [$splitByHash[0], ""];
 
-        [$queryString, $fragment] = $bits;
-
-        // Parse query string as array
-        parse_str($queryString, $qsParameters);
+        // Read query string and extract current parameters
+        $currentParams = [];
+        parse_str($queryString, $currentParams);
 
         // Normalize input parameters as array
-        if (!is_array($parameters)) $parameters = [$parameters];
+        if (!is_array($removeTheseParams)) {
+            $removeTheseParams = [$removeTheseParams];
+        }
 
         // Remove all unwanted parameters
-        foreach ($parameters as $parameter) {
-            if (isset($qsParameters[$parameter])) {
-                unset($qsParameters[$parameter]);
+        foreach ($removeTheseParams as $removeThisParam) {
+            if (isset($currentParams[$removeThisParam])) {
+                unset($currentParams[$removeThisParam]);
             }
         }
 
-        // Re-build purged query string
-        $queryString = http_build_query($qsParameters);
+        $queryString = http_build_query($currentParams);
+        $result = $baseUri;
 
-        return $baseUri
-            . ($queryString !== "" ? "?{$queryString}" : "")
-            . ($fragment !== "" ? "#{$fragment}" : "");
+        if ($queryString !== "") {
+            $result .= "?{$queryString}";
+        }
+
+        if ($fragment !== "") {
+            $result .= "#{$fragment}";
+        }
+
+        return $result;
     }
 
     /**
@@ -162,17 +160,21 @@ abstract class Uri
         $paramValue
     ): string
     {
-        $bits = explode("?", $uri);
-        [$baseUrl, $queryString] = (isset($bits[1])) ? $bits : [$bits[0], ""];
-        $params = [];
-        parse_str($queryString, $params);
+        $splitByQuestionMark = explode("?", $uri);
+        (isset($splitByQuestionMark[1]))
+            ? [$baseUri, $queryString] = $splitByQuestionMark
+            : [$baseUri, $queryString] = [$splitByQuestionMark[0], ""];
 
+        $currentParams = [];
+        parse_str($queryString, $currentParams);
+        
         (is_callable($paramValue))
-            ? $params[$paramName] = $paramValue($params[$paramName] ?? null)
-            : $params[$paramName] = $paramValue;
+            ? $newValue = $paramValue($currentParams[$paramName] ?? null)
+            : $newValue = $paramValue;
 
-        $queryString = http_build_query($params);
-
-        return "{$baseUrl}?{$queryString}";
+        $newParams[$paramName] = $newValue;
+        $queryString = http_build_query($newParams);
+        
+        return "{$baseUri}?{$queryString}";
     }
 }

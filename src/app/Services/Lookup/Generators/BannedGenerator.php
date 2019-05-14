@@ -5,6 +5,7 @@ namespace App\Services\Lookup\Generators;
 use App\Services\Lookup\Interfaces\LookupDataGeneratorInterface;
 use App\Entity\PlayRestriction\PlayRestriction;
 use App\Entity\GameFormat\GameFormat;
+use App\Base\ORM\Manager\EntityManager;
 
 class BannedGenerator implements LookupDataGeneratorInterface
 {
@@ -33,7 +34,7 @@ class BannedGenerator implements LookupDataGeneratorInterface
         // ]
         $result = new \stdClass();
 
-        $formatsId2Code = fd_repository(GameFormat::class)
+        $formatsId2Code = EntityManager::getRepository(GameFormat::class)
             ->setReplaceStatement(fd_statement("select")->select(["id", "code"]))
             ->findAllBy("is_multi_cluster", 1)
             ->reduce(
@@ -45,7 +46,8 @@ class BannedGenerator implements LookupDataGeneratorInterface
                 new \stdClass()
             );
 
-        $playRestrictions = fd_repository(PlayRestriction::class)->all();
+        $playRestrictions = EntityManager::getRepository(PlayRestriction::class)
+            ->all();
 
         foreach ($playRestrictions as $item) {
             $formatIdLabel = "id" . $item->formats_id;
