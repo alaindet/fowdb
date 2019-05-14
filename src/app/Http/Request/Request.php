@@ -113,14 +113,9 @@ class Request
         return $this->path;
     }
 
-    public function getInput(): InputObject
+    public function input(): InputManager
     {
-        return (InputManager::getInstance())->getInput();
-    }
-
-    public function hasInput(string $key, string $method = null): bool
-    {
-        return (InputManager::getInstance())->exists($key, $method);
+        return InputManager::getInstance();
     }
 
     public function getCurrentUrl(bool $withQueryString = true): string
@@ -135,27 +130,15 @@ class Request
     /**
      * Validate inputs, throws validation exception on fail
      *
-     * @param string $httpMethod
-     * @param array $toValidate
-     * @param array $input
+     * @param array $rules
      * @return void
      */
     public function validate(array $rules): void
     {
-        $data = $this->getInput()->{$this->method}();
+        $data = $this->input()->all()->{$this->method};
         $validation = new Validation;
         $validation->setData($data);
         $validation->setRules($rules);
         $validation->validate();
-    }
-
-    /**
-     * Alias
-     *
-     * @return Input
-     */
-    public function input(): Input
-    {
-        return Input::getInstance();
     }
 }

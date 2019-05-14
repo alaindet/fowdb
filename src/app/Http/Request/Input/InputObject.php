@@ -17,15 +17,18 @@ class InputObject
     )
     {
         if ($get !== null) {
-            $this->get = Objects::fromArray($get);
+            // Preserve array inputs as arrays
+            $this->get = Objects::fromArray($get, $deepClone = false);
         }
 
         if ($post !== null) {
-            $this->post = Objects::fromArray($post);
+            // Preserve array inputs as arrays
+            $this->post = Objects::fromArray($post, $deepClone = false);
         }
 
         if ($files !== null) {
-            $this->files = Objects::fromArray($files);
+            // Turn files into objects and not arrays
+            $this->files = Objects::fromArray($files, $deepClone = true);
         }
     }
 }
