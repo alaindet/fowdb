@@ -21,7 +21,7 @@
 (function () {
 
   // CSS Selectors ------------------------------------------------------------
-  var css_multipleHandle = ".js-select-multiple";
+  var css_selectMultiple = '.js-select-multiple';
 
 
   // Bootstrap ----------------------------------------------------------------
@@ -30,43 +30,41 @@
     $(document)
 
       // Original events
-      .on("click", css_multipleHandle, function (event) {
-        $(document).trigger("fd:select-multiple:toggle", [event, $(this)]);
+      .on('click', css_selectMultiple, function () {
+        handleSelectMultipleClick($(this));
       })
 
       // Custom events
-      .on("fd:select-multiple:toggle", handleSelectMultipleEvent)
-      .on("fd:select-multiple:reset", handleResetEvent)
+      .on('fd:select-multiple:toggle', handleSelectMultipleEvent)
+      .on('fd:select-multiple:reset', handleResetEvent)
 
   }
 
 
   // Controller functions -----------------------------------------------------
 
-  function handleSelectMultipleEvent(customEvent, originalEvent, handle) {
+  function handleSelectMultipleClick(target) {
+    $(document).trigger('fd:select-multiple:toggle', [target]);
+  }
 
-    const targetId = handle.data("target");
-    const target = $(targetId);
-    const isMultiple = !!target.attr("multiple");
+  function handleSelectMultipleEvent(event, handle) {
 
-    if (isMultiple) {
-      view_disableMultiple(target, handle);
-    } else {
-      view_enableMultiple(target, handle);
-    }
+    var target = $(handle.data('target'));
+    var isMultiple = !!target.attr('multiple');
+
+    if (isMultiple) view_disableMultiple(target, handle);
+    else view_enableMultiple(target, handle);
 
   }
 
-  function handleResetEvent(customEvent) {
+  function handleResetEvent(event) {
 
-    // Loop on all multiple handles and disable all select-multiple components
-    $(css_multipleHandle).each(function () {
-      const handle = $(this);
-      const targetId = handle.data("target");
-      const target = $(targetId);
-      view_disableMultiple(target, handle);
-      $("option:selected", target).removeAttr("selected");
-      $("option", target).first().attr("selected", "selected");
+    $(css_selectMultiple).each(function () {
+
+      var handle = $(this);
+      var target = $(handle.data('target'));
+      view_enableMultiple(target, handle);
+
     });
 
   }
@@ -80,21 +78,25 @@
   // View functions -----------------------------------------------------------
 
   function view_enableMultiple(target, handle) {
+
     handle
-      .addClass("active");
+      .addClass('active');
+
     target
-      .attr("name", target.attr("name") + "[]")
-      .attr("multiple", "true")
-      .attr("size", 10);
+      .attr('name', target.attr('name') + '[]')
+      .attr('multiple', 'true')
+      .attr('size', 10);
   }
 
   function view_disableMultiple(target, handle) {
+
     handle
-      .removeClass("active");
+      .removeClass('active');
+
     target
-      .attr("name", target.attr("name").replace("[]", ''))
-      .removeAttr("multiple")
-      .removeAttr("size");
+      .attr('name', target.attr('name').replace('[]', ''))
+      .removeAttr('multiple')
+      .removeAttr('size');
   }
 
 
