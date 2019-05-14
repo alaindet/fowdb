@@ -131,7 +131,7 @@ class Validation
      * @param string $key
      * @return any
      */
-    protected function getDataValueByKey(string $key): any
+    protected function getDataValueByKey(string $key)
     {
         if ($this->dataIsArray) {
             return $this->data[$key] ?? null;

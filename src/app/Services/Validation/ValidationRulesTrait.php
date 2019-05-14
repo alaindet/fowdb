@@ -526,7 +526,8 @@ trait ValidationRulesTrait
             $dataNumber = count($dataValue);
             if ($dataNumber > $max) {
                 $this->errors->addError(
-                    "Input **{$dataKey}** length must be less than {$max}"
+                    "Input **{$dataKey}** length ".
+                    "must be less than or equal to {$max}"
                 );
                 return false;
             }
@@ -537,7 +538,8 @@ trait ValidationRulesTrait
             $dataNumber = filter_var($dataValue, FILTER_VALIDATE_FLOAT);
             if ($dataNumber > $max) {
                 $this->errors->addError(
-                    "Input **{$dataKey}** value must be less than {$max}"
+                    "Input **{$dataKey}** value ".
+                    "must be less than or equal to {$max}"
                 );
                 return false;
             }
@@ -548,8 +550,8 @@ trait ValidationRulesTrait
             $dataNumber = strlen($data);
             if ($dataNumber > $max) {
                 $this->errors->addError(
-                    "Input **{$dataKey}** ".
-                    "length must be less than {$max} characters"
+                    "Input **{$dataKey}** length ".
+                    "must be less than or equal to {$max} characters"
                 );
                 return false;
             }
@@ -582,7 +584,8 @@ trait ValidationRulesTrait
             $dataNumber = count($dataValue);
             if ($dataNumber < $min) {
                 $this->errors->addError(
-                    "Input **{$dataKey}** length must be more than {$min}"
+                    "Input **{$dataKey}** length ".
+                    "must be more than or equal to {$min}"
                 );
                 return false;
             }
@@ -593,7 +596,8 @@ trait ValidationRulesTrait
             $dataNumber = filter_var($dataValue, FILTER_VALIDATE_FLOAT);
             if ($dataNumber < $min) {
                 $this->errors->addError(
-                    "Input **{$dataKey}** value must be more than {$min}"
+                    "Input **{$dataKey}** value ".
+                    "must be more than or equal to {$min}"
                 );
                 return false;
             }
@@ -605,7 +609,7 @@ trait ValidationRulesTrait
             if ($dataNumber < $min) {
                 $this->errors->addError(
                     "Input **{$dataKey}** length ".
-                    "must be more than {$min} characters"
+                    "must be more than or equal to {$min} characters"
                 );
                 return false;
             }
