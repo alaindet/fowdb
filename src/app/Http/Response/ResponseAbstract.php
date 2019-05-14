@@ -74,11 +74,4 @@ abstract class ResponseAbstract implements ResponseInterface
 
         return $this;
     }
-
-    /**
-     * Renders the page and returns the result
-     *
-     * @return mixed Mostly string
-     */
-    abstract public function render();
 }

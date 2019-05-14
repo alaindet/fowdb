@@ -14,10 +14,10 @@ class JsonResponse extends ResponseAbstract
     public function setCorsHeaders(): ResponseAbstract
     {
         $this->setHeaders([
-            'Access-Control-Allow-Origin' => '*',
-            'Access-Control-Allow-Methods' => 'POST, GET, OPTIONS',
-            'Access-Control-Max-Age' => '1000',
-            'Access-Control-Allow-Headers' => 'Content-Type',
+            "Access-Control-Allow-Origin" => "*",
+            "Access-Control-Allow-Methods" => "POST, GET, OPTIONS",
+            "Access-Control-Max-Age" => "1000",
+            "Access-Control-Allow-Headers" => "Content-Type",
         ]);
 
         return $this;
@@ -30,7 +30,7 @@ class JsonResponse extends ResponseAbstract
      */
     public function render(): string
     {
-        $this->setHeader('Content-Type', 'application/json');
+        $this->setHeader("Content-Type", "application/json");
 
         $this->outputHeaders();
 

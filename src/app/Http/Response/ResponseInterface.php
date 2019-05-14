@@ -8,5 +8,5 @@ interface ResponseInterface
     public function setHeader(string $name, string $value): ResponseInterface;
     public function setHeaders(array $headers): ResponseInterface;
     public function outputHeaders(): void;
-    public function render(); // Can return several types or void
+    public function render(): string;
 }
