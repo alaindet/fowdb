@@ -32,7 +32,7 @@ class GameRulingsController extends Controller
     {
         // GET param => DB field
         $paramToColumn = [
-            'card' => 'cards_id',
+            "card" => "cards_id",
             // Add filters here...
         ];
 
@@ -57,23 +57,23 @@ class GameRulingsController extends Controller
 
     public function index(Request $request): string
     {
-        $statement = fd_statement('select')
+        $statement = fd_statement("select")
             ->select([
-                'c.id as card_id',
-                'c.code as card_code',
-                'c.name as card_name',
-                'r.id as ruling_id',
-                'r.is_errata as ruling_is_errata',
-                'r.date as ruling_date',
-                'r.text as ruling_text'
+                "c.id as card_id",
+                "c.code as card_code",
+                "c.name as card_name",
+                "r.id as ruling_id",
+                "r.is_errata as ruling_is_errata",
+                "r.date as ruling_date",
+                "r.text as ruling_text"
             ])
             ->from(
-                'game_rulings r
-                INNER JOIN cards c ON r.cards_id = c.id'
+                "game_rulings r
+                INNER JOIN cards c ON r.cards_id = c.id"
             )
             ->orderBy([
-                'r.date DESC',
-                'r.id DESC'
+                "r.date DESC",
+                "r.id DESC"
             ]);
 
         $bind = [];
@@ -84,66 +84,66 @@ class GameRulingsController extends Controller
         $database = fd_database()
             ->select($statement)
             ->bind($bind)
-            ->page($request->input()->get('page') ?? 1)
+            ->page($request->input()->get("page") ?? 1)
             ->paginationLink($request->getCurrentUrl());
 
         // Render the page
         return (new Page)
-            ->template('pages/admin/rulings/index')
-            ->title('Rulings,Manage')
+            ->template("pages/admin/rulings/index")
+            ->title("Rulings,Manage")
             ->variables([
                 // paginate() must be called before paginationInfo()!
-                'items' => $database->paginate(),
-                'pagination' => $database->paginationInfo(),
-                'filters' => $filters
+                "items" => $database->paginate(),
+                "pagination" => $database->paginationInfo(),
+                "filters" => $filters
             ])
             ->render();
     }
 
     public function createForm(Request $request): string
     {
-        $cardId = $request->input()->get('card');
+        $cardId = $request->input()->get("card");
 
         // User passed a card id (Ex.: from card page)
         if (isset($cardId)) {
-            $statement = fd_statement('select')
-                ->select(['id', 'name', 'code', 'image_path'])
-                ->from('cards')
-                ->where('id = :id')
+            $statement = fd_statement("select")
+                ->select(["id", "name", "code", "image_path"])
+                ->from("cards")
+                ->where("id = :id")
                 ->limit(1);
 
             $card = fd_database()
                 ->select($statement)
-                ->bind([':id' => $cardId])
+                ->bind([":id" => $cardId])
                 ->first();
         }
 
         // Render the page
         return (new Page)
-            ->template('pages/admin/rulings/create')
-            ->title('Rulings,Create')
+            ->template("pages/admin/rulings/create")
+            ->title("Rulings,Create")
             ->variables([
-                'card' => $card ?? null,
+                "card" => $card ?? null,
             ])
             ->options([
-                'dependencies' => [
-                    'lightbox' => true,
-                    'jqueryui' => true,
+                "dependencies" => [
+                    "lightbox" => true,
+                    "jqueryui" => true,
                 ],
-                'scripts' => [
-                    'admin/rulings-create'
+                "scripts" => [
+                    "admin/rulings-create"
                 ]
             ])
             ->render();
     }
 
-    public function create(Request $request): string
+    public function create(Request $request): void
     {
         $request->validate([
-            'card-id' => ['required','is:integer','exists:cards,id'],
-            'ruling-errata' => ['optional','is:integer','enum:0,1'],
-            'ruling-date' => ['optional','is:date'],
-            'ruling-text' => ['required'],
+            "card-id" => ["required","is:integer","exists:cards,id"],
+            "ruling-errata" => ["optional","is:integer","enum:0,1"],
+            "ruling-date" => ["optional","is:date"],
+            "ruling-text" => ["required"],
         ]);
 
         $service = new CreateService($request->input()->post());
@@ -151,7 +151,7 @@ class GameRulingsController extends Controller
         $service->syncDatabase();
         [$message, $uri] = $service->getFeedback();
 
-        Alert::add($message, 'info');
+        Alert::add($message, "info");
         Redirect::toAbsoluteUrl($uri);
     }
 
@@ -159,49 +159,49 @@ class GameRulingsController extends Controller
     {
         $item = fd_database()
             ->select(
-                fd_statement('select')
+                fd_statement("select")
                     ->select([
-                        'c.id card_id',
-                        'c.name card_name',
-                        'c.code card_code',
-                        'c.image_path card_image',
-                        'r.id as ruling_id',
-                        'r.date ruling_date',
-                        'r.is_errata ruling_is_errata',
-                        'r.text ruling_text',
+                        "c.id card_id",
+                        "c.name card_name",
+                        "c.code card_code",
+                        "c.image_path card_image",
+                        "r.id as ruling_id",
+                        "r.date ruling_date",
+                        "r.is_errata ruling_is_errata",
+                        "r.text ruling_text",
                     ])
                     ->from(
-                        'game_rulings r
-                        INNER JOIN cards c ON r.cards_id = c.id'
+                        "game_rulings r
+                        INNER JOIN cards c ON r.cards_id = c.id"
                     )
-                    ->where('r.id = :id')
+                    ->where("r.id = :id")
                     ->limit(1)
             )
-            ->bind([':id' => $id])
+            ->bind([":id" => $id])
             ->first();
 
-        $item['card_image'] = fd_asset($item['card_image']);
-        $item['card_label'] = "{$item['card_name']} ({$item['card_code']})";
+        $item["card_image"] = fd_asset($item["card_image"]);
+        $item["card_label"] = "{$item["card_name"]} ({$item["card_code"]})";
 
         // Render the page
         return (new Page)
-            ->template('pages/admin/rulings/update')
-            ->title('Rulings,Update')
+            ->template("pages/admin/rulings/update")
+            ->title("Rulings,Update")
             ->variables($item)
             ->options([
-                'dependencies' => [
-                    'lightbox' => true,
+                "dependencies" => [
+                    "lightbox" => true,
                 ],
             ])
             ->render();
     }
 
-    public function update(Request $request, string $id): string
+    public function update(Request $request, string $id): void
     {
         $request->validate([
-            'ruling-errata' => ['optional','is:boolean'],
-            'ruling-date' => ['required','is:date'],
-            'ruling-text' => ['required'],
+            "ruling-errata" => ["optional","is:boolean"],
+            "ruling-date" => ["required","is:date"],
+            "ruling-text" => ["required"],
         ]);
 
         $service = new UpdateService($request->input()->post(), $id);
@@ -209,7 +209,7 @@ class GameRulingsController extends Controller
         $service->syncDatabase();
         [$message, $uri] = $service->getFeedback();
         
-        Alert::add($message, 'info');
+        Alert::add($message, "info");
         Redirect::toAbsoluteUrl($uri);
     }
 
@@ -217,51 +217,51 @@ class GameRulingsController extends Controller
     {
         $item = fd_database()
             ->select(
-                fd_statement('select')
+                fd_statement("select")
                     ->select([
-                        'c.id card_id',
-                        'c.name card_name',
-                        'c.code card_code',
-                        'c.image_path card_image',
-                        'r.id as ruling_id',
-                        'r.date ruling_date',
-                        'r.is_errata ruling_is_errata',
-                        'r.text ruling_text',
+                        "c.id card_id",
+                        "c.name card_name",
+                        "c.code card_code",
+                        "c.image_path card_image",
+                        "r.id as ruling_id",
+                        "r.date ruling_date",
+                        "r.is_errata ruling_is_errata",
+                        "r.text ruling_text",
                     ])
                     ->from(
-                        'game_rulings r
-                        INNER JOIN cards c ON r.cards_id = c.id'
+                        "game_rulings r
+                        INNER JOIN cards c ON r.cards_id = c.id"
                     )
-                    ->where('r.id = :id')
+                    ->where("r.id = :id")
                     ->limit(1)
             )
-            ->bind([':id' => $id])
+            ->bind([":id" => $id])
             ->first();
 
-        $item['card_image'] = fd_asset($item['card_image']);
-        $item['card_label'] = "{$item['card_name']} ({$item['card_code']})";
-        $item['ruling_text'] = render($item['ruling_text']);
+        $item["card_image"] = fd_asset($item["card_image"]);
+        $item["card_label"] = "{$item["card_name"]} ({$item["card_code"]})";
+        $item["ruling_text"] = render($item["ruling_text"]);
 
         // Render the page
         return (new Page)
-            ->template('pages/admin/rulings/delete')
-            ->title('Rulings,Delete')
+            ->template("pages/admin/rulings/delete")
+            ->title("Rulings,Delete")
             ->variables($item)
             ->options([
-                'dependencies' => [
-                    'lightbox' => true,
+                "dependencies" => [
+                    "lightbox" => true,
                 ],
             ])
             ->render();
     }
 
-    public function delete(Request $request, string $id): string
+    public function delete(Request $request, string $id): void
     {
         $service = new DeleteService(null, $id);
         $service->syncDatabase();
         [$message, $uri] = $service->getFeedback();
         
-        Alert::add($message, 'info');
+        Alert::add($message, "info");
         Redirect::toAbsoluteUrl($uri);
     }
 }

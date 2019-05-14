@@ -50,7 +50,7 @@ class GameFormatsController extends Controller
             ->render();
     }
 
-    public function create(Request $request): string
+    public function create(Request $request): void
     {
         $request->validate([
             'id' => [
@@ -120,7 +120,7 @@ class GameFormatsController extends Controller
             ->render();
     }
 
-    public function update(Request $request, string $id): string
+    public function update(Request $request, string $id): void
     {
         $request->validate([
             'cluster-id' => ['required','is:integer','exists:game_clusters,id'],
@@ -177,7 +177,7 @@ class GameFormatsController extends Controller
             ->render();
     }
 
-    public function delete(Request $request, string $id): string
+    public function delete(Request $request, string $id): void
     {
         $service = new DeleteService(null, $id);
         $service->syncDatabase();
