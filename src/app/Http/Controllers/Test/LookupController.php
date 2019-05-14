@@ -18,7 +18,7 @@ class LookupController extends Controller
             ->template('test/lookup/index')
             ->title('Lookup,Index')
             ->variables([
-                'features' => Lookup::getInstance()->features()
+                'features' => Lookup::getInstance()->getFeatures()
             ])
             ->render();
     }
@@ -34,7 +34,7 @@ class LookupController extends Controller
         $lookup = Lookup::getInstance();
         if (!$lookup->exists($feat)) {
             Alert::set("Lookup data for feature \"{$feat}\" doesn't exist.");
-            Redirect::to("test");
+            Redirect::to("test/lookup");
         }
         $data = $lookup->get($feat);
         return (new JsonResponse)->setData($data)->render();
@@ -51,7 +51,7 @@ class LookupController extends Controller
         $lookup = Lookup::getInstance();
         if (!$lookup->exists($feat)) {
             Alert::set("Lookup data for feature \"{$feat}\" can't be built.");
-            Redirect::to("test");
+            Redirect::to("test/lookup");
         }
         $data = $lookup->generate($feat)->store()->get($feat);
         return (new JsonResponse)->setData($data)->render();

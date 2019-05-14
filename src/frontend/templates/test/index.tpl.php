@@ -3,11 +3,11 @@
 // VARIABLES
 // urls
 
-$baseUrl = fd_url('');
+$baseUrl = fd_url("");
 
 $items = [];
 foreach ($urls as $url) {
-  $relativeUrl = str_replace($baseUrl, '', $url);
+  $relativeUrl = str_replace($baseUrl, "", $url);
   $items[$relativeUrl] = $url;
 }
 

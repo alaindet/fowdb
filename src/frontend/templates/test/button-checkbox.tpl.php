@@ -1,18 +1,28 @@
-<?=fd_component('breadcrumb', [
-  'Test' => fd_url('test'),
-  'button-checkbox' => '#'
+<?php
+
+$thisUrl = "test/components/button-checkbox";
+$thisInput = fd_input()->has("INPUT_NAME", "get");
+
+?>
+
+<?=fd_component("breadcrumb", [
+  "Test" => fd_url("test"),
+  "button-checkbox" => "#"
 ])?>
 
-<form action="<?=fd_url('test/button-checkbox')?>" method="get">
-  
+<form
+  action="<?=fd_url($thisUrl)?>"
+  method="get"
+>
+
   <!-- component -->
-  <?=fd_component('form/button-checkbox', [
-    'name' => 'INPUT_NAME',
-    'value' => 'INPUT_VALUE',
-    'label' => 'INPUT_LABEL',
-    'state' => fd_input()->has('INPUT_NAME', 'GET'),
-    'css' => [
-      'button' => ['mv-10', 'fd-btn-default']
+  <?=fd_component("form/button-checkbox", [
+    "name" => "INPUT_NAME",
+    "value" => "INPUT_VALUE",
+    "label" => "INPUT_LABEL",
+    "state" => $thisInput,
+    "css" => [
+      "button" => ["mv-10", "fd-btn-default"]
     ]
   ])?>
 

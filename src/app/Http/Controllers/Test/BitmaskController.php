@@ -21,7 +21,7 @@ class BitmaskController extends Controller
             return str_pad($bin, $max, "0", STR_PAD_LEFT);
         };
 
-        dump([
+        return fd_log_html([
             "mask" => $formatter($bitmask, $bitmask->getMask()),
             "flipped" => $formatter($bitmask, $bitmask->getFlippedMask()),
         ]);

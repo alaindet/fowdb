@@ -151,6 +151,6 @@ if (fd_auth()->check("user") > 0) {
 
 <div id="logo" class="mb-100">
 	<a href="<?=fd_url("/")?>">
-		<img src="<?=fd_asset("images/logo.png")?>">
+		<img src="<?=fd_asset("assets/images/logo.png")?>">
 	</a>
 </div>

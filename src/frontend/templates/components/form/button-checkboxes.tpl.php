@@ -14,7 +14,9 @@
 // instead of default behavior
 // $items = [ value => label, ... ]
 $multipleNames = !isset($name);
-if (!$multipleNames) $name .= "[]";
+if (!$multipleNames) {
+  $name .= "[]";
+}
 
 // CSS ------------------------------------------------------------------------
 $containerCss = '';

@@ -4,18 +4,17 @@ namespace App\Http\Controllers\Test;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
-use App\Views\Page\Page;
 
-use App\Services\Database\Statement\SelectSqlStatement;
 use App\Services\Database\StatementManager\StatementManager;
 use App\Services\Database\Paginator;
 use App\Entity\Card\Card;
+use App\Utils\Arrays;
 
 class DatabaseController extends Controller
 {
     public function pagination(Request $request): string
     {
-        $statement = (new SelectSqlStatement)
+        $statement = StatementManager::new("select")
             ->select([
                 "id",
                 "code",
@@ -28,7 +27,7 @@ class DatabaseController extends Controller
 
         $paginator = (new Paginator)
             ->setStatement($statement)
-            ->setPage($request->inputObject()->get("page") ?? 1)
+            ->setPage($request->input()->get("page") ?? 1)
             ->setResultsPerPage(10)
             ->setLink($request->getCurrentUrl())
             ->fetch(Card::class);
@@ -36,25 +35,36 @@ class DatabaseController extends Controller
         $results = $paginator->getResults(); // array|ItemsCollection
         $pagination = $paginator->getPaginationData();
 
-        $resultsHtml = "<ul>";
-        $resultsHtml .= $results->reduce(function ($log, $item) {
-            return $log .= "<li>{$item->code}</li>";
-        }, "");
-        $resultsHtml .= "</ul>";
+        $resultsHtml = (
+            "<ul>".
+                $results->reduce(function ($log, $item) {
+                    return $log .= "<li>{$item->code} {$item->name}</li>";
+                }, "").
+            "</ul>"
+        );
 
-        $paginationHtml = "<ul>";
-        foreach ($pagination as $name => $value) {
-            $paginationHtml .= "<li><strong>{$name}</strong>: $value</li>";
-        }
-        $paginationHtml .= "</ul>";
+        $paginationHtml = (
+            "<ul>".
+                Arrays::reduce(
+                    Arrays::fromObject($pagination),
+                    function ($log, $value, $key) {
+                        return $log .= (
+                            "<li><strong>{$key}</strong>: {$value}</li>"
+                        );
+                    },
+                    ""
+                ).
+            "</ul>"
+        );
 
-        return (
+        return fd_log_html(
             "<h1>Results</h1>".
             "<ul>{$resultsHtml}</ul>".
             "<h2>Pagination data</h2>".
             "<ul>{$paginationHtml}</ul>".
             "<h2>Query</h2>".
-            "<pre>".$statement->toString()."</pre>"
+            "<pre>".$statement->toString()."</pre>",
+            $title = "Cards from Cluster 1"
         );
     }
 

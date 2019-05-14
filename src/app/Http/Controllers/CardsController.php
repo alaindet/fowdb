@@ -97,8 +97,6 @@ class CardsController extends Controller
         $cards = $cardsRepository->findAllByCode($code);
         $card = $cards->first();
 
-        dump($card);
-
         // $cards = LegacyCard::getCardPageData($code);
 
         // Build Open Graph Protocol data for this page

@@ -22,21 +22,25 @@ class CardsController extends Controller
     public function indexManage(Request $request): string
     {
         return (new Page)
-            ->template('pages/admin/cards/index')
-            ->title('Admin ~ Cards ~ Index')
+            ->template("pages/admin/cards/index")
+            ->title("Admin ~ Cards ~ Index")
             ->render();
     }
 
     public function createForm(Request $request): string
     {
+        $input = $request->getAllInput();
+        
         return (new Page)
-            ->template('pages/admin/cards/create')
-            ->title('Cards,Create')
-            ->variables([ 'previous' => $request->input()->previous() ])
+            ->template("pages/admin/cards/create")
+            ->title("Cards,Create")
+            ->variables([
+                "previous" => $request->input()->getPrevious()
+            ])
             ->options([
-                'scripts' => ['admin/cards/form'],
-                'dependencies' => [
-                    'jqueryui' => true
+                "scripts" => ["admin/cards/form"],
+                "dependencies" => [
+                    "jqueryui" => true
                 ],
             ])
             ->render();
@@ -56,27 +60,27 @@ class CardsController extends Controller
         $validation->setRules([
             
             // Required fields
-            'image' => ['required','is:file'],
-            'narp' => ['required','is:integer','enum:0,1,2,3'],
-            'set' => ['required','except:0'],
-            'number' => ['required','is:integer'],
-            'back-side' => ['required','is:integer','enum:0,1,2,3,4'],
-            'name' => ['required','is:text','not-empty'],
-            'type' => ['required','except:0'],
-            'rarity' => ['required','is:text','enum:0,c,u,r,sr,s,ar'],
-            'attribute' => ['required','is:array'],
+            "image" => ["required","is:file"],
+            "narp" => ["required","is:integer","enum:0,1,2,3"],
+            "set" => ["required","except:0"],
+            "number" => ["required","is:integer"],
+            "back-side" => ["required","is:integer","enum:0,1,2,3,4"],
+            "name" => ["required","is:text","not-empty"],
+            "type" => ["required","except:0"],
+            "rarity" => ["required","is:text","enum:0,c,u,r,sr,s,ar"],
+            "attribute" => ["required","is:array"],
 
             // Optional fields
-            'code' => ['optional','is:alphadash'],
-            'attribute-cost' => ['optional','is:text'],
-            'free-cost' => ['optional','is:integer'],
-            'divinity-cost' => ['optional','is:integer'],
-            'atk' => ['optional','is:integer'],
-            'def' => ['optional','is:integer'],
-            'race' => ['optioanl','is:text'],
-            'text' => ['optioanl','is:text'],
-            'flavor-text' => ['optional','is:text'],
-            'artist-name' => ['optional','is:text'],
+            "code" => ["optional","is:alphadash"],
+            "attribute-cost" => ["optional","is:text"],
+            "free-cost" => ["optional","is:integer"],
+            "divinity-cost" => ["optional","is:integer"],
+            "atk" => ["optional","is:integer"],
+            "def" => ["optional","is:integer"],
+            "race" => ["optioanl","is:text"],
+            "text" => ["optioanl","is:text"],
+            "flavor-text" => ["optional","is:text"],
+            "artist-name" => ["optional","is:text"],
 
         ]);
         $validation->validate();
@@ -88,24 +92,24 @@ class CardsController extends Controller
 
         [$message, $uri] = $service->getFeedback();
 
-        Alert::add($message, 'info');
+        Alert::add($message, "info");
         Redirect::toAbsoluteUrl($uri);
     }
 
     public function updateForm(Request $request, string $id): string
     {
         return (new Page)
-            ->template('pages/admin/cards/update')
-            ->title('Cards,Update')
+            ->template("pages/admin/cards/update")
+            ->title("Cards,Update")
             ->variables([
-                'previous' => $request->input()->previous(),
-                'card' => (new Model)->byId($id)
+                "previous" => $request->input()->previous(),
+                "card" => (new Model)->byId($id)
             ])
             ->options([
-                'scripts' => ['admin/cards/form'],
-                'dependencies' => [
-                    'lightbox' => true,
-                    'jqueryui' => true
+                "scripts" => ["admin/cards/form"],
+                "dependencies" => [
+                    "lightbox" => true,
+                    "jqueryui" => true
                 ],
             ])
             ->render();
@@ -124,27 +128,27 @@ class CardsController extends Controller
         $validation->setRules([
             
             // Required fields
-            'narp' => ['required','is:integer','enum:0,1,2,3'],
-            'set' => ['required','except:0'],
-            'number' => ['required','is:integer'],
-            'back-side' => ['required','is:integer','enum:0,1,2,3,4'],
-            'name' => ['required','is:text','except:'],
-            'type' => ['required','except:0'],
-            'rarity' => ['required','enum:0,c,u,r,sr,s,ar'],
-            'attribute' => ['required','is:array'],
+            "narp" => ["required","is:integer","enum:0,1,2,3"],
+            "set" => ["required","except:0"],
+            "number" => ["required","is:integer"],
+            "back-side" => ["required","is:integer","enum:0,1,2,3,4"],
+            "name" => ["required","is:text","except:"],
+            "type" => ["required","except:0"],
+            "rarity" => ["required","enum:0,c,u,r,sr,s,ar"],
+            "attribute" => ["required","is:array"],
 
             // Optional fields
-            'image' => ['optional','is:file'],
-            'code' => ['optional','is:alphadash'],
-            'attribute-cost' => ['optional','is:text'],
-            'free-cost' => ['optional','is:integer'],
-            'divinity-cost' => ['optional','is:integer'],
-            'atk' => ['optional','is:integer'],
-            'def' => ['optional','is:integer'],
-            'race' => ['optional','is:text'],
-            'text' => ['optional','is:text'],
-            'flavor-text' => ['optional','is:text'],
-            'artist-name' => ['optional','is:text'],
+            "image" => ["optional","is:file"],
+            "code" => ["optional","is:alphadash"],
+            "attribute-cost" => ["optional","is:text"],
+            "free-cost" => ["optional","is:integer"],
+            "divinity-cost" => ["optional","is:integer"],
+            "atk" => ["optional","is:integer"],
+            "def" => ["optional","is:integer"],
+            "race" => ["optional","is:text"],
+            "text" => ["optional","is:text"],
+            "flavor-text" => ["optional","is:text"],
+            "artist-name" => ["optional","is:text"],
 
         ]);
         $validation->validate();
@@ -156,21 +160,21 @@ class CardsController extends Controller
 
         [$message, $uri] = $service->getFeedback();
 
-        Alert::add($message, 'info');
+        Alert::add($message, "info");
         Redirect::toAbsoluteUrl($uri);
     }
 
     public function deleteForm(Request $request, string $id): string
     {
-        $card = (new Model)->byId($id, null, ['text']);
+        $card = (new Model)->byId($id, null, ["text"]);
 
         return (new Page)
-            ->template('pages/admin/cards/delete')
-            ->title('Cards,Update')
-            ->variables([ 'card' => $card ])
+            ->template("pages/admin/cards/delete")
+            ->title("Cards,Update")
+            ->variables([ "card" => $card ])
             ->options([
-                'dependencies' => [
-                    'lightbox' => true,
+                "dependencies" => [
+                    "lightbox" => true,
                 ],
             ])
             ->render();
@@ -183,7 +187,7 @@ class CardsController extends Controller
         $service->syncDatabase();
         [$message, $uri] = $service->getFeedback();
         
-        Alert::add($message, 'info');
+        Alert::add($message, "info");
         Redirect::toAbsoluteUrl($uri);
     }
 }

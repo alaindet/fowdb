@@ -1,5 +1,8 @@
 <?php
 
+use App\Services\Session\Session;
+use App\Utils\Uri;
+
 /*
  | ----------------------------------------------------------------------------
  |
@@ -36,77 +39,59 @@
  */
 $public = [
 
-    // Home
     ["GET", "", "HomeController", "index"],
 
-    // View components
-    ["GET", "button-checkboxes", "ComponentsController", "buttonCheckboxes"],
-    ["GET", "button-checkbox", "ComponentsController", "buttonCheckbox"],
-    ["GET", "button-dropdown", "ComponentsController", "buttonDropdown"],
-    ["GET", "button-radio", "ComponentsController", "buttonRadio"],
-    ["GET", "input-dropdown", "ComponentsController", "inputDropdown"],
-    ["GET", "select-multiple", "ComponentsController", "selectMultiple"],
-    ["GET", "pagination", "ComponentsController", "pagination"],
+    ["GET", "array/defaults", "ArraysController", "defaults"],
+    ["GET", "array/to-object", "ArraysController", "toObject"],
+    ["GET", "array/whitelist", "ArraysController", "whitelist"],
+    ["GET", "array/whitelist-keys", "ArraysController", "whitelistKeys"],
 
-    // Array utilities
-    ["GET", "array-whitelist", "UtilsController", "arrayWhitelist"],
-    ["GET", "array-whitelist-keys", "UtilsController", "arrayWhitelistKeys"],
-    ["GET", "array-defaults", "UtilsController", "arrayDefaults"],
-    ["GET", "array-to-object", "UtilsController", "arrayToObject"],
+    ["GET", "bitmask/flipped", "BitmaskController", "flipped"],
 
-    // Collection utilities
+    ["GET", "components/button-checkbox", "ComponentsController", "buttonCheckbox"],
+    ["GET", "components/button-checkboxes", "ComponentsController", "buttonCheckboxes"],
+    ["GET", "components/button-dropdown", "ComponentsController", "buttonDropdown"],
+    ["GET", "components/button-radio", "ComponentsController", "buttonRadio"],
+    ["GET", "components/input-dropdown", "ComponentsController", "inputDropdown"],
+    ["GET", "components/pagination", "ComponentsController", "pagination"],
+    ["GET", "components/select-multiple", "ComponentsController", "selectMultiple"],
+
     ["GET", "collection", "CollectionController", "index"],
+    ["GET", "collection/cluster-to-formats", "CollectionController", "clusterToFormats"],
+    ["GET", "collection/format-to-clusters", "CollectionController", "formatToClusters"],
     ["GET", "collection/sort", "CollectionController", "sortCollection"],
-    ["GET", "collection/format-to-clusters",
-        "CollectionController", "formatToClusters"],
-    ["GET", "collection/cluster-to-formats",
-        "CollectionController", "clusterToFormats"],
 
-    // Database
     ["GET", "database/pagination", "DatabaseController", "pagination"],
     ["GET", "database/statement-merge", "DatabaseController", "statementMerge"],
 
-    // ORM
-    ["GET", "orm/related/1-n", "OrmController", "relatedOneToMany"],
-    ["GET", "orm/related/n-1", "OrmController", "relatedManyToOne"],
-    ["GET", "orm/related/n-n", "OrmController", "relatedManyToMany"],
-    ["GET", "orm/custom-collection", "OrmController", "customCollection"],
-
-    // Lookup
-    ["GET", "lookup", "LookupController", "index"],
-    ["GET", "lookup/read", "LookupController", "readAll"], // Alias
-    ["GET", "lookup/read/{feature}", "LookupController", "read"],
-    ["GET", "lookup/build", "LookupController", "buildAll"],
-    ["GET", "lookup/build/{feature}", "LookupController", "build"],
-
-    // Cards
-    ["GET", "cards/properties/html", "CardsController", "propsHtml"],
-    ["GET", "cards/properties/html/{code}", "CardsController", "propsHtml"],
-    ["GET", "cards/types-list", "CardsController", "typesList"],
-
-    // Input
     ["GET", "input/all", "InputController", "all"],
     ["GET", "input/exists/{key}", "InputController", "exists"],
 
-    // Type conversion
-    ["GET", "types/array-to-object", "TypesController", "arrayToObject"],
+    ["GET", "lookup", "LookupController", "index"],
+    ["GET", "lookup/build", "LookupController", "buildAll"],
+    ["GET", "lookup/build/{feature}", "LookupController", "build"],
+    ["GET", "lookup/read", "LookupController", "readAll"], // Alias
+    ["GET", "lookup/read/{feature}", "LookupController", "read"],
+
+    ["GET", "orm/custom-collection", "OrmController", "customCollection"],
+    ["GET", "orm/related/1-n", "OrmController", "relatedOneToMany"],
+    ["GET", "orm/related/n-1", "OrmController", "relatedManyToOne"],
+    ["GET", "orm/related/n-n", "OrmController", "relatedManyToMany"],
+
     ["GET", "types/array-to-json", "TypesController", "arrayToJson"],
-    ["GET", "types/object-to-array", "TypesController", "objectToArray"],
-    ["GET", "types/object-to-json", "TypesController", "objectToJson"],
+    ["GET", "types/array-to-object", "TypesController", "arrayToObject"],
     ["GET", "types/json-to-array", "TypesController", "jsonToArray"],
     ["GET", "types/json-to-object", "TypesController", "jsonToObject"],
+    ["GET", "types/object-to-array", "TypesController", "objectToArray"],
+    ["GET", "types/object-to-json", "TypesController", "objectToJson"],
 
-    // Validation service
     ["GET", "validate/empty", "ValidationController", "emptyRule"],
-    ["GET", "validate/exists", "ValidationController", "existsRule"],
-    ["GET", "validate/required", "ValidationController", "requiredRule"],
-    ["GET", "validate/is", "ValidationController", "isRule"],
-    ["GET", "validate/numbers", "ValidationController", "numbersRule"],
     ["GET", "validate/enum", "ValidationController", "enumRule"],
+    ["GET", "validate/exists", "ValidationController", "existsRule"],
+    ["GET", "validate/is", "ValidationController", "isRule"],
     ["GET", "validate/match", "ValidationController", "matchRule"],
-
-    // Bitmasks
-    ["GET", "bitmask/flipped", "BitmaskController", "flipped"],
+    ["GET", "validate/numbers", "ValidationController", "numbersRule"],
+    ["GET", "validate/required", "ValidationController", "requiredRule"],
 
 ];
 
@@ -158,12 +143,14 @@ $routes = [
 $urls = [];
 foreach ($routes as $role => &$routesGroup) {
     foreach ($routesGroup as &$route) {
-        $route[1] = ($route[1] === "") ? "test" : "test/" . $route[1];
-        $route[2] = "Test\\" . $route[2];
-        $urls[] = fd_url($route[1]);
+        $url = &$route[1];
+        $controller = &$route[2];
+        $url = ($url === "") ? "test" : "test/{$url}";
+        $controller = "Test\\{$controller}";
+        $urls[] = $url;
     }
 }
 
-\App\Services\Session\Session::set("test-routes", $urls);
+Session::set("test-routes" , $urls);
 
 return $routes;

@@ -2,7 +2,7 @@
 
 namespace App\Base\Exceptions;
 
-interface Previousble
+interface Previousable
 {
     //
 }

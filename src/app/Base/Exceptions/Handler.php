@@ -16,6 +16,7 @@ use Throwable;
 use App\Utils\Paths;
 use App\Utils\Time;
 use App\Services\Configuration\Configuration;
+use App\Http\Request\Input\InputManager;
 
 class Handler
 {
@@ -65,9 +66,7 @@ class Handler
 
         // Store $_POST data
         if ($exception instanceof Previousable) {
-            $input = Input::getInstance();
-            Session::set(Input::PREVIOUS_INPUT, $input->post());
-            return;
+            $input = InputManager::getInstance()->setPrevious();
         }
 
         // Show exception as an alert on the UI

@@ -7,7 +7,9 @@ use App\Base\Exceptions\Alertable;
 use App\Base\Exceptions\Previousable;
 use App\Base\Errors\ErrorsBag;
 
-class ValidationException extends Exception implements Alertable, Previousable
+class ValidationException extends Exception implements
+    Alertable,
+    Previousable
 {
     public $redirectTo = self::REDIRECT_BACK;
 
@@ -16,7 +18,8 @@ class ValidationException extends Exception implements Alertable, Previousable
         if ($errors->count() === 1) {
             $this->message = $errors->first()->message;
         } else {
-            $this->message = "- ".implode("\n- ", $errors->toArray());
+            $messages = $errors->pluck("message")->toArray();
+            $this->message = "- ".implode("\n- ", $messages);
         }
     }
 }

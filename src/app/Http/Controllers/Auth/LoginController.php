@@ -32,7 +32,7 @@ class LoginController extends Controller
             "password" => ["required","is:text"],
         ]);
 
-        $post = $request->getInput()->post;
+        $post = $request->getInput("post");
         $username = $post->username;
         $password = $post->password;
 

@@ -86,7 +86,7 @@
 
   <!-- My scripts -->
   <?php foreach ($scripts as $script): ?>
-    <script src="<?=fd_asset("js/{$script}.min.js", 'js')?>" defer></script>
+    <script src="<?=fd_asset("assets/js/{$script}.min.js", 'js')?>" defer></script>
   <?php endforeach; ?>
 </body>
 </html>

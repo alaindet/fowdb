@@ -15,11 +15,11 @@ class ArtistsController extends Controller
     public function selectSetForm(): string
     {
         return (new Page)
-            ->template('pages/admin/artists/select-set')
-            ->title('Artists,Select set')
+            ->template("pages/admin/artists/select-set")
+            ->title("Artists,Select set")
             ->options([
-                'scripts' => [
-                    'admin/artists/select-set'
+                "scripts" => [
+                    "admin/artists/select-set"
                 ]
             ])
             ->render();
@@ -28,26 +28,26 @@ class ArtistsController extends Controller
     public function selectCardForm(Request $request, string $setId): string
     {
         // Fetch the set
-        $set = (new GameSet)->byId($setId, ['id', 'name', 'code']);
+        $set = (new GameSet)->byId($setId, ["id", "name", "code"]);
 
         // Fetch cards for this set
         $cards = fd_database()
             ->select(
-                fd_statement('select')
-                ->select(['id','image_path','artist_name'])
-                ->from('cards')
-                ->where('sets_id = :setid')
-                ->orderBy('num')
+                fd_statement("select")
+                ->select(["id","image_path","artist_name"])
+                ->from("cards")
+                ->where("sets_id = :setid")
+                ->orderBy("num")
             )
-            ->bind([':setid' => $set['id']])
+            ->bind([":setid" => $set["id"]])
             ->get();
 
         return (new Page)
-            ->template('pages/admin/artists/select-card')
-            ->title('Artists,Select card')
+            ->template("pages/admin/artists/select-card")
+            ->title("Artists,Select card")
             ->variables([
-                'cards' => $cards,
-                'set' => $set
+                "cards" => $cards,
+                "set" => $set
             ])
             ->render();
     }
@@ -59,22 +59,22 @@ class ArtistsController extends Controller
         $card = $model->byId($cardId);
 
         // Next card
-        $nextCard = $model->getNext($card['sorted_id'], ['id']);
+        $nextCard = $model->getNext($card["sorted_id"], ["id"]);
 
         return (new Page)
-            ->template('pages/admin/artists/show-card')
-            ->title('Artists,Card')
+            ->template("pages/admin/artists/show-card")
+            ->title("Artists,Card")
             ->variables([
-                'card' => $card,
-                'next_card' => $nextCard
+                "card" => $card,
+                "next_card" => $nextCard
             ])
             ->options([
-                'dependencies' => [
-                    'lightbox' => true,
-                    'jqueryui' => true
+                "dependencies" => [
+                    "lightbox" => true,
+                    "jqueryui" => true
                 ],
-                'scripts' => [
-                    'admin/artists/show-card'
+                "scripts" => [
+                    "admin/artists/show-card"
                 ]
             ])
             ->render();
@@ -82,40 +82,42 @@ class ArtistsController extends Controller
 
     public function store(Request $request): string
     {
+        $input = $request->getAllInput();
+
         // Validate input
         $request->validate([
-            'card-id' => ['required','is:integer','exists:cards,id'],
-            'artist-name' => ['required'],
+            "card-id" => ["required","is:integer","exists:cards,id"],
+            "artist-name" => ["required"],
         ]);
 
         // Fetch card data
         $model = new Card();
-        $card = $model->byId($request->input()->post('card-id'));
+        $card = $model->byId($input->post->{"card-id"});
 
         // Update card data
         fd_database()
             ->update(
-                fd_statement('update')
-                    ->table('cards')
-                    ->values([ 'artist_name' => ':artist' ])
-                    ->where('id = :id')
+                fd_statement("update")
+                    ->table("cards")
+                    ->values([ "artist_name" => ":artist" ])
+                    ->where("id = :id")
             )
             ->bind([
-                ':id' => $card['id'],
-                ':artist' => $request->input()->post('artist-name')
+                ":id" => $card["id"],
+                ":artist" => $input->post->{"artist-name"}
             ])
             ->execute();
 
         // Fetch next card
-        $nextCard = $model->getNext($card['sorted_id'], ['id']);
+        $nextCard = $model->getNext($card["sorted_id"], ["id"]);
 
         // ERROR: No next card exists
         if (empty($nextCard)) {
-            Alert::add('No next card exists.');
-            Redirect::to("artists/set/{$card['sets_id']}");
+            Alert::add("No next card exists.");
+            Redirect::to("artists/set/{$card["sets_id"]}");
         }
 
         // Go to the next card
-        Redirect::to("artists/card/{$nextCard['id']}");
+        Redirect::to("artists/card/{$nextCard["id"]}");
     }
 }

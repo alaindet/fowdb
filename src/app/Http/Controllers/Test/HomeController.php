@@ -12,10 +12,10 @@ class HomeController extends Controller
     public function index(Request $request): string
     {
         return (new Page)
-            ->template('test/index')
-            ->title('Test: index')
+            ->template("test/index")
+            ->title("Test: index")
             ->variables([
-                'urls' => Session::get('test-routes')
+                "urls" => Session::get("test-routes"),
             ])
             ->minify(false)
             ->render();

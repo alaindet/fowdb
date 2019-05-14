@@ -1,8 +1,6 @@
 <?php
 
 use App\Exceptions\ViewsComponentException;
-use App\Http\Request\Input;
-use App\Http\Response\Redirect;
 use App\Services\Configuration\Configuration;
 use App\Services\CsrfToken;
 use App\Services\Database\Database;
@@ -16,6 +14,8 @@ use App\Utils\Uri;
 use App\Views\Entities\Card\CardText;
 use App\Views\Components;
 use App\Views\Page\Page;
+use App\Legacy\Authorization as LegacyAuthorization;
+use App\Http\Request\Input\InputManager;
 
 /**
  * List of helper functions
@@ -41,7 +41,6 @@ use App\Views\Page\Page;
  * fd_log_html
  * fd_render
  * fd_url
- * 
  */
 
 
@@ -90,11 +89,12 @@ function fd_dump($data, string $title = null, bool $wrap = false): void
 /**
  * Returns the Input instance for accessing GET, POST and FILES parameters
  * 
- * @return Input
+ * @param string $method "GET", "POST" or "FILES"
+ * @return InputObject|object
  */
-function fd_input(): Input
+function fd_input(): InputManager
 {
-	return Input::getInstance();
+	return InputManager::getInstance();
 }
 
 /**

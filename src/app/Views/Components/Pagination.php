@@ -12,21 +12,23 @@ use App\Views\Component;
  * Array
  * (
  *     // Mandatory
- *     [pagination] => Array
+ *     [pagination] => object
  *     (
- *         [total] => 3128
- *         [current-page] => 100
- *         [last-page] => 126
- *         [more] => 1
- *         [lower-bound] => 2476
- *         [upper-bound] => 2500
+ *         [totalCount] => 3128
+ *         [count] => 25
+ *         [page] => 100
+ *         [perPage] => 25
+ *         [lastPage] => 126
+ *         [lowerBound] => 2476
+ *         [upperBound] => 2500
  *         [link] => https://www.fowdb.altervista.org/cards
- *         [has-pagination] => 1
- *         [per-page] => 25
+ *         [hasMorePages] => 1
+ *         [hasAnyPagination] => 1
  *     ),
  * 
  *     // Optional
- *     [has-label] => true
+ *     [has-label] => false
+ *     [no-label] => true
  *     [css] => Array
  *     (
  *         [0] => --whatever
@@ -35,22 +37,23 @@ use App\Views\Component;
  */
 class Pagination extends Component
 {
-    public $filename = 'pagination';
+    public $filename = "pagination";
 
     public function render(): string
     {
-        $page = &$this->state['pagination']['current-page'];
-        $last = &$this->state['pagination']['last-page'];
-        $noLabel = &$this->state['no-label'];
+        $info = $this->state["pagination"];
+        $page = $info->page;
+        $last = $info->lastPage;
 
         $pageNumbers = $this->buildPageNumbers($page, $last, $diameter = 5);
         $links = $this->buildLinks($pageNumbers);
+        $label = isset($this->state["no-label"]) ? "" : $this->buildLabel();
 
         return $this->renderTemplate([
-            'css' => $this->state['css'] ?? null,
-            'links' => $links,
-            'progress_label' => $noLabel ? '' : $this->buildLabel(),
-            'progress_percentage' => number_format(100*$page/$last, 0),
+            "css" => $this->state["css"] ?? null,
+            "links" => $links,
+            "progress_label" => $label,
+            "progress_percentage" => number_format(100 * $page / $last, 0),
         ]);
     }
 
@@ -116,27 +119,28 @@ class Pagination extends Component
 
     private function buildLinks(array $pageNumbers): array
     {
-        $links = [];
+        $result = [];
+        $info = $this->state["pagination"];
         $first = 1;
-        $current =& $this->state['pagination']['current-page'];
-        $last =& $this->state['pagination']['last-page'];
-        $link =& $this->state['pagination']['link'];
-        $baseLink = $link . ((strpos($link,'?')===false)?'?':'&') . 'page=';
+        $current = $info->page;
+        $last = $info->lastPage;
+        $link = $info->link;
+        $baseLink = $link . ((strpos($link,"?")===false)?"?":"&") . "page=";
 
         // Previous page
         $prev = max($current - 1, $first);
         $result[] = [
-            'class' => 'prev',
-            'disable' => $current === $prev,
-            'link' => $baseLink . $prev,
-            'page' => $prev
+            "class" => "prev",
+            "disable" => ($current === $prev),
+            "link" => $baseLink . $prev,
+            "page" => $prev
         ];
 
         // First page
         $result[] = [
-            'class' => 'first' . ($current === $first ? ' current' : ''),
-            'link' => $baseLink . $first,
-            'page' => $first
+            "class" => "first" . ($current === $first ? " current" : ""),
+            "link" => $baseLink . $first,
+            "page" => $first
         ];
 
         // All normal pages
@@ -145,16 +149,16 @@ class Pagination extends Component
             // Omit pages
             if ($number === false) {
                 $result[] = [
-                    'class' => 'missing'
+                    "class" => "missing"
                 ];
             }
             
             // Normal page
             else {
                 $result[] = [
-                    'class' => ($current === $number) ? 'current' : 'adjacent',
-                    'link' => $baseLink . $number,
-                    'page' => $number
+                    "class" => ($current === $number) ? "current" : "adjacent",
+                    "link" => $baseLink . $number,
+                    "page" => $number
                 ];
             }
 
@@ -162,18 +166,18 @@ class Pagination extends Component
 
         // Last page
         $result[] = [
-            'class' => 'last' . ($current === $last ? ' current' : ''),
-            'link' => $baseLink . $last,
-            'page' => $last
+            "class" => "last" . ($current === $last ? " current" : ""),
+            "link" => $baseLink . $last,
+            "page" => $last
         ];
 
         // Next page
         $next = min($current + 1, $last);
         $result[] = [
-            'class' => 'next',
-            'disable' => $current === $next,
-            'link' => $baseLink . $next,
-            'page' => $next
+            "class" => "next",
+            "disable" => ($current === $next),
+            "link" => $baseLink . $next,
+            "page" => $next
         ];
 
         return $result;
@@ -181,11 +185,11 @@ class Pagination extends Component
 
     private function buildLabel(): string
     {
+        $info = $this->state["pagination"];
+
         // Ex.: 1701 to 1725 of 3288
         return (
-            $this->state['pagination']['lower-bound'].
-            ' to '.$this->state['pagination']['upper-bound'].
-            ' of '.$this->state['pagination']['total']
+            "{$info->lowerBound} to {$info->upperBound} of {$info->totalCount}"
         );
     }
 }

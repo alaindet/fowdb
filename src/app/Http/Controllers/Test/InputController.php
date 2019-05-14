@@ -9,13 +9,14 @@ class InputController extends Controller
 {
     public function all(Request $request): string
     {
-        $input = $request->getInput();
+        $input = $request->input()->all();
         return fd_log_html($input, "input/all");
     }
 
     public function exists(Request $request, string $key): string
     {
-        $isParam = $request->hasInput($key, "GET");
+        $isParam = $request->input()->has($key, "GET");
+        $isParam = $request->input()->get($key) !== null;
         return "GET Parameter \"{$key}\" is ".($isParam ? "" : "not ")."set";
     }
 }
