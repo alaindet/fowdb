@@ -67,6 +67,9 @@ $public = [
     ["GET", "input/all", "InputController", "all"],
     ["GET", "input/exists/{key}", "InputController", "exists"],
 
+    ["GET", "filesystem/render-with-vars", "FileSystemController", "renderWithVars"],
+    ["GET", "filesystem/render-with-obj", "FileSystemController", "renderWithObj"],
+
     ["GET", "lookup", "LookupController", "index"],
     ["GET", "lookup/build", "LookupController", "buildAll"],
     ["GET", "lookup/build/{feature}", "LookupController", "build"],

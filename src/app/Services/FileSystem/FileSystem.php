@@ -6,10 +6,11 @@ use App\Services\FileSystem\Interfaces\FileSystemInterface;
 use App\Services\FileSystem\Exceptions\FileSystemException;
 use App\Services\FileSystem\Exceptions\FileNotFoundException;
 use App\Services\FileSystem\Exceptions\DirectoryExistsException;
-use App\Utils\Json;
 use ErrorException;
+use App\Utils\Objects;
+use App\Utils\Arrays;
 
-class FileSystem implements FileSystemInterface
+abstract class FileSystem implements FileSystemInterface
 {
     /**
      * Stores a file to the given file path. Overwrites any existing file
@@ -18,7 +19,7 @@ class FileSystem implements FileSystemInterface
      * @param string $content Content to be written, as string
      * @return void
      */
-    public static function saveFile(string $path, string $content): void
+    static public function saveFile(string $path, string $content): void
     {
         $saved = file_put_contents($path, $content);
 
@@ -36,7 +37,7 @@ class FileSystem implements FileSystemInterface
      * @param string $to
      * @return void
      */
-    public static function copyFile(string $from, string $to): void
+    static public function copyFile(string $from, string $to): void
     {
         try {
             copy($from, $to);
@@ -46,12 +47,53 @@ class FileSystem implements FileSystemInterface
     }
 
     /**
+     * Renders an input file as a PHP template and returns it as a string
+     * 
+     * When $shouldDeclareVariables = true, the object $vars is spread into
+     * separate variables, with key as var name and value as var value
+     *
+     * @param string $path
+     * @param object $vars Forbidden keys: [vars, path, __key, __value]
+     * @param bool $shouldDeclareVariables
+     * @return string
+     */
+    static public function renderFile(
+        string $path,
+        object $vars,
+        bool $shouldDeclareVariables = false
+    ): string
+    {
+        // Declare variables into the template's scope
+        if ($shouldDeclareVariables) {
+            return (
+                function () use (&$vars, &$path) {
+                    ob_start();
+                    foreach ($vars as $__key => $__value) {
+                        $$__key = $__value;
+                    }
+                    include $path;
+                    return ob_get_clean();
+                }
+            )($vars);
+        }
+
+        // Pass the template the $vars object
+        return (
+            function () use (&$vars, &$path) {
+                ob_start();
+                include $path;
+                return ob_get_clean();
+            }
+        )($vars);
+    }
+
+    /**
      * Reads a file's content as a string
      *
      * @param string $path
      * @return string
      */
-    public static function readFile(string $path): string
+    static public function readFile(string $path): string
     {
         try {   
             return file_get_contents($path);
@@ -66,7 +108,7 @@ class FileSystem implements FileSystemInterface
      * @param string $path
      * @return void
      */
-    public static function existsFile(string $path): bool
+    static public function existsFile(string $path): bool
     {
         return file_exists($path);
     }
@@ -78,7 +120,7 @@ class FileSystem implements FileSystemInterface
      * @param string $path
      * @return mixed Depends on the file (string|array)
      */
-    public static function loadFile(string $path)
+    static public function loadFile(string $path)
     {
         try {
             return include $path;
@@ -94,11 +136,18 @@ class FileSystem implements FileSystemInterface
      * @param bool $returnObject If FALSE, returns assoc array (default TRUE)
      * @return object|array
      */
-    public static function loadJsonFile(string $path, bool $returnObject = true)
+    static public function loadJsonFile(string $path, bool $returnObject = true)
     {
         try {
+
             $json = file_get_contents($path);
-            return ($returnObject) ? Json::toObject($json) : Json::toArray($json);
+
+            if (!$returnObject) {
+                return Arrays::fromJson($json);
+            }
+            
+            return Objects::fromJson($json);
+
         } catch (ErrorException $exception) {
             throw new FileNotFoundException($path);
         }
@@ -111,7 +160,7 @@ class FileSystem implements FileSystemInterface
      * @param string $to
      * @return void
      */
-    public static function renameFile(string $from, string $to): void
+    static public function renameFile(string $from, string $to): void
     {
         try {
             rename($from, $to);
@@ -126,7 +175,7 @@ class FileSystem implements FileSystemInterface
      * @param string $path
      * @return void
      */
-    public static function deleteFile(string $path): void
+    static public function deleteFile(string $path): void
     {
         try {
             unlink($path);
@@ -146,7 +195,7 @@ class FileSystem implements FileSystemInterface
      * @param integer $mode (Optional) Ex.: 0755
      * @return void
      */
-    public static function createDirectory(string $path, int $mode = null): void
+    static public function createDirectory(string $path, int $mode = null): void
     {
         try {
             $mode = $mode ?? 0755;
@@ -163,12 +212,12 @@ class FileSystem implements FileSystemInterface
      * @param string $to
      * @return void
      */
-    public static function renameDirectory(string $from, string $to): void
+    static public function renameDirectory(string $from, string $to): void
     {
         try {
             rename($from, $to);
         } catch(ErrorException $exception) {
-            throw new DirectoryExistsException($path);
+            throw new DirectoryExistsException($to);
         }
     }
 
@@ -178,7 +227,7 @@ class FileSystem implements FileSystemInterface
      * @param string $path
      * @return void
      */
-    public static function deleteDirectory(string $path): void
+    static public function deleteDirectory(string $path): void
     {
         try {
             $handle = opendir($path);
@@ -187,14 +236,14 @@ class FileSystem implements FileSystemInterface
             while (false !== ( $baseName = readdir($handle)) ) {
 
                 // Skip non-files
-                if ($baseName === '.' || $baseName === '..') continue;
+                if ($baseName === "." || $baseName === "..") continue;
 
                 $path = "{$path}/{$baseName}";
 
-                // It's a directory
+                // It"s a directory
                 if (is_dir($path)) self::deleteDirectory($path);
                 
-                // It's a file
+                // It"s a file
                 else unlink($path);
             }
 
