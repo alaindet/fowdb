@@ -22,32 +22,55 @@ use App\Utils\Paths;
  */
 abstract class AbstractComponent implements ComponentInterface
 {
-    protected $state;
+    protected $input;
     protected $templateVars;
     protected $templatePath;
 
-    public function __construct(object $state = null)
+    public function __construct(object $input = null)
     {
         $relativePath = "components/{$this->filename}.tpl.php";
         $this->templatePath = Paths::inTemplatesDir($relativePath);
-        $this->templateVars = new \stdClass();
-        $this->state = ($state !== null) ? $state : new \stdClass();
+        $this->setInput($input);
     }
 
-    public function setState(object $state): ComponentInterface
+    /**
+     * If $input is NULL, reset $this->input
+     * If $input is a callback, execute it and pass previous input
+     * If $input is object, store it
+     *
+     * @param object|callable $input
+     * @return ComponentInterface
+     */
+    public function setInput($input = null): ComponentInterface
     {
-        $this->state = $state;
+        if ($input === null) {
+            $this->input = new \stdClass();
+            return $this;
+        }
+
+        if (is_callable($input)) {
+            $this->input = $input($this->input);
+            return $this;
+        }
+
+        $this->input = $input;
         return $this;
     }
 
-    public function getState(): ?object
+    public function getInput(): ?object
     {
         return $this->state;
     }
 
-    public function setTemplateVars(object $vars): ComponentInterface
+    /**
+     * If no $vars are passed (NULL), reset $this->templateVars
+     *
+     * @param object $vars
+     * @return ComponentInterface
+     */
+    public function resetTemplateVars(): ComponentInterface
     {
-        $this->templateVars = $vars;
+        $this->templateVars = new \stdClass();
         return $this;
     }
 
@@ -78,8 +101,13 @@ abstract class AbstractComponent implements ComponentInterface
      */
     public function render(): string
     {
+        // Reset or initialize template variables
+        $this->templateVars = new \stdClass();
+
+        // Transform input into template variables
         $this->process();
 
+        // Render template file
         return ComponentManager::renderPhpTemplate(
             $this->templatePath,
             $this->templateVars

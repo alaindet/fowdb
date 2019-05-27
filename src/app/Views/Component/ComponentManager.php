@@ -10,12 +10,14 @@ use App\Utils\Paths;
 abstract class ComponentManager
 {
     public const NO_CLASS = 0;
+    static protected $instances = [];
 
     static protected $components = [
 
         // TEST
         "test/with-class" => \App\Views\Component\Components\Test\WithClassComponent::class,
         "test/without-class" => self::NO_CLASS,
+        "test/multiple" => \App\Views\Component\Components\Test\MultipleComponent::class,
 
         "auth/logout"                 => self::NO_CLASS,
         "form/button-checkbox"        => self::NO_CLASS,
@@ -34,21 +36,32 @@ abstract class ComponentManager
 
     static public function renderComponent(
         string $name,
-        object $state
+        object $input
     ): string
     {
-        $componentClass = self::$components[$name] ?? null;
-
-        if ($componentClass === null) {
+        // ERROR: No component with given name
+        if (!isset(self::$components[$name])) {
             throw new ComponentNotFoundException($name);
         }
 
+        $componentClass = self::$components[$name];
+
+        // No class, just render the template file
         if ($componentClass === self::NO_CLASS) {
             $path = Paths::inTemplatesDir("components/{$name}.tpl.php");
-            return self::renderPhpTemplate($path, $state);
+            return self::renderPhpTemplate($path, $input);
         }
 
-        return (new $componentClass($state))->render();
+        // Fetch previous instance of this component or store a new one
+        if (isset(self::$instances[$componentClass])) {
+            $component = self::$instances[$componentClass];
+        } else {
+            $component = new $componentClass;
+            self::$instances[$componentClass] = $component;
+        }
+        
+        $component->setInput($input);
+        return $component->render();
     }
 
     /**

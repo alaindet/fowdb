@@ -21,8 +21,8 @@ class WithClassComponent extends AbstractComponent
     protected function process(): void
     {
         $this->templateVars = (object) [
-            "aa" => $this->state->a * 2,
-            "bb" => $this->state->b * 2,
+            "aa" => $this->input->a * 2,
+            "bb" => $this->input->b * 2,
         ];
     }
 }

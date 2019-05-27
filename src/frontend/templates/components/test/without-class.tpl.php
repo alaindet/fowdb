@@ -8,15 +8,15 @@
  * VARIABLES = INPUT
  */
 
-$a = $this->a ?? 'default a';
-$b = $this->b ?? 'default b';
-$c = $this->c ?? 'default c';
+$this->a = $this->a ?? 'default a';
+$this->b = $this->b ?? 'default b';
+$this->c = $this->c ?? 'default c';
 ?>
 
 <h1>Test component without class</h1>
 <p>Some text here...</p>
 <ul>
-    <li>a: <?=$a?></li>
-    <li>b: <?=$b?></li>
-    <li>c: <?=$c?></li>
+    <li>a: <?=$this->a?></li>
+    <li>b: <?=$this->b?></li>
+    <li>c: <?=$this->c?></li>
 </ul>
