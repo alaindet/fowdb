@@ -11,7 +11,7 @@ vendor/
 /src/data/logs
 
 # Public assets and files
-/assets/
+assets/
 .env
 .env.production
 .env.development
