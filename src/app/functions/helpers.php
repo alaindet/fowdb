@@ -16,6 +16,7 @@ use App\Views\Components;
 use App\Views\Page\Page;
 use App\Legacy\Authorization as LegacyAuthorization;
 use App\Http\Request\Input\InputManager;
+use App\Views\Component\ComponentManager;
 
 /**
  * List of helper functions
@@ -35,6 +36,7 @@ use App\Http\Request\Input\InputManager;
  * ====
  * fd_asset
  * fd_component
+ * fd_test_component
  * fd_csrf_token
  * fd_include_template
  * fd_escape
@@ -146,6 +148,11 @@ function fd_asset(string $path, string $type = "any"): string
     ][$type];
 
     return "{$url}/{$path}?{$version}";
+}
+
+function fd_test_component(string $name, object $state = null): string
+{
+	return ComponentManager::renderComponent($name, $state);
 }
 
 /**

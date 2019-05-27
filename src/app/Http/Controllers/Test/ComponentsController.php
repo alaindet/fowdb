@@ -90,4 +90,13 @@ class ComponentsController extends Controller
             ->minify(false)
             ->render();
     }
+
+    public function newComponent(Request $request): string
+    {
+        return (new Page)
+            ->template("test/new-components/index")
+            ->title("New components test")
+            ->minify(false)
+            ->render();
+    }
 }

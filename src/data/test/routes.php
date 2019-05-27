@@ -56,6 +56,8 @@ $public = [
     ["GET", "components/pagination", "ComponentsController", "pagination"],
     ["GET", "components/select-multiple", "ComponentsController", "selectMultiple"],
 
+    ["GET", "newcomponents", "ComponentsController", "newComponent"],
+
     ["GET", "collection", "CollectionController", "index"],
     ["GET", "collection/cluster-to-formats", "CollectionController", "clusterToFormats"],
     ["GET", "collection/format-to-clusters", "CollectionController", "formatToClusters"],
