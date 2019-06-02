@@ -36,7 +36,6 @@ use App\Views\Component\ComponentManager;
  * ====
  * fd_asset
  * fd_component
- * fd_test_component
  * fd_csrf_token
  * fd_include_template
  * fd_escape
@@ -150,37 +149,17 @@ function fd_asset(string $path, string $type = "any"): string
     return "{$url}/{$path}?{$version}";
 }
 
-function fd_test_component(string $name, object $state = null): string
-{
-	return ComponentManager::renderComponent($name, $state);
-}
-
 /**
  * Instantiates a view component, renders it using provided data and
- * returns its HTML rendering as a string
+ * returns its HTML output as a string
  *
- * @param string $name Name of the component, as in App\Views\Components
- * @param array $state The state to set, as associative array
+ * @param string $name Name of the component, ex.: "form/button-checkbox"
+ * @param object $input Optional
  * @return string HTML rendering of the component
  */
-function fd_component(string $name, array $state = null): string
+function fd_component(string $name, object $input = null): string
 {
-	$class = Components::$components[$name] ?? null;
-
-	// ERROR: Component name doesn't exist
-	if ($class === null) {
-		throw new ViewsComponentException("Missing component \"{$name}\"");
-	}
-
-	// Simple component (no logic, optional state)
-	if ($class === Components::SIMPLE_COMPONENT) {
-		return fd_include_template("components/{$name}", $state);
-	}
-
-	// Return rendered HTML component
-	$component = new $class();
-	$component->setState(function () use ($state) { return $state; });
-	return $component->render();
+	return ComponentManager::renderComponent($name, $input);
 }
 
 /**

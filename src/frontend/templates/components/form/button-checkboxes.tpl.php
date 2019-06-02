@@ -1,61 +1,71 @@
 <?php
+/*
+ * INPUT
+ * ?name string
+ * state array
+ * items array
+ * ?css [container, button] array
+ * 
+ * VARIABLES = INPUT
+ * 
+ * DESCRIPTION
+ * This component draws a group of checkboxes as buttons and has 2 modes,
+ * Depending on the $this->name input
+ * 
+ * 1. Multiple values: Same input name, multiple values
+ *    - $this->name is defined
+ *    - $this->items = [ value1 => label1, value2 => label2, ... ]
+ * 2. Multiple flags: multiple input names, each input is a flag with a label
+ *    - $this->name is not defined
+ *    - $this->items = [ input_name1 => label1, input_name2, label2, ... ]
+ */
+$areFlags = !isset($this->name);
+$areValues = !$areFlags;
 
-// VARIABLES
-// $name (optional)
-// $state[]
-// $items[]
-// $css (optional)
-//   container
-//   button
-
-// NOTE -----------------------------------------------------------------------
-// If input name is not given, each item has a different input name so that
-// $items = [ input_name => label, ... ]
-// instead of default behavior
-// $items = [ value => label, ... ]
-$multipleNames = !isset($name);
-if (!$multipleNames) {
-  $name .= "[]";
+if ($areValues) {
+  $this->name .= "[]";
 }
 
-// CSS ------------------------------------------------------------------------
-$containerCss = '';
-$buttonCss = '';
-if (isset($css)) {
-  if (isset($css['container'])) {
-    $containerCss = ' ' . implode(' ', $css['container']);
+// CSS
+$cssContainer = "";
+$cssButton = "";
+if (isset($this->css)) {
+  if (isset($this->css["container"])) {
+    $cssContainer = " " . implode(" ", $this->css["container"]);
   }
-  if (isset($css['button'])) {
-    $buttonCss = ' ' . implode(' ', $css['button']);
+  if (isset($this->css["button"])) {
+    $cssButton = " " . implode(" ", $this->css["button"]);
   }
 }
 
 ?>
-<div class="btg-group<?=$containerCss?>" data-toggle="buttons">
+<div class="btg-group<?=$cssContainer?>" data-toggle="buttons">
   <?php
-    // ITEMS: value => label (default)
-    foreach ($items as $key => $label):
+    foreach ($this->items as $key => $value):
 
       // Preserve 0 character for the label
-      if ($label === 0) $label = '&#48;';
+      if ($value === 0) {
+        $value = "&#48;";
+      }
 
-      ($multipleNames)
+      // Multiple flags or multiple values for the same input?
+      ($areFlags)
         ? [$inputName, $inputValue] = [$key, 1]
-        : [$inputName, $inputValue] = [$name, $key];
+        : [$inputName, $inputValue] = [$this->name, $key];
 
       // State
-      (in_array($key, $state))
-        ? [$active, $checked] = [' active', ' checked']
-        : [$active, $checked] = ['', ''];
+      (in_array($key, $this->state))
+        ? [$active, $checked] = [" active", " checked"]
+        : [$active, $checked] = ["", ""];
   ?>
-    <label class="btn<?=$buttonCss?><?=$active?>">
+    <label class="btn<?=$cssButton?><?=$active?>">
       <input
         type="checkbox"
         name="<?=$inputName?>"
         value="<?=$inputValue?>"
         <?=$checked?>
       >
-      <span class="pointer"><?=$label?></span>
+      <span class="pointer"><?=$value?></span>
     </label>
   <?php endforeach; ?>
 </div>

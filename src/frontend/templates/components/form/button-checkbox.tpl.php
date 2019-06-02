@@ -1,41 +1,40 @@
 <?php
+/*
+ * INPUT
+ * ?css[container, button] array
+ * label string
+ * name string
+ * state bool
+ * value string|int
+ * 
+ * VARIABLES = INPUT
+ */
 
-// VARIABLES
-// $name
-// $state
-// $value
-// $label
-// $css[] (optional)
-//   container
-//   button
+$this->value = $this->value ?? 1;
 
-$value = $value ?? 1;
+// State
+[$active, $checked] = ($this->state) ? [" active", " checked"] : ["", ""];
 
-// STATE ----------------------------------------------------------------------
-($state)
-  ? [$active, $checked] = [' active', ' checked']
-  : [$active, $checked] = ['', ''];
-
-// CSS ------------------------------------------------------------------------
-$containerCss = '';
-$buttonCss = '';
-if (isset($css)) {
-  if (isset($css['container'])) {
-    $containerCss = ' ' . implode(' ', $css['container']);
+// CSS
+[$cssContainer, $cssButton] = ["", ""];
+if (isset($this->css)) {
+  if (isset($this->css["container"])) {
+    $cssContainer = " " . implode(" ", $this->css["container"]);
   }
-  if (isset($css['button'])) {
-    $buttonCss = ' ' . implode(' ', $css['button']);
+  if (isset($this->css["button"])) {
+    $cssButton = " " . implode(" ", $this->css["button"]);
   }
 }
 ?>
-<div class="btg-group<?=$containerCss?>" data-toggle="buttons">
-  <label class="btn<?=$buttonCss?><?=$active?>">
+
+<div class="btg-group<?=$cssContainer?>" data-toggle="buttons">
+  <label class="btn<?=$cssButton?><?=$active?>">
     <input
       type="checkbox"
-      name="<?=$name?>"
-      value="<?=$value?>"
+      name="<?=$this->name?>"
+      value="<?=$this->value?>"
       <?=$checked?>
     >
-    <span class="pointer"><?=$label?></span>
+    <span class="pointer"><?=$this->label?></span>
   </label>
 </div>

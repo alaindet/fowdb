@@ -10,7 +10,6 @@
  * bb
  */
 ?>
-
 <h1>Test component with class</h1>
 
 <h2>Available variables</h2>

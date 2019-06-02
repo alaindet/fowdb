@@ -10,9 +10,6 @@ use App\Services\Configuration\Configuration;
 
 require __DIR__ . "/src/bootstrap.php";
 
-// TEST
-\Performance\Performance::point();
-
 /*
  | ----------------------------------------------------------------------------
  |
@@ -68,6 +65,3 @@ $response = (new Dispatcher)
     ->dispatch();
 
 echo $response;
-
-// TEST
-\Performance\Performance::results();
