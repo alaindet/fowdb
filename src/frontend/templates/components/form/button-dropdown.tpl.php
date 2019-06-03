@@ -1,18 +1,17 @@
 <?php
-
-// REQUIRES
-// /src/resources/assets/js/dependencies/form/button-dropdown.js
-
-// VARIABLES
-// $name
-// $items
-// $default[] (optional)
-//   face
-//   value
-// $size (optional)
-// $state[] (optional)
-//   face
-//   value
+/*
+ * REQUIRES
+ * frontend/js/dependencies/form/button-dropdown.js
+ *
+ * INPUT
+ * name string
+ * items array
+ * ?default [face=>, value=>] array
+ * ?size (enum: xs, sm, md, lg) string
+ * ?state [face=>, value=>] array
+ * 
+ * VARIABLES = INPUT
+ */
 
 // Specific to Bootstrap 3
 $sizes = [
@@ -22,34 +21,37 @@ $sizes = [
   'lg' => 'btn-lg',
 ];
 
-$size = isset($size) && isset($sizes[$size]) ? ' '.$sizes[$size] : '';
-$nullable = false;
+// Button size
+(isset($this->size) && isset($sizes[$this->size]))
+  ? $this->size = " {$sizes[$this->size]}"
+  : $this->size = "";
 
-// Default
-if (!isset($default)) {
+  
+// Default state
+if (!isset($this->default)) {
   $nullable = true;
-  $default = [
-    'face' => 'Select...',
-    'value' => ''
+  $this->default = [
+    "face" => "Select...",
+    "value" => ""
   ];
+} else {
+  $nullable = false;
 }
 
-// STATE --------------------------------------------------------------------
-[$face, $value] = [$default['face'], $default['value']];
-if (isset($state) && isset($items[$state])) {
-  [$face, $value] = [$items[$state], $state];
-}
-
+// State
+(isset($this->state) && isset($this->items[$this->state]))
+  ? [$face, $value] = [$this->items[$this->state], $this->state]
+  : [$face, $value] = [$this->default["face"], $this->default["value"]];
 ?>
-<div class="js-button-dropdown<?=$nullable ? ' --nullable' : ''?>">
+<div class="js-button-dropdown<?=$nullable ? " --nullable" : ""?>">
 
   <!-- Dropdown input -->
   <input
     type="hidden"
-    name="<?=$name?>"
+    name="<?=$this->name?>"
     class="js-button-dropdown-hidden"
     value="<?=$value?>"
-    data-default="<?=$default['value']?>"
+    data-default="<?=$this->default["value"]?>"
   >
 
   <div class="btn-group">
@@ -57,14 +59,14 @@ if (isset($state) && isset($items[$state])) {
     <!-- Dropdown face -->
     <button
       type="button"
-      class="dropdown-toggle btn<?=$size?> fd-btn-default"
+      class="dropdown-toggle btn<?=$this->size?> fd-btn-default"
       data-toggle="dropdown"
       aria-haspopup="true"
       aria-expanded="false"
     >
       <span
         class="js-button-dropdown-face"
-        data-default="<?=$default['face']?>"
+        data-default="<?=$this->default["face"]?>"
       >
         <?=$face?>
       </span>
@@ -73,11 +75,11 @@ if (isset($state) && isset($items[$state])) {
 
     <!-- Dropdown items -->
     <ul class="dropdown-menu">
-      <?php foreach ($items as $value => $face):
-        [$active, $selected] = ['', ''];
-        if ($value === $state) {
-          [$active, $selected] = [' active', ' selected'];
-        }
+      <?php foreach ($this->items as $value => &$face):
+        // STICKY
+        ($value === $this->state)
+          ? [$active, $selected] = [" active", " selected"]
+          : [$active, $selected] = ["", ""];
       ?>
         <li>
           <a

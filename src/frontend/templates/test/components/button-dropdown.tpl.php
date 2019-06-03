@@ -4,24 +4,17 @@ $thisUrl = "test/components/button-dropdown";
 $thisInputName = "INPUT_NAME";
 $thisInput = fd_input()->get($thisInputName);
 
-$items = [
-  "item1" => "aaa",
-  "item2" => "bbb",
-  "item3" => "ccc",
-  "item4" => "ddd",
-];
-
 ?>
 
-<?= fd_component("breadcrumb", [
-  "Test" => fd_url("test"),
+<?= fd_component("navigation/breadcrumb", (object) [
+  "Test" => "test",
   "button-dropdown" => "#"
 ]) ?>
 
 <form action="<?= fd_url($thisUrl) ?>" method="get">
 
   <!-- component -->
-  <?= fd_component("form/button-dropdown", [
+  <?= fd_component("form/button-dropdown", (object) [
     "default" => [
       "face" => "DEFAULT_FACE",
       "value" => "DEFAULT_VALUE"
@@ -29,7 +22,12 @@ $items = [
     "name" => $thisInputName,
     "size" => "lg",
     "state" => $thisInput,
-    "items" => $items,
+    "items" => [
+      "item1" => "aaa",
+      "item2" => "bbb",
+      "item3" => "ccc",
+      "item4" => "ddd",
+    ]
   ]) ?>
 
   <!-- submit -->

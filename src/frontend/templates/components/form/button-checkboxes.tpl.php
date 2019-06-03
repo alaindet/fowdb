@@ -4,7 +4,7 @@
  * ?name string
  * state array
  * items array
- * ?css [container, button] array
+ * ?css [container=>, button=>] array
  * 
  * VARIABLES = INPUT
  * 

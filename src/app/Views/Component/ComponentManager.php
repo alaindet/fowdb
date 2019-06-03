@@ -20,10 +20,10 @@ abstract class ComponentManager
         // "test/multiple" => \App\Views\Component\Components\Test\MultipleComponent::class,
         "auth/logout"                 => self::NO_CLASS,
         "form/button-checkbox"        => self::NO_CLASS,
-        "navigation/breadcrumb"       => Navigation\Breadcrumb::class,
-
         "form/button-checkboxes"      => self::NO_CLASS,
         "form/button-dropdown"        => self::NO_CLASS,
+        "navigation/breadcrumb"       => Navigation\Breadcrumb::class,
+
         "form/button-radio"           => self::NO_CLASS,
         "form/input-clear"            => self::NO_CLASS,
         "form/input-dropdown"         => Form\InputDropdown::class,
