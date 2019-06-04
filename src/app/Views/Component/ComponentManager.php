@@ -24,9 +24,9 @@ abstract class ComponentManager
         "form/button-dropdown"        => self::NO_CLASS,
         "form/button-radio"           => self::NO_CLASS,
         "navigation/breadcrumb"       => Navigation\Breadcrumb::class,
-
-        "form/input-clear"            => self::NO_CLASS,
         "form/input-dropdown"         => Form\InputDropdown::class,
+
+        // "form/input-clear"            => self::NO_CLASS,
         "form/select-multiple-handle" => self::NO_CLASS,
         "form/select-multiple-items"  => self::NO_CLASS,
         "form/select-submit"          => self::NO_CLASS,

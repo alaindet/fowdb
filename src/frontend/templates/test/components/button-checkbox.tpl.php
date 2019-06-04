@@ -1,12 +1,12 @@
 <?php
-$thisUrl = "test/components/button-checkbox";
+$thisUrl = "test/components/form/button-checkbox";
 $thisInput = fd_input()->has("INPUT_NAME", "get");
 ?>
 
 <?php
   echo fd_component("navigation/breadcrumb", (object) [
     "Test" => "test",
-    "button-checkbox" => "#"
+    "form/button-checkbox" => "#"
   ]);
 ?>
 

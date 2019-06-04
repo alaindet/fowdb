@@ -23,10 +23,10 @@
         aria-expanded="false"
       >
         <span
-          class="js-input-dropdown-face"
-          data-default="DROPDOWN_DEFAULT_FACE"
+          class="js-input-dropdown-label"
+          data-default="DROPDOWN_DEFAULT_LABEL"
         >
-          DROPDOWN_FACE
+          DROPDOWN_LABEL
         </span>
         <span class="caret"></span>
       </button>
@@ -36,16 +36,16 @@
         <li>
           <a
             class="js-input-dropdown-item pointer"
-            data-face="DROPDOWN_ITEM_FACE"
+            data-label="DROPDOWN_ITEM_LABEL"
             data-value="DROPDOWN_ITEM_VALUE"
           >
-            DROPDOWN_ITEM_FACE
+            DROPDOWN_ITEM_LABEL
           </a>
         </li>
         ...
       </ul>
 
-    </div>
+    </div><!-- /.input-group-btn -->
 
     <!-- Input -->
     <input
@@ -55,16 +55,15 @@
       value="INPUT_VALUE"
     >
 
-  </div>
-
-</div>
+  </div><!-- /.input-group -->
+</div><!-- .js-input-dropdown -->
 
 */
 (function () {
 
   // CSS Selectors ----------------------------------------------------------
   const css_inputDropdown = '.js-input-dropdown';
-  const css_inputDropdownFace = '.js-input-dropdown-face';
+  const css_inputDropdownLabel = '.js-input-dropdown-label';
   const css_inputDropdownItem = '.js-input-dropdown-item';
   const css_inputDropdownInput = '.js-input-dropdown-hidden';
 
@@ -91,7 +90,7 @@
   function handleSelectItemEvent(event, item) {
     const container = item.parents(css_inputDropdown);
     view_updateInput(container, item.data('value'));
-    view_updateFace(container, item.data('face'));
+    view_updateLabel(container, item.data('label'));
   }
 
   /**
@@ -114,7 +113,7 @@
     $(css_inputDropdown).each(function () {
       const container = $(this);
       view_updateInput(container); // Uses default values
-      view_updateFace(container); // Uses default values
+      view_updateLabel(container); // Uses default values
     });
   }
 
@@ -132,8 +131,8 @@
     element.val(value);
   }
 
-  function view_updateFace(container, value) {
-    var element = $(css_inputDropdownFace, container);
+  function view_updateLabel(container, value) {
+    var element = $(css_inputDropdownLabel, container);
     if (typeof value === 'undefined') value = element.data('default');
     element.html(value);
   }

@@ -48,13 +48,13 @@ $public = [
 
     ["GET", "bitmask/flipped", "BitmaskController", "flipped"],
 
-    ["GET", "components/button-checkbox", "ComponentsController", "buttonCheckbox"],
-    ["GET", "components/button-checkboxes", "ComponentsController", "buttonCheckboxes"],
-    ["GET", "components/button-dropdown", "ComponentsController", "buttonDropdown"],
-    ["GET", "components/button-radio", "ComponentsController", "buttonRadio"],
-    ["GET", "components/input-dropdown", "ComponentsController", "inputDropdown"],
-    ["GET", "components/pagination", "ComponentsController", "pagination"],
-    ["GET", "components/select-multiple", "ComponentsController", "selectMultiple"],
+    ["GET", "components/form/button-checkbox", "ComponentsController", "buttonCheckbox"],
+    ["GET", "components/form/button-checkboxes", "ComponentsController", "buttonCheckboxes"],
+    ["GET", "components/form/button-dropdown", "ComponentsController", "buttonDropdown"],
+    ["GET", "components/form/button-radio", "ComponentsController", "buttonRadio"],
+    ["GET", "components/form/input-dropdown", "ComponentsController", "inputDropdown"],
+    ["GET", "components/navigation/pagination", "ComponentsController", "pagination"],
+    ["GET", "components/form/select-multiple", "ComponentsController", "selectMultiple"],
 
     ["GET", "collection", "CollectionController", "index"],
     ["GET", "collection/cluster-to-formats", "CollectionController", "clusterToFormats"],

@@ -6,13 +6,13 @@ use App\Views\Component\AbstractComponent;
 use App\Services\Configuration\Configuration;
 
 /**
- * Input
+ * INPUT
  * [
  *   label => relative_url,
  *   ...,
  * ]
  * 
- * Template vars
+ * TEMPLATE VARIABLES
  * links [label => absolute_url] array
  */
 class Breadcrumb extends AbstractComponent

@@ -1,6 +1,6 @@
 <?php
 
-$thisUrl = "test/components/button-radio";
+$thisUrl = "test/components/form/button-radio";
 $thisInputName = "INPUT_NAME";
 $thisInput = fd_input()->get($thisInputName);
 
@@ -9,7 +9,7 @@ $thisInput = fd_input()->get($thisInputName);
 <?php
   echo fd_component("navigation/breadcrumb", (object) [
     "Test" => "test",
-    "button-radio" => "#"
+    "form/button-radio" => "#"
   ]);
 ?>
 

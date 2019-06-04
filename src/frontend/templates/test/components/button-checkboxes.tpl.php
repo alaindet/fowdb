@@ -1,13 +1,13 @@
 <?php
 
-$thisUrl = "test/components/button-checkboxes"; 
+$thisUrl = "test/components/form/button-checkboxes"; 
 
 ?>
 
 <?php
   echo fd_component("navigation/breadcrumb", (object) [
     "Test" => "test",
-    "button-checkboxes" => "#"
+    "form/button-checkboxes" => "#"
   ]);
 ?>
 
