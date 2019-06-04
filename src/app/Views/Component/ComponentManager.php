@@ -22,9 +22,9 @@ abstract class ComponentManager
         "form/button-checkbox"        => self::NO_CLASS,
         "form/button-checkboxes"      => self::NO_CLASS,
         "form/button-dropdown"        => self::NO_CLASS,
+        "form/button-radio"           => self::NO_CLASS,
         "navigation/breadcrumb"       => Navigation\Breadcrumb::class,
 
-        "form/button-radio"           => self::NO_CLASS,
         "form/input-clear"            => self::NO_CLASS,
         "form/input-dropdown"         => Form\InputDropdown::class,
         "form/select-multiple-handle" => self::NO_CLASS,

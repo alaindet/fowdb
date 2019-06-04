@@ -1,42 +1,46 @@
 <?php
+/*
+ * INPUT
+ * name string
+ * state string
+ * items [ label => value, ... ] array
+ * ?css [container=>, button=>] array
+ * 
+ * VARIABLES = INPUT
+ */
 
-// VARIABLES
-// $name
-// $state
-// $items
-// $css (optional)
-//   container
-//   button
+// CSS container
+if ($this->css !== null && isset($this->css["container"])) {
+  $cssContainer = " " . implode(" ", $this->css["container"]);
+} else {
+  $cssContainer = "";
+}
 
-// CSS ------------------------------------------------------------------------
-$containerCss = '';
-$buttonCss = '';
-if (isset($css)) {
-  if (isset($css['container'])) {
-    $containerCss = ' ' . implode(' ', $css['container']);
-  }
-  if (isset($css['button'])) {
-    $buttonCss = ' ' . implode(' ', $css['button']);
-  }
+// CSS button
+if ($this->css !== null && isset($this->css["button"])) {
+  $cssButton = " " . implode(" ", $this->css["button"]);
+} else {
+  $cssButton = "";
 }
 
 ?>
-<div class="btg-group<?=$containerCss?>" data-toggle="buttons">
-  <?php
-    foreach ($items as $value => $label):
+<div class="btg-group<?=$cssContainer?>" data-toggle="buttons">
+  <?php foreach ($this->items as $value => $label):
 
       // Preserve 0 character for the label
-      if ($label === 0) $label = '&#48;';
+      if ($label === 0) {
+        $label = '&#48;';
+      }
 
       // State
-      ($value === $state)
-        ? [$active, $checked] = [' active', ' checked']
-        : [$active, $checked] = ['', ''];
+      ($value === $this->state)
+        ? [$active, $checked] = [" active", " checked"]
+        : [$active, $checked] = ["", ""];
   ?>
-    <label class="btn<?=$buttonCss?><?=$active?>">
+    <label class="btn<?=$cssButton?><?=$active?>">
       <input
         type="radio"
-        name="<?=$name?>"
+        name="<?=$this->name?>"
         value="<?=$value?>"
         <?=$checked?>
       >
