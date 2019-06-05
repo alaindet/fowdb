@@ -1,6 +1,6 @@
 <?php
 
-$thisUrl = "test/components/button-dropdown";
+$thisUrl = "test/components/form/button-dropdown";
 $thisInputName = "INPUT_NAME";
 $thisInput = fd_input()->get($thisInputName);
 

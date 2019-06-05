@@ -1,65 +1,70 @@
 <?php
 
-$thisUrl = "test/components/select-multiple";
-$thisInput = "PERSON";
-
-$items = [
-
-  // // Grouped
-  // "Letter A" => [
-  //   "alain" => "Alain",
-  //   "albert" => "Albert",
-  //   "anthony" => "Anthony",
-  // ],
-  // "Letter B" => [
-  //   "baldwin" => "Baldwin",
-  //   "barney" => "Barney",
-  //   "bilbo" => "Bilbo",
-  // ],
-
-  // Non-grouped
-  "alain" => "Alain",
-  "albert" => "Albert",
-  "anthony" => "Anthony",
-  "baldwin" => "Baldwin",
-  "barney" => "Barney",
-  "bilbo" => "Bilbo",
-
-];
+$thisUrl = "test/components/form/select-multiple";
 
 ?>
 
 <!-- Breadcrumb -->
-<?= fd_component("breadcrumb", [
-  "Test" => fd_url("test"),
-  "select-multiple" => "#"
-]) ?>
-
-<?php // LOG
-  if (fd_input()->has($thisInput)) {
-    echo fd_log_html(fd_input()->get($thisInput), $thisInput);
-  }
+<?php
+  echo fd_component("navigation/breadcrumb", (object) [
+    "Test" => "test",
+    "select-multiple" => "#"
+  ]);
 ?>
 
 <form action="<?= fd_url($thisUrl) ?>" method="get">
 
-  <!-- The handle -->
-  <?=fd_component("form/select-multiple-handle", [
-    "target" => "#the-select",
-    "css" => ["btn-lg", "fd-btn-default"],
-    "state" => is_array(fd_input()->get($thisInput)),
-  ]) ?>
+  <!-- Non-grouped select -->
+  <div class="form-group">
+    <h1>form/select-multiple (non grouped)</h1>
+    <?php
+      echo fd_component("form/select-multiple", (object) [
+        "name" => "PERSON_NON_GROUPED",
+        "state" => fd_input()->get("PERSON_NON_GROUPED"),
+        "items" => [
+          "alain" => "Alain",
+          "albert" => "Albert",
+          "anthony" => "Anthony",
+          "baldwin" => "Baldwin",
+          "barney" => "Barney",
+          "bilbo" => "Bilbo",
+        ],
+        "css" => [
+          "handle" => ["btn-xs", "fd-btn-default", "mb-100"],
+          "select" => ["input-lg", "text-monospace"],
+        ],
+      ]);
+    ?>
+  </div>
 
-  <hr class="fd-hr">
+  <hr>
 
-  <!-- The select -->
-  <?=fd_component("form/select-multiple-items", [
-    "id" => "the-select",
-    "name" => $thisInput,
-    "items" => $items,
-    "state" => fd_input()->get($thisInput),
-    "css" => ["input-lg", "text-monospace"],
-  ]) ?>
+  <!-- Grouped select -->
+  <div class="form-group">
+    <h1>form/select-multiple (grouped)</h1>
+    <?php
+      echo fd_component("form/select-multiple", (object) [
+        "name" => "PERSON_GROUPED",
+        "state" => fd_input()->get("PERSON_GROUPED"),
+        "items" => [
+          "Letter A" => [
+            "alain" => "Alain",
+            "albert" => "Albert",
+            "anthony" => "Anthony",
+          ],
+          "Letter B" => [
+            "baldwin" => "Baldwin",
+            "barney" => "Barney",
+            "bilbo" => "Bilbo",
+          ],
+        ],
+        "css" => [
+          "handle" => ["btn-xs", "fd-btn-default", "mb-100"],
+          "select" => ["input-lg", "text-monospace"],
+        ],
+      ]);
+    ?>
+  </div>
 
   <!-- The submit -->
   <hr class="fd-hr">

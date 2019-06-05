@@ -17,9 +17,9 @@ use App\Services\Configuration\Configuration;
  */
 class Breadcrumb extends AbstractComponent
 {
-    public $filename = "navigation/breadcrumb";
+    public $templateName = "navigation/breadcrumb";
 
-    protected function process(): void
+    protected function process(string $filename = null): void
     {
         $baseUrl = Configuration::getInstance()->get("app.url");
         $this->templateVars->links = [];

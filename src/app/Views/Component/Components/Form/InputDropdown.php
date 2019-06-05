@@ -51,7 +51,7 @@ use App\Views\Component\AbstractComponent;
  */
 class InputDropdown extends AbstractComponent
 {
-    public $filename = "form/input-dropdown";
+    public $templateName = "form/input-dropdown";
 
     protected function process(): void
     {

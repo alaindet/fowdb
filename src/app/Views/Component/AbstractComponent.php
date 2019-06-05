@@ -15,7 +15,7 @@ use App\Utils\Paths;
  * - Renders the template as a string and returns it
  * 
  * Define these in concrete class
- * - public $filename;
+ * - public $templateName;
  * - protected function process(): void;
  * - Input names
  * - Template vars
@@ -23,14 +23,16 @@ use App\Utils\Paths;
 abstract class AbstractComponent implements ComponentInterface
 {
     protected $input;
+    public $templateName;
     protected $templateVars;
     protected $templatePath;
 
     public function __construct(object $input = null)
     {
-        $relativePath = "components/{$this->filename}.tpl.php";
-        $this->templatePath = Paths::inTemplatesDir($relativePath);
         $this->setInput($input);
+
+        $relativePath = "components/{$this->templateName}.tpl.php";
+        $this->templatePath = Paths::inTemplatesDir($relativePath);
     }
 
     /**
