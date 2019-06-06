@@ -65,6 +65,15 @@ class ComponentsController extends Controller
             ->render();
     }
 
+    public function selectSubmit(Request $request): string
+    {
+        return (new Page)
+            ->template("test/components/select-submit")
+            ->title("Test: select-submit component")
+            ->minify(false)
+            ->render();
+    }
+
     public function pagination(Request $request): string
     {
         // Fake pagination data

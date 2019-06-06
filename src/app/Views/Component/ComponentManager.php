@@ -13,24 +13,19 @@ abstract class ComponentManager
     static protected $instances = [];
 
     static protected $components = [
+        "auth/logout"            => self::NO_CLASS,
+        "form/button-checkbox"   => self::NO_CLASS,
+        "form/button-checkboxes" => self::NO_CLASS,
+        "form/button-dropdown"   => self::NO_CLASS,
+        "form/button-radio"      => self::NO_CLASS,
+        "navigation/breadcrumb"  => Navigation\Breadcrumb::class,
+        "form/input-dropdown"    => Form\InputDropdown::class,
+        "form/select-multiple"   => Form\SelectMultiple::class,
+        "form/select-submit"     => self::NO_CLASS,
 
-        // TEST
-        // "test/with-class" => \App\Views\Component\Components\Test\WithClassComponent::class,
-        // "test/without-class" => self::NO_CLASS,
-        // "test/multiple" => \App\Views\Component\Components\Test\MultipleComponent::class,
-        "auth/logout"                 => self::NO_CLASS,
-        "form/button-checkbox"        => self::NO_CLASS,
-        "form/button-checkboxes"      => self::NO_CLASS,
-        "form/button-dropdown"        => self::NO_CLASS,
-        "form/button-radio"           => self::NO_CLASS,
-        "navigation/breadcrumb"       => Navigation\Breadcrumb::class,
-        "form/input-dropdown"         => Form\InputDropdown::class,
-        "form/select-multiple"        => Form\SelectMultiple::class,
-
-        // "form/input-clear"            => self::NO_CLASS,
-        "form/select-submit"          => self::NO_CLASS,
-        "navigation/pagination"       => Navigation\Pagination::class,
-        "navigation/top-anchor"       => self::NO_CLASS,
+        // "form/input-clear"       => self::NO_CLASS,
+        "navigation/pagination"  => Navigation\Pagination::class,
+        "navigation/top-anchor"  => self::NO_CLASS,
     ];
 
     /**

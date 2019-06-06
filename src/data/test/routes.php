@@ -55,6 +55,7 @@ $public = [
     ["GET", "components/form/input-dropdown", "ComponentsController", "inputDropdown"],
     ["GET", "components/navigation/pagination", "ComponentsController", "pagination"],
     ["GET", "components/form/select-multiple", "ComponentsController", "selectMultiple"],
+    ["GET", "components/form/select-submit", "ComponentsController", "selectSubmit"],
 
     ["GET", "collection", "CollectionController", "index"],
     ["GET", "collection/cluster-to-formats", "CollectionController", "clusterToFormats"],
