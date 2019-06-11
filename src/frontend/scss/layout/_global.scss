@@ -1,0 +1,22 @@
+$h1-desktop-size: $font-size * 3.000;
+$h2-desktop-size: $font-size * 2.250;
+$h3-desktop-size: $font-size * 1.750;
+$h4-desktop-size: $font-size * 1.125;
+
+$h1-mobile-size: $font-size * 2.000;
+$h2-mobile-size: $font-size * 1.625;
+$h3-mobile-size: $font-size * 1.375;
+// h4 is the same as desktop
+
+// Desktop
+h1 { font-size: $h1-desktop-size; margin-bottom: $h1-desktop-size; }
+h2 { font-size: $h2-desktop-size; margin-bottom: $h2-desktop-size; }
+h3 { font-size: $h3-desktop-size; margin-bottom: $h3-desktop-size; }
+h4 { font-size: $h4-desktop-size; margin-bottom: $h4-desktop-size; }
+
+// Mobile
+@media only screen and (max-width: $breakpoint-xs) {
+  h1 { font-size: $h1-mobile-size; margin-bottom: $h1-mobile-size; }
+  h2 { font-size: $h2-mobile-size; margin-bottom: $h2-mobile-size; }
+  h3 { font-size: $h3-mobile-size; margin-bottom: $h3-mobile-size; }
+}
