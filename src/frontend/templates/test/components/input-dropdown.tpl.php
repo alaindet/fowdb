@@ -11,12 +11,15 @@ $items = [
 
 ?>
 
-<?php
-  echo fd_component("navigation/breadcrumb", (object) [
-    "Test" => "test",
-    "form/input-dropdown" => "#"
-  ]);
-?>
+<div class="page-header">
+  <h1>Component: <em>form/input-dropdown</em></h1>
+  <?php
+    echo fd_component("navigation/breadcrumb", (object) [
+      "Test" => "test",
+      "form/input-dropdown" => "#"
+    ]);
+  ?>
+</div>
 
 <form action="<?=fd_url($thisUrl)?>" method="get">
 

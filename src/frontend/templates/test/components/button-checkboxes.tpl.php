@@ -4,12 +4,15 @@ $thisUrl = "test/components/form/button-checkboxes";
 
 ?>
 
-<?php
-  echo fd_component("navigation/breadcrumb", (object) [
-    "Test" => "test",
-    "form/button-checkboxes" => "#"
-  ]);
-?>
+<div class="page-header">
+  <h1>Component: <em>form/button-checkboxes</em></h1>
+  <?php
+    echo fd_component("navigation/breadcrumb", (object) [
+      "Test" => "test",
+      "form/button-checkboxes" => "#"
+    ]);
+  ?>
+</div>
 
 <form action="<?=fd_url($thisUrl)?>" method="get">
 

@@ -6,12 +6,15 @@ $thisInput = fd_input()->get($thisInputName);
 
 ?>
 
-<?php
-  echo fd_component("navigation/breadcrumb", (object) [
-    "Test" => "test",
-    "form/button-radio" => "#"
-  ]);
-?>
+<div class="page-header">
+  <h1>Component: <em>form/button-radio</em></h1>
+  <?php
+    echo fd_component("navigation/breadcrumb", (object) [
+      "Test" => "test",
+      "form/button-radio" => "#"
+    ]);
+  ?>
+</div>
 
 <form action="<?=fd_url($thisUrl)?>" method="get">
 

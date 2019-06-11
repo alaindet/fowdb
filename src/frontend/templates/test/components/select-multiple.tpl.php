@@ -5,18 +5,21 @@ $thisUrl = "test/components/form/select-multiple";
 ?>
 
 <!-- Breadcrumb -->
-<?php
-  echo fd_component("navigation/breadcrumb", (object) [
-    "Test" => "test",
-    "select-multiple" => "#"
-  ]);
-?>
+<div class="page-header">
+  <h1>Component: <em>form/select-multiple</em></h1>
+  <?php
+    echo fd_component("navigation/breadcrumb", (object) [
+      "Test" => "test",
+      "form/select-multiple" => "#"
+    ]);
+  ?>
+</div>
 
 <form action="<?= fd_url($thisUrl) ?>" method="get">
 
   <!-- Non-grouped select -->
   <div class="form-group">
-    <h1>form/select-multiple (non grouped)</h1>
+    <h1>With non-grouped data</h1>
     <?php
       echo fd_component("form/select-multiple", (object) [
         "name" => "PERSON_NON_GROUPED",
@@ -41,7 +44,7 @@ $thisUrl = "test/components/form/select-multiple";
 
   <!-- Grouped select -->
   <div class="form-group">
-    <h1>form/select-multiple (grouped)</h1>
+    <h1>With grouped data</h1>
     <?php
       echo fd_component("form/select-multiple", (object) [
         "name" => "PERSON_GROUPED",

@@ -3,14 +3,15 @@ $thisUrl = "test/components/form/button-checkbox";
 $thisInput = fd_input()->has("INPUT_NAME", "get");
 ?>
 
-<?php
-  echo fd_component("navigation/breadcrumb", (object) [
-    "Test" => "test",
-    "form/button-checkbox" => "#"
-  ]);
-?>
-
-<h1>Hello there!</h1>
+<div class="page-header">
+  <h1>Component: <em>form/button-checkbox</em></h1>
+  <?php
+    echo fd_component("navigation/breadcrumb", (object) [
+      "Test" => "test",
+      "form/button-checkbox" => "#"
+    ]);
+  ?>
+</div>
 
 <form action="<?=fd_url($thisUrl)?>" method="get">
 

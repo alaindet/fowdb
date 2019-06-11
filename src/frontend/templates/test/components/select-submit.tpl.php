@@ -1,12 +1,15 @@
 <!-- Breadcrumb -->
-<?php
-  echo fd_component("navigation/breadcrumb", (object) [
-    "Test" => "test",
-    "select-submit" => "#"
-  ]);
-?>
+<div class="page-header">
+  <h1>Component: <em>form/select-submit</em></h1>
+  <?php
+    echo fd_component("navigation/breadcrumb", (object) [
+      "Test" => "test",
+      "form/select-submit" => "#"
+    ]);
+  ?>
+</div>
 
-<h1>form/select-submit (grouped)</h1>
+<h1>With grouped data</h1>
 
 <?php // Grouped data
   echo fd_component("form/select-submit", (object) [
@@ -31,7 +34,7 @@
 
 <hr>
 
-<h1>form/select-submit (non-grouped)</h1>
+<h1>With non-grouped data</h1>
 
 <?php // Non-grouped data
   echo fd_component("form/select-submit", (object) [

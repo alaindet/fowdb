@@ -6,10 +6,15 @@ $thisInput = fd_input()->get($thisInputName);
 
 ?>
 
-<?= fd_component("navigation/breadcrumb", (object) [
-  "Test" => "test",
-  "button-dropdown" => "#"
-]) ?>
+<div class="page-header">
+  <h1>Component: <em>form/button-dropdown</em></h1>
+  <?php
+    echo fd_component("navigation/breadcrumb", (object) [
+      "Test" => "test",
+      "button-dropdown" => "#"
+    ]);
+  ?>
+</div>
 
 <form action="<?= fd_url($thisUrl) ?>" method="get">
 

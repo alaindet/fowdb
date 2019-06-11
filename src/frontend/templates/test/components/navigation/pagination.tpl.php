@@ -38,12 +38,12 @@ $pagination126 = changePage($pagination, 126);
 <div class="page-header">
 
   <!-- Title -->
-  <h1>Pagination</h1>
+  <h1>Component: <em>navigation/pagination</em></h1>
 
   <!-- Breadcrumbs -->
   <?= fd_component("navigation/breadcrumb", (object) [
     "Test" => "test",
-    "pagination" => "#"
+    "navigation/pagination" => "#"
   ]) ?>
 
 </div>
