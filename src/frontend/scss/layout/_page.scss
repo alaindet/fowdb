@@ -3,12 +3,27 @@ body {
   font-size: $font-size;
   width: 100%;
   max-width: 75em;
+  min-height: 100vh;
   margin: 0 auto;
   padding: 0!important;
   overflow-x: hidden;
+
+  // Flexbox!
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
+  flex-wrap: no-wrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
+}
+
+header {
+  // This allows the <main> to be loaded first and then moved down the <header>
+  order: -1;
+}
+
+main {
+  flex-grow: 1;
 }
 
 @media only screen and (max-width: $breakpoint-xs) {

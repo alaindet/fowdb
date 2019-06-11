@@ -1,14 +1,17 @@
 <?php
-
-// VARIABLES
-// $fd_content
-// $fd_ogp
-// $scripts
-// $state
-// $title
-// $token
-// dependencies: jqueryui, lightbox
-
+/*
+ * VARIABLES
+ * fd_content
+ * fd_ogp
+ * scripts
+ * state
+ * title
+ * token
+ * 
+ * DEPENDENCIES
+ * jqueryui
+ * lightbox
+*/
 ?>
 <!DOCTYPE html>
 <html lang="en" prefix="<?=$fd_ogp->getHtmlPrefix()?>">
@@ -37,7 +40,7 @@
 	<script src="https://use.fontawesome.com/f5164b39df.js" defer></script>
 
   <!-- My CSS -->
-	<link href="<?=fd_asset("assets/css/app.min.css", "css")?>" rel="stylesheet" type="text/css" defer>
+	<link href="<?=fd_asset("assets/css/style.min.css", "css")?>" rel="stylesheet" type="text/css" defer>
 
 	<!-- Favicon -->
 	<link rel="shortcut icon" href="<?=fd_asset("favicon.ico", "png")?>">
@@ -48,8 +51,8 @@
 
 <body>
 	<a name="top"></a>
-  <header><?=fd_include_template("includes/header")?></header>
   <main><?=$fd_content?></main>
+  <header><?=fd_include_template("includes/header")?></header>
   <footer><?=fd_include_template("includes/footer")?></footer>
 
   <!-- jQuery 2.2.4 -->
