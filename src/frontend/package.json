@@ -4,9 +4,14 @@
   "description": "Building tools for FoWDB",
   "main": "index.js",
   "scripts": {
-    "build-css": "node_modules/node-sass/bin/node-sass --output-style=compressed scss/app.scss ../../assets/css/app.min.css",
+    "build-css": "node_modules/node-sass/bin/node-sass --output-style=compressed scss/style.scss ../../assets/css/style.min.css",
     "build-js": "node ./js/build.js",
-    "watch-build-js": "nodemon ./js/build.js --dev"
+    "mix-dev": "npm run mix-development",
+    "mix-development": "node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "mix-watch": "npm run mix-development -- --watch",
+    "mix-hot": "node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "mix-prod": "npm run mix-production",
+    "mix-production": "node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "author": {
     "name": "Alain D'Ettorre",
@@ -21,7 +26,16 @@
     "node-sass": "^4.12.0",
     "tar": ">=2.2.2",
     "uglify-es": "^3.3.9",
-    "yargs": "^12.0.5"
+    "yargs": "^12.0.5",
+    "browser-sync": "^2.26.7",
+    "browser-sync-webpack-plugin": "^2.0.1",
+    "cross-env": "^5.2.0",
+    "laravel-mix": "^4.0.16",
+    "resolve-url-loader": "^2.3.1",
+    "sass": "^1.21.0",
+    "sass-loader": "^7.1.0",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.33.0"
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5"
