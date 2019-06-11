@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Test;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
+use App\Views\Page\Page;
 
 use App\Services\Database\StatementManager\StatementManager;
 use App\Services\Database\Paginator;
@@ -31,41 +32,19 @@ class DatabaseController extends Controller
             ->setResultsPerPage(10)
             ->setLink($request->getCurrentUrl())
             ->fetch(Card::class);
-        
-        $results = $paginator->getResults(); // array|ItemsCollection
-        $pagination = $paginator->getPaginationData();
 
-        $resultsHtml = (
-            "<ul>".
-                $results->reduce(function ($log, $item) {
-                    return $log .= "<li>{$item->code} {$item->name}</li>";
-                }, "").
-            "</ul>"
-        );
-
-        $paginationHtml = (
-            "<ul>".
-                Arrays::reduce(
-                    Arrays::fromObject($pagination),
-                    function ($log, $value, $key) {
-                        return $log .= (
-                            "<li><strong>{$key}</strong>: {$value}</li>"
-                        );
-                    },
-                    ""
-                ).
-            "</ul>"
-        );
-
-        return fd_log_html(
-            "<h1>Results</h1>".
-            "<ul>{$resultsHtml}</ul>".
-            "<h2>Pagination data</h2>".
-            "<ul>{$paginationHtml}</ul>".
-            "<h2>Query</h2>".
-            "<pre>".$statement->toString()."</pre>",
-            $title = "Cards from Cluster 1"
-        );
+        return (new Page)
+            ->template("test/database/pagination")
+            ->title("Database pagination (cards from cluster 1)")
+            ->variables([
+                "results" => $paginator->getResults(),
+                "pagination" => Arrays::fromObject(
+                    $paginator->getPaginationData()
+                ),
+                "sql" => $statement->toString(),
+            ])
+            ->minify(false)
+            ->render();
     }
 
     public function statementMerge(Request $request): string
@@ -79,9 +58,30 @@ class DatabaseController extends Controller
             ->from("table2")
             ->limit(10);
 
-        // $a->mergeWith($b);
-        // $a->mergeWith($b, $fromBOnSingleValue = true);
-        $a->replaceWith($b);
+        $aMergeWithB = clone $a;
+        $aMergeWithB->mergeWith($b);
+
+        $aMergeFromB = clone $a;
+        $aMergeFromB->mergeWith($b, $fromBOnSingleValue = true);
+
+        $aReplaceWithB = clone $a;
+        $aReplaceWithB->replaceWith($b);
+
+        return (new Page)
+            ->template("test/log")
+            ->title("Database statement merge")
+            ->variables([
+                "data" => [
+                    "a" => $a->toString(),
+                    "b" => $b->toString(),
+                    "a->mergeWith(b)" => $aMergeWithB->toString(),
+                    "a->mergeWith(b, fromBOnSingle = true)" => $aMergeFromB->toString(),
+                    "a->replaceWith(b)" => $aReplaceWithB->toString(),
+                ],
+                "title" => "Database statement merge",
+            ])
+            ->minify(false)
+            ->render();
 
         return $a->toString();
     }

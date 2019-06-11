@@ -9,6 +9,7 @@ use App\Entity\GameFormat\GameFormat;
 use App\Entity\GameCluster\GameCluster;
 use App\Http\Response\JsonResponse;
 use App\Base\ORM\Manager\EntityManager;
+use App\Views\Page\Page;
 
 class CollectionController extends Controller
 {
@@ -20,13 +21,19 @@ class CollectionController extends Controller
             (object) ["name" => "Charles", "age" => 30]
         ]);
 
-        return fd_log_html(
-            $collection
-                ->map(function ($item) {
-                    return "{$item->name}, {$item->age}";
-                })
-                ->toArray()
-        );
+        $result = $collection
+            ->map(function ($item) { return "{$item->name}, {$item->age}"; })
+            ->toArray();
+
+        return (new Page)
+            ->template("test/log")
+            ->title("ItemsCollection::map")
+            ->variables([
+                "data" => $result,
+                "title" => "ItemsCollection::map",
+            ])
+            ->minify(false)
+            ->render();
     }
 
     public function formatToClusters(): string
@@ -89,6 +96,14 @@ class CollectionController extends Controller
             )
             ->toArray();
 
-        return fd_log_html($collection, "Sorted by \"val\" property");
+        return (new Page)
+            ->template("test/log")
+            ->title("ItemsCollection::sort")
+            ->variables([
+                "data" => $collection,
+                "title" => "ItemsCollection::sort <small>(sorted by \"val\" property)</small>"
+            ])
+            ->minify(false)
+            ->render();
     }
 }
