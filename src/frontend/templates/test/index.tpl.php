@@ -21,3 +21,5 @@ foreach ($urls as $url) {
     </li>
   <?php endforeach; ?>
 </ul>
+
+<?=fd_component("navigation/top-anchor")?>

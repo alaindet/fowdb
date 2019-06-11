@@ -19,7 +19,7 @@ class Breadcrumb extends AbstractComponent
 {
     public $templateName = "navigation/breadcrumb";
 
-    protected function process(string $filename = null): void
+    protected function process(): void
     {
         $baseUrl = Configuration::getInstance()->get("app.url");
         $this->templateVars->links = [];
