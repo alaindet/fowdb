@@ -60,7 +60,7 @@ abstract class Uri
     public static function buildQueryString($params = null): string
     {
         // No parameters
-        if ($params === null) {
+        if ($params === null || $params === []) {
             return "";
         }
 

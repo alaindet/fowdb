@@ -240,7 +240,7 @@ function fd_render(string $toRender): string
  * @param array $params
  * @return string
  */
-function fd_url(string $to = null, array $params = []): string
+function fd_url(string $to = null, array $params = null): string
 {
 	return Uri::build($to, $params);
 }
