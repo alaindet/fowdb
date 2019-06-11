@@ -18,13 +18,49 @@ trait ItemsCollectionDataWriteTrait
         return $this;
     }
 
-    public function add(ItemInterface $item): ItemsCollectionInterface
+    public function add($item): ItemsCollectionInterface
     {
         $this->items[] = $item;
         return $this;
     }
 
+    public function append($item): ItemsCollectionInterface
+    {
+        $this->add($item);
+    }
+
+    public function prepend($item): ItemsCollectionInterface
+    {
+        array_unshift($this->items, $item);
+        return $this;
+    }
+
+    public function shift()
+    {
+        return array_unshift($this->items);
+    }
+
+    /**
+     * Alias of $this->shift()
+     *
+     * @return void
+     */
+    public function removeFirst()
+    {
+        return array_unshift($this->items);
+    }
+
     public function pop()
+    {
+        return array_pop($this->items);
+    }
+
+    /**
+     * Alias of $this->pop()
+     *
+     * @return void
+     */
+    public function removeLast()
     {
         return array_pop($this->items);
     }

@@ -2,7 +2,6 @@
 
 namespace App\Base\Items;
 
-use App\Base\Items\Interfaces\ItemInterface;
 use App\Base\Items\Interfaces\ItemsCollectionInterface;
 use App\Base\Items\ItemsCollectionIteratorTrait;
 use App\Base\Items\ItemsCollectionDsCollectionTrait;
