@@ -1,7 +1,6 @@
 <?php
 
 use App\Services\Session\Session;
-use App\Utils\Uri;
 
 /*
  | ----------------------------------------------------------------------------
