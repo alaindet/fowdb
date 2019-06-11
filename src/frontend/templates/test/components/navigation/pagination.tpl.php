@@ -25,7 +25,7 @@ function toComponent(object $pagination, bool $hasLabel = true): object
   ];
 }
 
-if ($_GET["page"]) {
+if (isset($_GET["page"])) {
   $pagination = changePage($pagination, intval($_GET["page"]));
 }
 $pagination1 = changePage($pagination, 1);

@@ -78,14 +78,14 @@ class ComponentsController extends Controller
     {
         // Fake pagination data
         $pagination = (object) [
-            "totalCount" => 3128,
-            "count" => 2500 - 2476 + 1,
-            "page" => 100,
-            "perPage" => 25,
-            "lastPage" => 126,
-            "lowerBound" => 2476,
-            "upperBound" => 2500,
-            "link" => fd_url("test/components/navigation/pagination"),
+            "totalCount" => 100,
+            "count" => 10,
+            "page" => 5,
+            "perPage" => 10,
+            "lastPage" => 10,
+            "lowerBound" => 41,
+            "upperBound" => 50,
+            "link" => fd_url("test/components/navigation/pagination", $_GET),
             "hasMorePages" => 1,
             "hasAnyPagination" => 1,
         ];
