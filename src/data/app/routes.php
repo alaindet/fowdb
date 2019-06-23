@@ -46,7 +46,7 @@ $public = [
     ["GET", "cards/search","CardsController","searchForm"], // Alias
     ["GET", "cards","CardsController","search"],
     ["GET", "spoiler","SpoilersController","index"],
-    ["GET", "card/{code}","CardsController","show",["code" => "[A-Z0-9]+\-\d{3}[\s+]*[A-Z]*"]],
+    ["GET", "card/{code}","CardsController","show"],
     ["GET", "cr/{version}","GameRulesController","show",["version" => "[0-9]+.[0-9]+[a-z]*"]],
     ["GET", "cr","GameRulesController","index"],
     ["GET", "races","RacesController","index"],
