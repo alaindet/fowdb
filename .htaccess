@@ -14,12 +14,20 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
+    # Angular test app...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(ng-test/.*) /ng-test/index.html [NC,L]
+
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 
 </IfModule>
+
+# CORS
+Header set Access-Control-Allow-Origin "*"
 
 # EXPIRES CACHING
 <IfModule mod_expires.c>

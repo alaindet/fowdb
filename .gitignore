@@ -19,5 +19,9 @@ assets/
 sitemap.xml
 sitemap.xml.gz
 
+# Frontend
+/ng-test/
+/admin/
+
 # Not these
 !.env.example

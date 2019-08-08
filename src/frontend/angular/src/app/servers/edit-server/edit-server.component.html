@@ -1,0 +1,49 @@
+<a routerLink="/servers">&times; Close</a>
+<hr>
+
+<!-- ERROR: Not allowed -->
+<ng-container *ngIf="!allowed; else allowedTemplate">
+  <p>You cannot edit this server</p>
+</ng-container>
+
+<ng-template #allowedTemplate>
+
+  <!-- ERROR: No server -->
+  <ng-container *ngIf="!server; else defaultTemplate">
+    <p>No server with ID #{{ server.id }</p>
+  </ng-container>
+
+  <ng-template #defaultTemplate>
+
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input
+        type="text"
+        id="name"
+        class="form-control"
+        [(ngModel)]="serverName"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="status">Status</label>
+      <select
+        id="status"
+        class="form-control"
+        [(ngModel)]="serverStatus"
+      >
+        <option value="online">Online</option>
+        <option value="offline">Offline</option>
+      </select>
+    </div>
+
+    <button
+      class="btn btn-primary"
+      (click)="onUpdateServer()"
+    >Update</button>
+
+    <hr>
+    <a [routerLink]="['/servers', server.id]">&larr; Server info</a>
+
+  </ng-template>
+</ng-template>
