@@ -1,6 +1,6 @@
 # Conventions and how-tos on FoWDB
 
-## <input> names
+## &lt;input&gt; names
 
 - All inputs names must be in kebab-case, not snake_case Ex.: `<input name="card-id">`
 - Variables inside views must be named in snake_case to enhance readabiliy
