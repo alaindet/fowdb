@@ -121,7 +121,7 @@ function fd_statement(string $type): SqlStatement
 // VIEW -----------------------------------------------------------------------
 
 /**
- * Builds the URL for any asset, appending querystrings to bust the cache
+ * Builds the URL for any asset, appending query strings to bust the cache
  *
  * @param string $path
  * @param string $type
@@ -134,7 +134,9 @@ function fd_asset(string $path, string $type = "any"): string
 	$url = $config->get("app.url");
 
 	// Bypass query string if already present
-	if (strpos($path, "?")) return "{$url}/{$path}";
+	if (strpos($path, "?") === false) {
+		return "{$url}/{$path}";
+	}
 
     $version = [
 		"any" => $config->get("app.timestamp"),
@@ -181,7 +183,7 @@ function fd_include_template(string $path, array $__variables = null): string
 	// Bind variables to this template only
 	if (!empty($__variables)) {
 		foreach ($__variables as $__name => $__value) {
-			if (strpos($__name, '-')) {
+			if (strpos($__name, '-') !== false) {
                 $__name = Strings::kebabToSnake($__name);
             }
 			$$__name = $__value;

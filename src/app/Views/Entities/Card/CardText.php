@@ -41,13 +41,10 @@ class CardText
 	];
 
     /**
-	 * Renders the HTML presentation of a card's text
-	 *
-	 * The rendered string has HTML <img> for will and rest symbols,
-	 * CSS classes for abilities, skills, breaks and horizontal rules.
+	 * Renders the HTML representation of a card's text
 	 *
 	 * @param string $text The string to be rendered
-	 * @return string $text The rendered string
+	 * @return string $text The HTML rendered string
 	 */
 	public static function render(string $text): string
 	{

@@ -146,8 +146,19 @@ abstract class Uri
     /**
      * Creates or overwrites a query string parameter
      * 
-     * If $paramValue is a callback, it will receive the old value as input and
-     * the returned value is used as the new value
+     * If $paramValue is a callback, it will receive the old value as input (or
+     * null if there's no old value) and the returned value is then used as
+     * the new value for given parameter
+     * 
+     * Ex.:
+     * Uri::setQueryStringParameter(
+     *     'hello/world?page=42',
+     *     'page',
+     *     function ($page = null) {
+     *         $page = $page ?? 0;
+     *         return $page + 1;
+     *     }
+     * );
      *
      * @param string $uri
      * @param string $paramName
@@ -161,18 +172,21 @@ abstract class Uri
     ): string
     {
         $splitByQuestionMark = explode("?", $uri);
-        (isset($splitByQuestionMark[1]))
-            ? [$baseUri, $queryString] = $splitByQuestionMark
-            : [$baseUri, $queryString] = [$splitByQuestionMark[0], ""];
+        $baseUri = $splitByQuestionMark[0];
+        $queryString = $splitByQuestionMark[1] ?? "";
 
+        // Explodes the querys tring into an array
         $currentParams = [];
         parse_str($queryString, $currentParams);
         
-        (is_callable($paramValue))
-            ? $newValue = $paramValue($currentParams[$paramName] ?? null)
-            : $newValue = $paramValue;
+        if (is_callable($paramValue)) {
+            $newValue = $paramValue($currentParams[$paramName] ?? null);
+            $newParams[$paramName] = $newValue;
+        } else {
+            $newParams[$paramName] = $paramValue;
+        }
 
-        $newParams[$paramName] = $newValue;
+        // Implodes back an array as a query string
         $queryString = http_build_query($newParams);
         
         return "{$baseUri}?{$queryString}";
