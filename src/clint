@@ -2,14 +2,14 @@
 
 // Some conventions: https://stackoverflow.com/a/36495940/5653974
 
-use \App\Clint\Clint;
-use \App\Clint\Exceptions\ClintException;
-use \App\Utils\Logger;
+use App\Clint\Clint;
+use App\Clint\Exceptions\ClintException;
+use App\Utils\Logger;
 
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/app/functions/helpers.php';
 
-try {
+try { 
     $clint = new Clint($argv);
     $clint->run();
     $message = "\n".$clint->message();

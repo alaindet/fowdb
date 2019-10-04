@@ -9,6 +9,7 @@ return [
 
     'list' => \App\Clint\Commands\ListCommand::class,
     'help' => \App\Clint\Commands\HelpCommand::class,
+    'cache:routes' => \App\Clint\Commands\CacheRoutesCommand::class,
     'cards:sort' => \App\Clint\Commands\CardsSortCommand::class,
     'clint:add' => \App\Clint\Commands\ClintAddCommand::class,
     'config:build' => \App\Clint\Commands\ConfigurationBuildCommand::class,

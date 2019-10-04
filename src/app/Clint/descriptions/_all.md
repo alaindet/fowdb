@@ -4,6 +4,7 @@ Usage:
 Commands:
   list          Displays the list of commands (this command)
   help          Displays a specific command description
+  cache:routes  Caches the routes file
   cards:sort    Re-builds 'sorted_id' field on 'cards' table
   clint:add     Adds a new Clint command
   config:build  Builds the configuration cache file

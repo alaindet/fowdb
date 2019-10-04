@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Assumes $routes exists
+ */
+
 use App\Utils\Paths;
 use App\Services\FileSystem\FileSystem;
 

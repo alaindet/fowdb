@@ -42,10 +42,13 @@ $request = (new Request)
     ->setQueryString($_SERVER["QUERY_STRING"]);
 
 // Read the routes
-$routes = FileSystem::loadFile(Paths::inDataDir("app/routes.php"));
-
-// TEST
-require __DIR__ . "/src/add-test-routes.php";
+if ($config->get("app.env") === "development") {
+    $routes = FileSystem::loadFile(Paths::inDataDir("app/routes.php"));
+    require __DIR__ . "/src/add-test-routes.php";
+} else {
+    // Run `php clint cache:routes` before this
+    $routes = Cache::load('routes.php');
+}
 
 // Map request to its route
 $route = (new Router)

@@ -118,7 +118,7 @@ abstract class FileSystem implements FileSystemInterface
      * Throws a manageable exception on failure
      *
      * @param string $path
-     * @return mixed Depends on the file (string|array)
+     * @return string|array Depends on the file (string|array)
      */
     static public function loadFile(string $path)
     {

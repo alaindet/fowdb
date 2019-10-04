@@ -73,7 +73,7 @@ class ClintAddCommand extends Command
             ->setFilePath('clint-add')
             ->setData([
                 '%CLASS_NAME%' => $this->commandClass,
-                '%COMMAND_NAME%' => $this->commandName
+                '%COMMAND_NAME%' => $this->commandName,
             ])
             ->render()
             ->getFile();
