@@ -1,6 +1,5 @@
 <?php
 
-use App\Exceptions\ViewsComponentException;
 use App\Services\Configuration\Configuration;
 use App\Services\CsrfToken;
 use App\Services\Database\Database;
@@ -12,7 +11,6 @@ use App\Utils\Paths;
 use App\Utils\Strings;
 use App\Utils\Uri;
 use App\Views\Entities\Card\CardText;
-use App\Views\Components;
 use App\Views\Page\Page;
 use App\Legacy\Authorization as LegacyAuthorization;
 use App\Http\Request\Input\InputManager;
