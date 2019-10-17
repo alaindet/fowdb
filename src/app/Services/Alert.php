@@ -30,15 +30,26 @@ class Alert
 	 */
 	private static $defaultType = 'info';
 
-  /**
+	/**
+	 * Utility to add an error alert
+	 *
+	 * @param string $message
+	 * @return void
+	 */
+	public static function addError(string $message): void
+	{
+		self::add($message, "danger");
+	}
+
+	/**
 	 * Adds an alert to the session, stacks alerts into the session
 	 *
 	 * @param string $message
 	 * @param string $type
 	 * @return void
 	 */
-  public static function add(string $message, string $type = null): void
-  {
+	public static function add(string $message, string $type = null): void
+	{
 		$alert = self::build($message, $type);
 		Session::add(self::NAME, $alert);
 	}
