@@ -38,6 +38,7 @@ class TypesGenerator implements LookupDataGeneratorInterface
         [9, 0],  // Basic Ruler
         [9, 1],  // Basic J-Ruler
         [3],     // Resonator
+        [26],    // Resonator (Stranger)
         [4],     // Chant
         [5],     // Addition
         [6],     // Regalia
