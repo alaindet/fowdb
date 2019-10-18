@@ -67,7 +67,7 @@ class CardsController extends Controller
             "back-side" => ["required","is:integer","enum:0,1,2,3,4"],
             "name" => ["required","is:text","not-empty"],
             "type" => ["required","except:0"],
-            "rarity" => ["required","is:text","enum:0,c,u,r,sr,s,ar"],
+            "rarity" => ["required","is:text","enum:0,c,u,r,sr,s,ar,n"],
             "attribute" => ["required","is:array"],
 
             // Optional fields
