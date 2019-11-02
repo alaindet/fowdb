@@ -1,6 +1,0 @@
-{
-    "output": "public/play-restrictions/play-restrictions",
-    "dependencies": [
-        "utils/hider"
-    ]
-}
