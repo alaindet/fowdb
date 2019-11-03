@@ -5,23 +5,18 @@ vendor/
 # App and development directories
 /.backup/
 /.dev/
-/src/data/cache/
-/src/data/resources/cr
-/src/data/backup
-/src/data/logs
+/src/data
+!/src/data/app/*
 
 # Public assets and files
 assets/
-.env
-.env.production
-.env.development
-.pdf
+images/
+*.pdf
 sitemap.xml
 sitemap.xml.gz
 
-# Frontend
-/ng-test/
-/admin/
-
-# Not these
+# Environment files
+.env
+.env.production
+.env.development
 !.env.example
