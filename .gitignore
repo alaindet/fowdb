@@ -5,8 +5,9 @@ vendor/
 # App and development directories
 /.backup/
 /.dev/
-/src/data
-!/src/data/app/*
+/src/data/cache
+/src/data/resources
+/src/data/backup
 
 # Public assets and files
 assets/
