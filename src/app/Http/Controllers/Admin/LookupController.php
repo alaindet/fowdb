@@ -25,7 +25,7 @@ class LookupController extends Controller
             ->template('pages/admin/lookup/index')
             ->title('Lookup,Index')
             ->variables([
-                'features' => $this->lookup->features(),
+                'features' => $this->lookup->getFeatures(),
                 'breadcrumb' => [
                     'Admin' => url('profile'),
                     'Lookup' => '#'
@@ -34,9 +34,9 @@ class LookupController extends Controller
             ->render();
     }
 
-    public function buildAll(): string
+    public function buildAll(): void
     {
-        $this->lookup->generateAll()->cache();
+        $this->lookup->build()->store();
         Alert::add('Lookup data cache regenerated.');
         Redirect::to('lookup/read');
     }
@@ -59,7 +59,7 @@ class LookupController extends Controller
             ->title('Lookup,Read')
             ->variables([
                 'feature' => $feature,
-                'features' => $this->lookup->features(),
+                'features' => $this->lookup->getFeatures(),
                 'log' => log_html($data, 'Lookup data: '.$feature),
                 'breadcrumb' => [
                     'Admin' => url('profile'),

@@ -5,7 +5,7 @@ namespace App\Services\Lookup;
 use App\Base\Singleton;
 use App\Exceptions\FileSystemException;
 use App\Exceptions\LookupException;
-use App\Services\FileSystem;
+use App\Services\FileSystem\FileSystem;
 use App\Services\Lookup\Generators\AttributesGenerator;
 use App\Services\Lookup\Generators\BackSidesGenerator;
 use App\Services\Lookup\Generators\ClustersGenerator;
@@ -32,124 +32,111 @@ class Lookup
      *
      * @var array
      */
-    private $cache = [];
+    private $data = [];
 
     /**
-     * Location of the cache file
+     * Path of the cache file
      *
      * @var string
      */
-    private $cacheFilename;
+    private $path = "/data/cache/lookup.txt";
 
     /**
-     * Will hold temporary generated content before saving the cache file
+     * List of generator classes by feature
      *
      * @var array
      */
-    private $generated = [];
-
-    /**
-     * List of generator classes for features. Order reflects importance
-     *
-     * @var array
-     */
-    public $features = [
-        'attributes' => AttributesGenerator::class,
-        'backsides'  => BackSidesGenerator::class,
-        'clusters'   => ClustersGenerator::class,
-        'costs'      => CostsGenerator::class,
-        'divinities' => DivinitiesGenerator::class,
-        'formats'    => FormatsGenerator::class,
-        'narps'      => NarpsGenerator::class,
-        'rarities'   => RaritiesGenerator::class,
-        'sets'       => SetsGenerator::class,
-        'sortables'  => SortablesGenerator::class,
-        'spoilers'   => SpoilersGenerator::class,
-        'types'      => TypesGenerator::class,
+    private $generators = [
+        "attributes" => AttributesGenerator::class,
+        "backsides"  => BackSidesGenerator::class,
+        "clusters"   => ClustersGenerator::class,
+        "costs"      => CostsGenerator::class,
+        "divinities" => DivinitiesGenerator::class,
+        "formats"    => FormatsGenerator::class,
+        "narps"      => NarpsGenerator::class,
+        "rarities"   => RaritiesGenerator::class,
+        "sets"       => SetsGenerator::class,
+        "sortables"  => SortablesGenerator::class,
+        "spoilers"   => SpoilersGenerator::class,
+        "types"      => TypesGenerator::class,
     ];
+
+    /**
+     * Holds all the features' names (filled from self::generators on runtime)
+     *
+     * @var array
+     */
+    private $features;
 
     /**
      * Defined the cache file location and loads it
      */
     private function __construct()
     {
-        $this->cacheFilename = path_cache('lookup/lookup.txt');
+        $this->path = path_src($this->path);
+        $this->features = array_keys($this->generators);
         $this->load();
     }
 
     /**
      * Loads the cached lookup file
      *
-     * @return void
+     * @return Lookup
      */
-    private function load(): void
+    private function load(): Lookup
     {
         try {
-            $this->cache = unserialize(
-                FileSystem::readFile($this->cacheFilename)
-            );
-        }
-        
-        // ERROR: Missing cached file!
-        catch (FileSystemException $exception) {
-            $this->cache = [];
+            $this->data = unserialize(FileSystem::readFile($this->path));
+        } catch (FileSystemException $exception) {
+            $this->build()->store();
+        } finally {
+            return $this;
         }
     }
 
     /**
-     * Stores all the current cache data in the cache file
-     * Usually called after Lookup::generate() or Lookup::generateAll()
+     * Stores current data into cached file, usually called after self::build()
      *
      * @return Lookup
      */
-    public function cache(): Lookup
+    public function store(): Lookup
     {
-        // Update in-memory data before saving the file
-        foreach ($this->generated as $name => $content) {
-            $this->cache[$name] = $content;
-        }
-
-        // Save new cache file
-        FileSystem::saveFile($this->cacheFilename, serialize($this->cache));
+        FileSystem::saveFile($this->path, serialize($this->data));
 
         return $this;
     }
 
     /**
-     * Calls the specific feature generator by its name
-     * The generator function generates new data,
-     * then swaps the old data with the new one at runtime
+     * If $feature is null, build all data!
+     * If $feauure is a string, build data for that single feature
+     * If $feature is an array, build data for those features
      *
-     * @param string $name Name of the feature to re-generate
+     * @param string|array|null $feature
      * @return Lookup
      */
-    public function generate($feature): Lookup
+    public function build($feature = null): Lookup
     {
-        $generatorClass = $this->features[$feature];
-        $this->generated[$feature] = (new $generatorClass)->generate();
-        
-        return $this;
-    }
+        $features = [];
 
-    /**
-     * Calls all the available generator classes
-     *
-     * @return $this
-     */
-    public function generateAll(): Lookup
-    {
-        foreach (array_keys($this->features) as $feature) {
-            $this->generate($feature);
+        if ($feature === null) {
+            $features = $this->features;
+        } else {
+            $features = (is_array($feature)) ? $feature : [$feature];
+        }
+
+        foreach ($features as $feature) {
+            $generatorClass = $this->generators[$feature];
+            $this->data[$feature] = (new $generatorClass)->generate();
         }
 
         return $this;
     }
 
     /**
-     * Reads just an element of the cache array
+     * Reads just an element of the cached array
      * Can return array or string based on the $path
      * 
-     * Ex.: $cache->get('rarities.id2code.1'); // Common
+     * Ex.: $lookup->get("rarities.id2code.1"); // Common
      *
      * @param string $path Dot-notation path
      * @return mixed string | string[]
@@ -158,26 +145,26 @@ class Lookup
     {
         // ERROR: Missing name
         if (!isset($path)) {
-            throw new LookupException('Not path provided');
+            throw new LookupException("Not path provided");
         }
 
         // Directly return data (not-nested data)
-        if (false === strpos($path, '.')) return $this->cache[$path];
+        if (false === strpos($path, ".")) {
+            return $this->data[$path];
+        }
 
         // Split by the dot
-        $bits = explode('.', $path);
-
-        $features = array_keys($this->features);
+        $bits = explode(".", $path);
 
         // Pop the first bit, then dive 1 level deeper
         $first = array_shift($bits);
 
         // ERROR: Invalid path
-        if (!in_array($first, $features)) {
+        if (!in_array($first, $this->features)) {
             throw new LookupException("Feature \"{$first}\" doesn't exist");
         }
 
-        $result = $this->cache[$first];
+        $result = $this->data[$first];
 
         // Loop on all bits and dive deeper if needed
         foreach ($bits as &$bit) {
@@ -188,13 +175,13 @@ class Lookup
     }
 
     /**
-     * Returns all the cache array
+     * Returns all the cached array
      *
      * @return array
      */
     public function getAll(): array
     {
-        return $this->cache;
+        return $this->data;
     }
 
     /**
@@ -202,8 +189,8 @@ class Lookup
      *
      * @return array
      */
-    public function features(): array
+    public function getFeatures(): array
     {
-        return array_keys($this->features);
+        return $this->features;
     }
 }

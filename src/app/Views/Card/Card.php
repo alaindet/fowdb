@@ -34,35 +34,21 @@ class Card
      */
     public static function formatsListByCluster(string $cluster): array
     {
-        $lookup = lookup('formats');
-        $codeToName = $lookup['code2name'];
-        $codeToClusters = $lookup['code2clusters'];
+        $formatCodeToName = lookup('formats.code2name');
+        $formatCodeToClusters = lookup('formats.code2clusters');
 
-        // I need the array key, hence the custom Arrays::reduce
-        return Arrays::reduce(
-            
-            // Data
-            $codeToClusters,
-            
-            // Reducer
-			function (
-                $result,
-                $formatClusters,
-                $formatCode
-            ) use (&$cluster, &$codeToName) {
-				if (in_array($cluster, $formatClusters)) {
-					$result[] = [
-						'name' => $codeToName[$formatCode],
-						'code' => $formatCode
-					];
-				}
-				return $result;
-            },
-            
-            // Reduced
-            []
-            
-		);
+        $result = [];
+
+        foreach ($formatCodeToClusters as $code => $clusters) {
+            if (in_array($cluster, $clusters)) {
+                $result[] = [
+                    "name" => $formatCodeToName[$code],
+                    "code" => $code,
+                ];
+            }
+        }
+
+        return $result;
     }
 
     /**

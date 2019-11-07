@@ -50,7 +50,6 @@ abstract class CrudService implements CrudServiceInterface
      * Overridden by child class
      * 
      * Lookup features to update before finishing
-     * 
      * Can be a string (feature name) or array of strings (features' names)
      *
      * @var mixed
@@ -123,21 +122,11 @@ abstract class CrudService implements CrudServiceInterface
      */
     public function updateLookupData(): CrudServiceInterface
     {
-        $lookup = Lookup::getInstance();
-
-        // Update specific lookup data only
-        if (isset($this->lookup)) {
-            if (!is_array($this->lookup)) $this->lookup = [$this->lookup];
-            foreach ($this->lookup as $feature) $lookup->generate($feature);
+        if (!isset($this->lookup)) {
+            Lookup::getInstance()->build()->store();
+        } else {
+            Lookup::getInstance()->build($this->lookup)->store();
         }
-        
-        // Update all lookup data (default)
-        else {
-            $lookup->generateAll();
-        }
-
-        // Store new lookup data into the filesystem
-        $lookup->cache();
 
         return $this;
     }
