@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/src/bootstrap.php';
+require __DIR__ . '/src/bootstrap/web.php';
 
 /*
  | ----------------------------------------------------------------------------
@@ -30,12 +30,13 @@ $request = (new \App\Http\Request\Request)
     ->path($_SERVER['REQUEST_URI'] ?? '/')
     ->queryString($_SERVER['QUERY_STRING']);
 
-// Read the routes
-$routes = \App\Services\FileSystem::loadFile(path_data('app/routes.php'));
-
 // Map request to its route
 $route = (new \App\Http\Response\Router())
-    ->setRoutes($routes)
+    ->setRoutes(
+        $routes = \App\Services\FileSystem\FileSystem::loadFile(
+            path_data('app/routes.php')
+        )
+    )
     ->setRequest($request)
     ->match();
 
@@ -43,10 +44,8 @@ $route = (new \App\Http\Response\Router())
 $request->app('access', $route['_access']);
 
 // Initialize the dispatcher
-$response = (new \App\Http\Response\Dispatcher())
+echo $response = (new \App\Http\Response\Dispatcher())
     ->setRequest($request)
     ->setMatchedRoute($route)
     ->runMiddleware()
     ->dispatch();
-
-echo $response;

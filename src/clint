@@ -1,25 +1,36 @@
 <?php
 
-// Some conventions: https://stackoverflow.com/a/36495940/5653974
+/**
+ * This script is the entry point to launch Clint commands from the terminal
+ * Clint is a service that runs "commands" both from terminal and code
+ * 
+ * Some conventions about terminal commands can be found here
+ * https://stackoverflow.com/a/36495940/5653974
+ * 
+ * # Examples
+ * $ php clint config:clear
+ * $ php clint clint:add foo:bar --class=FooBarCommand --desc="bla bla bla"
+ * $ php clint env:get
+ */
 
-require __DIR__ . '/vendor/autoload.php';
-require __DIR__ . '/app/functions/helpers.php';
+require __DIR__ . "/bootstrap/cli.php";
 
-try
-{
-    $clint = new \App\Clint\Clint($argv);
+$title = "";
+$message = "";
+
+try {
+    $clint = new \App\Clint\Clint();
+    $clint->setRawInput($argv);
     $clint->run();
-    $message = "\n".$clint->message();
-    $title = $clint->title();
+    $title = $clint->getTitle();
+    $message = "\n" . $clint->getMessage();
 }
 
-catch (\App\Clint\Exceptions\ClintException $exception)
-{
+catch (\App\Clint\Exceptions\ClintException $exception) {
+    $title = "Clint Error";
     $message = $exception->getMessage();
-    $title = 'Clint CLI error';
 }
 
-finally
-{
+finally {
     echo \App\Utils\Logger::cli($message, $title);
 }
