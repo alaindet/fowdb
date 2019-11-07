@@ -12,7 +12,7 @@ class Arrays
      * @param array $b
      * @return array
      */
-    public static function union(array $a, array $b): array
+    static public function union(array $a, array $b): array
     {
         return array_unique(array_merge($a, $b));
     }
@@ -26,7 +26,7 @@ class Arrays
      * @param bool $preserveKeys FALSE: use new numeric keys instead of original keys
      * @return array
      */
-    public static function map(
+    static public function map(
         array $array,
         callable $callback,
         bool $preserveKeys = true
@@ -51,7 +51,7 @@ class Arrays
      * @param bool $preserveKeys FALSE: use new numeric keys instead of original keys
      * @return mixed Same type as $carry
      */
-    public static function reduce(
+    static public function reduce(
         array $array,
         callable $callback,
         $result = null,
@@ -79,7 +79,7 @@ class Arrays
      * @param bool $preserveKeys FALSE: use new numeric keys instead of original keys
      * @return array Filtered array
      */
-    public static function filter(
+    static public function filter(
         array $array,
         callable $callback,
         bool $preserveKeys = true
@@ -102,7 +102,7 @@ class Arrays
      * @param array $array
      * @return array
      */
-    public static function filterNull(array $array): array
+    static public function filterNull(array $array): array
     {
         return self::filter($array, function ($i) { return isset($i); });
     }
@@ -121,7 +121,7 @@ class Arrays
      * @param string ...$nestedKeys List of strings
      * @return void
      */
-    public static function addNested(
+    static public function addNested(
         array &$array,
         $value,
         ...$nestedKeys

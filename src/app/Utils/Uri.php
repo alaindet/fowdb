@@ -10,7 +10,7 @@ class Uri
      * @param string $uri The relative URI
      * @param array $qs The query string assoc array ( name => value(s) )
      */
-    public static function build(string $uri = '', array $qs = []): string
+    static public function build(string $uri = '', array $qs = []): string
     {
         // Client wants to go back
         if ($uri === 'back') {
@@ -55,7 +55,7 @@ class Uri
      * @param array $qs
      * @return string
      */
-    public static function buildQueryString(array $queryString = []): string
+    static public function buildQueryString(array $queryString = []): string
     {
         // Missing query string
         if (empty($queryString)) return '';
@@ -87,7 +87,7 @@ class Uri
      * @param string $uri
      * @return string
      */
-    public static function removeQueryString(string $uri): string
+    static public function removeQueryString(string $uri): string
     {
         $uri = ltrim($uri, '/');
         $pos = strpos($uri, '?');
@@ -102,7 +102,7 @@ class Uri
      * @param string|array $parameters One or a list of parameters
      * @return string
      */
-    public static function removeQueryStringParameter(
+    static public function removeQueryStringParameter(
         string $uri,
         $parameters
     ): string
