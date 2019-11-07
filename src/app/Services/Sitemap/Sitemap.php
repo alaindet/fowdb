@@ -2,9 +2,9 @@
 
 namespace App\Services\Sitemap;
 
-use App\Services\Sitemap\DynamicRouteGeneratorTrait;
+use App\Services\Sitemap\DynamicRouteGeneratorsTrait;
 use App\Utils\Time;
-use App\Services\FileSystem;
+use App\Services\FileSystem\FileSystem;
 
 /**
  * Builds /sitemap.xml
@@ -74,8 +74,8 @@ class Sitemap
     public function __construct()
     {
         $this->lastModified = Time::date();
-        $this->path = path_root('sitemap.xml');
-        $this->gzipPath = path_root('sitemap.xml.gz');
+        $this->path = path_public('sitemap.xml');
+        $this->gzipPath = path_public('sitemap.xml.gz');
         $this->url = config('app.url');
     }
 

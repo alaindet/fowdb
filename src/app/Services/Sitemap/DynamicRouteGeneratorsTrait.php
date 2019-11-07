@@ -28,7 +28,7 @@ trait DynamicRouteGeneratorsTrait
     ): string
     {
         $statement = statement('select')
-            ->fields('DISTINCT code')
+            ->fields('DISTINCT code, clusters_id, sets_id, num')
             ->from('cards')
             ->orderBy([ 'clusters_id DESC', 'sets_id DESC', 'num ASC' ]);
 
