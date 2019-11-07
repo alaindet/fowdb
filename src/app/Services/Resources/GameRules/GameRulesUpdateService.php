@@ -7,7 +7,7 @@ use App\Base\CrudServiceInterface;
 use App\Models\GameRules as Model;
 use App\Services\Resources\GameRules\GameRulesInputProcessor as InputProcessor;
 use App\Services\Resources\GameRules\DocumentConverter;
-use App\Services\Filesystem;
+use App\Services\FileSystem\FileSystem;
 
 class GameRulesUpdateService extends CrudService
 {
@@ -46,7 +46,7 @@ class GameRulesUpdateService extends CrudService
             'old-src' => $this->old['*source_path'],
             'new-src' => path_data("resources/cr/{$this->new['version']}.txt"),
             'old-doc' => $this->old['*doc_path'],
-            'new-doc' => path_root($this->new['doc_path']),
+            'new-doc' => path_public($this->new['doc_path']),
         ];
 
         // Rename files (source .txt and public .html) on version change

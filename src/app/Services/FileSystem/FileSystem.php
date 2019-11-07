@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\FileSystem;
 
 use App\Exceptions\FileSystemException;
 use App\Base\Base as BaseClass;
@@ -16,7 +16,7 @@ class FileSystem extends BaseClass
      * Loads a file and its data, must be a .php file!
      * 
      * @param string $fullPath
-     * @return any Anything contained in the file
+     * @return mixed Anything contained in the file
      */
     public static function loadFile(string $fullPath)
     {

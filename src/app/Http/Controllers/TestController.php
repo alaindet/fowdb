@@ -6,7 +6,7 @@ use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Views\Page;
 
-use App\Services\FileSystem;
+use App\Services\FileSystem\FileSystem;
 use App\Http\Response\PlainTextResponse;
 use App\Services\Resources\GameRules\DocumentConverter;
 
@@ -40,8 +40,8 @@ class TestController extends Controller
     public function convertCr()
     {
         $version = '8.01';
-        $inputPath  = path_root('.dev/cr-convert/'.$version.'.txt');
-        $outputPath = path_root('.dev/cr-convert/'.$version.'.html');
+        $inputPath  = path_public('.dev/cr-convert/'.$version.'.txt');
+        $outputPath = path_public('.dev/cr-convert/'.$version.'.html');
 
         // // Convert input .txt into output .html
         // (new DocumentConverter)

@@ -5,7 +5,7 @@ namespace App\Services\Resources\Card\Crud;
 use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
 use App\Models\Card as Model;
-use App\Services\Filesystem;
+use App\Services\FileSystem\FileSystem;
 use App\Utils\Uri;
 
 class DeleteService extends CrudService
@@ -40,7 +40,7 @@ class DeleteService extends CrudService
         ];
 
         foreach ($paths as $path) {
-            $absolutePath = path_root(Uri::removeQueryString($path));
+            $absolutePath = path_public(Uri::removeQueryString($path));
             FileSystem::deleteFile($absolutePath);
         }
 

@@ -28,7 +28,7 @@ use \App\Legacy\Authorization as LegacyAuthorization;
  * ===========
  * path_cache
  * path_data
- * path_root
+ * path_public
  * path_src
  * path_views
  * 
@@ -90,12 +90,18 @@ function auth(): LegacyAuthorization
 /**
  * Returns configuration data
  *
- * @param string $name
- * @return mixed string | array
+ * @param string|array $name 
+ * @return mixed string|null
  */
-function config(string $name)
+function config($name)
 {
-	return (\App\Services\ Config::getInstance())->get($name);
+	$config = \App\Services\Config\Config::getInstance();
+
+	if (is_array($name)) {
+		return $config->getByKeys($name);
+	} else {
+		return $config->get($name);
+	}
 }
 
 /**
@@ -117,17 +123,22 @@ function database(): Database
  */
 function dump($data, string $title = null): void
 {
-	echo \App\Utils\Logger::html($data, $title);
-	die();
+	$mode = config("app.mode");
+
+	if ($mode === "web") {
+		echo \App\Utils\Logger::html($data, $title);
+		die();	
+	} elseif ($mode === "cli") {
+		echo \App\Utils\Logger::cli($data, $title);
+		die();
+	}
 }
 
-// ==== BEGIN DIVINITY ========================================================
-define('FD_DIVINITY_INFINITY', 42);
 function fd_divinity($divinity): string
 {
-	return (intval($divinity) === FD_DIVINITY_INFINITY) ? "&infin;" : "{$divinity}";
+	$infinity = config('game.divinity.infinity');
+	return (intval($divinity) === $infinity) ? "&infin;" : strval($divinity);
 }
-// ==== END DIVINITY ==========================================================
 
 /**
  * Returns the Input instance for accessing GET, POST and FILES parameters
@@ -203,7 +214,7 @@ function statement(string $type): SqlStatement
  */
 function path_cache(string $path = null): string
 {
-	$dir = (\App\Services\Config::getInstance())->get('dir.cache');
+	$dir = config("dir.cache");
 	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
@@ -213,17 +224,13 @@ function path_cache(string $path = null): string
  */
 function path_data(string $path = null): string
 {
-	$dir = (\App\Services\Config::getInstance())->get('dir.data');
+	$dir = config("dir.data");
 	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
-/**
- * @param string Relative path to /
- * @return string Absolute path
- */
-function path_root(string $path = null): string
+function path_public(string $path = null): string
 {
-	$dir = (\App\Services\Config::getInstance())->get('dir.root');
+	$dir = config("dir.public");
 	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
@@ -233,7 +240,7 @@ function path_root(string $path = null): string
  */
 function path_src(string $path = null): string
 {
-	$dir = (\App\Services\Config::getInstance())->get('dir.src');
+	$dir = config("dir.src");
 	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
@@ -243,7 +250,7 @@ function path_src(string $path = null): string
  */
 function path_views(string $path = null): string
 {
-	$dir = (\App\Services\Config::getInstance())->get('dir.views');
+	$dir = config("dir.views");
 	return isset($path) ? "{$dir}/{$path}" : $dir;
 }
 
@@ -257,22 +264,21 @@ function path_views(string $path = null): string
  * @param string $type
  * @return string
  */
-function asset(string $path, string $type = 'any'): string
+function asset(string $path, string $type = "generic"): string
 {
-	$config = \App\Services\Config::getInstance();
-    
-	$url = $config->get('app.url');
+	$timestampKey = [
+		"generic"    => "asset.timestamp.generic",
+		"css"        => "asset.timestamp.css",
+		"js"         => "asset.timestamp.js",
+		"javascript" => "asset.timestamp.js",
+		"png"        => "asset.timestamp.img",
+		"jpeg"       => "asset.timestamp.img",
+		"jpg"        => "asset.timestamp.img",
+	][$type];
 
-	// Bypass query string if already present
-	if (strpos($path, '?')) return "{$url}/{$path}";
-
-    $version = [
-		'any' => $config->get('app.timestamp'),
-		'css' => $config->get('app.timestamp.css'),
-		'js'  => $config->get('app.timestamp.js'),
-		'png' => $config->get('app.timestamp.img'),
-		'jpg' => $config->get('app.timestamp.img'),
-    ][$type];
+	$config = config(["app.url", $timestampKey]);
+	$url = &$config["app.url"];
+	$version = &$config[$timestampKey];
 
     return "{$url}/{$path}?{$version}";
 }
@@ -432,7 +438,7 @@ function view_old(
 	array $options = null,
 	array $vars = null,
 	bool $minimize = true
-)
+): string
 {
     return \App\Legacy\Page::build($title, $path, $options, $vars, $minimize);
 }

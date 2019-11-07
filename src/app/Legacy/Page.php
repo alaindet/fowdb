@@ -31,7 +31,7 @@ class Page
 	): string
 	{
 		if (isset($title)) $page_title = $title;
-		$scriptPath = path_root($path);
+		$scriptPath = path_public($path); // TODO
 
 		// Open Graph Protocol ------------------------------------------------
 		$ogp = OpenGraphProtocol::getInstance();
@@ -86,7 +86,7 @@ class Page
 		ob_clean();
 
 		// Load the main template
-		require path_root('src/resources/views/old/layout/main.php');
+		require path_views('old/layout/main.php');
 
 		// Get the final HTML output
 		$html = ob_get_clean();

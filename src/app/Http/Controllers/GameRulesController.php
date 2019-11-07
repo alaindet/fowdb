@@ -52,7 +52,7 @@ class GameRulesController extends Controller
             ->template('pages/public/cr/show')
             ->title("Comprehensive Rules v. {$version}")
             ->variables([
-                'path' => path_root($item['doc_path'])
+                'path' => path_public($item['doc_path'])
             ])
             ->options([ 'scripts' => [ 'public/game-rules' ] ])
             ->minify(false)

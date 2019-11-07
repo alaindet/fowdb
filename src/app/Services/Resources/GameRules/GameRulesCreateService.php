@@ -43,7 +43,7 @@ class GameRulesCreateService extends CrudService
 
         // Calculate paths
         $inputSourcePath = $file['tmp_name'];
-        $docPath = path_root($this->new['doc_path']);
+        $docPath = path_public($this->new['doc_path']);
         $sourcePath = path_data("resources/cr/{$this->new['version']}.txt");
 
         // Convert input .txt into output .html and store it

@@ -7,7 +7,7 @@ use App\Base\CrudServiceInterface;
 use App\Models\Card as Model;
 use App\Services\Resources\Card\Crud\InputProcessor;
 use Intervention\Image\ImageManager;
-use App\Services\Filesystem;
+use App\Services\FileSystem\FileSystem;
 use App\Utils\Arrays;
 use App\Utils\Uri;
 
@@ -72,7 +72,7 @@ class UpdateService extends CrudService
             'new-image' => $this->new['image_path'],
             'new-thumb' => $this->new['thumb_path']
         ], function ($path) {
-            return path_root(Uri::removeQueryString($path));
+            return path_public(Uri::removeQueryString($path));
         });
 
         // Update this card's image paths
@@ -95,14 +95,14 @@ class UpdateService extends CrudService
             (new ImageManager)
                 ->make($this->image['tmp_name'])
                 ->resize(480, 670)
-                ->insert(path_root('images/watermark/watermark480.png'))
+                ->insert(path_public('images/watermark/watermark480.png'))
                 ->save($paths['new-image'], 80);
 
             // Store LQ image (apply watermark)
             (new ImageManager)
                 ->make($this->image['tmp_name'])
                 ->resize(280, 391)
-                ->insert(path_root('images/watermark/watermark280.png'))
+                ->insert(path_public('images/watermark/watermark280.png'))
                 ->save($paths['new-thumb'], 80);
         }
 
