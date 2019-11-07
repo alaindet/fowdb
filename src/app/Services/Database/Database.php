@@ -4,7 +4,7 @@ namespace App\Services\Database;
 
 use App\Base\Singleton;
 use App\Exceptions\DatabaseException;
-use App\Services\Config;
+use App\Services\Config\Config;
 use App\Services\Database\Pageable;
 use App\Services\Database\Statement\DeleteSqlStatement;
 use App\Services\Database\Statement\InsertSqlStatement;

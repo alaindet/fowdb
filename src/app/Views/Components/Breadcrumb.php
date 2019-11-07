@@ -3,7 +3,7 @@
 namespace App\Views\Components;
 
 use App\Views\Component;
-use App\Services\Config;
+use App\Services\Config\Config;
 
 class Breadcrumb extends Component
 {

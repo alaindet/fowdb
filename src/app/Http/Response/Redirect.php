@@ -2,7 +2,7 @@
 
 namespace App\Http\Response;
 
-use App\Services\Config;
+use App\Services\Config\Config;
 use App\Utils\Uri;
 
 class Redirect
