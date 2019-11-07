@@ -1,9 +1,18 @@
 Description:
   Bump one or more timestamps (to bust the cache)
 
-Usage
-  config:timestamp <timestamp>
+Usage:
+  $ php clint config:timestamp <timestamps>
 
-Arguments
-  timestamp The name of the timestamp to update. Possible values are:
-    generic, css, js, img. No arguments defaults to all timestamps.
+Values:
+  timestamp
+    Name(s) of the timestamp to update. Possible values are: generic, css, js,
+    img. No value defaults to all timestamps
+
+Options:
+  No
+
+Examples:
+  $ php clint config:timestamp css js generic
+  $ php clint config:timestamp img
+  $ php clint config:timestamp

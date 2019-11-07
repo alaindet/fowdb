@@ -6,10 +6,11 @@ use App\Clint\Commands\Command;
 
 class GetEnvironmentCommand extends Command
 {
-    public $name = 'env:get';
+    public $name = "env:get";
 
-    public function run(array $options, array $arguments): void
+    public function run(): Command
     {
-        $this->message = config('app.env');
+        $this->setMessage(config("app.env"));
+        return $this;
     }
 }

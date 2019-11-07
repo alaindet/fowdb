@@ -1,5 +1,14 @@
 Description:
-  Re-builds 'sorted_id' field on 'cards' table
+  Rebuild "cards.sorted_id" table field
 
-Usage
-  cards:sort
+Usage:
+  $ php clint cards:sort
+
+Values:
+  No
+
+Options:
+  No
+
+Examples:
+  $ php clint cards:sort

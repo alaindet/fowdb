@@ -3,17 +3,30 @@
 namespace App\Clint\Commands;
 
 use App\Clint\Commands\Command;
+use App\Clint\Exceptions\MissingDescriptionsException;
+use App\Exceptions\FileSystemException;
+use App\Services\FileSystem\FileSystem;
 
 class ListCommand extends Command
 {
-    public $name = 'list';
+    public $name = "list";
 
-    public function run(array $options, array $arguments): void
+    public function run(): Command
     {
-        $filename = path_src('app/Clint/descriptions/_all.md');
-        $description = file_get_contents($filename);
+        try {
+            $descsPath = $this->getPath("descriptions") . "/_all.md";
+            $descs = FileSystem::readFile($descsPath);
+            $this->setTitle("Clint commands");
+            $this->setMessage($descs);
+        }
+        
+        // Missing descriptions file
+        catch (FileSystemException $exception) {
+            throw new MissingDescriptionsException();
+        }
 
-        $this->title = 'FoWDB Clint CLI tool';
-        $this->message = "{$description}\n";
+        finally {
+            return $this;
+        }
     }
 }

@@ -3,17 +3,16 @@
 namespace App\Clint\Commands;
 
 use App\Clint\Commands\Command;
-use App\Services\Config;
+use App\Services\Config\Config;
 
 class ConfigurationCacheCommand extends Command
 {
-    public $name = 'config:cache';
+    public $name = "config:cache";
 
-    public function run(array $options, array $arguments): void
+    public function run(): Command
     {
-        $config = Config::getInstance();
-        $config->cache(); // Force to cache .env file again
-
-        $this->message = 'Cache config file generated';
+        (Config::getInstance())->build()->store();
+        $this->setMessage("Cache config file generated");
+        return $this;
     }
 }

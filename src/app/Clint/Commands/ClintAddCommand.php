@@ -3,154 +3,135 @@
 namespace App\Clint\Commands;
 
 use App\Clint\Commands\Command;
-use App\Services\FileSystem;
+use App\Clint\Exceptions\DuplicateCommandException;
+use App\Services\FileSystem\FileFormat\PhpAssociativeArray;
+use App\Services\FileSystem\FileSystem;
 use App\Utils\Strings;
 
 class ClintAddCommand extends Command
 {
-    public $name = 'clint:add';
+    public $name = "clint:add";
+    private $newCommand;
+    private $templates = [
+        "new-command" => "clint-add/command",
+        "new-description" => "clint-add/description",
+    ];
 
-    private $commandName;
-    private $commandDesc;
-    private $commandDescFile;
-    private $commandClass;
-
-    public function run(array $options, array $arguments): void
+    /**
+     * Ex.:
+     * $ php clint clint:add alain:thinks --class=AlainThinksCommand --desc="Bla bla bla"
+     *
+     * @return Command
+     */
+    public function run(): Command
     {
-        // Set some names and description
-        $this->name(
-            $name = $arguments[0],
-            $class = $options['--class'] ?? null
-        );
-        $this->description($options['--desc'] ?? null);
-
-        // Build and save the class file
-        $this->classFile();
-
-        // Build and save the description file
-        $this->descriptionFile();
-
-        // Update commands list
-        $this->updateCommandsListFile();
-
-        // Update descriptions/_all.md
-        $this->updateDescriptionsFile();
-
-        $this->message = "\nNew Clint command successfully created\n"
-            . "Name: {$this->commandName}\n"
-            . "Class file: {$this->commandClass}.php\n"
-            . "Description file: {$this->commandDescFile}.md\n\n"
-            . "Please edit {$this->commandClass}.php and "
-            . "{$this->commandDescFile}.md to customize the command.";
-    }
-
-    private function name(string $name, string $class = null): void
-    {
-        $this->commandName = $name;
-
-        $this->commandDescFile = str_replace(':', '-', $this->commandName);
-
-        if (isset($class)) {
-            $this->commandClass = $class;
-        } else {
-            $kebabClass = $this->commandDescFile . '-command';
-            $this->commandClass = Strings::kebabToPascal($kebabClass);
-        }
-    }
-
-    private function classFile(): void
-    {
-        $path = $this->path("Commands/{$this->commandClass}.php");
-        $content = $this->classFileContent();
-        FileSystem::saveFile($path, $content);
-    }
-
-    private function classFileContent(): string
-    {
-        $template = $this->template('clint-add');
-
-        $replace = [
-            '%CLASS_NAME%' => $this->commandClass,
-            '%COMMAND_NAME%' => $this->commandName
+        // Set values for new command
+        $this->newCommand = (object) [
+            "name" => $this->values[0],
+            "class" => $this->options["class"] ?? null,
+            "desc" => $this->options["desc"] ?? null,
+            "descPath" => str_replace(":", "-", $this->values[0]),
         ];
 
-        $what = array_keys($replace);
-        $with = array_values($replace);
-        return str_replace($what, $with, $template);
-    }
+        // Default class name
+        if ($this->newCommand->class === null) {
+            // Ex.: foo-bar-command => FooBarCommand
+            $kebabClass = "{$this->newCommand->descPath}-command";
+            $this->newCommand->class = Strings::kebabToPascal($kebabClass);
+        }
 
-    private function description(string $desc = null): void
-    {
-        $this->commandDesc = $desc ?? "Description for {$this->name}";
-    }
+        // Update descriptions file. File looks like this:
+        // 001| Usage:
+        // 002|   $ php clint command [options] <values>
+        // 003| \n
+        // 004| Commands:
+        // 005|   first:command   Description of first command...
+        // 006|   second:command  Description of second command...
+        // ...|   (other commands...)
+        // EOF| \n
+        $descsPath = $this->getPath("descriptions") . "/_all.md";
 
-    private function descriptionFile(): void
-    {
-        $path = $this->path("descriptions/{$this->commandDescFile}.md");
-        $content = $this->descriptionFileContent();
-        FileSystem::saveFile($path, $content);
-    }
+        $descsContent = FileSystem::readFile($descsPath);
+        $lines = explode("\n", $descsContent);
+        $commandLines = array_slice($lines, 4, -1);
+        $commandDescs = [];
+        $longestCommand = 0;
+        foreach ($commandLines as $commandLine) {
+            $pos = strrpos($commandLine, "  "); // <-- 2 spaces here!
+            $command = trim(substr($commandLine, 0, $pos));
+            $desc = trim(substr($commandLine, $pos));
+            $len = strlen($command);
+            if ($len > $longestCommand) {
+                $longestCommand = $len;
+            }
+            $commandDescs[$command] = $desc;
+        }
 
-    private function descriptionFileContent(): string
-    {
-        $t = '  '; // 2 spaces
-        $n = "\n";
-
-        return implode('', [
-
-            'Description:',$n,
-            $t,$this->commandDesc,$n,$n,
-            
-            'Usage',$n,
-            $t,$this->commandName,' [options] <arguments>',$n,$n,
-
-            'Arguments',$n,
-            $t,'example  Enter an argument description here...',$n,$n,
-
-            'Options',$n,
-            $t,'--example Enter an option description here...',$n
-
-        ]);
-    }
-
-    private function updateCommandsListFile(): void
-    {
-        $path = path_data('app/clint.php');
-        $content = FileSystem::readFile($path);
-
-        $target = "\n\n];";
-        $stop = strpos($content, $target);
-        $add = "\n    '{$this->commandName}' => "
-             . "\App\Clint\Commands\\{$this->commandClass}::class,";
-        $start = 0;
-        $content = substr($content, $start, $stop-$start) . $add . $target;
-
-        FileSystem::saveFile($path, $content);
-    }
-
-    private function updateDescriptionsFile(): void
-    {
-        $path = $this->path('descriptions/_all.md');
-        $content = FileSystem::readFile($path);
-
-        // Isolate first command line
-        $target = "Commands:\n";
-        $start = strpos($content, $target) + strlen($target);
-        $stop = strpos($content, "\n", $start);
-        $line = substr($content, $start, $stop - $start);
-
-        // Get lenght of command name + right padding
-        $target = '  ';
-        $start = 2; // Pos of where command name starts, inside a desc line
-        $len = strrpos($line, $target) + strlen($start) + 1;
+        // ERROR: Duplicate command
+        if (isset($commandDescs[$this->newCommand->name])) {
+            throw new DuplicateCommandException($this->newCommand->name);
+        }
         
-        // The line to add
-        $add = "\n".str_pad("  {$this->commandName}", $len).$this->commandDesc;
+        $commandDescs[$this->newCommand->name] = $this->newCommand->desc;
+        ksort($commandDescs);
 
-        $end = "\n\n";
-        $pos = strlen($content) - strlen($end);
-        $content = substr($content, 0, $pos) . $add . $end;
+        $newCommandDescs = "";
+        foreach ($commandDescs as $command => $desc) {
+            $paddedCommand = str_pad($command, $longestCommand, " ", STR_PAD_RIGHT);
+            $newCommandDescs .= "  {$paddedCommand}  {$desc}\n";
+        }
+        $descsContent = (
+            "Usage:\n  $ php clint command [options] <values>\n\n".
+            "Commands:\n{$newCommandDescs}"
+        );
+        FileSystem::saveFile($descsPath, $descsContent);
 
-        FileSystem::saveFile($path, $content);
+        $replace = [
+            "%COMMAND_CLASS%" => $this->newCommand->class,
+            "%COMMAND_DESC%" => $this->newCommand->desc,
+            "%COMMAND_NAME%" => $this->newCommand->name,
+        ];
+        $replaceWhat = array_keys($replace);
+        $replaceWith = array_values($replace);
+
+        // Build class file from template file
+        $classPath = $this->getPath("commands") . "/{$this->newCommand->class}.php";
+        $classTemplate = $this->loadTemplate($this->templates["new-command"]);
+        $classContent = str_replace($replaceWhat, $replaceWith, $classTemplate);
+        FileSystem::saveFile($classPath, $classContent);
+
+        // Build description file
+        $descPath = $this->getPath("descriptions") . "/{$this->newCommand->descPath}.md";
+        $descTemplate = $this->loadTemplate($this->templates["new-description"]);
+        $descContent = str_replace($replaceWhat, $replaceWith, $descTemplate);
+        FileSystem::saveFile($descPath, $descContent);
+
+        // Update commands list file
+        $commandsPath = $this->getPath("commands-list");
+        $commandsFile = new PhpAssociativeArray($commandsPath);
+        $commands = $commandsFile->getData();
+        foreach ($commands as $command => &$class) {
+            $class = "\\{$class}::class";
+        }
+        $fqcn = "\\App\\Clint\\Commands\\{$this->newCommand->class}::class";
+        $commands[$this->newCommand->name] = $fqcn;
+        $commandsFile->setData($commands);
+        $commandsFile->shouldMinify(false);
+        $commandsFile->shouldWrapValues(false);
+        $commandsFile->store();
+
+        // Build the final message
+        $this->setMessage(
+            "New Clint command successfully created\n".
+            "Name: {$this->newCommand->name}\n".
+            "Class: \\App\\Clint\\Commands\\{$this->newCommand->class}\n".
+            "Description: {$this->newCommand->desc}\n".
+            "Class file: {$classPath}\n".
+            "Description file: {$descPath}\n\n".
+            "Please edit {$classPath} and ".
+            "{$descPath} to customize the command."
+        );
+
+        return $this;
     }
 }

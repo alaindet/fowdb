@@ -2,39 +2,78 @@
 
 namespace App\Clint\Commands;
 
-use App\Clint\CommandInterface;
-use App\Services\FileSystem;
+use App\Services\FileSystem\FileSystem;
+use App\Clint\Clint;
 
-abstract class Command implements CommandInterface
+abstract class Command
 {
-    protected $message = '';
-    protected $title = null;
-    public $name = 'clint:command:name';
+    public $name;
+    protected $values;
+    protected $options;
+    private $clint;
+    private $title;
+    private $message;
 
-    public function run(array $options, array $arguments): void
+    public function __construct(Clint $clint)
     {
-        //
+        $this->clint = $clint;
+        $this->title = "Clint command {$this->name}";
+        $this->message = "Default Clint message";
     }
 
-    public function message(array $aux = null): string
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setValues(array $values): Command
+    {
+        $this->values = $values;
+
+        return $this;
+    }
+
+    public function setOptions(array $options): Command
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    public function setTitle(string $title): Command
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setMessage(string $message): Command
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    public function getMessage(): ?string
     {
         return $this->message;
     }
 
-    public function title(array $aux = null): string
+    protected function getPath(string $name, string $relativePath = null): ?string
     {
-        return $this->title ?? $this->name;
+        return $this->clint->getPath($name, $relativePath);
     }
 
-    protected function path(string $path): string
+    protected function loadTemplate(string $path): string
     {
-        return path_src('/app/Clint/'.$path);
+        $absolutePath = $this->getPath("templates") . "/{$path}.tpl";
+        return FileSystem::readFile($absolutePath);
     }
 
-    protected function template(string $template): string
-    {
-        return FileSystem::readFile(
-            path_src('/app/Clint/templates/'.$template.'.tpl')
-        );
-    }
+    abstract public function run(): Command;
 }

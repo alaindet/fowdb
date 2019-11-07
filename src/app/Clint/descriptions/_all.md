@@ -1,15 +1,16 @@
 Usage:
-  command [options]
+  $ php clint command [options] <values>
 
 Commands:
+  cards:legality    Rebuild "cards.legality_bit" table field
+  cards:sort        Rebuild "cards.sorted_id" table field
+  clint:add         Add a new Clint command
+  config:cache      Cache the configuration files
+  config:clear      Clear the configuration file (parse on each request)
+  config:timestamp  Bump one or more timestamps (to bust the cache)
+  env:get           Display current environment (development or production)
+  env:switch        Switch environment variables (to production or development)
+  help              Display a specific command description
   list              Display the list of commands (this command)
-  help              Display a specific command he
-  clint:add         Adds a new Clint command
-  config:cache      Caches the configuration files
-  config:clear      Clears the configuration file (parse on each request)
-  env:get           Displays the current environment
-  env:switch        Switches environment variables (production, development)
-  lookup:cache      Caches the lookup data (domain-specific
-  sitemap:make      Generates a dynamic sitemap.xml into 
-  config:timestamp  Bump one or more timestamps (to bust the cache
-  cards:sort        Re-builds 'sorted_id' field on 'cards' table
+  lookup:cache      Cache the lookup data (game-specific)
+  sitemap:make      Build sitemap.xml dynamically into public root

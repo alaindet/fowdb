@@ -1,5 +1,14 @@
 Description:
-  Caches the lookup data (domain-specific)
+  Cache the lookup data (game-specific)
 
-Usage
-  lookup:cache
+Usage:
+  $ php clint lookup:cache
+
+Values:
+  No
+
+Options:
+  No
+
+Examples:
+  $ php clint lookup:cache

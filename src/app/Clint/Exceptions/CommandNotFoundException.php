@@ -8,7 +8,7 @@ class CommandNotFoundException extends ClintException
     {
         parent::__construct(
             "Invalid command {$commandName}\n".
-            "Run \"php cli/clint list\" to explore the commands"
+            "Run \"$ php clint list\" to explore the commands"
         );
     }
 }

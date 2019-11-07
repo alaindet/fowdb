@@ -3,29 +3,37 @@
 namespace App\Clint\Commands;
 
 use App\Clint\Commands\Command;
-use App\Clint\Exceptions\DescriptionNotFoundException as DescriptionNotFound;
-use App\Clint\Exceptions\MissingArgumentException as MissingArgument;
+use App\Clint\Exceptions\DescriptionNotFoundException;
+use App\Clint\Exceptions\MissingArgumentException;
+use App\Exceptions\FileSystemException;
+use App\Services\FileSystem\FileSystem;
 
 class HelpCommand extends Command
 {
-    public $name = 'help';
+    public $name = "help";
 
-    public function run(array $options, array $arguments): void
+    public function run(): Command
     {
+        try {
+            if (!isset($this->values[0])) {
+                throw new MissingArgumentException;
+            }
+            $commandName = $this->values[0];
+            $kebabName = str_replace(":", "-", $commandName);
+            $descPath = $this->getPath("descriptions") . "/{$kebabName}.md";
+            $this->setTitle("Help - Clint command {$commandName}");
+            $this->setMessage(FileSystem::readFile($descPath));
+            return $this;
+        }
+
         // ERROR: Missing command name
-        if (!isset($arguments[0])) throw new MissingArgument;
-
-        $name = $arguments[0];
-        $kebabName = str_replace(':', '-', $name);
-        $filename = path_src("app/Clint/descriptions/{$kebabName}.md");
-
+        catch (MissingArgumentException $exception) {
+            throw new MissingArgumentException;
+        }
+        
         // ERROR: Missing description file
-        if (!file_exists($filename)) throw new DescriptionNotFound($name);
-
-        // Load the description file
-        $description = file_get_contents($filename);
-
-        $this->title = "FoWDB Clint Command: {$name}";
-        $this->message = $description;
+        catch (FileSystemException $exception) {
+            throw new DescriptionNotFoundException($commandName);
+        }
     }
 }

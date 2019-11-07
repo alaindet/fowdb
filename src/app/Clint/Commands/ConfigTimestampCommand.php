@@ -4,60 +4,45 @@ namespace App\Clint\Commands;
 
 use App\Clint\Commands\Command;
 use App\Utils\Time;
-use App\Services\FileSystem;
+use App\Services\FileSystem\FileSystem;
 
 class ConfigTimestampCommand extends Command
 {
-    public $name = 'config:timestamp';
+    public $name = "config:timestamp";
 
-    public function run(array $options, array $arguments): void
+    public function run(): Command
     {
-        // Maps the arguments with the keys on timestamps.php
+        // Argument => Config key
         $keys = [
-            'generic' => 'APP_TIMESTAMP',
-            'css' => 'APP_TIMESTAMP_CSS',
-            'js' => 'APP_TIMESTAMP_JS',
-            'img' => 'APP_TIMESTAMP_IMG'
+            "generic" => "asset.timestamp.generic",
+            "css" => "asset.timestamp.css",
+            "js" => "asset.timestamp.js",
+            "img" => "asset.timestamp.img",
         ];
 
-        // Load timestamps data
-        $path = path_data('app/timestamps.php');
-        $ts = FileSystem::loadFile($path);
+        $path = path_src("data/app/config/timestamps.php");
+        $timestamps = FileSystem::loadFile($path);
 
-        // Update all timestamps by default
-        if (empty($arguments)) $arguments = array_keys($keys);
+        if (empty($this->values)) {
+            $this->values = array_keys($keys);
+        }
 
-        // Update timestamps
-        foreach ($arguments as $arg) {
+        foreach ($this->values as $arg) {
             $key = $keys[$arg];
-            $ts[$key] = Time::nextCacheTimestamp($ts[$key]);
+            $timestamps[$key] = Time::nextCacheTimestamp($timestamps[$key]);
         }
 
-        // Store changed file
-        FileSystem::saveFile($path, $this->buildFile($ts));
-
-        // Notify the user
-        $argumentsList = implode(', ', $arguments);
-        $this->message = "Timestamps updated: {$argumentsList}.";
-    }
-
-    /**
-     * Builds the new .php file, given updated timestamps as array
-     *
-     * @param array $timestamps
-     * @return string The new .php file
-     */
-    private function buildFile(array $timestamps): string
-    {
+        // Rebuild the file
         $lines = [];
-        $tab = str_repeat(' ', 4);
-
         foreach ($timestamps as $key => $value) {
-            $lines[] = "{$tab}'{$key}' => '{$value}',";
+            $lines[] = "    \"{$key}\" => \"{$value}\",";
         }
-
         $linesString = implode("\n", $lines);
+        $content = "<?php\n\nreturn [\n\n{$linesString}\n\n];\n";
+        FileSystem::saveFile($path, $content);
 
-        return "<?php\n\nreturn [\n\n{$linesString}\n\n];\n";
+        $this->setMessage("Timestamps updated: " . implode(", ", $this->values));
+
+        return $this;
     }
 }

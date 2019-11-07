@@ -1,8 +1,16 @@
 Description:
-  Displays the description of the command
+  Display a specific command description
 
 Usage:
-  help <arguments>
+  $ php clint help <command>
 
-Arguments:
-  command  The command name
+Values:
+  command 
+    The command name
+
+Options:
+  No
+
+Examples:
+  $ php clint help clint:add
+  $ php clint help env:get

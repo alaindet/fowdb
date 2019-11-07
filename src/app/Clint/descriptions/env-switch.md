@@ -1,8 +1,16 @@
 Description:
-  Switches environment variables between production and development
+  Switch environment variables (to production or development)
 
-Usage
-  env:switch <target>
+Usage:
+  $ php clint env:switch <target>
 
-Arguments
-  target  Can be production or development
+Values:
+  target
+    Can be production or development
+
+Options:
+  No
+
+Examples:
+  $ php clint env:switch production
+  $ php clint env:switch environment
