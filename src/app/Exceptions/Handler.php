@@ -2,7 +2,6 @@
 
 namespace App\Exceptions;
 
-use App\Base\Exception;
 use App\Exceptions\Alertable;
 use ErrorException;
 use App\Exceptions\Jsonable;
@@ -46,7 +45,18 @@ class Handler
      * @param Throwable $exception
      * @return void
      */
-    public static function handler(Throwable $exception): void
+    static public function handler(Throwable $exception): void
+    {
+        $mode = config("app.mode");
+
+        if ($mode === "web") {
+            self::webHandler($exception);
+        } elseif ($mode === "cli") {
+            self::cliHandler($exception);
+        }
+    }
+
+    static public function webHandler(Throwable $exception): void
     {
         // Store $_POST data
         if ($exception instanceof Previousable) {
@@ -54,7 +64,7 @@ class Handler
             Session::set(Input::PREVIOUS_INPUT, $input->post());
         }
 
-        // Show exception as an alert
+        // Show exception as an alert on the UI
         if ($exception instanceof Alertable) {
             Alert::add($exception->getMessage(), 'danger');
             Redirect::to($exception->getRedirectUrl());
@@ -62,27 +72,40 @@ class Handler
 
         // Show exception as a JSON
         if ($exception instanceof Jsonable) {
-            echo (new JsonResponse)->setData([
-                'error' => 1,
-                'message' => $exception->getMessage()
-            ])->render();
+            $data = [
+                "error" => true,
+                "message" => $exception->getMessage()
+            ];
+            $response = (new JsonResponse)->setData($data);
+            echo $response->render();
             die();
         }
 
-        // Show readable log of the exception
-        echo call_user_func(
-            [
-                $class = Logger::class,
-                $method = 'html' // Change to 'cli' for CLI debugging
-            ],
-            $data = [
-                'message' => $exception->getMessage(),
-                'code' => $exception->getCode(),
-                'file' => $exception->getFile(),
-                'line' => $exception->getLine(),
-                'trace' => $exception->getTrace()
-            ],
-            $title = get_class($exception)
-        );
+        $data = [
+            "message" => $exception->getMessage(),
+            "code" => $exception->getCode(),
+            "file" => $exception->getFile(),
+            "line" => $exception->getLine(),
+            "trace" => $exception->getTrace()
+        ];
+
+        $title = get_class($exception);
+
+        echo Logger::html($data, $title);
+    }
+
+    static public function cliHandler(Throwable $exception): void
+    {
+        $data = [
+            "message" => $exception->getMessage(),
+            "code" => $exception->getCode(),
+            "file" => $exception->getFile(),
+            "line" => $exception->getLine(),
+            "trace" => $exception->getTrace()
+        ];
+
+        $title = get_class($exception);
+
+        echo Logger::cli($data, $title);
     }
 }
