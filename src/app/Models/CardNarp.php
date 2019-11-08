@@ -11,6 +11,7 @@ use App\Base\Model;
  * | 1     | A      | Alternate art |
  * | 2     | R      | Reprint       |
  * | 3     | P      | Promo         |
+ * | 4     | M      | Memoria       |
  * 
  * Every card as a 'narp' flag whose value representing if it's a base card
  * or something else (alternate art, promo, reprint).
@@ -25,7 +26,8 @@ class CardNarp extends Model
         'Base Print',
         'Alternate art',
         'Reprint',
-        'Promo'
+        'Promo',
+        'Memoria',
     ];
 
     /**

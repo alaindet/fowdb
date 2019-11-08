@@ -171,6 +171,7 @@ if ($isCard) {
         class="form-control"
         required
       >
+      <p>Prefix Memoria cards with a 9 (Ex.: 60 => 960)</p>
     </div>
   </div>
 
@@ -364,7 +365,7 @@ if ($isCard) {
           elseif ($isCard) echo $card['divinity'] ?? '-1';
           else echo null;
         ?>"
-        placeholder="Divinity (-1 to delete existing value, <?=FD_DIVINITY_INFINITY?> for infinity)..."
+        placeholder="Divinity (-1 to delete existing value, <?=config('game.divinity.infinity')?> for infinity)..."
         class="form-control"
       >
     </div>

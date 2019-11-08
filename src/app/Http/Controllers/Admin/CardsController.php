@@ -41,7 +41,7 @@ class CardsController extends Controller
             ->render();
     }
 
-    public function create(Request $request): string
+    public function create(Request $request): void
     {
         // Assemble input
         $input = array_merge(
@@ -54,7 +54,7 @@ class CardsController extends Controller
             
             // Required fields
             'image' => ['required','is:file'],
-            'narp' => ['required','is:integer','enum:0,1,2,3'],
+            'narp' => ['required','is:integer','enum:0,1,2,3,4'],
             'set' => ['required','except:0'],
             'number' => ['required','is:integer'],
             'back-side' => ['required','is:integer','enum:0,1,2,3,4'],
@@ -107,7 +107,7 @@ class CardsController extends Controller
             ->render();
     }
 
-    public function update(Request $request, string $id): string
+    public function update(Request $request, string $id): void
     {
         // Assemble input
         $input = array_merge(
@@ -119,7 +119,7 @@ class CardsController extends Controller
         $request->validate('post', [
             
             // Required fields
-            'narp' => ['required','is:integer','enum:0,1,2,3'],
+            'narp' => ['required','is:integer','enum:0,1,2,3,4'],
             'set' => ['required','except:0'],
             'number' => ['required','is:integer'],
             'back-side' => ['required','is:integer','enum:0,1,2,3,4'],
@@ -170,7 +170,7 @@ class CardsController extends Controller
             ->render();
     }
 
-    public function delete(Request $request, string $id): string
+    public function delete(Request $request, string $id): void
     {
         $service = new DeleteService(null, $id);
         $service->syncFileSystem();

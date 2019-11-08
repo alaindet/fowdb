@@ -262,7 +262,8 @@ $emptyGif = asset('images/icons/blank.gif');
 											'basics',
 											'spoilers',
 											'alternates',
-											'reprints'
+                      'reprints',
+                      'memoriae',
 										] as $field):
                       ( // Sticky values
 												isset($filters['exclude']) &&
@@ -901,7 +902,7 @@ $emptyGif = asset('images/icons/blank.gif');
 												value="<?=$value?>"
 												<?=$checked?>
 											>
-  										<?= $value === FD_DIVINITY_INFINITY ? "&infin;" : $value ?>
+  										<?= $value === config('game.divinity.infinity') ? "&infin;" : $value ?>
   									</label>
   								<?php endforeach; ?>
   							</div>
