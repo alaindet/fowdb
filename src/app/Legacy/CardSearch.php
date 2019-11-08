@@ -2,7 +2,6 @@
 
 namespace App\Legacy;
 
-use App\Utils\Arrays;
 use App\Services\Database\Database;
 use App\Utils\Bitmask;
 use App\Legacy\CardSearchProcessorsTrait;
@@ -98,7 +97,7 @@ class CardSearch
      */
     public function getFilter($name = null)
     {
-        return isset($this->f[$name]) ? $this->f[$name] : "";
+        return $this->f[$name] ?? "";
     }
 
     /**
@@ -412,6 +411,11 @@ class CardSearch
                         $_sql_f[] = "NOT(sets_id IN ({$spoilerIds}))";
                         break;
 
+                    // Exclude normals
+                    case 'basics':
+                        $_sql_f[] = 'NOT(narp = 0) ';
+                        break;
+
                     // Exclude alternates
                     case 'alternates':
                         $_sql_f[] = 'NOT(narp = 1) ';
@@ -421,10 +425,16 @@ class CardSearch
                     case 'reprints':
                         $_sql_f[] = 'NOT(narp = 2) ';
                         break;
-                        
-                    // Exclude normals
-                    case 'basics':
-                        $_sql_f[] = 'NOT(narp = 0) ';
+
+                    // // Exclude promos
+                    // case 'promos':
+                    //     $_sql_f[] = 'NOT(narp = 3) ';
+                    //     break;
+
+                    // Exclude memoriae
+                    case 'memoriae':
+                        $this->areMemoriaeExcluded = true;
+                        $_sql_f[] = 'NOT(narp = 4)';
                         break;
                 }
             }
@@ -598,31 +608,13 @@ class CardSearch
                       . "\")";
         }
 
-
         // Build final Filters quuery (if no filter set, bypass it with TRUE)
         $sql_f = empty($_sql_f) ? 'TRUE' : implode(" AND ", $_sql_f);
-
-        // Prevent magic stones in the results unless specified
-        // (sets_id, num, type or rarity is set)
-        /*
-        if (
-            !(
-                isset($this->f['set']) ||
-                isset($this->f['num']) ||
-                isset($this->f['type']) ||
-                isset($this->f['rarity'])
-            )
-        ) {
-            $_sql_f[] = "NOT(type_bit & 4 = 4)";
-        }
-        */
-
 
         // FILTER --- ARTIST NAME ---------------------------------------------
         if (isset($this->f['artist'])) {
             $_sql_f[] = "artist_name = \"{$this->f['artist']}\"";
         }
-
 
         // FILTER --- LIMIT and OFFSET ----------------------------------------
         if (isset($this->f['page'])) {
