@@ -88,12 +88,16 @@ class Sitemap
      */
     public function build(bool $backup = false): void
     {
-        // Backup existing /sitemap.xml into /src/data/backup/
+        // Backup existing /sitemap.xml into {src}/data/backup/
         if ($backup) {
             $basename = 'sitemap_backup_'.Time::timestamp('file').'.xml';
             $basenameGzip = 'sitemap_backup_'.Time::timestamp('file').'.xml.gz';
-            $backupPath = path_data('backup/'.$basename);
-            $backupGzipPath = path_data('backup/'.$basenameGzip);
+            $backupDir = path_src("data/backup");
+            if (!FileSystem::existsDirectory($backupDir)) {
+                FileSystem::createDirectory($backupDir);
+            }
+            $backupPath = "{$backupDir}/{$basename}";
+            $backupGzipPath = "{$backupDir}/{$basenameGzip}";
 
             FileSystem::renameFile($this->path, $backupPath);
             FileSystem::renameFile($this->gzipPath, $backupGzipPath);
