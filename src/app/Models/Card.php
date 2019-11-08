@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Exceptions\CardModelException;
 use App\Base\Model;
+use App\Services\FileSystem\FileSystem;
 
 class Card extends Model
 {
@@ -183,17 +184,8 @@ class Card extends Model
      */
     public static function buildAllSortId(): void
     {
-        database()->rawStatement(
-            "SET @index := 0;
-            UPDATE
-                cards
-            SET
-                sorted_id = (SELECT @index := @index + 1)
-            ORDER BY
-                clusters_id asc,sets_id ASC,
-                num ASC,
-                back_side ASC,
-                narp ASC"
-        );
+        $statementPath = path_src("database/operations/set-cards-sorted-id.sql");
+        $statement = FileSystem::readFile($statementPath);
+        database()->rawStatement($statement);
     }
 }
