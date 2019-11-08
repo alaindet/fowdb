@@ -52,7 +52,7 @@ class GameRulesCreateService extends CrudService
             ->setOutputFilePath($docPath)
             ->convert();
 
-        // Move source file to src/data/resources/cr
+        // Move source file to {src}/data/resources/cr
         move_uploaded_file($inputSourcePath, $sourcePath);
 
         return $this;

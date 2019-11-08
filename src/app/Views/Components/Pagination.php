@@ -8,7 +8,7 @@ use App\Exceptions\ViewComponentException;
 class Pagination extends Component
 {
     /**
-     * Represents /src/resources/views/components/pagination.tpl.php
+     * Represents {src}/resources/views/components/pagination.tpl.php
      *
      * @var string
      */

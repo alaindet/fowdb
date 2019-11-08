@@ -209,7 +209,7 @@ function statement(string $type): SqlStatement
 // DIRECTORIES ----------------------------------------------------------------
 
 /**
- * @param string Relative path to /src/data/cache/
+ * @param string Relative path to {src}/data/cache/
  * @return string Absolute path
  */
 function path_cache(string $path = null): string
@@ -219,7 +219,7 @@ function path_cache(string $path = null): string
 }
 
 /**
- * @param string Relative path to /src/data/
+ * @param string Relative path to {src}/data/
  * @return string Absolute path
  */
 function path_data(string $path = null): string
@@ -235,7 +235,7 @@ function path_public(string $path = null): string
 }
 
 /**
- * @param string Relative path to /src/
+ * @param string Relative path to {src}
  * @return string Absolute path
  */
 function path_src(string $path = null): string
@@ -245,7 +245,7 @@ function path_src(string $path = null): string
 }
 
 /**
- * @param string Relative path to /src/resources/views/
+ * @param string Relative path to {src}/resources/views/
  * @return string Absolute path
  */
 function path_views(string $path = null): string
@@ -454,7 +454,7 @@ function view_old(
 /**
  * Returns a rendered page to be output
  *
- * @param string $viewPath Relative to /src/resorces/views/, no extension
+ * @param string $viewPath Relative to {src}/resorces/views/, no extension
  * @param string $title Title of the page
  * @param array $variables Variables to be used to render the template
  * @param boolean $minify Minify the HTML output
@@ -468,7 +468,7 @@ function view(
 ): string
 {
 	return (new \App\Views\Page)
-		->template($template)
+		->template($viewPath)
 		->title($title)
 		->variables($variables)
 		->minify($minify)

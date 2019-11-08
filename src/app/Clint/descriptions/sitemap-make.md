@@ -9,7 +9,7 @@ Values:
 
 Options:
   --backup
-    Stores a copy of existing sitemap.xml into /src/data/backup
+    Stores a copy of existing sitemap.xml into {src}/data/backup
 
 Examples:
   $ php clint sitemap:make

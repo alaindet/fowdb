@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/src/bootstrap/web.php';
+require __DIR__ . "/src/bootstrap/web.php";
 
 /*
  | ----------------------------------------------------------------------------

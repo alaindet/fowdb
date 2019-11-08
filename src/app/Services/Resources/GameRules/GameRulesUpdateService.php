@@ -68,7 +68,7 @@ class GameRulesUpdateService extends CrudService
                 ->setOutputFilePath($paths['new-doc'])
                 ->convert();
 
-            // Move source file to src/data/resources/cr
+            // Move source file to {src}/data/resources/cr
             move_uploaded_file($inputSourcePath, $paths['new-src']);
 
         }

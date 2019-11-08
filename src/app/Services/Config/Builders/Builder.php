@@ -5,7 +5,7 @@ namespace App\Services\Config\Builders;
 abstract class Builder
 {
     /**
-     * Absolute path of src/ directory
+     * Absolute path of {src} directory
      *
      * @var string
      */

@@ -56,7 +56,7 @@ class FileSystem extends BaseClass
     /**
      * Stores a new file to the filesystem. Overwrites existing files if needed
      *
-     * @param string $fullPath Relative to /src/
+     * @param string $fullPath Absolute path
      * @param string $fileContent The file's content to be written, as string
      * @return void
      */

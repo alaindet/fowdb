@@ -1,12 +1,12 @@
 <?php
 
-$src = dirname(__DIR__);
+define("DIR_SRC", dirname(__DIR__));
 
-require $src . "/vendor/autoload.php";
+require DIR_SRC . "/vendor/autoload.php";
 
-$config = \App\Services\Config\Config::getInstance($src);
+$config = \App\Services\Config\Config::getInstance(DIR_SRC);
 
-require $src . "/app/functions/helpers.php";
+require DIR_SRC . "/app/functions/helpers.php";
 
 // Global exception handling
 set_exception_handler([\App\Exceptions\Handler::class, "handler"]);

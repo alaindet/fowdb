@@ -8,7 +8,7 @@ use App\Services\Config\Config;
 class Breadcrumb extends Component
 {
     /**
-     * Represents /src/resources/views/components/breadcrumb.tpl.php
+     * Represents {src}/resources/views/components/breadcrumb.tpl.php
      *
      * @var string
      */

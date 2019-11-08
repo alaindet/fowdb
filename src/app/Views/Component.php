@@ -38,7 +38,7 @@ abstract class Component
     /**
      * Loads the view file of a component and renders it by passing it data
      *
-     * @param string $path Relative /src/resources/view/component, no ext needed
+     * @param string $path Relative {src}/resources/view/component, no ext needed
      * @param array $variables
      * @return string Rendered component as HTML
      */
