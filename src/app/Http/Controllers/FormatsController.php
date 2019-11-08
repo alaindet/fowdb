@@ -8,6 +8,17 @@ use App\Views\Page;
 
 class FormatsController extends Controller
 {
+    public function index(Request $request): string
+    {
+        return (new Page)
+            ->template('pages/public/formats/index')
+            ->title('Formats')
+            ->variables([
+                'formats' => $this->getData()
+            ])
+            ->render();
+    }
+
     private function getData(): array
     {
         $formats = [];
@@ -68,16 +79,5 @@ class FormatsController extends Controller
         }
 
         return $formats;
-    }
-
-    public function index(Request $request): string
-    {
-        return (new Page)
-            ->template('pages/public/formats/index')
-            ->title('Formats')
-            ->variables([
-                'formats' => $this->getData()
-            ])
-            ->render();
     }
 }

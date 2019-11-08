@@ -137,7 +137,7 @@ class GameRulingsController extends Controller
             ->render();
     }
 
-    public function create(Request $request): string
+    public function create(Request $request): void
     {
         $request->validate('post', [
             'card-id' => ['required','is:integer','exists:cards,id'],
@@ -196,7 +196,7 @@ class GameRulingsController extends Controller
             ->render();
     }
 
-    public function update(Request $request, string $id): string
+    public function update(Request $request, string $id): void
     {
         $request->validate('post', [
             'ruling-errata' => ['required:0','is:boolean'],

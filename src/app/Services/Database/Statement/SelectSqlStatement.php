@@ -32,7 +32,7 @@ class SelectSqlStatement extends SqlStatement
      */
     public function select($expressions): SelectSqlStatement
     {
-        $clause =& $this->clauses['SELECT'];
+        $clause = &$this->clauses['SELECT'];
 
         if (!is_array($expressions)) $clause[] = $expressions;
         else $clause = array_merge($clause, $expressions);
@@ -119,7 +119,7 @@ class SelectSqlStatement extends SqlStatement
      */
     public function groupBy($expressions): SelectSqlStatement
     {
-        $clause =& $this->clauses['GROUP BY'];
+        $clause = &$this->clauses['GROUP BY'];
 
         if (!is_array($expressions)) $clause[] = $expressions;
         else $clause = array_merge($clause, $expressions);

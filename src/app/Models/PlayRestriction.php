@@ -27,7 +27,8 @@ class PlayRestriction extends Model
         'Main Deck',
         'Side Deck',
         'Magic Stone Deck',
-        'Rune Deck'
+        'Rune Deck',
+        'Stranger Deck',
     ];
 
     public static $copiesLabels = [
@@ -39,7 +40,8 @@ class PlayRestriction extends Model
         0 => 'Main Deck',
         1 => 'Side Deck',
         2 => 'Magic Stone Deck',
-        3 => 'Rune Deck'
+        3 => 'Rune Deck',
+        4 => 'Stranger Deck',
     ];
 
     public static function getData(string $page, ...$theRest): array

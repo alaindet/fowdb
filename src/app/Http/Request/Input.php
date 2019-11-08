@@ -37,12 +37,12 @@ class Input extends Base
         return $this->read('REQUEST', $name);
     }
 
-    public function getMultiple(array $names = null, $escape = false)
+    public function getMultiple(array $names = null, $escape = false): array
     {
         return $this->readMultiple('GET', $names, $escape);    
     }
 
-    public function postMultiple(array $names = null, $escape = false)
+    public function postMultiple(array $names = null, $escape = false): array
     {
         return $this->readMultiple('POST', $names, $escape);    
     }
@@ -55,7 +55,11 @@ class Input extends Base
      * @param boolean $escape
      * @return void
      */
-    private function read(string $type, string $name = null, $escape = false)
+    private function read(
+        string $type,
+        string $name = null,
+        $escape = false
+    )
     {
         // Alias the super global, like $_GET, $_POST or $_FILES
         $global = $this->globalArrayReference($type);
@@ -79,7 +83,7 @@ class Input extends Base
         string $type,
         array $names = null,
         $escape = false
-    )
+    ): array
     {
         // Alias the super global, like $_GET, $_POST or $_FILES
         $global = $this->globalArrayReference($type);
@@ -159,10 +163,9 @@ class Input extends Base
      * Alias for Input::exists()
      *
      * @param string $name
-     * @param string $type (optional) Name of the global array to check
      * @return boolean
      */
-    public function has(string $name, string $type = null): bool
+    public function has(string $name): bool
     {
         return $this->exists($name);
     }
