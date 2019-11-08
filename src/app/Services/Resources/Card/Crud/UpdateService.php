@@ -118,13 +118,13 @@ class UpdateService extends CrudService
     {
         $link = $uri = url('card/'.urlencode($this->new['code']));
 
-        $message = collapse(
-            "Card ",
-            "<strong>",
-                "<a href=\"{$link}\">",
-                    "{$this->new['name']} ({$this->new['code']})",
-                "</a>",
-            "</strong> ",
+        $message = (
+            "Card ".
+            "<strong>".
+                "<a href=\"{$link}\">".
+                    "{$this->new['name']} ({$this->new['code']})".
+                "</a>".
+            "</strong> ".
             "updated."
         );
 

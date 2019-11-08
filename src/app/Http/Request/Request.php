@@ -120,11 +120,15 @@ class Request
             
             // Errors list
             else {
-                $message = collapse(
-                    "<ul style='display:inline-block'>",
-                    array_reduce($errors, function ($message, $error) {
-                        return $message .= "<li>{$error}</li>";
-                    }),
+                $message = (
+                    "<ul style=\"display:inline-block\">".
+                        array_reduce(
+                            $errors,
+                            function ($message, $error) {
+                                return $message .= "<li>{$error}</li>";
+                            },
+                            ""
+                        ).
                     "</ul>"
                 );
             }

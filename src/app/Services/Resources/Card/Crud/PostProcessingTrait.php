@@ -71,10 +71,8 @@ trait PostProcessingTrait
             $num = &$this->state['number-padded'];
             $set = &$this->state['set-code'];
             throw new CrudException(
-                collapse(
-                    "Card with number <strong>{$num}</strong> from set ",
-                    "<strong>{$set}</strong> already exists"
-                )
+                "Card with number <strong>{$num}</strong> from set ".
+                "<strong>{$set}</strong> already exists"
             );
         }
     }

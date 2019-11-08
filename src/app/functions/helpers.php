@@ -35,7 +35,6 @@ use \App\Legacy\Authorization as LegacyAuthorization;
  * VIEW
  * ====
  * asset
- * collapse
  * component
  * csrf_token
  * include_view
@@ -281,24 +280,6 @@ function asset(string $path, string $type = "generic"): string
 	$version = &$config[$timestampKey];
 
     return "{$url}/{$path}?{$version}";
-}
-
-/**
- * Accepts a list of strings and collapses them in a single string.
- * Useful when building some HTML content for easy indentation
- * 
- * Ex.:
- * collapse(
- *   "<a href='{$someHref}'>",
- *     $someContent
- *   "</a>"
- * )
- *
- * @return string
- */
-function collapse(): string
-{
-	return implode('', func_get_args());
 }
 
 /**

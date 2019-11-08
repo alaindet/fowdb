@@ -40,11 +40,9 @@ class GameRulesController extends Controller
         // ERROR: Missing model
         if (empty($item)) {
             throw new ModelNotFoundException(
-                collapse(
-                    "Comprehensive Rules with version ",
-                    "<strong>{$version}</strong> ",
-                    "does not exist on FoWDB."
-                )
+                "Comprehensive Rules with version ".
+                "<strong>{$version}</strong> ".
+                "does not exist on FoWDB."
             );
         }
         

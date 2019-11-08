@@ -241,9 +241,9 @@ class Card
             if (!isset($card['atk']) && !isset($card['def'])) {
                 $atkDef = '<em>(No battle values)</em>';
             } else {
-                $atkDef = collapse(
-                    '<span class="font-150 text-italic">',
-                        $card['atk'], ' / ', $card['def'],
+                $atkDef = (
+                    '<span class="font-150 text-italic">'.
+                        $card['atk'].' / '.$card['def'].
                     '</span>'
                 );
             }

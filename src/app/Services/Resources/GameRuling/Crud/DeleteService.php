@@ -41,8 +41,8 @@ class DeleteService extends CrudService
         $link = '<a href="'.url('rulings/manage').'">Rulings</a>';
         $id = $this->old['id'];
 
-        $message = collapse(
-            "Ruling #{$id} for card <strong>{$label}</strong> deleted. ",
+        $message = (
+            "Ruling #{$id} for card <strong>{$label}</strong> deleted. ".
             "Go back to the <strong>{$link}</strong> page."
         );
 

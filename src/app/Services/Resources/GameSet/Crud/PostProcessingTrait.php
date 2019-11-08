@@ -58,12 +58,10 @@ trait PostProcessingTrait
         
         if (!empty($existing)) {
             throw new CrudException(
-                collapse(
-                    "A set with ID <strong>{$this->new['id']}</strong>, ",
-                    "or name <strong>{$this->new['name']}</strong>, ",
-                    "or code <strong>{$this->new['code']}</strong> ",
-                    "already exists"
-                )
+                "A set with ID <strong>{$this->new['id']}</strong>, ".
+                "or name <strong>{$this->new['name']}</strong>, ".
+                "or code <strong>{$this->new['code']}</strong> ".
+                "already exists"
             );
         }
     }
@@ -95,11 +93,9 @@ trait PostProcessingTrait
 
         if (!empty($existing)) {
             throw new CrudException(
-                collapse(
-                    "A set named <strong>{$this->new['name']}</strong>, ",
-                    "or with code <strong>{$this->new['code']}</strong> ",
-                    "already exists. Sets must have unique names and codes."
-                )
+                "A set named <strong>{$this->new['name']}</strong>, ".
+                "or with code <strong>{$this->new['code']}</strong> ".
+                "already exists. Sets must have unique names and codes."
             );
         }
     }
