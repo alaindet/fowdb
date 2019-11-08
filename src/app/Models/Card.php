@@ -43,7 +43,8 @@ class Card extends Model
         ],
         'can-battle' => [
             'J-Ruler',
-            'Resonator'
+            'Resonator',
+            'Resonator (Stranger)',
         ]
     ];
 
