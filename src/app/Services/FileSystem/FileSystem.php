@@ -18,7 +18,7 @@ class FileSystem extends BaseClass
      * @param string $fullPath
      * @return mixed Anything contained in the file
      */
-    public static function loadFile(string $fullPath)
+    static public function loadFile(string $fullPath)
     {
         try {
             return include $fullPath;
@@ -33,7 +33,7 @@ class FileSystem extends BaseClass
      * @param string $path
      * @return boolean
      */
-    public static function existsFile(string $path): bool
+    static public function existsFile(string $path): bool
     {
         return file_exists($path);
     }
@@ -44,7 +44,7 @@ class FileSystem extends BaseClass
      * @param string $fullPath
      * @return string The file content
      */
-    public static function readFile(string $fullPath): string
+    static public function readFile(string $fullPath): string
     {
         try {   
             return file_get_contents($fullPath);
@@ -60,7 +60,7 @@ class FileSystem extends BaseClass
      * @param string $fileContent The file's content to be written, as string
      * @return void
      */
-    public static function saveFile(
+    static public function saveFile(
         string $fullPath,
         string $fileContent = ''
     ): void
@@ -82,7 +82,7 @@ class FileSystem extends BaseClass
      * @param string $toFullPath Full path
      * @return void
      */
-    public static function renameFile(
+    static public function renameFile(
         string $fromFullPath,
         string $toFullPath
     ): void
@@ -104,7 +104,7 @@ class FileSystem extends BaseClass
      * @param string $toFullPath
      * @return void
      */
-    public static function copyFile(
+    static public function copyFile(
         string $fromFullPath,
         string $toFullPath
     ): void
@@ -122,13 +122,24 @@ class FileSystem extends BaseClass
      * @param string $fullPath
      * @return void
      */
-    public static function deleteFile(string $fullPath): void
+    static public function deleteFile(string $fullPath): void
     {
         try {
             unlink($fullPath);
         } catch (ErrorException $exception) {
             throw new FileSystemException("No file exists at {$fullPath}");
         }
+    }
+
+    /**
+     * Checks if a directory exists
+     *
+     * @param string $fullPath
+     * @return bool
+     */
+    static public function existsDirectory(string $fullPath): bool
+    {
+        return file_exists($fullPath);
     }
 
     /**
@@ -142,7 +153,7 @@ class FileSystem extends BaseClass
      * @param integer $mode (Optional) Ex.: 0755
      * @return void
      */
-    public static function createDirectory(
+    static public function createDirectory(
         string $fullPath,
         int $mode = null
     ): void
@@ -164,7 +175,7 @@ class FileSystem extends BaseClass
      * @param string $toFullPath
      * @return void
      */
-    public static function renameDirectory(
+    static public function renameDirectory(
         string $fromFullPath,
         string $toFullPath
     ): void
@@ -186,7 +197,7 @@ class FileSystem extends BaseClass
      * @param string $dirFullPath
      * @return void
      */
-    public static function deleteDirectory(string $dirFullPath): void
+    static public function deleteDirectory(string $dirFullPath): void
     {
         try {
             $handle = opendir($dirFullPath);
