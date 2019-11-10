@@ -382,18 +382,18 @@ class CardSearch
 
             // LEGACY
             if (!is_array($this->f['format'])) {
-                $this->f['format'] = [ $this->f['format'] ];
+                $this->f['format'] = [$this->f['format']];
             }
 
-            $clusters = [];
-            $helper = lookup('formats.code2clusters');
-            foreach ($this->f['format'] as $format) {
-                $clusters = array_merge($clusters, $helper[$format]);
+            $bitmask = new \App\Utils\BitmaskFlags();
+            $bitmask->setFlagsMap(lookup("formats.code2bit"));
+            foreach ($this->f["format"] as $format) {
+                if ($bitmask->existsFlag($format)) {
+                    $bitmask->addFlag($format);
+                }
             }
-            $clusters = array_unique($clusters);
 
-            // Add all clusters for this format
-            $_sql_f[] = 'clusters_id IN('.implode(',', $clusters).')';
+            $_sql_f[] = "legality_bit & {$bitmask->getMask()} > 0";
         }
 
         // FILTER --- EXCLUDE -------------------------------------------------
