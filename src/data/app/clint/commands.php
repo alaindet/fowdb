@@ -15,5 +15,6 @@ return [
     'sitemap:make' => \App\Clint\Commands\SitemapMakeCommand::class,
     'alain:thinks' => \App\Clint\Commands\AlainThinksCommand::class,
     'cards:legality' => \App\Clint\Commands\CardsLegalityCommand::class,
+    'cards:paths' => \App\Clint\Commands\CardsPathsCommand::class,
 
 ];

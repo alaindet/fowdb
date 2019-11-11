@@ -3,6 +3,7 @@ Usage:
 
 Commands:
   cards:legality    Rebuild "cards.legality_bit" table field
+  cards:paths       Rebuild "cards.image_path" and "cards.thumb_path" fields
   cards:sort        Rebuild "cards.sorted_id" table field
   clint:add         Add a new Clint command
   config:cache      Cache the configuration files

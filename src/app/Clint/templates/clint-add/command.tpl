@@ -12,7 +12,7 @@ class %COMMAND_CLASS% extends Command
      * Run the Clint command %COMMAND_NAME%
      *
      * Ex.:
-     * $ php clint %COMMAND_NAME% <arguments> [options]
+     * $ php clint %COMMAND_NAME% <values> [options]
      *
      * @return Command
      */
