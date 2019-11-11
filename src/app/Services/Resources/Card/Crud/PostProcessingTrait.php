@@ -6,7 +6,9 @@ use App\Exceptions\CrudException;
 use App\Models\GameSet;
 use App\Models\Card;
 use App\Utils\Bitmask;
+use App\Utils\BitmaskFlags;
 use App\Utils\Uri;
+use App\Views\Card\Card as ViewCard;
 
 /**
  * This trait manipulates data after all Card input processors executed
@@ -30,6 +32,7 @@ trait PostProcessingTrait
         $this->calculateCodeField();
         $this->calculateCluster();
         $this->calculateImagePaths();
+        $this->calculateLegality();
         $this->removeIllegalFields();
     }
 
@@ -225,6 +228,21 @@ trait PostProcessingTrait
             $this->new['image_path'] .= $queryString;
             $this->new['thumb_path'] .= $queryString;    
         }
+    }
+
+    /**
+     * Calculates the legality for this card
+     *
+     * @return void
+     */
+    private function calculateLegality(): void
+    {
+        $formats = ViewCard::formatsListByCluster($this->new['clusters_id']);
+        $formatCodes = array_column($formats, "code");
+        $bitmask = new BitmaskFlags();
+        $bitmask->setFlagsMap(lookup("formats.code2bit"));
+        $bitmask->addFlags($formatCodes);
+        $this->new['legality_bit'] = $bitmask->getMask();
     }
 
     /**
