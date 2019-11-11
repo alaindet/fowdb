@@ -17,7 +17,7 @@ use App\Services\FileSystem\FileSystem;
  * 
  * ## From code
  * $clint = new \App\Clint\Clint;
- * $clint->setRequest([
+ * $clint->setInput([
  *     "name" => "env:switch",
  *     "values" => ["production"],
  *     "options" => ["mockup-option" => true],

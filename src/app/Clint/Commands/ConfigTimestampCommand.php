@@ -41,7 +41,10 @@ class ConfigTimestampCommand extends Command
         $content = "<?php\n\nreturn [\n\n{$linesString}\n\n];\n";
         FileSystem::saveFile($path, $content);
 
-        $this->setMessage("Timestamps updated: " . implode(", ", $this->values));
+        $this->setMessage(
+            "Timestamps updated: " . implode(", ", $this->values)."\n".
+            "Remember to run $ php clint config:cache to use the new timestamps"
+        );
 
         return $this;
     }

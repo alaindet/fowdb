@@ -1,4 +1,4 @@
-/* 2019-11-11 00:10:25 */
+/* 2019-11-11 01:45:05 */
 
 UPDATE cards AS c
 INNER JOIN game_sets AS s ON c.sets_id = s.id

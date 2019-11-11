@@ -18,6 +18,8 @@
       <a href="<?=url('clint/'.$key)?>">
         <?=$command['label']?>
       </a>
+      <br>
+      <?=$command['command']?>
     </li>
   <?php endforeach; ?>
 </ul>
