@@ -159,39 +159,67 @@ class Card
                 // Is this banned?
                 if (!empty($bannedFormats)) {
 
-                    // Exclude banned formats
-                    // Ex.: (assoc) [ [format_name, format_code] ]
-                    $bannedFormatsNames = array_column($bannedFormats, 'name');
+                    // Extract names of the formats in which this card is banned
+                    $bannedFormatsNames = [];
+                    foreach ($bannedFormats as $bannedFormat) {
+                        $name = $bannedFormat["format"];
+                        if (!isset($bannedFormatsNames[$name])) {
+                            $bannedFormatsNames[$name] = true;
+                        }
+                    }
+
+                    // Exclude formats in which this card is banned
                     $cardFormats = array_filter(
                         $cardFormats,
-                        function ($format) use ($bannedFormatsNames) {
-                            return in_array(
-                                $format["name"],
-                                $bannedFormatsNames
-                            );
+                        function ($cardFormat) use ($bannedFormatsNames) {
+                            $name = $cardFormat["name"];
+                            return !isset($bannedFormatsNames[$name]);
                         }
                     );
 
                     // Built HTML list of banned formats
                     // Ex.: (no extra) New Frontiers
                     // Ex.: (extra) New Frontiers (Rune Deck, 1 copy)
-                    $bannedHtml = implode(", ", array_map(function ($ban) {
+                    // $bannedHtml = implode(", ",
+                    //     array_map(
+                    //         function ($ban) {
                         
+                    //             $extra = Arrays::filterNull([
+                    //                 $ban["deck"],
+                    //                 $ban["copies"]
+                    //             ]);
+
+                    //             return (
+                    //                 "<span style=\"color:red;\">".
+                    //                     "<strong>{$ban["format"]}</strong>&nbsp".
+                    //                 "</span>".
+                    //                 "<em>".
+                    //                     !empty($extra) ? "(".implode(", ", $extra).")" : "".
+                    //                 "</em>"
+                    //             );
+
+                    //         },
+                    //         $bannedFormats
+                    //     )
+                    // );
+
+                    $bannedElements = [];
+                    foreach ($bannedFormats as $bannedFormat) {
                         $extra = Arrays::filterNull([
-                            $ban["deck"],
-                            $ban["copies"]
+                            $bannedFormat["deck"],
+                            $bannedFormat["copies"],
                         ]);
-
-                        return (
+                        $bannedElements[] = (
                             "<span style=\"color:red;\">".
-                                "<strong>{$ban["format"]}</strong>&nbsp".
-                            "</span>".
-                            "<em>".
-                                !empty($extra) ? "(".implode(", ", $extra).")" : "".
-                            "</em>"
+                                "<strong>{$bannedFormat["format"]}</strong>&nbsp".
+                                (!empty($extra)
+                                    ? "(".implode(", ", $extra).")"
+                                    : ""
+                                ).
+                            "</span>"
                         );
-
-                    }, $bannedFormats));
+                    }
+                    $bannedHtml = implode(", ", $bannedElements);
                 }
 
                 // $format, $banned -------------------------------------------

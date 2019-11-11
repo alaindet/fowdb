@@ -111,8 +111,8 @@ class PlayRestriction extends Model
                     )
                     ->where('cards_id = :id')
                     ->orderBy([
-                        'r.deck ASC',
                         'f.id ASC',
+                        'r.deck ASC',
                     ])
             )
             ->bind([':id' => $args[0]])
