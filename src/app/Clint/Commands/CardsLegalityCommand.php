@@ -65,13 +65,15 @@ class CardsLegalityCommand extends Command
             $clusters = implode(",", $format["clusters"]);
             $sql .= (
                 "UPDATE cards c\n".
-                "LEFT JOIN (\n".
-                "    SELECT DISTINCT(cards_id)\n".
-                "    FROM play_restrictions\n".
-                "    WHERE formats_id = {$formatId} AND deck = 0 AND copies = 0\n".
-                ") AS r ON c.id = r.cards_id\n".
+                // Exclude banned cards?
+                // "LEFT JOIN (\n".
+                // "    SELECT DISTINCT(cards_id)\n".
+                // "    FROM play_restrictions\n".
+                // "    WHERE formats_id = {$formatId} AND deck = 0 AND copies = 0\n".
+                // ") AS r ON c.id = r.cards_id\n".
                 "SET c.legality_bit = c.legality_bit | (1 << {$formatBit})\n".
-                "WHERE r.cards_id IS NULL AND c.clusters_id IN({$clusters});\n\n\n"
+                // "WHERE r.cards_id IS NULL AND c.clusters_id IN({$clusters});\n\n\n"
+                "WHERE c.clusters_id IN({$clusters});\n\n\n"
             );
         }
 
