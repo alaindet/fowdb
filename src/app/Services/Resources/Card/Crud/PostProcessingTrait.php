@@ -88,8 +88,6 @@ trait PostProcessingTrait
     {
         if (!empty($this->old)) return;
 
-        if ($this->new['narp'] !== '0') return;
-
         $existing = database()
             ->select(
                 statement('select')
@@ -103,10 +101,17 @@ trait PostProcessingTrait
             ])
             ->first();
 
-        // ERROR: Number already exists!
-        if (!empty($existing)) {
+        // ERROR: Trying to add a NARP = 0 but it already exists
+        if (!empty($existing) && $this->new['narp'] === '0') {
             throw new CrudException(
                 "A basic print of card <strong>{$this->new['name']}</strong> already exists, please flag it as an Alternate, Reprint or Promo with the NARP input"
+            );
+        }
+
+        // ERROR: Trying to add a NARP > 0 but no basic print found!
+        else if (empty($existing) && $this->new['narp'] !== '0') {
+            throw new CrudException(
+                "A basic print of card <strong>{$this->new['name']}</strong> DOES NOT exist, please flag this card as a Basic print or create a Basic print with the same name first"
             );
         }
     }
