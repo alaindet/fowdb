@@ -114,7 +114,7 @@ class CardsController extends Controller
             ->title($title)
             ->variables([
                 'cards' => $cards,
-                'next_card' => $nextCard
+                'next_card' => $nextCard,
             ])
             ->options([
                 'ogp' => $ogp,

@@ -2,6 +2,7 @@
 
 // VARIABLES
 // $cards
+// $is_any_card_banned
 // $next_card
 
 $rulingsCounter = 0; // Ruling counter
@@ -13,7 +14,7 @@ foreach ($cards as $card):
 	$hasRulings = !empty($card['rulings']);
 	$cardsCounter++;
 	$isFirst = ($cardsCounter) === 1;
-	$isLast = ($cardsCounter === $cardsCount);
+  $isLast = ($cardsCounter === $cardsCount);
 ?>
 	<?=!$isFirst ? '<hr class="fd-hr">' : ''?>
 
@@ -27,7 +28,11 @@ foreach ($cards as $card):
 					<span class="visible-xs"><p></p></span>
 					<span class="font-100 text-muted text-italic">
 						<?=$card['code']?>
-					</span>
+          </span>
+          <?php if ($card['is_banned']): ?>
+            <br>
+            <span style="color:red;font-weight:700;">BANNED</span>
+          <?php endif ?>
 				</h1>
 			</div>
 		</div>

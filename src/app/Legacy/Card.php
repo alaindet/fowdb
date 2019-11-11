@@ -177,32 +177,6 @@ class Card
                         }
                     );
 
-                    // Built HTML list of banned formats
-                    // Ex.: (no extra) New Frontiers
-                    // Ex.: (extra) New Frontiers (Rune Deck, 1 copy)
-                    // $bannedHtml = implode(", ",
-                    //     array_map(
-                    //         function ($ban) {
-                        
-                    //             $extra = Arrays::filterNull([
-                    //                 $ban["deck"],
-                    //                 $ban["copies"]
-                    //             ]);
-
-                    //             return (
-                    //                 "<span style=\"color:red;\">".
-                    //                     "<strong>{$ban["format"]}</strong>&nbsp".
-                    //                 "</span>".
-                    //                 "<em>".
-                    //                     !empty($extra) ? "(".implode(", ", $extra).")" : "".
-                    //                 "</em>"
-                    //             );
-
-                    //         },
-                    //         $bannedFormats
-                    //     )
-                    // );
-
                     $bannedElements = [];
                     foreach ($bannedFormats as $bannedFormat) {
                         $extra = Arrays::filterNull([
@@ -316,6 +290,7 @@ class Card
                 'image_path' => $card['image_path'],
                 'thumb_path' => $card['thumb_path'],
                 'rulings' => $rulings,
+                'is_banned' => ($banned !== ''),
                 
             ];
 

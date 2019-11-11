@@ -23,6 +23,7 @@ class Card
         'thumb_path',
         'rulings',
         'sorted_id',
+        'is_banned',
     ];
 
     /**
