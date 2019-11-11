@@ -14,12 +14,15 @@ class CardsLegalityCommand extends Command
      * Run the Clint command cards:legality
      *
      * Ex.:
-     * $ php clint cards:legality <arguments> [options]
+     * $ php clint cards:legality
      *
      * @return CardsLegalityCommand
      */
     public function run(): Command
     {
+        $ts = Time::timestamp();
+        $sql = "/* {$ts} */\n\n";
+
         $rawFormatsStatement = statement("select")
             ->select([
                 "f.id AS f_id",
@@ -54,8 +57,6 @@ class CardsLegalityCommand extends Command
             $formats[$formatId]["clusters"][] = $clusterId;
         }
 
-        $ts = Time::timestamp();
-        $sql = "/* {$ts} */\n\n";
         $sql .= "UPDATE cards SET legality_bit = 0;\n\n";
 
         // Update legality format by format (no banned cards in that format)
@@ -108,7 +109,8 @@ class CardsLegalityCommand extends Command
         database()->rawStatement($sql);
 
         $this->setMessage(
-            "Cards legality rebuilt. The .sql file was stored in\n{$path}"
+            "Table field \"cards.legality_bit\" was rebuilt. ".
+            "The .sql file was stored in\n{$path}"
         );
 
         return $this;
