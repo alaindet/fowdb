@@ -184,7 +184,7 @@ class Card extends Model
      */
     public static function buildAllSortId(): void
     {
-        $statementPath = path_src("database/operations/set-cards-sorted-id.sql");
+        $statementPath = path_src("database/set-cards-sorted-id.sql");
         $statement = FileSystem::readFile($statementPath);
         database()->rawStatement($statement);
     }
