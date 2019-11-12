@@ -5,6 +5,7 @@ vendor/
 # App and development directories
 /.backup/
 /.dev/
+/_dev/
 /src/data/cache
 /src/data/resources
 /src/data/backup
