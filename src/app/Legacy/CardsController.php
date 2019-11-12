@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Legacy;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
