@@ -647,7 +647,7 @@ class CardSearch
                         break;
 
                     case 'rarity':
-                        $sortField = "FIELD(rarity,'c','u','r','sr','pr','s')";
+                        $sortField = "FIELD(rarity,'c','u','n','r','sr','s','ar')";
                         break;
                         
                     default: // No custom sorting for other inputs
