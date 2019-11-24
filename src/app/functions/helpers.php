@@ -136,7 +136,7 @@ function dump($data, string $title = null): void
 function fd_divinity($divinity): string
 {
 	$infinity = config('game.divinity.infinity');
-	return (intval($divinity) === $infinity) ? "&infin;" : strval($divinity);
+	return ($divinity === $infinity) ? "&infin;" : strval($divinity);
 }
 
 /**
