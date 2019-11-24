@@ -28,11 +28,7 @@ foreach ($cards as $card):
 					<span class="visible-xs"><p></p></span>
 					<span class="font-100 text-muted text-italic">
 						<?=$card['code']?>
-          </span>
-          <?php if ($card['is_banned']): ?>
-            <br>
-            <span style="color:red;font-weight:700;">BANNED</span>
-          <?php endif ?>
+          			</span>
 				</h1>
 			</div>
 		</div>
