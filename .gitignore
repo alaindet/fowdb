@@ -4,7 +4,8 @@ vendor/
 
 # App and development directories
 /.backup/
-/.dev/
+.dev/
+_dev/
 /src/data/cache/
 /src/data/resources/cr
 /src/data/backup
@@ -12,10 +13,12 @@ vendor/
 
 # Public assets and files
 assets/
+images/
+documents/
 .env
 .env.production
 .env.development
-.pdf
+*.pdf
 sitemap.xml
 sitemap.xml.gz
 
