@@ -2,18 +2,18 @@
 
 namespace App\Legacy;
 
-use App\Services\Session\Session;
-use App\Legacy\Exceptions\AuthenticationException;
+use App\Services\Session;
+use App\Exceptions\AuthenticationException;
 
 class Authentication
 {
-    const NAME = "admin-hash";
+    const NAME = 'admin-hash';
 
     public static function logout(): void
     {
-        fd_database()
+        database()
             ->update(
-                fd_statement('update')
+                statement('update')
                     ->table('users')
                     ->values(['remember_token' => ':notoken'])
                     ->where('remember_token = :token')
@@ -28,9 +28,9 @@ class Authentication
     public static function login(string $username, string $password): void
     {
         // Read the admin info from the database
-        $user = fd_database()
+        $user = database()
             ->select(
-                fd_statement('select')
+                statement('select')
                     ->fields('password')
                     ->from('users')
                     ->where('username = :name')
@@ -51,9 +51,9 @@ class Authentication
         $token = password_hash($kindOfUnique, PASSWORD_BCRYPT);
 
         // Store the hash into the database
-        fd_database()
+        database()
             ->update(
-                fd_statement('update')
+                statement('update')
                     ->table('users')
                     ->values(['remember_token' => ':token'])
                     ->where('username = :name')

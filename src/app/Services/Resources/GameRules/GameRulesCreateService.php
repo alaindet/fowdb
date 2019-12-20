@@ -7,7 +7,6 @@ use App\Base\CrudServiceInterface;
 use App\Models\GameRules as Model;
 use App\Services\Resources\GameRules\GameRulesInputProcessor as InputProcessor;
 use App\Services\Resources\GameRules\DocumentConverter;
-use App\Utils\Paths;
 
 class GameRulesCreateService extends CrudService
 {
@@ -26,9 +25,9 @@ class GameRulesCreateService extends CrudService
             }
         }
 
-        fd_database()
+        database()
             ->insert(
-                fd_statement('insert')
+                statement('insert')
                     ->table('game_rules')
                     ->values($placeholders)
             )
@@ -44,8 +43,8 @@ class GameRulesCreateService extends CrudService
 
         // Calculate paths
         $inputSourcePath = $file['tmp_name'];
-        $docPath = Paths::inRootDir($this->new['doc_path']);
-        $sourcePath = Paths::inDataDir("resources/cr/{$this->new['version']}.txt");
+        $docPath = path_public($this->new['doc_path']);
+        $sourcePath = path_data("resources/cr/{$this->new['version']}.txt");
 
         // Convert input .txt into output .html and store it
         (new DocumentConverter)
@@ -53,7 +52,7 @@ class GameRulesCreateService extends CrudService
             ->setOutputFilePath($docPath)
             ->convert();
 
-        // Move source file to src/data/resources/cr
+        // Move source file to {src}/data/resources/cr
         move_uploaded_file($inputSourcePath, $sourcePath);
 
         return $this;
@@ -68,13 +67,13 @@ class GameRulesCreateService extends CrudService
     {
         $message = (
             'New comprehensive rules <strong>'.
-                '<a href="'.fd_url('cr/'.$this->new['version']).'">'.
+                '<a href="'.url('cr/'.$this->new['version']).'">'.
                     'ver. '.$this->new['version'].
                 '</a>'.
             '</strong> (valid from '.$this->new['date_validity'].') created.'
         );
 
-        $uri = fd_url('cr/manage');
+        $uri = url('cr/manage');
 
         return [$message, $uri];
     }

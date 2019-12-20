@@ -2,54 +2,81 @@
 
 namespace App\Services\Lookup\Generators;
 
-use App\Services\Lookup\Interfaces\LookupDataGeneratorInterface;
-use App\Base\ORM\Manager\EntityManager;
-use App\Entity\GameFormat\GameFormat;
-use App\Entity\GameCluster\GameCluster;
-use function GuzzleHttp\Psr7\readline;
+use App\Services\Lookup\Generatable;
 
-class FormatsGenerator implements LookupDataGeneratorInterface
+class FormatsGenerator implements Generatable
 {
-    public function generate(): object
+    public function data(): array
     {
-        $result = (object) [
-            "id2code"       => new \stdClass(),
-            "id2name"       => new \stdClass(),
-            "id2clusters"   => new \stdClass(),
-            "code2id"       => new \stdClass(),
-            "code2name"     => new \stdClass(),
-            "default"       => "",
-            "display"       => new \stdClass(),
-        ];
+        return database()
+            ->select(
+                statement("select")
+                    ->select([
+                        "f.id AS f_id",
+                        "f.bit AS f_bit",
+                        "f.name AS f_name",
+                        "f.code AS f_code",
+                        "f.is_default AS f_is_default",
+                        "f.is_multi_cluster AS f_is_multi_cluster",
+                        "c.id AS c_id",
+                    ])
+                    ->from(
+                        "game_formats AS f
+                        INNER JOIN pivot_cluster_format AS cf ON f.id = cf.formats_id
+                        INNER JOIN game_clusters AS c ON cf.clusters_id = c.id"
+                    )
+                    ->orderBy([
+                        "f.is_multi_cluster DESC",
+                        "f.id DESC",
+                        "c.id DESC",
+                    ])
+            )
+            ->get();
+    }
 
-        $repository = EntityManager::getRepository(GameFormat::class);
-        $items = $repository->all();
 
-        foreach ($items as $item) {
+    public function generate(): array
+    {
+        return array_reduce(
+            
+            // Data
+            $this->data(),
+            
+            // Reducer
+            function ($o, $i) {
 
-            $idLabel = "id" . $item->id;
+                if ($i["f_is_default"]) {
+                    $o["default"] = $i["f_code"];
+                }
 
-            $clusters = $repository
-                ->getRelated($item, GameCluster::class)
-                ->extract(["id", "code", "name"])
-                ->toArray();
+                $o["code2id"][$i["f_code"]] = $i["f_id"];
+                $o["code2name"][$i["f_code"]] = $i["f_name"];
 
-            if ($item->is_default) {
-                $result->default = $item->code;
-            }
+                if (!isset($o["code2clusters"][$i["f_code"]])) {
+                    $o["code2clusters"][$i["f_code"]] = [];
+                }
 
-            if ($item->is_multi_cluster) {
-                $result->display->{$item->code} = $item->name;
-            }
+                $o["code2clusters"][$i["f_code"]][] = $i["c_id"];
+                $o["id2code"][$i["f_id"]] = $i["f_code"];
+                $o["id2name"][$i["f_id"]] = $i["f_name"];
+                $o["code2bit"][$i["f_code"]] = $i["f_bit"];
+                $o["bit2name"][$i["f_bit"]] = $i["f_name"];
 
-            $result->code2id->{$item->code} = $item->id;
-            $result->code2name->{$item->code} = $item->name;
-            $result->id2code->{$idLabel} = $item->code;
-            $result->id2name->{$idLabel} = $item->name;
-            $result->id2clusters->{$idLabel} = $clusters;
-
-        }
+                return $o;
+            },
         
-        return $result;
+            // State
+            [
+                "default" => "",
+                "code2id" => [],
+                "code2name" => [],
+                "code2clusters" => [],
+                "id2code" => [],
+                "id2name" => [],
+                "code2bit" => [],
+                "bit2name" => [],
+            ]
+
+        );
     }
 }

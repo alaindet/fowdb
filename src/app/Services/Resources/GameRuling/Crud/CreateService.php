@@ -14,8 +14,8 @@ class CreateService extends CrudService
     public function syncDatabase(): CrudServiceInterface
     {
         // Create ruling entity on the database
-        fd_database()
-            ->insert(fd_statement('insert')
+        database()
+            ->insert(statement('insert')
                 ->table('game_rulings')
                 ->values([
                     'cards_id' => ':cardid',
@@ -48,14 +48,14 @@ class CreateService extends CrudService
 
         // Build the success message
         $label = "{$card['name']} ({$card['code']})";
-        $link = '<a href="'.fd_url('rulings/manage').'">Rulings</a>';
+        $link = '<a href="'.url('rulings/manage').'">Rulings</a>';
 
         $message = (
             "New ruling for card <strong>{$label}</strong> added. ".
             "Go back to the <strong>{$link}</strong> page."
         );
 
-        $uri = fd_url('card/'.urlencode($card['code']));
+        $uri = url('card/'.urlencode($card['code']));
 
         return [$message, $uri];
     }

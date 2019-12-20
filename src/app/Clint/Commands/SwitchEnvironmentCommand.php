@@ -6,42 +6,37 @@ use App\Clint\Commands\Command;
 use App\Clint\Exceptions\MissingArgumentException;
 use App\Clint\Exceptions\InvalidArgumentException;
 use App\Services\FileSystem\FileSystem;
-use App\Services\Configuration\Configuration;
-use App\Utils\Paths;
+use App\Services\Config\Config;
 
 class SwitchEnvironmentCommand extends Command
 {
     public $name = "env:switch";
-    private $targets = [
-        "development" => "development",
-        "dev"         => "development",
-        "production"  => "production",
-        "prod"        => "production",
-    ];
+    private $targets = ["production", "development"];
 
-    public function run(array $options, array $arguments): void
+    public function run(): Command
     {
         // ERROR: Missing argument
-        if (!isset($arguments[0])) {
+        if (!isset($this->values[0])) {
             throw new MissingArgumentException;
         }
 
         // ERROR: Invalid argument
-        if (!in_array($arguments[0], array_keys($this->targets))) {
+        if (!in_array($this->values[0], $this->targets)) {
             throw new InvalidArgumentException;
         }
 
-        $target = $this->targets[$arguments[0]];
-        $currentEnv = Paths::inSrcDir(".env");
-        $targetEnv = Paths::inSrcDir(".env.{$target}");
+        $target = $this->values[0];
+        $currentEnv = path_src(".env");
+        $targetEnv = path_src(".env.{$target}");
 
         FileSystem::deleteFile($currentEnv);
         FileSystem::copyFile($targetEnv, $currentEnv);
 
-        // Force to cache the new environment
-        $config = Configuration::getInstance();
-        $config->rebuild();
+        // Force to rebuild the configuration
+        (Config::getInstance())->build()->store();
 
-        $this->message = "Switched environment to {$target}";
+        $this->setMessage("Switched environment to {$target}");
+
+        return $this;
     }
 }

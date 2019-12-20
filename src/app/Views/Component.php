@@ -2,8 +2,8 @@
 
 namespace App\Views;
 
+use App\Base\Base;
 use App\Utils\Strings;
-use App\Utils\Paths;
 
 abstract class Component
 {
@@ -38,23 +38,23 @@ abstract class Component
     /**
      * Loads the view file of a component and renders it by passing it data
      *
-     * @param array $__variables
+     * @param string $path Relative {src}/resources/view/component, no ext needed
+     * @param array $variables
      * @return string Rendered component as HTML
      */
-    protected function renderTemplate(array $__variables = []): string
+    protected function renderTemplate(array $variables = []): string
     {
         // Declare scoped variables
-        foreach ($__variables as $__name => $__value) {
-            if (strpos($__name, '-')) {
-                $__name = Strings::kebabToSnake($__name);
+        foreach ($variables as $name => $value) {
+            if (strpos($name, '-')) {
+                $name = Strings::kebabToPascal($name);
             }
-            $$__name = $__value;
+            $$name = $value;
         }
 
-        // Turn on the buffer to catch the rendered component,
-        // Then return it as HTML string
+        // Turn on the buffer to catch the rendered component, then return it
         ob_start();
-        include Paths::inTemplatesDir("components/{$this->filename}.tpl.php");
+        include path_views("components/{$this->filename}.tpl.php");
         return ob_get_clean();
     }
 }

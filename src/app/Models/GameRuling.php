@@ -22,9 +22,9 @@ class GameRuling extends Model
         array $fieldsToRender = []
     ): array
     {
-        $resources = fd_database()
+        $resources = database()
             ->select(
-                fd_statement('select')
+                statement('select')
                     ->select(isset($fields) ? implode(',', $fields) : '*')
                     ->from($this->table)
                     ->where('cards_id = :cardid')
@@ -39,7 +39,7 @@ class GameRuling extends Model
         // Render fields
         foreach ($resources as &$resource) {
             foreach ($fieldsToRender as $field) {
-                $resource[$field] = fd_render($resource[$field]);
+                $resource[$field] = render($resource[$field]);
             }
         }
 

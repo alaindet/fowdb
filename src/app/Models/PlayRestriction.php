@@ -27,7 +27,8 @@ class PlayRestriction extends Model
         'Main Deck',
         'Side Deck',
         'Magic Stone Deck',
-        'Rune Deck'
+        'Rune Deck',
+        'Stranger Deck',
     ];
 
     public static $copiesLabels = [
@@ -39,7 +40,8 @@ class PlayRestriction extends Model
         0 => 'Main Deck',
         1 => 'Side Deck',
         2 => 'Magic Stone Deck',
-        3 => 'Rune Deck'
+        3 => 'Rune Deck',
+        4 => 'Stranger Deck',
     ];
 
     public static function getData(string $page, ...$theRest): array
@@ -57,9 +59,9 @@ class PlayRestriction extends Model
 
     public static function getBanlistPageData(): array
     {
-        return fd_database()
+        return database()
             ->select(
-                fd_statement('select')
+                statement('select')
                     ->select([
                         'f.name format_name',
                         'f.code format_code',
@@ -95,9 +97,9 @@ class PlayRestriction extends Model
             throw new ModelException('Missing arguments');
         }
 
-        $items = fd_database()
+        $items = database()
             ->select(
-                fd_statement('select')
+                statement('select')
                     ->select([
                         'f.name as name',
                         'r.deck as deck',
@@ -109,8 +111,8 @@ class PlayRestriction extends Model
                     )
                     ->where('cards_id = :id')
                     ->orderBy([
-                        'r.deck ASC',
                         'f.id ASC',
+                        'r.deck ASC',
                     ])
             )
             ->bind([':id' => $args[0]])

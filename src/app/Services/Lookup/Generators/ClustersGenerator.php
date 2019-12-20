@@ -2,55 +2,76 @@
 
 namespace App\Services\Lookup\Generators;
 
-use App\Services\Lookup\Interfaces\LookupDataGeneratorInterface;
-use App\Base\ORM\Manager\EntityManager;
-use App\Entity\GameCluster\GameCluster;
-use App\Entity\GameFormat\GameFormat;
-use App\Entity\GameSet\GameSet;
+use App\Services\Lookup\Generatable;
 
-class ClustersGenerator implements LookupDataGeneratorInterface
+class ClustersGenerator implements Generatable
 {
-    public function generate(): object
+    public function generate(): array
     {
-        $result = (object) [
-            "list"       => new \stdClass(),
-            "code2name"  => new \stdClass(),
-            "code2id"    => new \stdClass(),
-            "id2code"    => new \stdClass(),
-            "id2name"    => new \stdClass(),
-            "id2formats" => new \stdClass(),
-        ];
+        $current = '';
 
-        $repository = EntityManager::getRepository(GameCluster::class);
-        $items = $repository->all();
+        return array_reduce(
 
-        foreach ($items as $item) {
+            // Items
+            database()
+            ->select(
+                statement('select')
+                    ->select([
+                        'c.id c_id',
+                        'c.code c_code',
+                        'c.name c_name',
+                        's.name s_name',
+                        's.code s_code',
+                    ])
+                    ->from(
+                        'game_sets s
+                        INNER JOIN game_clusters c ON s.clusters_id = c.id'
+                    )
+                    ->orderBy([
+                        'c.id DESC',
+                        's.id DESC'
+                    ])
+            )
+            ->get(),
 
-            $idLabel = "id" . $item->id;
+            /**
+             * Reducer function
+             * 
+             * IMPORTANT NOTE HERE:
+             * $current is imported by reference using &
+             * This is the ONLY way to manipulate an external variable
+             * from inside a closure!
+             */
+            function ($result, $item) use (&$current) {
 
-            $formats = $repository
-                ->getRelated($item, GameFormat::class)
-                ->extract(["id", "code", "name"])
-                ->toArray();
+                // Store id => name mapping
+                $result['id2name'][$item['c_id']] = $item['c_name'];
 
-            $sets = $repository
-                ->getRelated($item, GameSet::class)
-                ->extract(["id", "code", "name"])
-                ->toArray();
+                // Break the cached value
+                if ($current !== $item['c_code']) {
 
-            $result->id2code->{$idLabel} = $item->code;
-            $result->id2name->{$idLabel} = $item->name;
-            $result->id2formats->{$idLabel} = $formats;
-            $result->code2id->{$item->code} = $item->id;
-            $result->code2name->{$item->code} = $item->name;
+                    // Update the cached value
+                    $current = $item['c_code'];
 
-            $listItem = new \stdClass();
-            $listItem->name = $item->name;
-            $listItem->sets = $sets;
-            $result->list->{$item->code} = $listItem;
+                    // Initialize a new cluster into the list
+                    $result['list'][$current] = [
+                        'name' => $item['c_name'],
+                        'sets' => []
+                    ];
+                }
 
-        }
+                // Store the set into the list
+                $sets =& $result['list'][$current]['sets'];
+                $sets[ $item['s_code'] ] = $item['s_name'];
 
-        return $result;
+                return $result;
+            },
+
+            // Initial state
+            [
+                'list' => [],
+                'id2name' => [],
+            ]
+        );
     }
 }

@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
-use App\Services\Resources\Card\Search\Search;
-use App\Views\Page\Page;
-use App\Services\Alert;
-use App\Services\Configuration\Configuration;
-use App\Http\Response\Redirect;
+use App\Legacy\Card as LegacyCard;
+use App\Models\Card as Model;
+use App\Legacy\CardSearch as Search;
+use App\Views\Page;
 
 /**
  * Contains actions for PUBLIC routes only
@@ -18,57 +17,58 @@ class CardsController extends Controller
 {
     public function searchForm(Request $request): string
     {
-        return (new Page)
-            ->template("pages/public/cards/search/index-form")
-            ->title("Cards Search")
-            ->options([
-                "scripts" => ["public/cards/search-form"]
-            ])
-            ->render();
+        return view_old(
+            'Search',
+            'old/search/search.php',
+            [ 'js' => [ 'public/search' ] ],
+            ['thereWereResults' => false]
+        );
     }
 
     public function search(Request $request): string
     {
         $search = new Search;
-        $search->setParameters($request->input()->get());
-        $search->setPagination($request->getCurrentUrl());
-        $search->processParameters();
 
-        // // DEBUG
-        // return fd_log_html([
-        //     "params" => $request->input()->get(),
-        //     "sql" => $search->getStatement(),
-        //     "bind" => $search->getBoundData(),
-        // ]);
+        // Read the raw input
+        $input = $request->input()->get();
 
-        $search->fetchResults();
-        $results = $search->getResults();
+        // Filter out unwanted input
+        $filters = $search->getFilters($input);
+
+        // Get the results
+        $cards = $search->processFilters($input)->getCards();
+
+        // TEST: SQL statement
+        // dump($search->getSQL());
 
         // ERROR: Cards not found!
-        if (empty($results)) {
-            Alert::add("No results. Please try changing your filters.", "danger");
-            Redirect::to("cards/search");
+        if (empty($cards)) {
+            alert(
+                'No results. Please try changing your searching criteria.',
+                'danger'
+            );
+            redirect('cards/search');
         }
 
-        return (new Page)
-            ->template("pages/public/cards/search/index-results")
-            ->title("Cards Search")
-            ->options([
-                "scripts" => ["public/cards/search-results"]
-            ])
-            ->variables([
-                "results" => $results,
-                "filters" => $search->getParameters(),
-                "pagination" => $search->getPagination()
-            ])
-            ->render();
+        // Alias the filters
+        return view_old(
+            'Search',
+            'old/search/search.php',
+            [ 'js' => [ 'public/search' ] ],
+            [
+                'filters' => $filters,
+                'search' => $search,
+                'cards' => $cards,
+                'thereWereResults' => true
+            ]
+        );
     }
 
-    public function searchHelp(): string
+    public function showSearchHelp(): string
     {
         return (new Page)
-            ->template("pages/public/cards/search/index-help")
-            ->title("Cards Search Help")
+            ->template('pages/public/cards/search-help/index')
+            ->title('Cards Search Help')
             ->render();
     }
 
@@ -84,47 +84,41 @@ class CardsController extends Controller
      * NDR-002
      *
      * @param Request $request
-     * @param string $code The card"s code
+     * @param string $code The card's code
      * @return string
      */
     public function show(Request $request, string $code): string
     {
-        // Validate and process input
-        // Ex.: ABC-001+C => ABC-001C
-        $code = str_replace(" ", "", urldecode($code));
-
-        $cardsRepository = new \App\Entities\Card\CardsRepository;
-        $cards = $cardsRepository->findAllByCode($code);
-        $card = $cards->first();
-
-        // $cards = LegacyCard::getCardPageData($code);
+        $code = urldecode($code);
+        
+        $cards = LegacyCard::getCardPageData($code);
 
         // Build Open Graph Protocol data for this page
-        $card = $cards->first();
-        $appName = (Configuration::getInstance())->get("app.name");
-        $title = "{$card->get("name")} ({$card->get("code")}) ~ {$appName}";
+        $card = &$cards[0];
+        $title = "{$card['name']} ({$card['code']}) ~ ".config('app.name');
         $ogp = [
-            "title" => $title,
-            "url" => $card->get("link"),
-            "image" => [
-                "url" => $card->get("thumb-path"),
-                "alt" => $title
+            'title' => $title,
+            'url' => url('card/'.urlencode($card['code'])),
+            'image' => [
+                'url' => asset($card['thumb_path']),
+                'alt' => $title
             ]
         ];
 
-        // Find next card
-        $nextCard = $cards->last()->getNext();
+        // Calculate next card
+        $lastCard = &$cards[count($cards)-1];
+        $nextCard = (new Model)->getNext($lastCard['sorted_id']);
         
         return (new Page)
-            ->template("pages/public/cards/show/index")
+            ->template('pages/public/cards/show/index')
             ->title($title)
             ->variables([
-                "cards" => $cards,
-                "next_card" => $nextCard
+                'cards' => $cards,
+                'next_card' => $nextCard,
             ])
             ->options([
-                "ogp" => $ogp,
-                "scripts" => ["public/cards/show"],
+                'ogp' => $ogp,
+                'scripts' => [ 'public/card' ],
             ])
             ->render();
     }

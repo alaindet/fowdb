@@ -3,6 +3,7 @@
 namespace App\Services\Resources\GameCluster\Crud;
 
 use App\Base\InputProcessor as BaseInputProcessor;
+use App\Exceptions\CrudException;
 use App\Services\Resources\GameCluster\Crud\PostProcessingTrait;
 
 class InputProcessor extends BaseInputProcessor

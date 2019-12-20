@@ -7,7 +7,6 @@ use App\Base\CrudServiceInterface;
 use App\Models\Card as Model;
 use App\Services\FileSystem\FileSystem;
 use App\Utils\Uri;
-use App\Utils\Paths;
 
 class DeleteService extends CrudService
 {
@@ -18,9 +17,9 @@ class DeleteService extends CrudService
         $bind = [':cardid' => $this->old['id']];
 
         // Remove from 'cards' table
-        fd_database()
+        database()
             ->delete(
-                fd_statement('delete')
+                statement('delete')
                     ->table('cards')
                     ->where('id = :cardid')
             )
@@ -41,7 +40,7 @@ class DeleteService extends CrudService
         ];
 
         foreach ($paths as $path) {
-            $absolutePath = Paths::inRootDir(Uri::removeQueryString($path));
+            $absolutePath = path_public(Uri::removeQueryString($path));
             FileSystem::deleteFile($absolutePath);
         }
 
@@ -57,7 +56,7 @@ class DeleteService extends CrudService
     {
         $label = "{$this->old['name']} ({$this->old['code']})";
         $message = "Card <strong>{$label}</strong> deleted.";
-        $uri = fd_url('cards/manage');
+        $uri = url('cards/manage');
 
         return [$message, $uri];
     }

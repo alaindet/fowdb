@@ -21,7 +21,7 @@ abstract class Model extends Base
      * Returns all the resources
      *
      * @param array $fields Fields to select
-     * @param array $fieldsToRender Fields to render via fd_render()
+     * @param array $fieldsToRender Fields to render via render()
      * @return array
      */
     public function all(
@@ -49,7 +49,7 @@ abstract class Model extends Base
         if (!empty($fieldsToRender)) {
             foreach ($this->data as &$resource) {
                 foreach ($fieldsToRender as $field) {
-                    $resource[$field] = fd_render($resource[$field]);
+                    $resource[$field] = render($resource[$field]);
                 }
             }    
         }
@@ -74,7 +74,7 @@ abstract class Model extends Base
      *
      * @param string|integer $id Accepts both string or integer
      * @param array $fields Fields to select
-     * @param array $fieldsToRender Fields to render via fd_render()
+     * @param array $fieldsToRender Fields to render via render()
      * @return array
      */
     public function byId(
@@ -103,7 +103,7 @@ abstract class Model extends Base
         // Render fields
         if (!empty($fieldsToRender)) {
             foreach ($fieldsToRender as $field) {
-                $this->data[$field] = fd_render($this->data[$field]);
+                $this->data[$field] = render($this->data[$field]);
             }
         }
 
@@ -125,7 +125,7 @@ abstract class Model extends Base
      * @param string $field The unique field to search on
      * @param string|integer|null $value The value of unique field to search on
      * @param array $fields Fields to select
-     * @param array $fieldsToRender Fields to render via fd_render()
+     * @param array $fieldsToRender Fields to render via render()
      * @return array
      */
     public function byField(
@@ -155,7 +155,7 @@ abstract class Model extends Base
         // Render fields
         if (!empty($fieldsToRender)) {
             foreach ($fieldsToRender as $field) {
-                $this->data[$field] = fd_render($this->data[$field]);
+                $this->data[$field] = render($this->data[$field]);
             }
         }
 
@@ -184,9 +184,9 @@ abstract class Model extends Base
         array $fields = null
     ): array
     {
-        return fd_database()
+        return database()
             ->select(
-                fd_statement('select')
+                statement('select')
                     ->select(!empty($fields) ? implode(',', $fields) : '*')
                     ->from($this->table)
                     ->where("{$field} = :value")
@@ -204,9 +204,9 @@ abstract class Model extends Base
      */
     private function fetchAll(array $fields = null): array
     {
-        return fd_database()
+        return database()
             ->select(
-                fd_statement('select')
+                statement('select')
                     ->select(!empty($fields) ? implode(',', $fields) : '*')
                     ->from($this->table)
             )

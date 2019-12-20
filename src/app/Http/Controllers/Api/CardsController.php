@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Base\Controller;
 use App\Http\Request\Request;
 use App\Http\Response\JsonResponse;
-use App\Services\Resources\Card\Search\Search;
+use App\Legacy\CardSearch as Search;
 use App\Models\Card as Model;
 
 /**
@@ -16,11 +16,22 @@ class CardsController extends Controller
     private function autocompleteError(): string
     {
         return (new JsonResponse)
-            ->setData([
-                'label' => 'No term',
-                'value' => 'No term'
-            ])
+            ->setData(['label' => 'No term', 'value' => 'No term'])
             ->render();
+    }
+
+    public function search(Request $request): string
+    {
+        $search = new Search;
+        $search->processFilters($request->input()->get());
+
+        $data = [
+            'response' => true,
+            'cardsData' => $search->getCards(),
+            'nextPage' => $search->isPagination
+        ];
+
+        return (new JsonResponse)->setData($data)->render();
     }
 
     public function autocompleteNames(Request $request): string
@@ -31,9 +42,9 @@ class CardsController extends Controller
         if (!isset($term) || $term === '') return $this->autocompleteError();
 
         // Fetch results from the database
-        $items = fd_database()
+        $items = database()
             ->select(
-                fd_statement('select')
+                statement('select')
                     ->fields(['id', 'name', 'code', 'image_path'])
                     ->from('cards')
                     ->where('name LIKE :name')
@@ -60,8 +71,8 @@ class CardsController extends Controller
 
                 // Extra information
                 'id' => $item['id'],
-                'image' => fd_asset($item['image_path'], 'jpg'),
-                'link' => fd_url('card/'.urlencode($item['code']))
+                'image' => asset($item['image_path'], 'jpg'),
+                'link' => url('card/'.urlencode($item['code']))
 
             ];
         }

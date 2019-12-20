@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
-use App\Views\Page\Page;
+use App\Views\Page;
 
 class HashController extends Controller
 {
@@ -15,7 +15,7 @@ class HashController extends Controller
             ->title('Hash a string')
             ->variables([
                 'breadcrumbs' => [
-                    'Admin' => fd_url('profile'),
+                    'Admin' => url('profile'),
                     'Hash' => '#'
                 ]
             ])
@@ -32,8 +32,8 @@ class HashController extends Controller
             ->title('Hash a string')
             ->variables([
                 'breadcrumbs' => [
-                    'Admin' => fd_url('profile'),
-                    'Hash' => fd_url('hash'),
+                    'Admin' => url('profile'),
+                    'Hash' => url('hash'),
                     'Result' => '#'
                 ],
                 'input' => $input,

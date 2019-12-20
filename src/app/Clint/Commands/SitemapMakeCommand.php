@@ -7,17 +7,20 @@ use App\Services\Sitemap\Sitemap;
 
 class SitemapMakeCommand extends Command
 {
-    public $name = 'sitemap:make';
+    public $name = "sitemap:make";
 
-    public function run(array $options, array $arguments): void
+    public function run(): Command
     {
-        $backup = isset($options['--backup']);
+        // Makes a copy of current sitemap.xml before rebuilding it
+        $backup = isset($this->options["backup"]);
 
         (new Sitemap)->build($backup);
 
-        $this->message = (
-            'File /sitemap.xml and /sitemap.xml.gz regenerated.'.
-            ($backup ? 'Existing file was backed up first.' : '')
+        $this->setMessage(
+            "Files /sitemap.xml and /sitemap.xml.gz regenerated.".
+            ($backup ? "Existing file was backed up first." : "")
         );
+
+        return $this;
     }
 }

@@ -6,7 +6,6 @@ use App\Base\CrudService;
 use App\Base\CrudServiceInterface;
 use App\Services\Resources\GameSet\Crud\InputProcessor;
 use App\Services\FileSystem\FileSystem;
-use App\Utils\Paths;
 
 class CreateService extends CrudService
 {
@@ -24,9 +23,9 @@ class CreateService extends CrudService
             }
         }
 
-        fd_database()
+        database()
             ->insert(
-                fd_statement('insert')
+                statement('insert')
                     ->table('game_sets')
                     ->values($placeholders)
             )
@@ -39,8 +38,8 @@ class CreateService extends CrudService
     public function syncFileSystem(): CrudServiceInterface
     {
         $partial = $this->new['clusters_id'] . '/' . $this->new['code'];
-        $cardsDirectory =  Paths::inRootDir('images/cards/'  . $partial);
-        $thumbsDirectory = Paths::inRootDir('images/thumbs/' . $partial);
+        $cardsDirectory =  path_public('images/cards/'  . $partial);
+        $thumbsDirectory = path_public('images/thumbs/' . $partial);
 
         FileSystem::createDirectory($cardsDirectory);
         FileSystem::createDirectory($thumbsDirectory);
@@ -62,7 +61,7 @@ class CreateService extends CrudService
             "</strong> created."
         );
 
-        $uri = fd_url('sets/manage');
+        $uri = url('sets/manage');
 
         return [$message, $uri];
     }

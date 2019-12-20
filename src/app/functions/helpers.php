@@ -1,63 +1,106 @@
 <?php
 
-use App\Services\Configuration\Configuration;
-use App\Services\CsrfToken;
-use App\Services\Database\Database;
-use App\Services\Database\StatementManager\StatementManager;
-use App\Services\Database\Statement\SqlStatement;
-use App\Services\Lookup\Lookup;
-use App\Utils\Logger;
-use App\Utils\Paths;
-use App\Utils\Strings;
-use App\Utils\Uri;
-use App\Views\Entities\Card\CardText;
-use App\Views\Page\Page;
-use App\Legacy\Authorization as LegacyAuthorization;
-use App\Http\Request\Input\InputManager;
-use App\Views\Component\ComponentManager;
+// Imports
+use \App\Services\Database\Database;
+use \App\Http\Request\Input;
+use \App\Services\Database\Statement\SqlStatement;
+use \App\Legacy\Authorization as LegacyAuthorization;
 
 /**
- * List of helper functions
- * Any helper function fd_starts with "fd_"
+ * Index:
  * 
  * SERVICES
  * ========
- * fd_auth
- * fd_config
- * fd_database
- * fd_dump
- * fd_input
- * fd_lookup
- * fd_statement
+ * admin_level // LEGACY
+ * alert
+ * auth
+ * config
+ * database // TO DO
+ * dump
+ * fd_divinity
+ * input
+ * lookup
+ * redirect // TO DO
+ * redirect_old // LEGACY
+ * statement
+ * 
+ * DIRECTORIES
+ * ===========
+ * path_cache
+ * path_data
+ * path_public
+ * path_src
+ * path_views
  * 
  * VIEW
  * ====
- * fd_asset
- * fd_component
- * fd_csrf_token
- * fd_include_template
- * fd_escape
- * fd_log_html
- * fd_render
- * fd_url
+ * asset
+ * component
+ * csrf_token
+ * include_view
+ * escape
+ * log_html
+ * render
+ * url_old // LEGACY
+ * url // TO DO
+ * view_old // LEGACY
  */
 
 
 // SERVICES -------------------------------------------------------------------
 
 /**
+ * LEGACY: Checks the authorization level of current user
+ * 
+ * 0: public (not logged)
+ * 1: super admin
+ * 2: judge
+ *
+ * @return int
+ */
+function admin_level(): int
+{
+	return (LegacyAuthorization::getInstance())->level();
+}
+
+/**
+ * Adds an alert to be shown. If redirect is used after this, it's shown
+ * on the next request, otherwise it's shown on the current page
+ *
+ * @param string $message
+ * @param string $type
+ * @return void
+ */
+function alert(string $message, string $type = null): void
+{
+    \App\Services\Alert::add($message, $type);
+}
+
+/**
  * LEGACY: Returns the authorization singleton
  *
  * @return LegacyAuthorization
  */
-function fd_auth(): LegacyAuthorization
+function auth(): LegacyAuthorization
 {
 	return LegacyAuthorization::getInstance();
 }
 
-function fd_config(string $key)
+/**
+ * Returns configuration data
+ *
+ * @param string|array $name 
+ * @return mixed string|null
+ */
+function config($name)
 {
-	return (Configuration::getInstance())->get($key);
+	$config = \App\Services\Config\Config::getInstance();
+
+	if (is_array($name)) {
+		return $config->getByKeys($name);
+	} else {
+		return $config->get($name);
+	}
 }
 
 /**
@@ -65,7 +108,7 @@ function fd_config(string $key)
  *
  * @return Database
  */
-function fd_database(): Database
+function database(): Database
 {
     return Database::getInstance();
 }
@@ -75,25 +118,35 @@ function fd_database(): Database
  *
  * @param mixed $data Data to be dumped
  * @param string $title (Optional) Title to give to the log
- * @param bool $wrap (Optional) Wraps the line
  * @return void
  */
-function fd_dump($data, string $title = null, bool $wrap = false): void
+function dump($data, string $title = null): void
 {
-	ob_end_clean();
-	echo Logger::html($data, $title, $wrap);
-	die();
+	$mode = config("app.mode");
+
+	if ($mode === "web") {
+		echo \App\Utils\Logger::html($data, $title);
+		die();	
+	} elseif ($mode === "cli") {
+		echo \App\Utils\Logger::cli($data, $title);
+		die();
+	}
+}
+
+function fd_divinity($divinity): string
+{
+	$infinity = config('game.divinity.infinity');
+	return ($divinity === $infinity) ? "&infin;" : strval($divinity);
 }
 
 /**
  * Returns the Input instance for accessing GET, POST and FILES parameters
  * 
- * @param string $method "GET", "POST" or "FILES"
- * @return InputObject|object
+ * @return Input
  */
-function fd_input(): InputManager
+function input(): Input
 {
-	return InputManager::getInstance();
+	return Input::getInstance();
 }
 
 /**
@@ -102,9 +155,33 @@ function fd_input(): InputManager
  * @param string $path Dot-separated path. Ex.: "rarities.id2code"
  * @return mixed string | array
  */
-function fd_lookup(string $path = null)
+function lookup(string $path = null)
 {
-    return (Lookup::getInstance())->get($path);
+    return (\App\Services\Lookup\Lookup::getInstance())->get($path);
+} 
+
+/**
+ * Redirects to another URL, accepts array to parse as querystring
+ *
+ * @param string $to
+ * @param array $params
+ * @return void
+ */
+function redirect_old(string $to = null, array $params = []): void
+{
+    \App\Legacy\Redirect::to($to, $params);
+}
+
+/**
+ * Redirects to given URI, accepts an array of values to build the query string
+ *
+ * @param string $to
+ * @param array $params
+ * @return void
+ */
+function redirect(string $uri = '', array $qs = []): void
+{
+	\App\Http\Response\Redirect::to($uri, $qs);
 }
 
 /**
@@ -113,53 +190,126 @@ function fd_lookup(string $path = null)
  * @param string $type
  * @return SqlStatement
  */
-function fd_statement(string $type): SqlStatement
+function statement(string $type): SqlStatement
 {
-	return StatementManager::new($type);
+	$class = [
+		'select' => \App\Services\Database\Statement\SelectSqlStatement::class,
+		'insert' => \App\Services\Database\Statement\InsertSqlStatement::class,
+		'update' => \App\Services\Database\Statement\UpdateSqlStatement::class,
+		'delete' => \App\Services\Database\Statement\DeleteSqlStatement::class,
+	][$type];
+
+	$statement = new $class;
+
+	return $statement;
 }
+
+
+// DIRECTORIES ----------------------------------------------------------------
+
+/**
+ * @param string Relative path to {src}/data/cache/
+ * @return string Absolute path
+ */
+function path_cache(string $path = null): string
+{
+	$dir = config("dir.cache");
+	return isset($path) ? "{$dir}/{$path}" : $dir;
+}
+
+/**
+ * @param string Relative path to {src}/data/
+ * @return string Absolute path
+ */
+function path_data(string $path = null): string
+{
+	$dir = config("dir.data");
+	return isset($path) ? "{$dir}/{$path}" : $dir;
+}
+
+function path_public(string $path = null): string
+{
+	$dir = config("dir.public");
+	return isset($path) ? "{$dir}/{$path}" : $dir;
+}
+
+/**
+ * @param string Relative path to {src}
+ * @return string Absolute path
+ */
+function path_src(string $path = null): string
+{
+	$dir = config("dir.src");
+	return isset($path) ? "{$dir}/{$path}" : $dir;
+}
+
+/**
+ * @param string Relative path to {src}/resources/views/
+ * @return string Absolute path
+ */
+function path_views(string $path = null): string
+{
+	$dir = config("dir.views");
+	return isset($path) ? "{$dir}/{$path}" : $dir;
+}
+
 
 // VIEW -----------------------------------------------------------------------
 
 /**
- * Builds the URL for any asset, appending query strings to bust the cache
+ * Builds the URL for any asset, appending querystrings to bust the cache
  *
  * @param string $path
  * @param string $type
  * @return string
  */
-function fd_asset(string $path, string $type = "any"): string
+function asset(string $path, string $type = "generic"): string
 {
-	$config = Configuration::getInstance();
-    
-	$url = $config->get("app.url");
+	$timestampKey = [
+		"generic"    => "asset.timestamp.generic",
+		"css"        => "asset.timestamp.css",
+		"js"         => "asset.timestamp.js",
+		"javascript" => "asset.timestamp.js",
+		"png"        => "asset.timestamp.img",
+		"jpeg"       => "asset.timestamp.img",
+		"jpg"        => "asset.timestamp.img",
+	][$type];
 
-	// Bypass query string if already present
-	if (strpos($path, "?") === false) {
-		return "{$url}/{$path}";
-	}
-
-    $version = [
-		"any" => $config->get("app.timestamp"),
-		"css" => $config->get("app.timestamp.css"),
-		"js"  => $config->get("app.timestamp.js"),
-		"png" => $config->get("app.timestamp.img"),
-		"jpg" => $config->get("app.timestamp.img"),
-    ][$type];
+	$config = config(["app.url", $timestampKey]);
+	$url = &$config["app.url"];
+	$version = &$config[$timestampKey];
 
     return "{$url}/{$path}?{$version}";
 }
 
 /**
  * Instantiates a view component, renders it using provided data and
- * returns its HTML output as a string
+ * returns its HTML rendering as a string
  *
- * @param string $name Name of the component, ex.: "form/button-checkbox"
- * @param object $input Optional
+ * @param string $name Name of the component, as in App\Views\Components
+ * @param array $state The state to set, as associative array
  * @return string HTML rendering of the component
  */
-function fd_component(string $name, object $input = null): string
+function component(string $name, array $state = null): string
 {
-	return ComponentManager::renderComponent($name, $input);
+	$class = \App\Views\Components::$components[$name] ?? null;
+
+	// ERROR: Component name doesn't exist
+	if ($class === null) {
+		throw new \App\Exceptions\ViewsComponentException(
+			"Missing component \"{$name}\""
+		);
+	}
+
+	// Simple component (no logic, optional state)
+	if ($class === \App\Views\Components::SIMPLE_COMPONENT) {
+		return include_view("components/{$name}", $state);
+	}
+
+	// Return rendered HTML component
+	$component = new $class();
+	$component->setState(function () use ($state) { return $state; });
+	return $component->render();
 }
 
 /**
@@ -167,9 +317,9 @@ function fd_component(string $name, object $input = null): string
  *
  * @return string
  */
-function fd_csrf_token(): string
+function csrf_token(): string
 {
-	return CsrfToken::formInput();
+	return \App\Services\CsrfToken::formInput();
 }
 
 /**
@@ -178,21 +328,18 @@ function fd_csrf_token(): string
  * @param string $path
  * @return string
  */
-function fd_include_template(string $path, array $__variables = null): string
+function include_view(string $path, array $variables = null): string
 {
 	// Bind variables to this template only
-	if (!empty($__variables)) {
-		foreach ($__variables as $__name => $__value) {
-			if (strpos($__name, '-') !== false) {
-                $__name = Strings::kebabToSnake($__name);
-            }
-			$$__name = $__value;
+	if (!empty($variables)) {
+		foreach ($variables as $name => $value) {
+			$$name = $value;
 		}
 	}
 
 	// Load and render this template as a string
 	ob_start();
-	include Paths::inTemplatesDir("{$path}.tpl.php");
+	include path_views("{$path}.tpl.php");
 	return ob_get_clean();
 }
 
@@ -203,9 +350,9 @@ function fd_include_template(string $path, array $__variables = null): string
  * @param string $string
  * @return string Escaped sequence
  */
-function fd_escape(string $string): string
+function escape(string $string): string
 {
-	return htmlspecialchars($string, ENT_QUOTES, "UTF-8");
+	return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
 }
 
 /**
@@ -214,12 +361,11 @@ function fd_escape(string $string): string
  *
  * @param mixed $data Can be any type of data
  * @param string $title Optional
- * @param bool $wrap Wraps the line at the end of the viewport
  * @return string HTML-friendly log of provided data
  */
-function fd_log_html($data, string $title = null, bool $wrap = false): string
+function log_html($data, string $title = null): string
 {
-	return Logger::html($data, $title, $wrap);
+	return \App\Utils\Logger::html($data, $title);
 }
 
 /**
@@ -228,9 +374,21 @@ function fd_log_html($data, string $title = null, bool $wrap = false): string
  * @param string $toRender
  * @return string
  */
-function fd_render(string $toRender): string
+function render(string $toRender): string
 {
-	return CardText::render($toRender);
+	return \App\Views\Card\CardText::render($toRender);
+}
+
+/**
+ * LEGACY: Builds a URL and returns it
+ *
+ * @param string $page
+ * @param array $params
+ * @return string
+ */
+function url_old(string $page = '', array $params = []): string
+{
+	return \App\Legacy\Redirect::url($page, $params);
 }
 
 /**
@@ -240,29 +398,58 @@ function fd_render(string $toRender): string
  * @param array $params
  * @return string
  */
-function fd_url(string $to = null, array $params = null): string
+function url(string $to = null, array $params = []): string
 {
-	return Uri::build($to, $params);
+	return \App\Utils\Uri::build($to, $params);
 }
+
+/**
+ * Calls the page constructor
+ *
+ * @param string $title
+ * @param string $path
+ * @param array $options
+ * @param array $vars
+ * @param boolean $minimize
+ * @return void
+ */
+function view_old(
+	string $title = null,
+	string $path = null,
+	array $options = null,
+	array $vars = null,
+	bool $minimize = true
+): string
+{
+    return \App\Legacy\Page::build($title, $path, $options, $vars, $minimize);
+}
+
+/**
+ * Returns a compiled Twig page
+ *
+ * @param string $viewPath Path from the view dir, no extension Ex.: pages/card/index
+ * @param array $variables Variables to bind to the view
+ * @return string HTML output of the page
+ */
 
 /**
  * Returns a rendered page to be output
  *
- * @param string $templatePath Relative to /src/resorces/views/, no extension
+ * @param string $viewPath Relative to {src}/resorces/views/, no extension
  * @param string $title Title of the page
  * @param array $variables Variables to be used to render the template
  * @param boolean $minify Minify the HTML output
  * @return string Final HTML for the page
  */
-function fd_view(
-	string $templatePath = null,
+function view(
+	string $viewPath = null,
 	string $title = null,
 	array $variables = null,
 	bool $minify = true
 ): string
 {
-	return (new Page)
-		->template($templatePath)
+	return (new \App\Views\Page)
+		->template($viewPath)
 		->title($title)
 		->variables($variables)
 		->minify($minify)

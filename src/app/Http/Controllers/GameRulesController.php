@@ -4,30 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
-use App\Views\Page\Page;
+use App\Views\Page;
 use App\Models\GameRules as Model;
 use App\Exceptions\ModelNotFoundException;
+use App\Http\Response\PlainTextResponse;
 
 class GameRulesController extends Controller
 {
     public function index(Request $request): string
     {
-        $items = fd_database()
+        $items = database()
             ->select(
-                fd_statement("select")
-                    ->from("game_rules")
+                statement('select')
+                    ->from('game_rules')
                     ->orderBy([
-                        "date_validity DESC",
-                        "id DESC"
+                        'date_validity DESC',
+                        'id DESC'
                     ])
             )
             ->get();
 
         return (new Page)
-            ->template("pages/public/cr/index")
-            ->title("Comprehensive Rules")
+            ->template('pages/public/cr/index')
+            ->title('Comprehensive Rules')
             ->variables([
-                "items" => $items
+                'items' => $items
             ])
             ->render();
     }
@@ -46,12 +47,12 @@ class GameRulesController extends Controller
         }
         
         return (new Page)
-            ->template("pages/public/cr/show")
+            ->template('pages/public/cr/show')
             ->title("Comprehensive Rules v. {$version}")
             ->variables([
-                "path" => Paths::inRootDir($item["doc_path"])
+                'path' => path_public($item['doc_path'])
             ])
-            ->options([ "scripts" => [ "public/game-rules" ] ])
+            ->options([ 'scripts' => [ 'public/game-rules' ] ])
             ->minify(false)
             ->render();
     }

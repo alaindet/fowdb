@@ -10,10 +10,10 @@ use App\Services\Database\Statement\SqlStatement;
 class DeleteSqlStatement extends SqlStatement
 {
     public $clauses = [
-        "DELETE FROM" => "",
-        "WHERE"       => [],
-        "LIMIT"       => -1,
-        "OFFSET"      => -1,
+        'DELETE FROM' => '',
+        'WHERE' => [],
+        'LIMIT' => -1,
+        'OFFSET' => -1,
     ];
 
     /**
@@ -24,7 +24,7 @@ class DeleteSqlStatement extends SqlStatement
      */
     public function deleteFrom(string $value): DeleteSqlStatement
     {
-        $this->clauses["DELETE FROM"] = $value;
+        $this->clauses['DELETE FROM'] = $value;
 
         return $this;
     }
@@ -51,24 +51,24 @@ class DeleteSqlStatement extends SqlStatement
      * If $condition is a string, $operator1 glues it to the previous conditions
      * 
      * @param string|array $conditions
-     * @param $operator1 Possible values: "AND", "OR"
-     * @param $operator2 Possible values: "AND", "OR"
+     * @param $operator1 Possible values: 'AND', 'OR'
+     * @param $operator2 Possible values: 'AND', 'OR'
      * @return DeleteSqlStatement
      */
     public function where(
         $conditions,
-        string $operator1 = "AND",
-        string $operator2 = "AND"
+        string $operator1 = 'AND',
+        string $operator2 = 'AND'
     ): DeleteSqlStatement
     {
         if (is_array($conditions)) {
 
-            $conditions = "(".implode(" ".$operator1." ", $conditions).")";
-            $this->clauses["WHERE"][] = [$operator2, $conditions];
+            $conditions = '('.implode(' '.$operator1.' ', $conditions).')';
+            $this->clauses['WHERE'][] = [$operator2, $conditions];
 
         } else {
 
-            $this->clauses["WHERE"][] = [$operator1, $conditions];
+            $this->clauses['WHERE'][] = [$operator1, $conditions];
 
         }
 
@@ -83,7 +83,7 @@ class DeleteSqlStatement extends SqlStatement
      */
     public function orderBy($columns): DeleteSqlStatement
     {
-        $clause =& $this->clauses["ORDER BY"];
+        $clause =& $this->clauses['ORDER BY'];
         if (!is_array($columns)) $clause[] = $columns;
         else $clause = array_merge($clause, $columns);
 
@@ -98,7 +98,7 @@ class DeleteSqlStatement extends SqlStatement
      */
     public function limit(int $limit): DeleteSqlStatement
     {
-        $this->clauses["LIMIT"] = $limit;
+        $this->clauses['LIMIT'] = $limit;
 
         return $this;
     }

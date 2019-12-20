@@ -3,10 +3,8 @@
 namespace App\Legacy;
 
 use App\Base\Singleton;
-use App\Services\Session\Session;
-use App\Legacy\Exceptions\AuthorizationException;
-use App\Services\Database\StatementManager\StatementManager;
-use App\Services\Database\Database;
+use App\Services\Session;
+use App\Exceptions\AuthorizationException;
 
 class Authorization
 {
@@ -15,7 +13,7 @@ class Authorization
     /**
      * Name for the session hash
      */
-    public const NAME = "admin-hash";
+    public const NAME = 'admin-hash';
 
     /**
      * Define user roles
@@ -32,29 +30,32 @@ class Authorization
      *
      * @var array
      */
-    public $actsAs = [
-        1 => [2, 3], // Admin acts as: User, Judge
-        3 => [2], // Judge acts as: User
-    ];
+    public $actsAs;
 
     /**
      * Maps a role to its authorization level
      *
      * @var array
      */
-    public $roleToLevel = [
-        "public" => 0,
-        "admin" => 1,
-        "user" => 2,
-        "judge" => 3,
-    ];
+    public $roleToLevel;
 
-    public function isLogged(): bool
+    protected function __construct()
     {
-        return $this->level() !== self::ROLE_PUBLIC;
+        // Define aliases for higher level roles (more than basic users)
+        $this->actsAs = [
+            self::ROLE_ADMIN => [self::ROLE_USER, self::ROLE_JUDGE],
+            self::ROLE_JUDGE => [self::ROLE_USER],
+        ];
+
+        // Define map: from role name to its authorization level
+        $this->roleToLevel = [
+            'public' => self::ROLE_PUBLIC,
+            'admin' => self::ROLE_ADMIN,
+            'user' => self::ROLE_USER,
+            'judge' => self::ROLE_JUDGE,
+        ];
     }
 
-    // Alias
     public function logged(): bool
     {
         return $this->level() !== self::ROLE_PUBLIC;
@@ -69,33 +70,28 @@ class Authorization
     public function level(): int
     {
         // ERROR: No admin hash stored into session
-        if (!Session::exists(self::NAME)) {
-            return self::ROLE_PUBLIC;
-        }
+        if (!Session::exists(self::NAME)) return self::ROLE_PUBLIC;
 
-        $statement = StatementManager::new("select")
-            ->select("roles_id")
-            ->from("users")
-            ->where("remember_token = :hash")
-            ->limit(1)
-            ->setBoundValues([":hash" => Session::get(self::NAME)]);
-
-        $user = (Database::getInstance())
-            ->select($statement)
-            ->bind($statement->getBoundValues())
+        $user = database()
+            ->select(
+                statement('select')
+                    ->select('roles_id')
+                    ->from('users')
+                    ->where('remember_token = :hash')
+                    ->limit(1)
+            )
+            ->bind([':hash' => Session::get(self::NAME)])
             ->first();
 
         // ERROR: Invalid hash stored into session
-        if ($user === null) {
-            return self::ROLE_PUBLIC;
-        }
+        if (empty($user)) return self::ROLE_PUBLIC;
 
         // Authorization level > 0
-        return (int) $user["roles_id"];
+        return (int) $user['roles_id'];
     }
 
     /**
-     * Checks if current user"s level matches given role"s level
+     * Checks if current user's level matches given role's level
      *
      * @param string|string[] $role Role to check
      * @return boolean TRUE if logged user is authorized for given role
@@ -126,9 +122,7 @@ class Authorization
 
         // Loop on each current level (including aliases)
         foreach ($currentLevels as $currentLevel) {
-            if (in_array($currentLevel, $requiredLevels)) {
-                return true;
-            }
+            if (in_array($currentLevel, $requiredLevels)) return true;
         }
 
         return false;
@@ -149,7 +143,7 @@ class Authorization
 
         if (!in_array($currentLevel, $requiredLevels)) {
             throw new AuthorizationException(
-                "You are not allowed to perform this action"
+                'You are not allowed to perform this action'
             );
         }
     }

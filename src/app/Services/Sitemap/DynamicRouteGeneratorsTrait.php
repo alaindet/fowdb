@@ -27,12 +27,12 @@ trait DynamicRouteGeneratorsTrait
         float $priority
     ): string
     {
-        $statement = fd_statement('select')
-            ->fields('DISTINCT code')
+        $statement = statement('select')
+            ->fields('DISTINCT code, clusters_id, sets_id, num')
             ->from('cards')
             ->orderBy([ 'clusters_id DESC', 'sets_id DESC', 'num ASC' ]);
 
-        $items = fd_database()
+        $items = database()
             ->select($statement)
             ->get();
 
@@ -59,12 +59,12 @@ trait DynamicRouteGeneratorsTrait
     {
         $result = '';
 
-        $statement = fd_statement('select')
+        $statement = statement('select')
             ->fields('version')
             ->from('game_rules')
             ->orderBy([ 'date_validity DESC', 'id DESC' ]);
 
-        $items = fd_database()
+        $items = database()
             ->select($statement)
             ->get();
 

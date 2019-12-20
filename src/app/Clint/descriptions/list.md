@@ -1,5 +1,14 @@
 Description:
-  Displays the list of commands
+  Returns a list of all available commands
 
 Usage:
-  list
+  $ php clint list
+
+Values:
+  No
+
+Options:
+  No
+
+Examples:
+  $ php clint list

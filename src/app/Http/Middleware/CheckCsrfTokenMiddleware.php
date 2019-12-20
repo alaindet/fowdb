@@ -5,20 +5,14 @@ namespace App\Http\Middleware;
 use App\Http\Request\Request;
 use App\Http\Middleware\MiddlewareInterface;
 use App\Services\CsrfToken;
-use App\Http\Middleware\Exceptions\CsrfTokenException;
+use App\Exceptions\CsrfTokenException;
 
 class CheckCsrfTokenMiddleware implements MiddlewareInterface
 {
     public function run(Request $request): void
     {
         $token = $request->input()->post(CsrfToken::NAME);
-
-        if (!isset($token)) {
-            throw new CsrfTokenException();
-        }
-
-        if (!CsrfToken::check($token)) {
-            throw new CsrfTokenException();
-        }
+        if (!isset($token)) throw new CsrfTokenException();
+        if (!CsrfToken::check($token)) throw new CsrfTokenException();
     }
 }

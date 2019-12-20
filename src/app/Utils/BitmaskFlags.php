@@ -2,6 +2,7 @@
 
 namespace App\Utils;
 
+use App\Exceptions\BitFlagNotFoundException;
 use App\Utils\Bitmask;
 
 /**
@@ -22,6 +23,8 @@ class BitmaskFlags extends Bitmask
     /**
      * Sets the $flagsMap property
      *
+     * Ex.: ["firstBit" => 0, "secondBit" => 1, ...]
+     * 
      * @param array $flags
      * @return BitmaskFlags
      */
@@ -40,7 +43,12 @@ class BitmaskFlags extends Bitmask
      */
     public function addFlag(string $flag): BitmaskFlags
     {
-        $pos = $this->flagsMap[$flag];
+        $pos = $this->flagsMap[$flag] ?? null;
+
+        if ($pos === null) {
+            throw new BitFlagNotFoundException($flag);
+        }
+
         return $this->addBit($pos);
     }
 
@@ -57,6 +65,11 @@ class BitmaskFlags extends Bitmask
         }
 
         return $this;
+    }
+
+    public function existsFlag(string $flag): bool
+    {
+        return isset($this->flagsMap[$flag]);
     }
 
     /**

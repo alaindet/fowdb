@@ -2,62 +2,61 @@
 
 namespace App\Legacy\Router;
 
-use App\Http\Request\Input\InputManager;
-use App\Http\Response\Redirect;
+use App\Http\Request\Input;
 
 trait PublicPagesTrait
 {
     public function buildSearchFormPage(): void
     {
-        Redirect::to("cards/search");
+        redirect('cards/search');
     }
 
     public function buildSearchPage(): void
     {
-        $get = InputManager::getInstance()->get;
-        unset($get["do"]);
+        $get = Input::getInstance()->get();
+        unset($get['do']);
 
-        Redirect::to("cards", $get);
+        redirect('cards', $get);
     }
 
     public function buildCardPage(): void
     {
-        $code = Input::getInstance()->get("code");
+        $code = Input::getInstance()->get('code');
 
-        Redirect::to("card/".$code);
+        redirect('card/'.$code);
     }
 
     public function buildSpoilerPage(): void
     {
-        Redirect::to("spoiler");
+        redirect('spoiler');
     }
 
     public function buildBanPage(): void
     {
-        Redirect::to("banlist");
+        redirect('banlist');
     }
 
     public function buildCrPage(): void
     {
-        $version = Input::getInstance()->get("v");
+        $version = Input::getInstance()->get('v');
 
         isset($version)
-            ? Redirect::to("cr/".$version)
-            : Redirect::to("cr");
+            ? redirect('cr/'.$version)
+            : redirect('cr');
     }
 
     public function buildErrataPage(): void
     {
-        Redirect::to("errata");
+        redirect('errata');
     }
 
     public function buildFormatsPage(): void
     {
-        Redirect::to("formats");
+        redirect('formats');
     }
 
     public function buildRacesPage(): void
     {
-        Redirect::to("races");
+        redirect('races');
     }
 }

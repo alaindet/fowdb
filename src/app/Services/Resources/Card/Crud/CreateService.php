@@ -7,7 +7,6 @@ use App\Base\CrudServiceInterface;
 use App\Models\Card as Model;
 use App\Services\Resources\Card\Crud\InputProcessor;
 use Intervention\Image\ImageManager;
-use App\Utils\Paths;
 
 class CreateService extends CrudService
 {
@@ -27,9 +26,9 @@ class CreateService extends CrudService
         }
 
         // Create a new card entity on the database
-        fd_database()
+        database()
             ->insert(
-                fd_statement('insert')
+                statement('insert')
                     ->table('cards')
                     ->values($placeholders)
             )
@@ -50,15 +49,15 @@ class CreateService extends CrudService
         (new ImageManager)
             ->make($image['tmp_name'])
             ->resize(480, 670)
-            ->insert(Paths::inRootDir('images/watermark/watermark480.png'))
-            ->save(Paths::inRootDir($this->new['image_path']), 80);
+            ->insert(path_public('images/watermark/watermark480.png'))
+            ->save(path_public($this->new['image_path']), 80);
 
         // Create thumbnail image
         (new ImageManager)
             ->make($image['tmp_name'])
             ->resize(280, 391)
-            ->insert(Paths::inRootDir('images/watermark/watermark280.png'))
-            ->save(Paths::inRootDir($this->new['thumb_path']), 80);
+            ->insert(path_public('images/watermark/watermark280.png'))
+            ->save(path_public($this->new['thumb_path']), 80);
 
         return $this;
     }
@@ -72,13 +71,13 @@ class CreateService extends CrudService
     {
         $message = (
             'New card <strong> '.
-                '<a href="'.fd_url('card/'.urlencode($this->new['code'])).'">'.
+                '<a href="'.url('card/'.urlencode($this->new['code'])).'">'.
                     "{$this->new['name']} ({$this->new['code']})".
                 '</a>'.
             '</strong> created.'
         );
 
-        $uri = fd_url('cards/create');
+        $uri = url('cards/create');
 
         return [$message, $uri];
     }

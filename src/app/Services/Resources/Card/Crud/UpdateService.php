@@ -10,7 +10,6 @@ use Intervention\Image\ImageManager;
 use App\Services\FileSystem\FileSystem;
 use App\Utils\Arrays;
 use App\Utils\Uri;
-use App\Utils\Paths;
 
 class UpdateService extends CrudService
 {
@@ -45,9 +44,9 @@ class UpdateService extends CrudService
             }
         }
 
-        fd_database()
+        database()
             ->update(
-                fd_statement('update')
+                statement('update')
                     ->table('cards')
                     ->values($placeholders)
                     ->where('id = :id')
@@ -73,7 +72,7 @@ class UpdateService extends CrudService
             'new-image' => $this->new['image_path'],
             'new-thumb' => $this->new['thumb_path']
         ], function ($path) {
-            return Paths::inRootDir(Uri::removeQueryString($path));
+            return path_public(Uri::removeQueryString($path));
         });
 
         // Update this card's image paths
@@ -96,14 +95,14 @@ class UpdateService extends CrudService
             (new ImageManager)
                 ->make($this->image['tmp_name'])
                 ->resize(480, 670)
-                ->insert(Paths::inRootDir('images/watermark/watermark480.png'))
+                ->insert(path_public('images/watermark/watermark480.png'))
                 ->save($paths['new-image'], 80);
 
             // Store LQ image (apply watermark)
             (new ImageManager)
                 ->make($this->image['tmp_name'])
                 ->resize(280, 391)
-                ->insert(Paths::inRootDir('images/watermark/watermark280.png'))
+                ->insert(path_public('images/watermark/watermark280.png'))
                 ->save($paths['new-thumb'], 80);
         }
 
@@ -117,7 +116,7 @@ class UpdateService extends CrudService
      */
     public function getFeedback(): array
     {
-        $link = $uri = fd_url('card/'.urlencode($this->new['code']));
+        $link = $uri = url('card/'.urlencode($this->new['code']));
 
         $message = (
             "Card ".
@@ -126,7 +125,7 @@ class UpdateService extends CrudService
                     "{$this->new['name']} ({$this->new['code']})".
                 "</a>".
             "</strong> ".
-            "updated"
+            "updated."
         );
 
         $uri = $link;

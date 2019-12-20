@@ -1,5 +1,14 @@
 Description:
-  Displays the current environment
+  Display current environment (development or production)
 
 Usage:
-  env:get
+  $ php clint env:get
+
+Values:
+  No
+
+Options:
+  No
+
+Examples
+  $ php clint env:get

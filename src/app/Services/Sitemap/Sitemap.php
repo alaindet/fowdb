@@ -2,10 +2,9 @@
 
 namespace App\Services\Sitemap;
 
-use App\Services\Configuration\Configuration;
-use App\Services\FileSystem\FileSystem;
-use App\Utils\Paths;
+use App\Services\Sitemap\DynamicRouteGeneratorsTrait;
 use App\Utils\Time;
+use App\Services\FileSystem\FileSystem;
 
 /**
  * Builds /sitemap.xml
@@ -21,17 +20,17 @@ class Sitemap
      * @var array
      */
     public $staticRoutes = [
-        "/" => ["monthly", 0.5],
-        "/cards/search" => ["monthly", 0.5],
-        "/cards" => ["daily", 0.5],
-        "/spoiler" => ["daily", 0.5],
-        "/banlist" => ["monthly", 0.5],
-        // "/rulings" => ["weekly", 0.5],
-        "/errata" => ["weekly", 0.5],
-        "/cr" => ["monthly", 0.5],
-        "/races" => ["monthly", 0.5],
-        "/formats" => ["monthly", 0.5],
-        "/cards/search/help" => ["yearly", 0.5],
+        '/' => ['monthly', 0.5],
+        '/cards/search' => ['monthly', 0.5],
+        '/cards' => ['daily', 0.5],
+        '/spoiler' => ['daily', 0.5],
+        '/banlist' => ['monthly', 0.5],
+        // '/rulings' => ['weekly', 0.5],
+        '/errata' => ['weekly', 0.5],
+        '/cr' => ['monthly', 0.5],
+        '/races' => ['monthly', 0.5],
+        '/formats' => ['monthly', 0.5],
+        '/cards/search/help' => ['yearly', 0.5],
     ];
 
     /**
@@ -40,8 +39,8 @@ class Sitemap
      * @var array
      */
     public $dynamicRoutes = [
-        "/card/{parameter}" => ["cardRoutesGenerator", "monthly", 0.5],
-        "/cr/{parameter}" => ["rulesRoutesGenerator", "monthly", 0.5],
+        '/card/{parameter}' => ['cardRoutesGenerator', 'monthly', 0.5],
+        '/cr/{parameter}' => ['rulesRoutesGenerator', 'monthly', 0.5],
     ];
 
     /**
@@ -75,9 +74,9 @@ class Sitemap
     public function __construct()
     {
         $this->lastModified = Time::date();
-        $this->path = Paths::inRootDir("sitemap.xml");
-        $this->gzipPath = Paths::inRootDir("sitemap.xml.gz");
-        $this->url = (Configuration::getInstance())->get("app.url");
+        $this->path = path_public('sitemap.xml');
+        $this->gzipPath = path_public('sitemap.xml.gz');
+        $this->url = config('app.url');
     }
 
     /**
@@ -89,24 +88,28 @@ class Sitemap
      */
     public function build(bool $backup = false): void
     {
-        // Backup existing /sitemap.xml into /src/data/backup/
+        // Backup existing /sitemap.xml into {src}/data/backup/
         if ($backup) {
-            $time = Time::timestamp("file");
-            $basename = "sitemap_backup_{$time}.xml";
-            $basenameGzip = "sitemap_backup_{$time}.xml.gz";
-            $backupPath = Paths::inDataDir("backup/{$basename}");
-            $backupGzipPath = Paths::inDataDir("backup/{$basenameGzip}");
+            $basename = 'sitemap_backup_'.Time::timestamp('file').'.xml';
+            $basenameGzip = 'sitemap_backup_'.Time::timestamp('file').'.xml.gz';
+            $backupDir = path_src("data/backup");
+            if (!FileSystem::existsDirectory($backupDir)) {
+                FileSystem::createDirectory($backupDir);
+            }
+            $backupPath = "{$backupDir}/{$basename}";
+            $backupGzipPath = "{$backupDir}/{$basenameGzip}";
+
             FileSystem::renameFile($this->path, $backupPath);
             FileSystem::renameFile($this->gzipPath, $backupGzipPath);
         }
         
         // Build new sitemap
         $xml = (
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>".
-            "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">".
+            '<?xml version="1.0" encoding="UTF-8"?>'.
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'.
                 $this->buildStaticRoutes().
                 $this->buildDynamicRoutes().
-            "</urlset>"
+            '</urlset>'
         );
 
         // Store into /sitemap.xml and /sitemap.xml.gz
@@ -129,12 +132,12 @@ class Sitemap
     ): string
     {
         return (
-            "<url>".
-                "<loc>{$this->url}{$url}</loc>".
-                "<lastmod>{$this->lastModified}</lastmod>".
-                "<changefreq>{$frequency}</changefreq>".
-                "<priority>{$priority}</priority>".
-            "</url>"
+            '<url>'.
+                '<loc>'.$this->url.$url.'</loc>'.
+                '<lastmod>'.$this->lastModified.'</lastmod>'.
+                '<changefreq>'.$frequency.'</changefreq>'.
+                '<priority>'.$priority.'</priority>'.
+            '</url>'
         );
     }
 
@@ -145,7 +148,7 @@ class Sitemap
      */
     public function buildStaticRoutes(): string
     {
-        $result = "";
+        $result = '';
 
         foreach ($this->staticRoutes as $route => $info) {
             $result .= $this->buildUrlElement($route, $info[0], $info[1]);
@@ -161,7 +164,7 @@ class Sitemap
      */
     public function buildDynamicRoutes(): string
     {
-        $result = "";
+        $result = '';
 
         foreach ($this->dynamicRoutes as $mask => $info) {
             $generator = $info[0];

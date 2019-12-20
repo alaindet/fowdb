@@ -33,7 +33,7 @@ trait ManagesPostProcessing
 
         $existing = database()
             ->select(
-                fd_statement('select')
+                statement('select')
                     ->from('game_rules')
                     ->where('NOT(id = :id)')
                     ->where('version = :version')

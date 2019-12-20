@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
-use App\Views\Page\Page;
+use App\Views\Page;
 
 class ErrataController extends Controller
 {
     public function index(Request $request): string
     {
-        $statement = fd_statement('select')
+        $statement = statement('select')
             ->select([
                 'c.name card_name',
                 'c.code card_code',
@@ -24,7 +24,7 @@ class ErrataController extends Controller
             ->where('r.is_errata = 1')
             ->orderBy('r.date DESC');
 
-        $database = fd_database()
+        $database = database()
             ->select($statement)
             ->page($request->input()->get('page') ?? 1)
             ->paginationLink($request->getCurrentUrl());

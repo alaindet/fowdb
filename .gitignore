@@ -4,27 +4,35 @@ vendor/
 
 # App and development directories
 /.backup/
+<<<<<<< HEAD
 .dev/
 _dev/
 /src/data/cache/
 /src/data/resources/cr
+=======
+/.dev/
+/_dev/
+/src/data/cache
+/src/data/resources
+>>>>>>> prod
 /src/data/backup
-/src/data/logs
 
 # Public assets and files
 assets/
 images/
+<<<<<<< HEAD
 documents/
 .env
 .env.production
 .env.development
+=======
+>>>>>>> prod
 *.pdf
 sitemap.xml
 sitemap.xml.gz
 
-# Frontend
-/ng-test/
-/admin/
-
-# Not these
+# Environment files
+.env
+.env.production
+.env.development
 !.env.example

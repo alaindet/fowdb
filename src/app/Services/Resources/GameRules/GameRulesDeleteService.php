@@ -15,9 +15,9 @@ class GameRulesDeleteService extends CrudService
     {
         $bind = [':id' => $this->old['id']];
 
-        fd_database()
+        database()
             ->delete(
-                fd_statement('delete')
+                statement('delete')
                     ->table('game_rules')
                     ->where('id = :id')
             )
@@ -54,7 +54,7 @@ class GameRulesDeleteService extends CrudService
             '</strong> deleted.'
         );
 
-        $uri = fd_url('cr/manage');
+        $uri = url('cr/manage');
 
         return [$message, $uri];
     }

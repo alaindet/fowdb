@@ -4,15 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
-use App\Views\Page\Page;
+use App\Views\Page;
 
 class FormatsController extends Controller
 {
+    public function index(Request $request): string
+    {
+        return (new Page)
+            ->template('pages/public/formats/index')
+            ->title('Formats')
+            ->variables([
+                'formats' => $this->getData()
+            ])
+            ->render();
+    }
+
     private function getData(): array
     {
         $formats = [];
 
-        $statement = fd_statement('select')
+        $statement = statement('select')
             ->select([
                 'f.name fname',
                 'f.code fcode',
@@ -34,7 +45,7 @@ class FormatsController extends Controller
                 's.id DESC'
             ]);
 
-        $items = fd_database()
+        $items = database()
             ->select($statement)
             ->get();
 
@@ -68,16 +79,5 @@ class FormatsController extends Controller
         }
 
         return $formats;
-    }
-
-    public function index(Request $request): string
-    {
-        return (new Page)
-            ->template('pages/public/formats/index')
-            ->title('Formats')
-            ->variables([
-                'formats' => $this->getData()
-            ])
-            ->render();
     }
 }

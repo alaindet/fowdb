@@ -2,39 +2,45 @@
 
 namespace App\Services\Lookup\Generators;
 
-use App\Services\Lookup\Interfaces\LookupDataGeneratorInterface;
-use App\Base\ORM\Manager\EntityManager;
-use App\Services\Database\StatementManager\StatementManager;
-use App\Entity\GameSet\GameSet;
+use App\Services\Lookup\Generatable;
 
-class SpoilersGenerator implements LookupDataGeneratorInterface
+class SpoilersGenerator implements Generatable
 {
-    public function generate(): object
+    public function generate(): array
     {
-        $result = (object) [
-            "sets"   => [],
-            "ids"    => [],
-            "names"  => [],
-            "codes"  => [],
-            "counts" => [],
-        ];
+        $items = database()
+            ->select(statement('select')
+                ->select(['id', 'code', 'name', 'count'])
+                ->from('game_sets')
+                ->where('is_spoiler = 1')
+                ->orderBy('id DESC')
+            )
+            ->get();
 
-        $replacement = StatementManager::new("select")
-            ->orderBy("id DESC");
+        return array_reduce(
 
-        $repository = EntityManager::getRepository(GameSet::class);
-        $items = $repository
-            ->setReplaceStatement($replacement)
-            ->findAllBy("is_spoiler", 1);
+            // Collections
+            $items,
 
-        foreach ($items as $item) {
-            $result->sets[] = $item;
-            $result->ids[] = $item->id;
-            $result->names[] = $item->name;
-            $result->codes[] = $item->code;
-            $result->counts[] = $item->count;
-        }
+            // Reducer
+            function ($result, $item) {
+                $result['sets'][] = $item;
+                $result['ids'][] = $item['id'];
+                $result['names'][] = $item['name'];
+                $result['codes'][] = $item['code'];
+                $result['counts'][] = $item['count'];
+                return $result;
+            },
 
-        return $result;
+            // State
+            [
+                'sets' => [],
+                'ids' => [],
+                'names' => [],
+                'codes' => [],
+                'counts' => []
+            ]
+
+        );
     }
 }

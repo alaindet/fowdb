@@ -2,31 +2,72 @@
 
 namespace App\Services\FileSystem\FileFormat;
 
-use App\Services\FileSystem\Interfaces\FileFormatInterface;
 use App\Services\FileSystem\FileSystem;
 
-class Env implements FileFormatInterface
+class Env
 {
-    private $filePath;
-    private $fileContent;
-    private $data;
+    /**
+     * Absolute path of the file
+     *
+     * @var string
+     */
+    private $path;
+
+    /**
+     * Raw file content as string
+     *
+     * @var string
+     */
+    private $content;
+
+    /**
+     * Parsed data extracted from content
+     *
+     * @var array
+     */
+    private $data = [];
 
     public function __construct(string $path = null)
     {
         if ($path !== null) {
-            $this->setFilePath($path);
+            $this->setPath($path);
         }
     }
 
-    public function setFilePath(string $path): Env
+    public function setPath(string $path): Env
     {
-        $this->filePath = $path;
+        $this->path = $path;
         return $this;
     }
 
-    public function getData(): array
+    public function getPath(): string
     {
-        return $this->data;
+        return $this->path;
+    }
+
+    /**
+     * Reads file content as a raw string into self::content
+     *
+     * @return Env
+     */
+    public function read(): Env
+    {
+        $this->content = FileSystem::readFile($this->path);
+        return $this;
+    }
+
+    public function setContent(string $content): Env
+    {
+        $this->content = $content;
+        return $this;
+    }
+
+    public function getContent(): string
+    {
+        if ($this->content === null) {
+            $this->read();
+        }
+        return $this->content;
     }
 
     public function setData(array $data): Env
@@ -35,58 +76,52 @@ class Env implements FileFormatInterface
         return $this;
     }
 
-    public function readFile(): void
+    public function getData(): array
     {
-        $this->fileContent = FileSystem::readFile($this->filePath);
-    }
-
-    public function writeFile(): void
-    {
-        FileSystem::saveFile($this->filePath, $this->fileContent);
+        if ($this->data === []) {
+            $this->parse();
+        }
+        return $this->data;
     }
 
     /**
-     * Reads file content and stores data into $this->data
+     * Parses file content (raw string) into structured data
+     * Populates self::data
      *
      * @return Env
      */
-    public function readDataFromFile(): Env
+    public function parse(): Env
     {
-        if (!isset($this->fileContent)) {
-            $this->readFile();
+        if ($this->content === null) {
+            $this->read();
         }
 
-        foreach (explode("\n", $this->fileContent) as $line) {
+        foreach (explode("\n", $this->content) as $line) {
 
-            // Skip empty lines and comments
-            if ($line === '' || $line[0] === '#') continue;
+            $line = trim($line);
 
-            // Read the line length
+            // Skip comment lines
+            if ($line === "" || $line[0] === "#") {
+                continue;
+            }
+
             $length = strlen($line);
-
-            // Check for intra-line comments
-            if (false !== $hash = strpos($line, '#')) {
-
-                // Strip any whitespace left to the comment
-                while ($line[$hash] === ' ' || $line[$hash] === '#') $hash--;
-
-                // Update line length
+            
+            // Remove intra-line comments
+            $hash = strpos($line, "#");
+            if ($hash !== false) {
+                $char = $line[$hash];
+                while($char === " " || $char === "#") {
+                    $char = $line[--$hash];
+                }
                 $length = $hash;
             }
 
-            // Find position of first equals symbol
-            $equals = strpos($line, '=');
-
-            // Pull everything to the left of the first equals
+            $equals = strpos($line, "=");
             $key = substr($line, 0, $equals);
-
-            // Pull everything to the right from the equals to end of the line
             $value = substr($line, ($equals + 1), $length - $equals);
-
-            // Erase quotes if present in $value
             $value = str_replace('"', '', $value);
-
-            // Store variable
+        
             $this->data[$key] = $value;
         }
 
@@ -94,13 +129,27 @@ class Env implements FileFormatInterface
     }
 
     /**
-     * Writes current data into $this->fileContent
+     * Stores newly set data as .env file
      *
      * @return Env
      */
-    public function writeDataToFile(): Env
+    public function store(): Env
     {
-        // Keys must be uppercase, snake _case, no numbers (Ex.: APP_NAME)
+        $this->content = $this->serialize();
+        FileSystem::saveFile($this->path, $this->content);
+        return $this;
+    }
+
+    /**
+     * Transforms self::data into file content
+     *
+     * @return string File content
+     */
+    private function serialize(): string
+    {
+        $lines = [];
+
+        // Keys must be uppercase and snake_case, no numbers (Ex.: APP_NAME)
         foreach ($this->data as $key => $value) {
             $what = ['/[\s]/', '/[^_a-zA-Z]/'];
             $with = ['_', ''];
@@ -109,8 +158,6 @@ class Env implements FileFormatInterface
             $lines[] = "{$_key}={$_value}";
         }
 
-        $this->fileContent = implode("\n", $lines);
-
-        return $this;
+        return implode("\n", $lines);
     }
 }

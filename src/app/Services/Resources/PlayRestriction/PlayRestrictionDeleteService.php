@@ -14,9 +14,9 @@ class PlayRestrictionDeleteService extends CrudService
 
     public function syncDatabase(): CrudServiceInterface
     {
-        fd_database()
+        database()
             ->delete(
-                fd_statement('delete')
+                statement('delete')
                     ->table('play_restrictions')
                     ->where('id = :id')
             )
@@ -39,13 +39,13 @@ class PlayRestrictionDeleteService extends CrudService
         // Build the success message
         $message = (
             'Restriction for card <strong>'.
-            "{$card['name']} ({$card['code']})".
+                "{$card['name']} ({$card['code']})".
             '</strong> deleted. Go back to the <strong>'.
-            '<a href="'.fd_url('restrictions/manage').'">Restrictions</a>'.
+                '<a href="'.url('restrictions/manage').'">Restrictions</a>'.
             '</strong> page.'
         );
 
-        $uri = fd_url('card/'.urlencode($card['code']));
+        $uri = url('card/'.urlencode($card['code']));
 
         return [$message, $uri];
     }

@@ -3,6 +3,7 @@
 namespace App\Services\Resources\Card\Crud;
 
 use App\Base\InputProcessor as BaseInputProcessor;
+use App\Exceptions\CrudException;
 use App\Services\Resources\Card\Crud\PostProcessingTrait;
 use App\Utils\Bitmask;
 
@@ -16,24 +17,24 @@ class InputProcessor extends BaseInputProcessor
      * @var array
      */
     protected $functions = [
-        "narp" => "processNarpInput",
-        "set" => "processSetInput",
-        "number" => "processNumberInput",
-        "back-side" => "processBackSideInput",
-        "name" => "processNameInput",
-        "code" => "processCodeInput",
-        "rarity" => "processRarityInput",
-        "attribute" => "processAttributeInput",
-        "type" => "processTypeInput",
-        "attribute-cost" => "processAttributeCostInput",
-        "free-cost" => "processFreeCostInput",
-        "divinity-cost" => "processDivinityCostInput",
-        "atk" => "processAtkInput",
-        "def" => "processDefInput",
-        "race" => "processRaceInput",
-        "text" => "processTextInput",
-        "flavor-text" => "processFlavorTextInput",
-        "artist-name" => "processArtistNameInput",
+        'narp' => 'processNarpInput',
+        'set' => 'processSetInput',
+        'number' => 'processNumberInput',
+        'back-side' => 'processBackSideInput',
+        'name' => 'processNameInput',
+        'code' => 'processCodeInput',
+        'rarity' => 'processRarityInput',
+        'attribute' => 'processAttributeInput',
+        'type' => 'processTypeInput',
+        'attribute-cost' => 'processAttributeCostInput',
+        'free-cost' => 'processFreeCostInput',
+        'divinity-cost' => 'processDivinityCostInput',
+        'atk' => 'processAtkInput',
+        'def' => 'processDefInput',
+        'race' => 'processRaceInput',
+        'text' => 'processTextInput',
+        'flavor-text' => 'processFlavorTextInput',
+        'artist-name' => 'processArtistNameInput',
     ];
 
     /**
@@ -45,7 +46,7 @@ class InputProcessor extends BaseInputProcessor
      */
     public function processNarpInput(string $value = null): void
     {
-        $this->new["narp"] = $value ?? "0";
+        $this->new['narp'] = $value ?? '0';
     }
 
     /**
@@ -58,13 +59,13 @@ class InputProcessor extends BaseInputProcessor
      */
     public function processSetInput(string $value = null): void
     {
-        $map = fd_lookup("sets.code2id");
+        $map = lookup('sets.code2id');
         $setId = intval($map[$value]);
 
-        $this->state["set-code"] = $value;
-        $this->state["set-id"] = $setId;
+        $this->state['set-code'] = $value;
+        $this->state['set-id'] = $setId;
 
-        $this->new["sets_id"] = $this->state["set-id"];
+        $this->new['sets_id'] = $this->state['set-id'];
     }
 
     /**
@@ -78,10 +79,10 @@ class InputProcessor extends BaseInputProcessor
     public function processNumberInput(string $value = null): void
     {
         // Generate the padded number (for later use)
-        $this->state["number-padded"] = str_pad($value, 3, "0", STR_PAD_LEFT);
+        $this->state['number-padded'] = str_pad($value, 3, '0', STR_PAD_LEFT);
 
-        // Store the card"s number
-        $this->new["num"] = intval($value);
+        // Store the card's number
+        $this->new['num'] = intval($value);
     }
 
     /**
@@ -95,7 +96,7 @@ class InputProcessor extends BaseInputProcessor
      */
     public function processBackSideInput(string $value = null): void
     {
-        $this->new["back_side"] = $value ?? "0";
+        $this->new['back_side'] = $value ?? '0';
     }
 
     /**
@@ -106,18 +107,18 @@ class InputProcessor extends BaseInputProcessor
      */
     public function processNameInput(string $value = null): void
     {
-        $this->new["name"] = $value;
+        $this->new['name'] = $value;
     }
 
     public function processCodeInput(string $value = null): void
     {
         // Reset
-        if ($value === "-1") {
-            $this->new["code"] = null;
+        if ($value === '-1') {
+            $this->new['code'] = null;
         }
 
-        elseif ($value !== null && $value !== "") {
-            $this->new["code"] = $value;
+        elseif ($value !== null && $value !== '') {
+            $this->new['code'] = $value;
         }
     }
 
@@ -129,7 +130,7 @@ class InputProcessor extends BaseInputProcessor
      */
     public function processRarityInput(string $value = null): void
     {
-        $this->new["rarity"] = ($value === "0") ? null : $value;
+        $this->new['rarity'] = ($value === '0') ? null : $value;
     }
 
     /**
@@ -141,12 +142,12 @@ class InputProcessor extends BaseInputProcessor
     public function processAttributeInput(array $value = null): void
     {
         // Reset
-        if (in_array("32", $value)) {
-            $this->new["attribute_bit"] = 0;
+        if (in_array('32', $value)) {
+            $this->new['attribute_bit'] = 0;
         }
         
         else {
-            $this->new["attribute_bit"] = (new Bitmask)
+            $this->new['attribute_bit'] = (new Bitmask)
                 ->addBitValues($value)
                 ->getMask();
         }
@@ -160,7 +161,7 @@ class InputProcessor extends BaseInputProcessor
      */
     public function processTypeInput(array $value = null): void
     {
-        $this->new["type_bit"] = (new Bitmask)
+        $this->new['type_bit'] = (new Bitmask)
             ->addBitValues($value)
             ->getMask();
     }
@@ -174,13 +175,13 @@ class InputProcessor extends BaseInputProcessor
     public function processAttributeCostInput(string $value = null): void
     {
         // Reset
-        if ($value === "-1") {
-            $this->new["attribute_cost"] = null;
+        if ($value === '-1') {
+            $this->new['attribute_cost'] = null;
         }
 
-        elseif ($value !== null && $value !== "") {
-            $this->new["attribute_cost"] = $value;
-            $this->state["attribute-cost"] = strlen($value);
+        elseif ($value !== null && $value !== '') {
+            $this->new['attribute_cost'] = $value;
+            $this->state['attribute-cost'] = strlen($value);
         }
     }
 
@@ -193,22 +194,22 @@ class InputProcessor extends BaseInputProcessor
     public function processFreeCostInput(string $value = null): void
     {
         // Reset
-        if ($value === "-1") {
-            $this->new["free_cost"] = null;
+        if ($value === '-1') {
+            $this->new['free_cost'] = null;
         }
 
-        elseif ($value !== null && $value !== "") {
+        elseif ($value !== null && $value !== '') {
 
             // X costs
-            if (substr($value, 0, 1) === "x") {
-                $this->new["free_cost"] = -1 * strlen($value);
-                $this->state["free-cost"] = 0;
+            if (substr($value, 0, 1) === 'x') {
+                $this->new['free_cost'] = -1 * strlen($value);
+                $this->state['free-cost'] = 0;
             }
             
             // Normal numeric free costs
             else {
-                $this->new["free_cost"] = $value;
-                $this->state["free-cost"] = intval($value);
+                $this->new['free_cost'] = $value;
+                $this->state['free-cost'] = intval($value);
             }
             
         }
@@ -223,12 +224,12 @@ class InputProcessor extends BaseInputProcessor
     public function processDivinityCostInput(string $value = null): void
     {
         // Reset
-        if ($value === "-1") {
-            $this->new["divinity"] = null;
+        if ($value === '-1') {
+            $this->new['divinity'] = null;
         }
 
-        elseif ($value !== null && $value !== "") {
-            $this->new["divinity"] = $value;
+        elseif ($value !== null && $value !== '') {
+            $this->new['divinity'] = $value;
         }
     }
 
@@ -243,12 +244,12 @@ class InputProcessor extends BaseInputProcessor
     public function processAtkInput(string $value = null): void
     {
         // Reset
-        if ($value === "-1") {
-            $this->new["atk"] = null;
+        if ($value === '-1') {
+            $this->new['atk'] = null;
         }
 
-        elseif ($value !== null && $value !== "") {
-            $this->new["atk"] = $value;
+        elseif ($value !== null && $value !== '') {
+            $this->new['atk'] = $value;
         }
     }
 
@@ -263,60 +264,60 @@ class InputProcessor extends BaseInputProcessor
     public function processDefInput(string $value = null): void
     {
         // Reset
-        if ($value === "-1") {
-            $this->new["def"] = null;
+        if ($value === '-1') {
+            $this->new['def'] = null;
         }
 
-        elseif ($value !== null && $value !== "") {
-            $this->new["def"] = $value;
+        elseif ($value !== null && $value !== '') {
+            $this->new['def'] = $value;
         }
     }
 
     public function processRaceInput(string $value = null): void
     {
         // Reset
-        if ($value === "-1") {
-            $this->new["race"] = null;
+        if ($value === '-1') {
+            $this->new['race'] = null;
         }
 
-        elseif ($value !== null && $value !== "") {
-            $this->new["race"] = $value;
+        elseif ($value !== null && $value !== '') {
+            $this->new['race'] = $value;
         }
     }
 
     public function processTextInput(string $value = null): void
     {
         // Reset
-        if ($value === "-1") {
-            $this->new["text"] = null;
+        if ($value === '-1') {
+            $this->new['text'] = null;
         }
 
-        elseif ($value !== null && $value !== "") {
-            $this->new["text"] = trim($value);
+        elseif ($value !== null && $value !== '') {
+            $this->new['text'] = trim($value);
         }
     }
 
     public function processFlavorTextInput(string $value = null): void
     {
         // Reset
-        if ($value === "-1") {
-            $this->new["flavor_text"] = null;
+        if ($value === '-1') {
+            $this->new['flavor_text'] = null;
         }
 
-        elseif ($value !== null && $value !== "") {
-            $this->new["flavor_text"] = trim($value);
+        elseif ($value !== null && $value !== '') {
+            $this->new['flavor_text'] = trim($value);
         }
     }
 
     public function processArtistNameInput(string $value = null): void
     {
         // Reset
-        if ($value === "-1") {
-            $this->new["artist_name"] = null;
+        if ($value === '-1') {
+            $this->new['artist_name'] = null;
         }
 
-        elseif ($value !== null && $value !== "") {
-            $this->new["artist_name"] = $value;
+        elseif ($value !== null && $value !== '') {
+            $this->new['artist_name'] = $value;
         }
     }
 }

@@ -2,12 +2,12 @@
 
 namespace App\Services\Lookup\Generators;
 
-use App\Services\Lookup\Interfaces\LookupDataGeneratorInterface;
+use App\Services\Lookup\Generatable;
 
-class DivinitiesGenerator implements LookupDataGeneratorInterface
+class DivinitiesGenerator implements Generatable
 {
     public function generate(): array
     {
-        return [0,1,2,3,4,5];
+        return [0,1,2,3,4,5,42];
     }
 }

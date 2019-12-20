@@ -5,23 +5,17 @@ namespace App\Http\Middleware;
 use App\Http\Request\Request;
 use App\Http\Middleware\MiddlewareInterface;
 use App\Exceptions\AuthorizationException;
-use App\Legacy\Authorization;
-use App\Services\Configuration\Configuration;
 
 class CheckAuthorizationMiddleware implements MiddlewareInterface
 {
     public function run(Request $request): void
     {
-        $requiredRole = (Configuration::getInstance())->get("current.access");
+        $requiredRole = $request->app('access');
 
         // Shortcut for public routes
-        if ($requiredRole === "public") {
-            return;
-        }
+        if ($requiredRole === 'public') return;
 
         // ERROR: Current user is not authorized
-        if (!(Authorization::getInstance())->check($requiredRole)) {
-            throw new AuthorizationException();
-        }
+        if (!auth()->check($requiredRole)) throw new AuthorizationException();
     }
 }

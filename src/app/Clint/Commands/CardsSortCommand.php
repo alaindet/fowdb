@@ -7,12 +7,16 @@ use App\Models\Card;
 
 class CardsSortCommand extends Command
 {
-    public $name = 'cards:sort';
+    public $name = "cards:sort";
 
-    public function run(array $options, array $arguments): void
+    public function run(): Command
     {
         Card::buildAllSortId();
 
-        $this->message = 'Sorting ID for all cards has been regenerated.';
+        $this->setMessage(
+            "Sorting ID (cards.sorted_id) for all cards has been regenerated"
+        );
+
+        return $this;
     }
 }

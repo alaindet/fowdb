@@ -8,7 +8,6 @@ use App\Models\GameRules as Model;
 use App\Services\Resources\GameRules\GameRulesInputProcessor as InputProcessor;
 use App\Services\Resources\GameRules\DocumentConverter;
 use App\Services\FileSystem\FileSystem;
-use App\Utils\Paths;
 
 class GameRulesUpdateService extends CrudService
 {
@@ -28,9 +27,9 @@ class GameRulesUpdateService extends CrudService
             }
         }
 
-        fd_database()
+        database()
             ->update(
-                fd_statement('update')
+                statement('update')
                     ->table('game_rules')
                     ->values($placeholders)
                     ->where('id = :id')
@@ -45,9 +44,9 @@ class GameRulesUpdateService extends CrudService
     {
         $paths = [
             'old-src' => $this->old['*source_path'],
-            'new-src' => Paths::inDataDir("resources/cr/{$this->new['version']}.txt"),
+            'new-src' => path_data("resources/cr/{$this->new['version']}.txt"),
             'old-doc' => $this->old['*doc_path'],
-            'new-doc' => Paths::inRootDir($this->new['doc_path']),
+            'new-doc' => path_public($this->new['doc_path']),
         ];
 
         // Rename files (source .txt and public .html) on version change
@@ -69,7 +68,7 @@ class GameRulesUpdateService extends CrudService
                 ->setOutputFilePath($paths['new-doc'])
                 ->convert();
 
-            // Move source file to src/data/resources/cr
+            // Move source file to {src}/data/resources/cr
             move_uploaded_file($inputSourcePath, $paths['new-src']);
 
         }
@@ -92,7 +91,7 @@ class GameRulesUpdateService extends CrudService
             '</strong>.'
         );
 
-        $uri = fd_url('cr/manage');
+        $uri = url('cr/manage');
 
         return [$message, $uri];
     }

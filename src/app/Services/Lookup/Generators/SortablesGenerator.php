@@ -2,24 +2,23 @@
 
 namespace App\Services\Lookup\Generators;
 
-use App\Services\Lookup\Interfaces\LookupDataGeneratorInterface;
-use App\Utils\Arrays;
+use App\Services\Lookup\Generatable;
 
-class SortablesGenerator implements LookupDataGeneratorInterface
+class SortablesGenerator implements Generatable
 {
-    public function generate(): object
+    public function generate(): array
     {
-        return Arrays::toObject([
-            "cards" => [
-                "sets_id" => "Set",
-                "num" => "Number",
-                "race" => "Race/Trait",
-                "attribute" => "Attribute",
-                "total_cost" => "Total Cost",
-                "rarity" => "Rarity",
-                "atk" => "ATK",
-                "def" => "DEF"
+        return [
+            'cards' => [
+                'sets_id' => 'Set',
+                'num' => 'Number',
+                'race' => 'Race/Trait',
+                'attribute' => 'Attribute',
+                'total_cost' => 'Total Cost',
+                'rarity' => 'Rarity',
+                'atk' => 'ATK',
+                'def' => 'DEF'
             ]
-        ]);
+        ];
     }
 }

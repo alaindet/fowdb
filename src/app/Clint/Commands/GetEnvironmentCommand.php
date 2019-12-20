@@ -3,14 +3,14 @@
 namespace App\Clint\Commands;
 
 use App\Clint\Commands\Command;
-use App\Services\Configuration\Configuration;
 
 class GetEnvironmentCommand extends Command
 {
     public $name = "env:get";
 
-    public function run(array $options, array $arguments): void
+    public function run(): Command
     {
-        $this->message = (Configuration::getInstance())->get("app.env");
+        $this->setMessage(config("app.env"));
+        return $this;
     }
 }

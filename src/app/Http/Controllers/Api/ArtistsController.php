@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Base\Controller;
 use App\Http\Request\Request;
+use App\Legacy\CardSearch as Search;
 use App\Http\Response\JsonResponse;
 
 /**
@@ -26,9 +27,9 @@ class ArtistsController extends Controller
         if (!isset($term)) return $response->setData($errorData)->render();
 
         // Fetch results from the database
-        $items = fd_database()
+        $items = database()
             ->select(
-                fd_statement('select')
+                statement('select')
                     ->fields('DISTINCT artist_name')
                     ->from('cards')
                     ->where('artist_name LIKE :artist')

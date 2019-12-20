@@ -7,7 +7,6 @@ use App\Base\CrudServiceInterface;
 use App\Services\Resources\GameSet\Crud\InputProcessor;
 use App\Models\GameSet as Model;
 use App\Services\FileSystem\FileSystem;
-use App\Utils\Paths;
 
 class UpdateService extends CrudService
 {
@@ -26,12 +25,12 @@ class UpdateService extends CrudService
             }
         }
 
-        $statement = fd_statement('update')
+        $statement = statement('update')
             ->table('game_sets')
             ->values($placeholders)
             ->where('id = :id');
 
-        fd_database()
+        database()
             ->update($statement)
             ->bind($bind)
             ->execute();
@@ -48,12 +47,12 @@ class UpdateService extends CrudService
 
             $paths = [
                 'images' => [
-                    'old' => Paths::inRootDir('images/cards/'.$partialOld),
-                    'new' => Paths::inRootDir('images/cards/'.$partialNew)
+                    'old' => path_public('images/cards/'.$partialOld),
+                    'new' => path_public('images/cards/'.$partialNew)
                 ],
                 'thumbnails' => [
-                    'old' => Paths::inRootDir('images/thumbs/'.$partialOld),
-                    'new' => Paths::inRootDir('images/thumbs/'.$partialNew)
+                    'old' => path_public('images/thumbs/'.$partialOld),
+                    'new' => path_public('images/thumbs/'.$partialNew)
                 ]
             ];
 
@@ -83,7 +82,7 @@ class UpdateService extends CrudService
             "</strong>."
         );
 
-        $uri = fd_url('sets/manage');
+        $uri = url('sets/manage');
 
         return [$message, $uri];
     }

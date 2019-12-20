@@ -1,5 +1,14 @@
 Description:
-  Clears the cached configuration files
+  Clear the configuration file (parse on each request)
 
-Usage
-  config:clear
+Usage:
+  $ php clint config:clear
+
+Values:
+  No
+
+Options:
+  No
+
+Examples:
+  $ php clint config:clear

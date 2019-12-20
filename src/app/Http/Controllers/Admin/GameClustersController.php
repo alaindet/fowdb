@@ -4,22 +4,23 @@ namespace App\Http\Controllers\Admin;
 
 use App\Base\ApiException;
 use App\Base\Controller;
-use App\Base\Crud\Exceptions\CrudException;
+use App\Exceptions\CrudException;
 use App\Http\Request\Request;
 use App\Http\Response\JsonResponse;
 use App\Models\GameCluster as Model;
 use App\Services\CsrfToken;
+use App\Services\Resources\GameCluster\Crud\CreateService;
 use App\Services\Resources\GameCluster\Crud\DeleteService;
 use App\Services\Resources\GameCluster\Crud\UpdateService;
-use App\Views\Page\Page;
+use App\Views\Page;
 
 class GameClustersController extends Controller
 {
     public function index(Request $request): string
     {
-        $items = fd_database()
+        $items = database()
             ->select(
-                fd_statement('select')
+                statement('select')
                     ->from('game_clusters')
                     ->orderBy('id DESC')
             )
@@ -40,9 +41,9 @@ class GameClustersController extends Controller
 
     public function apiShowAll(Request $request): string
     {
-        $items = fd_database()
+        $items = database()
             ->select(
-                fd_statement('select')
+                statement('select')
                     ->from('game_clusters')
                     ->orderBy('id DESC')
             )
@@ -70,19 +71,28 @@ class GameClustersController extends Controller
 
     public function apiCreate(Request $request): string
     {
-        $response = [];
+        $request->api()->validate('post', [
+            'id' => ['required','is:integer','except:0'],
+            'name' => ['required','except:'],
+            'code' => ['required','except:']
+        ]);
 
         try {
-            $service = new \App\Entity\GameCluster\Write\CreateService;
-            $service->setInputData($request->inputObject()->post());
-            $service->create();
-            [$message, $type] = $service->getFeedback();
-            $response["error"] = false;
-            $response["message"] = $message;
-        } catch (\App\Base\Exception $exception) {
+            $service = new CreateService($request->input()->post());
+            $service->processInput();
+            $service->syncDatabase();
+            $service->syncFileSystem();
+            $service->updateLookupData();
+            [$message] = $service->getFeedback();
+        } catch (CrudException $exception) {
             throw new ApiException($exception->getMessage());
         }
 
+        $response = [
+            'error' => false,
+            'message' => $message
+        ];
+        
         return (new JsonResponse)
             ->setData($response)
             ->render();

@@ -3,75 +3,101 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Base\Controller;
+use App\Clint\Clint;
 use App\Http\Request\Request;
 use App\Http\Response\Redirect;
 use App\Services\Alert;
-use App\Views\Page\Page;
+use App\Views\Page;
 use App\Services\FileSystem\FileSystem;
-use App\Utils\Paths;
 
 class ClintController extends Controller
 {
     private $commands = [
-        "config-build" => [
-            "label" => "Rebuild configuration cache",
-            "name" => "config:build"
+        'cache-config' => [
+            'label' => 'Cache the configuration',
+            'command' => '$ php clint config:cache',
+            'name' => 'config:cache',
         ],
-        "config-clear" => [
-            "label" => "Clear configuration cache",
-            "name" => "config:clear"
+        'cache-clear' => [
+            'label' => 'Clear the configuration file',
+            'command' => '$ php clint config:clear',
+            'name' => 'config:clear',
         ],
-        "env-to-production" => [
-            "label" => "Switch environment to production",
-            "name" => "env:switch",
-            "arguments" => ["production"]
+        'env-to-production' => [
+            'label' => 'Switch environment to production',
+            'command' => '$ php clint env:switch production',
+            'values' => ['production'],
+            'name' => 'env:switch',
         ],
-        "env-to-development" => [
-            "label" => "Switch environment to development",
-            "name" => "env:switch",
-            "arguments" => ["development"]
+        'env-to-development' => [
+            'label' => 'Switch environment to development',
+            'command' => '$ php clint env:switch development',
+            'values' => ['development'],
+            'name' => 'env:switch',
         ],
-        "lookup-cache" => [
-            "label" => "Cache lookup data",
-            "name" => "lookup:cache"
+        'lookup-cache' => [
+            'label' => 'Cache lookup data',
+            'command' => '$ php clint lookup:cache',
+            'name' => 'lookup:cache',
         ],
-        "sitemap-make" => [
-            "label" => "Regenerate sitemap.xml",
-            "name" => "sitemap:make"
+        'sitemap-make' => [
+            'label' => 'Regenerate sitemap.xml',
+            'command' => '$ php clint sitemap:make',
+            'name' => 'sitemap:make',
         ],
-        "timestamp-js" => [
-            "label" => "Update Timestamp: JS",
-            "name" => "config:timestamp",
-            "arguments" => ["js"]
+        'timestamp-js' => [
+            'label' => 'Update Timestamp: JS',
+            'command' => '$ php clint config:timestamp js',
+            'values' => ['js'],
+            'name' => 'config:timestamp',
         ],
-        "timestamp-css" => [
-            "label" => "Update Timestamp: CSS",
-            "name" => "config:timestamp",
-            "arguments" => ["css"]
+        'timestamp-css' => [
+            'label' => 'Update Timestamp: CSS',
+            'command' => '$ php clint config:timestamp css',
+            'values' => ['css'],
+            'name' => 'config:timestamp',
         ],
-        "timestamp-img" => [
-            "label" => "Update Timestamp: Image",
-            "name" => "config:timestamp",
-            "arguments" => ["img"]
+        'timestamp-img' => [
+            'label' => 'Update Timestamp: Image',
+            'command' => '$ php clint config:timestamp img',
+            'values' => ['img'],
+            'name' => 'config:timestamp',
         ],
-        "timestamp-generic" => [
-            "label" => "Update Timestamp: Generic",
-            "name" => "config:timestamp",
-            "arguments" => ["generic"]
+        'timestamp-generic' => [
+            'label' => 'Update Timestamp: Generic',
+            'command' => '$ php clint config:timestamp generic',
+            'values' => ['generic'],
+            'name' => 'config:timestamp',
         ],
-        "cards-sort" => [
-            "label" => "Regenerate all cards \"sorted_id\"",
-            "name" => "cards:sort",
+        'timestamp-all' => [
+            'label' => 'Update Timestamp: all timestamps',
+            'command' => '$ php clint config:timestamp',
+            'name' => 'config:timestamp',
+        ],
+        'cards-sort' => [
+            'label' => 'Regenerate \'cards.sorted_id\'',
+            'command' => '$ php clint cards:sort',
+            'name' => 'cards:sort',
+        ],
+        'cards-paths' => [
+            'label' => 'Regenerate \'cards.image_path\' and \'cards.thumb_path\'',
+            'command' => '$ php clint cards:paths',
+            'name' => 'cards:paths',
+        ],
+        'cards-legality' => [
+            'label' => 'Regenerate \'cards.legality_bit\'',
+            'command' => '$ php clint cards:legaity',
+            'name' => 'cards:legality',
         ],
     ];
     
     public function showForm(): string
     {
         return (new Page)
-            ->template("pages/admin/clint/index")
-            ->title("Clint commands")
+            ->template('pages/admin/clint/index')
+            ->title('Clint commands')
             ->variables([
-                "commands" => $this->commands
+                'commands' => $this->commands
             ])
             ->render();
     }
@@ -79,12 +105,16 @@ class ClintController extends Controller
     public function executeCommand(Request $request, $command)
     {
         $info = $this->commands[$command];
-        $classes = FileSystem::loadFile(Paths::inDataDir("app/clint.php"));
-        $class = $classes[$info["name"]];
-        $command = new $class();
-        $command->run($info["options"] ?? [], $info["arguments"] ?? []);
 
-        Alert::add($command->message(), "info");
-        Redirect::to("clint");
+        $clint = new Clint;
+        $clint->setInput([
+            "name" => $info["name"],
+            "values" => $info["values"] ?? [],
+            "options" => $info["options"] ?? [],
+        ]);
+        $clint->run();
+        
+        Alert::add($clint->getMessage(), 'info');
+        Redirect::to('clint');
     }
 }

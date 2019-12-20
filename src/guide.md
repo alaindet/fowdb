@@ -1,6 +1,6 @@
 # Conventions and how-tos on FoWDB
 
-## &lt;input&gt; names
+## <input> names
 
 - All inputs names must be in kebab-case, not snake_case Ex.: `<input name="card-id">`
 - Variables inside views must be named in snake_case to enhance readabiliy
@@ -32,14 +32,10 @@
 
 ## How to run uglifyjs in local
 
-1. Move to `/src/resources/assets`
+1. Move to `{src}/resources/assets`
 2. Execute this command
    ```
    ./node_modules/.bin/uglifyjs js/FOO.js -o ../../../js/FOO.min.js -cm
-   ```
-   or this
-   ```
-   npx uglifyjs js/FOO.js -cmo ../../../js/FOO.min.js
    ```
 - `c` flag: compress (use defaults)
 - `m` flag: mangle (use defaults)
@@ -48,7 +44,7 @@
 # FoWDB Clint CLI tools
 
 Clint is a set of CLI tools, inspired by Laravel's Artisan. To start
-exploring Clint commands, move to /src/ and run
+exploring Clint commands, move to {src}/ and run
 
 ```
 php clint
@@ -76,6 +72,6 @@ php clint
    Any Exception extending `App\Cli\Exceptions\ClintException` automatically gets
    logged to the user in a CLI-friendly format
 
-3. Edit the command's help description in `/src/app/Clint/descriptions/foo-bar.md`
+3. Edit the command's help description in `{src}/app/Clint/descriptions/foo-bar.md`
 
-4. If you did not provide a description, edit the generic description also, in `/src/app/Clint/descriptions/_all.md`
+4. If you did not provide a description, edit the generic description also, in `{src}/app/Clint/descriptions/_all.md`

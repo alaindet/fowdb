@@ -13,13 +13,13 @@ class DeleteService extends CrudService
 
     public function syncDatabase(): CrudServiceInterface
     {
-        $statement = fd_statement('delete')
+        $statement = statement('delete')
             ->table('game_rulings')
             ->where('id = :id');
 
         $bind = [':id' => $this->old['id']];
 
-        fd_database()
+        database()
             ->delete($statement)
             ->bind($bind)
             ->execute();
@@ -38,7 +38,7 @@ class DeleteService extends CrudService
         $card = (new Card)->byId($this->old['cards_id'], ['name', 'code']);
 
         $label = "{$card['name']} ({$card['code']})";
-        $link = '<a href="'.fd_url('rulings/manage').'">Rulings</a>';
+        $link = '<a href="'.url('rulings/manage').'">Rulings</a>';
         $id = $this->old['id'];
 
         $message = (
@@ -46,7 +46,7 @@ class DeleteService extends CrudService
             "Go back to the <strong>{$link}</strong> page."
         );
 
-        $uri = fd_url('card/'.urlencode($card['code']));
+        $uri = url('card/'.urlencode($card['code']));
 
         return [$message, $uri];
     }

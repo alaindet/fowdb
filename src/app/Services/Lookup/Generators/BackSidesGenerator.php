@@ -2,36 +2,27 @@
 
 namespace App\Services\Lookup\Generators;
 
-use App\Services\Lookup\Interfaces\LookupDataGeneratorInterface;
-use App\Base\ORM\Manager\EntityManager;
-use App\Entity\CardBackSide\CardBackSide;
+use App\Services\Lookup\Generatable;
+use App\Models\CardBackSide;
 
-class BackSidesGenerator implements LookupDataGeneratorInterface
+class BackSidesGenerator implements Generatable
 {
-    public function generate(): object
+    public function generate(): array
     {
-        $result = (object) [
-            "code2id"   => new \stdClass(),
-            "code2name" => new \stdClass(),
-            "id2code"   => new \stdClass(),
-            "id2name"   => new \stdClass(),
+        $results = [
+            'code2id' => [],
+            'code2name' => [],
+            'id2code' => [],
+            'id2name' => [],
         ];
-        
-        $repository = EntityManager::getRepository(CardBackSide::class);
 
-        foreach ($repository->all() as $item) {
-
-            $id = $item->id;
-            $code = $item->code;
-            $name = $item->name;
-
-            $result->code2id->{$code} = $id;
-            $result->code2name->{$code} = $name;
-            $result->id2code->{$id} = $code;
-            $result->id2name->{$id} = $name;
-            
+        foreach ((new CardBackSide)->all() as $item) {
+            $results['code2id'][$item['code']] = $item['id'];
+            $results['code2name'][$item['code']] = $item['name'];
+            $results['id2code'][$item['id']] = $item['code'];
+            $results['id2name'][$item['id']] = $item['name'];
         }
 
-        return $result;
+        return $results;
     }
 }

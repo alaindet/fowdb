@@ -2,18 +2,28 @@
 
 namespace App\Services;
 
-use App\Services\Session\Session;
+use App\Base\Base;
+use App\Services\Session;
 
-class CsrfToken
+class CsrfToken extends Base
 {
-    const NAME = "_token";
+    public const NAME = "_token";
+
+    static public function createOrRefresh(): string
+    {
+        if (self::exists()) {
+            return self::get();
+        } else {
+            return self::create();
+        }
+    }
 
     /**
      * Checks if token currently exists into the session
      *
      * @return boolean
      */
-    public static function exists(): bool
+    static public function exists(): bool
     {
         return Session::exists(self::NAME);
     }
@@ -23,7 +33,7 @@ class CsrfToken
      *
      * @return string
      */
-    public static function create(): string
+    static public function create(): string
     {
         $tokenValue = sha1(uniqid(mt_rand(), true));
         return Session::set(self::NAME, $tokenValue);
@@ -34,7 +44,7 @@ class CsrfToken
      *
      * @return string
      */
-    public static function get(): string
+    static public function get(): string
     {
         return Session::get(self::NAME);
     }
@@ -45,7 +55,7 @@ class CsrfToken
      * @param string $token
      * @return boolean
      */
-    public static function check(string $token): bool
+    static public function check(string $token): bool
     {
         return Session::get(self::NAME) === $token;
     }
@@ -55,7 +65,7 @@ class CsrfToken
      *
      * @return string HTML string
      */
-    public static function formInput(): string
+    static public function formInput(): string
     {
         $name = self::NAME;
         $value = self::get();

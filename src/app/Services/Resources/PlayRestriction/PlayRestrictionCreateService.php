@@ -25,9 +25,9 @@ class PlayRestrictionCreateService extends CrudService
         }
 
         // Create a new card entity on the database
-        fd_database()
+        database()
             ->insert(
-                fd_statement('insert')
+                statement('insert')
                     ->table('play_restrictions')
                     ->values($placeholders)
             )
@@ -51,13 +51,13 @@ class PlayRestrictionCreateService extends CrudService
         // Build the success message
         $message = (
             'New restriction for card <strong>'.
-            "{$card['name']} ({$card['code']})".
+                "{$card['name']} ({$card['code']})".
             '</strong> added. Go back to the <strong>'.
-            '<a href="'.fd_url('restrictions/manage').'">Restrictions</a>'.
+                '<a href="'.url('restrictions/manage').'">Restrictions</a>'.
             '</strong> page.'
         );
 
-        $uri = fd_url('card/'.urlencode($card['code']));
+        $uri = url('card/'.urlencode($card['code']));
 
         return [$message, $uri];
     }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Response;
 
-use App\Http\Response\Exceptions\RouterException;
+use App\Exceptions\RouterException;
 use App\Http\Request\Request;
 
 use Symfony\Component\Routing\Matcher\UrlMatcher as SymfonyUrlMatcher;
@@ -42,17 +42,17 @@ class Router
     public function setRequest(Request $request): Router
     {
         $this->request = new SymfonyRequestContext(
-            $request->getBaseUrl(),
-            $request->getMethod(),
-            $request->getHost(),
-            $request->getScheme(),
-            $request->getHttpPort(),
-            $request->getHttpsPort(),
-            $request->getPath(),
-            $request->getQueryString()
+            $baseUrl = $request->baseUrl(),
+            $method = $request->method(),
+            $host = $request->host(),
+            $scheme = $request->scheme(),
+            $httpPort = $request->httpPort(),
+            $httpsPort = $request->httpsPort(),
+            $path = $request->path(),
+            $queryString = $request->queryString()
         );
 
-        $this->uri = $request->getPath();
+        $this->uri = $request->path();
 
         return $this;
     }
@@ -65,6 +65,7 @@ class Router
         $method = $route[3];
         $parameters = $route[4] ?? [];
         $middleware = $route[5] ?? [];
+
         
         $this->uri = $uri;
 

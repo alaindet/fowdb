@@ -2,9 +2,9 @@
 
 namespace App\Services\Lookup\Generators;
 
-use App\Services\Lookup\Interfaces\LookupDataGeneratorInterface;
+use App\Services\Lookup\Generatable;
 
-class CostsGenerator implements LookupDataGeneratorInterface
+class CostsGenerator implements Generatable
 {
     public function generate(): array
     {

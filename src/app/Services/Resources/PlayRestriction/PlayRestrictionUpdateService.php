@@ -27,9 +27,9 @@ class PlayRestrictionUpdateService extends CrudService
             }
         }
 
-        fd_database()
+        database()
             ->update(
-                fd_statement('update')
+                statement('update')
                     ->table('play_restrictions')
                     ->values($placeholders)
                     ->where('id = :id')
@@ -54,13 +54,13 @@ class PlayRestrictionUpdateService extends CrudService
         // Build the success message
         $message = (
             'Restriction for card <strong>'.
-            "{$card['name']} ({$card['code']})".
+                "{$card['name']} ({$card['code']})".
             '</strong> updated. Go back to the <strong>'.
-            '<a href="'.fd_url('restrictions/manage').'">Restrictions</a>'.
+                '<a href="'.url('restrictions/manage').'">Restrictions</a>'.
             '</strong> page.'
         );
 
-        $uri = fd_url('card/'.urlencode($card['code']));
+        $uri = url('card/'.urlencode($card['code']));
 
         return [$message, $uri];
     }

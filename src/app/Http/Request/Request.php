@@ -2,13 +2,17 @@
 
 namespace App\Http\Request;
 
-use App\Http\Request\Input\InputManager;
+use App\Base\GetterSetterTrait;
+use App\Http\Request\Input;
+use App\Services\Alert;
 use App\Services\Validation\Validation;
-use App\Utils\Uri;
-use App\Http\Request\Input\InputObject;
+use App\Exceptions\ValidationException;
+use App\Exceptions\ApiValidationException;
 
 class Request
 {
+    use GetterSetterTrait;
+
     private $baseUrl;
     private $method;
     private $host;
@@ -17,128 +21,119 @@ class Request
     private $httpsPort;
     private $path;
     private $queryString;
+    private $app;
+    private $validationException = ValidationException::class;
 
-    public function setBaseUrl(string $baseUrl): Request
+    public function baseUrl(string $value = null)
     {
-        $this->baseUrl = $baseUrl;
-        return $this;
+        return $this->getterSetter('baseUrl', $value);
     }
 
-    public function getBaseUrl(): string
+    public function method(string $value = null)
     {
-        return $this->baseUrl;
+        return $this->getterSetter('method', $value);
     }
 
-    public function setMethod(string $method): Request
+    public function host(string $value = null)
     {
-        $this->method = $method;
-        return $this;
+        return $this->getterSetter('host', $value);
     }
 
-    public function getMethod(): string
+    public function scheme(string $value = null)
     {
-        return $this->method;
+        return $this->getterSetter('scheme', $value);
     }
 
-    public function setHost(string $host): Request
+    public function httpPort(int $value = null)
     {
-        $this->host = $host;
-        return $this;
+        return $this->getterSetter('httpPort', $value);
     }
 
-    public function getHost(): string
+    public function httpsPort(int $value = null)
     {
-        return $this->host;
-    }
-    
-    public function setScheme(string $scheme): Request
-    {
-        $this->scheme = $scheme;
-        return $this;
+        return $this->getterSetter('httpsPort', $value);
     }
 
-    public function getScheme(): string
+    public function queryString(string $value = null)
     {
-        return $this->scheme;
+        return $this->getterSetter('queryString', $value);
     }
 
-    public function setHttpPort(int $httpPort): Request
+    public function path(string $value = null)
     {
-        $this->httpPort = $httpPort;
-        return $this;
-    }
-
-    public function getHttpPort(): int
-    {
-        return $this->httpPort;
-    }
-
-    public function setHttpsPort(int $httpsPort): Request
-    {
-        $this->httpsPort = $httpsPort;
-        return $this;
-    }
-
-    public function getHttpsPort(): int
-    {
-        return $this->httpsPort;
-    }
-
-    public function setQueryString(string $queryString): Request
-    {
-        $this->queryString = $queryString;
-        return $this;
-    }
-
-    public function getQueryString(): ?string
-    {
-        return $this->queryString;
-    }
-
-    public function setPath(string $path): Request
-    {
-        if (isset($path)) {
-            $pos = strpos($path, "?");
-            if ($pos !== false) {
-                $path = substr($path, 0, $pos);
-            }
-            $this->path = $path;
+        if (isset($value)) {
+            $pos = strpos($value, '?');
+            if ($pos !== false) $value = substr($value, 0, $pos);
+            $this->path = $value;
+            return $this;
         }
 
-        return $this;
-    }
-
-    public function getPath(): string
-    {
         return $this->path;
     }
 
-    public function input(): InputManager
+    public function app(string $name, $value = null)
     {
-        return InputManager::getInstance();
-    }
-
-    public function getCurrentUrl(bool $withQueryString = true): string
-    {
-        if (!$withQueryString && $this->queryString === null) {
-            return Uri::build($this->getPath());
+        if (isset($value)) {
+            $this->app[$name] = $value;
+            return $this;
         }
 
-        return Uri::build($this->getPath()) . "?" . $this->getQueryString();
+        return $this->app[$name];
     }
 
-    /**
-     * Validate inputs, throws validation exception on fail
-     *
-     * @param array $rules
-     * @return void
-     */
-    public function validate(array $rules): void
+    public function input(): Input
     {
-        $data = $this->input()->all()->{$this->method};
-        $validation = new Validation;
-        $validation->setData($data);
-        $validation->setRules($rules);
-        $validation->validate();
+        return Input::getInstance();
+    }
+
+    public function getCurrentUrl($withQueryString = true): string
+    {
+        $queryString = !empty($this->queryString) ? '?'.$this->queryString : '';
+        return url($this->path) . $queryString;
+    }
+
+    public function api(): Request
+    {
+        $this->validationException = ApiValidationException::class;
+
+        return $this;
+    }
+
+    public function validate(
+        string $type,
+        array $toValidate,
+        array $input = null
+    ): void
+    {
+        $errors = (new Validation)
+            ->input($input ?? $this->input()->$type())
+            ->validate($toValidate)
+            ->getErrors();
+
+        // Build the error message
+        if (!empty($errors)) {
+
+            // Single error
+            if (count($errors) === 1) {
+                $message = $errors[0];
+            }
+            
+            // Errors list
+            else {
+                $message = (
+                    "<ul style=\"display:inline-block\">".
+                        array_reduce(
+                            $errors,
+                            function ($message, $error) {
+                                return $message .= "<li>{$error}</li>";
+                            },
+                            ""
+                        ).
+                    "</ul>"
+                );
+            }
+
+            throw new $this->validationException($message);
+        }
     }
 }

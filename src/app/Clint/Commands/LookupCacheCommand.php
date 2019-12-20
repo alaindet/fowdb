@@ -7,12 +7,12 @@ use App\Services\Lookup\Lookup;
 
 class LookupCacheCommand extends Command
 {
-    public $name = 'lookup:cache';
+    public $name = "lookup:cache";
 
-    public function run(array $options, array $arguments): void
+    public function run(): Command
     {
-        (Lookup::getInstance())->generateAll()->store();
-
-        $this->message = "Lookup data successfully cached.";
+        (Lookup::getInstance())->build()->store();
+        $this->setMessage("Lookup data successfully cached");
+        return $this;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Services\Resources\GameSet\Crud;
 
-use App\Base\Crud\Exceptions\CrudException;
+use App\Exceptions\CrudException;
 
 /**
  * This trait manipulates data after all Cluster input processors executed
@@ -41,9 +41,9 @@ trait PostProcessingTrait
      */
     private function checkExistingResourceOnCreate(): void
     {
-        $existing = fd_database()
+        $existing = database()
             ->select(
-                fd_statement('select')
+                statement('select')
                     ->from('game_sets')
                     ->where('id = :id', 'OR')
                     ->where('name = :name', 'OR')
@@ -74,9 +74,9 @@ trait PostProcessingTrait
      */
     private function checkExistingResourceOnUpdate(): void
     {
-        $existing = fd_database()
+        $existing = database()
             ->select(
-                fd_statement('select')
+                statement('select')
                     ->from('game_sets')
                     ->where('NOT(id = :id)')
                     ->where([

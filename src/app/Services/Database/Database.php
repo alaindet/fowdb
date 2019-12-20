@@ -2,13 +2,10 @@
 
 namespace App\Services\Database;
 
-use App\Base\Items\ItemsCollection;
 use App\Base\Singleton;
 use App\Exceptions\DatabaseException;
-use App\Services\Database\Exceptions\ExecutionException;
-use App\Services\Database\Exceptions\MissingStatementException;
-use App\Services\Configuration\Configuration;
-use App\Services\Database\Interfaces\DatabaseInterface;
+use App\Services\Config\Config;
+use App\Services\Database\Pageable;
 use App\Services\Database\Statement\DeleteSqlStatement;
 use App\Services\Database\Statement\InsertSqlStatement;
 use App\Services\Database\Statement\SelectSqlStatement;
@@ -17,9 +14,10 @@ use App\Services\Database\Statement\UpdateSqlStatement;
 use PDO;
 use PDOStatement;
 
-class Database implements DatabaseInterface
+class Database
 {
     use Singleton;
+    use Pageable;
 
     /**
      * PDO object
@@ -47,7 +45,7 @@ class Database implements DatabaseInterface
      *
      * @var array
      */
-    private $boundValues = [];
+    private $boundValues;
 
     /**
      * Instantiates and configures the database connection
@@ -60,11 +58,11 @@ class Database implements DatabaseInterface
     protected function __construct()
     {
         // Read the configuration variables
-        $config = Configuration::getInstance();
-        $host = $config->get('db.host');
-        $name = $config->get('db.name');
-        $user = $config->get('db.user');
-        $password = $config->get('db.password');
+        $cfg = Config::getInstance();
+        $host = $cfg->get('db.host');
+        $name = $cfg->get('db.name');
+        $user = $cfg->get('db.user');
+        $password = $cfg->get('db.password');
 
         // Create the connection
         $this->pdo = new PDO(
@@ -104,7 +102,7 @@ class Database implements DatabaseInterface
      * @param InsertSqlStatement $statement
      * @return Database $this
      */
-    public function insert(InsertSqlStatement $statement): DatabaseInterface
+    public function insert(InsertSqlStatement $statement): Database
     {
         return $this->statement($statement);
     }
@@ -115,7 +113,7 @@ class Database implements DatabaseInterface
      * @param InsertSqlStatement $statement
      * @return Database $this
      */
-    public function create(InsertSqlStatement $statement): DatabaseInterface
+    public function create(InsertSqlStatement $statement): Database
     {
         return $this->insert($statement);
     }
@@ -126,7 +124,7 @@ class Database implements DatabaseInterface
      * @param SelectSqlStatement $statement
      * @return Database $this
      */
-    public function select(SelectSqlStatement $statement): DatabaseInterface
+    public function select(SelectSqlStatement $statement): Database
     {
         return $this->statement($statement);
     }
@@ -137,7 +135,7 @@ class Database implements DatabaseInterface
      * @param SelectSqlStatement $statement
      * @return Database $this
      */
-    public function read(SelectSqlStatement $statement): DatabaseInterface
+    public function read(SelectSqlStatement $statement): Database
     {
         return $this->select($statement);
     }
@@ -148,7 +146,7 @@ class Database implements DatabaseInterface
      * @param UpdateSqlStatement $statement
      * @return Database $this
      */
-    public function update(UpdateSqlStatement $statement): DatabaseInterface
+    public function update(UpdateSqlStatement $statement): Database
     {
         return $this->statement($statement);
     }
@@ -159,7 +157,7 @@ class Database implements DatabaseInterface
      * @param DeleteSqlStatement $statement
      * @return Database $this
      */
-    public function delete(DeleteSqlStatement $statement): DatabaseInterface
+    public function delete(DeleteSqlStatement $statement): Database
     {
         return $this->statement($statement);
     }
@@ -170,7 +168,7 @@ class Database implements DatabaseInterface
      * @param array $values
      * @return Database $this
      */
-    public function bind(array $values): DatabaseInterface
+    public function bind(array $values): Database
     {
         $this->boundValues = $values;
 
@@ -185,36 +183,41 @@ class Database implements DatabaseInterface
      */
     private function getParameterFlag($value): int
     {
-        return [
-            "string" => PDO::PARAM_STR,
-            "integer" => PDO::PARAM_INT,
-            "boolean" => PDO::PARAM_BOOL,
-            "NULL" => PDO::PARAM_NULL
-        ][gettype($value)];
+        $type = gettype($value);
+        if ($type === 'string')      return PDO::PARAM_STR;
+        elseif ($type === 'integer') return PDO::PARAM_INT;
+        elseif ($type === 'boolean') return PDO::PARAM_BOOL;
+        elseif ($type === 'NULL')    return PDO::PARAM_NULL;
     }
 
     /**
-     * Binds values to placeholders in the given prepared statement
+     * Binds passed values to placeholders in the passed prepared statement
      * 
-     * Bound values MUST be an associative array like placeholder => value
+     * CAUTION: $values MUST be an associative array placeholder => value
      * and placeholder MUST match the parameter, so it MUST be prefixed with :
      * 
      * Ex.:
-     * Bad  => ['name' => 'Alain']
-     * Good => [':name' => 'Alain']
+     * Bad  => [':name' => 'Alain']
+     * Good => ['name' => 'Alain']
      *
-     * @param PDOStatement $query Prepared statement
-     * @param array $values
-     * @return PDOStatement Same query with bounded values
+     * @param PDOStatement $query Reference to prepared statement
+     * @param array $values Reference to values to bind
+     * @return void
      */
-    private function bindValues(PDOStatement $query): PDOStatement
+    private function bindValues(
+        PDOStatement &$query,
+        array &$values = null
+    ): void
     {
-        foreach ($this->boundValues as $placeholder => $value) {
-            $flag = $this->getParameterFlag($value);
-            $query->bindValue($placeholder, $value, $flag);
+        if (!empty($values)) {
+            foreach ($values as $placeholder => $value) {
+                $query->bindValue(
+                    $placeholder,
+                    $value,
+                    $this->getParameterFlag($value)
+                );
+            }
         }
-
-        return $query;
     }
 
     /**
@@ -223,52 +226,55 @@ class Database implements DatabaseInterface
      *
      * @return Database $this
      */
-    public function execute(): DatabaseInterface
+    public function execute(): Database
     {
-        // ERROR: Missing statement
-        if ($this->statement === null) {
-            throw new MissingStatementException();
-        }
+        // Prepare
+        $this->query = $this->pdo->prepare($this->statement->toString());
 
-        $sql = $this->statement->toString();
-        $this->query = $this->pdo->prepare($sql);
-        $this->query = $this->bindValues($this->query);
+        // Bind passed values to the prepared statement
+        $this->bindValues($this->query, $this->boundValues);
+
+        // Execute
         $executed = $this->query->execute();
 
         // ERROR: Couldn't execute the query
         if (!$executed) {
-            throw new ExecutionException();
+            throw new DatabaseException("Couldn't execute the query");
         }
 
         return $this;
     }
 
     /**
-     * Returns results from database as array or ItemsCollection instance
+     * Returns results from database as array of results
      * 
      * By default ($className = null), each element is an assoc array col => val
      * If given a $className, each element is an instance of that class
-     * And a collection is returned instead
      * 
      * Fetch style and argument are further discussed here
      * http://php.net/manual/en/pdostatement.fetch.php
      * http://php.net/manual/en/pdostatement.fetchall.php
      * 
      * @param string $className (Optional) Each element is instance of the class
-     * @return array|ItemsCollection Array or ItemsCollection of results
+     * @return array Array of results, elements type may vary
      */
-    public function get(string $className = null)
+    public function get(string $className = null): array
     {
         $this->execute();
 
         // Each result is an instance of given class
         if (isset($className)) {
-            $results =  $this->query->fetchAll(PDO::FETCH_CLASS, $className);
-            return (new ItemsCollection)->set($results);
+
+            return $this->query->fetchAll(PDO::FETCH_CLASS, $className);
+
         }
         
         // Each result is an associative array like column => value
-        return $this->query->fetchAll();
+        else {
+
+            return $this->query->fetchAll();
+
+        }
     }
 
     /**
@@ -281,44 +287,52 @@ class Database implements DatabaseInterface
     {
         $results = $this->get($className);
 
-        if (isset($className)) {
-            return $results->first();
-        }
-
-        return $results[0] ?? null;
+        if (!isset($results[0])) return [];
+        
+        return $results[0];
     }
 
     /**
-     * Returns row count using existing SelectSqlStatement and bound values
-     * 
-     * Cloning objects is fine *ONLY IF* props are not objects themselves
-     * https://dcsg.me/articles/dont-clone-your-php-objects-deepcopy-them/
+     * Uses existing FROM and WHERE clauses on SelectSqlStatament
+     * Works only when a SelectSqlStatement is set
      *
      * @param string $field Custom field to count on, default is 'id'
-     * @return integer Row count
+     * @return integer
      */
     public function count(string $field = null): int
     {
         // ERROR: Missing statement
-        if ($this->statement === null) {
-            throw new MissingStatementException();
+        if (!isset($this->statement)) {
+            throw new DatabaseException('Missing statement to copy');
         }
 
-        $field = ($field !== null) ? "`{$field}`" : '*';
+        // Set default value on field, if none given
+        $field = isset($field) ? "`{$field}`" : '*';
 
-        $sql = (clone $this->statement)
+        // Copy the current SELECT statement
+        $statement = clone $this->statement;
+
+        // Re-set SELECT, LIMIT and OFFSET clauses
+        $statement
             ->resetSelect()
-            ->resetLimit()
-            ->resetOffset()
             ->select("COUNT({$field}) as `count`")
-            ->toString();
+            ->limit(1000000) // Reasonable upper limit: 1 million
+            ->offset(0);
 
-        $query = $this->pdo->prepare($sql);
-        $query = $this->bindValues($query);
+        // Prepare the statement
+        $query = $this->pdo->prepare($statement->toString());
+
+        // Bind passed values to the prepared statement
+        $this->bindValues($query, $this->boundValues);
+
+        // Execute
         $query->execute();
+
+        // Fetch
         $results = $query->fetchAll();
 
-        return (int) $results[0]["count"];
+        // Return the row count as integer
+        return (int) $results[0]['count'];
     }
 
     /**
@@ -327,7 +341,7 @@ class Database implements DatabaseInterface
      * @param string $table
      * @return Database
      */
-    public function resetAutoIncrement(string $table): DatabaseInterface
+    public function resetAutoIncrement(string $table): Database
     {
         $this->pdo->exec("ALTER TABLE `{$table}` AUTO_INCREMENT = 1");
 
@@ -375,17 +389,15 @@ class Database implements DatabaseInterface
     public function rawCount(
         string $table,
         string $condition,
-        string $field = "id"
+        string $field = 'id'
     ): int
     {
-        $sqlString = (
-            "SELECT COUNT(`{$field}`) as `count` ".
-            "FROM {$table} ".
-            "WHERE {$condition}"
-        );
+        $sqlString = "SELECT COUNT(`{$field}`) as `count` "
+                   . "FROM {$table} "
+                   . "WHERE {$condition}";
 
         $raw = $this->rawSelect($sqlString);
 
-        return (int) $raw[0]["count"];
+        return (int) $raw[0]['count'];
     }
 }
