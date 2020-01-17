@@ -902,7 +902,7 @@ $emptyGif = asset('images/icons/blank.gif');
 												value="<?=$value?>"
 												<?=$checked?>
 											>
-  										<?= $value === config('game.divinity.infinity') ? "&infin;" : $value ?>
+  										<?= $value == config('game.divinity.infinity') ? "&infin;" : $value ?>
   									</label>
   								<?php endforeach; ?>
   							</div>

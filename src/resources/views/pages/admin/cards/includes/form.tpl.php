@@ -62,7 +62,7 @@ if ($isCard) {
   if ($card['attribute_bit'] === 0) $card['attribute_bit'] = 32; // HACK!
   if ($card['free_cost'] < 0) {
     $card['free_cost'] = str_repeat('x', -1 * $card['free_cost']);
-  }  
+  }
 }
 
 ?>
@@ -171,7 +171,7 @@ if ($isCard) {
         class="form-control"
         required
       >
-      <p>Prefix Memoria cards with a 9 (Ex.: 60 => 960)</p>
+      <p>Prefix Memoria cards with a 9 (Ex.: 60 => <strong>9</strong>60)</p>
     </div>
   </div>
 
@@ -340,7 +340,7 @@ if ($isCard) {
             type="text"
             name="free-cost"
             value="<?php
-              if ($isPrev) echo intval($prev['free-cost']);
+              if ($isPrev) echo $prev['free-cost'];
               elseif ($isCard) echo $card['free_cost'] ?? '-1';
               else echo null;
             ?>"

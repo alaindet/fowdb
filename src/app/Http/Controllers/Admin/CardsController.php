@@ -66,7 +66,7 @@ class CardsController extends Controller
             // Optional fields
             'code' => ['required:0',],
             'attribute-cost' => ['required:0'],
-            'free-cost' => ['required:0','is:integer'],
+            'free-cost' => ['required:0'],
             'divinity-cost' => ['required:0','is:integer'],
             'atk' => ['required:0','is:integer'],
             'def' => ['required:0','is:integer'],
@@ -132,7 +132,7 @@ class CardsController extends Controller
             'image' => ['required:0','is:file'],
             'code' => ['required:0',],
             'attribute-cost' => ['required:0'],
-            'free-cost' => ['required:0','is:integer'],
+            'free-cost' => ['required:0'],
             'divinity-cost' => ['required:0','is:integer'],
             'atk' => ['required:0','is:integer'],
             'def' => ['required:0','is:integer'],
