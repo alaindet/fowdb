@@ -407,8 +407,11 @@ class CardSearch
 
                     // Exclude spoilers
                     case 'spoilers':
-                        $spoilerIds = implode(',', lookup('spoilers.ids'));
-                        $_sql_f[] = "NOT(sets_id IN ({$spoilerIds}))";
+                        $spoilerIds = lookup('spoilers.ids');
+                        if (!empty($spoilerIds)) {
+                            $idsList = implode(',', $spoilerIds);
+                            $_sql_f[] = "NOT(sets_id IN ({$idsList}))";    
+                        }
                         break;
 
                     // Exclude normals
