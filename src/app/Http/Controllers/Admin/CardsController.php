@@ -60,7 +60,7 @@ class CardsController extends Controller
             'back-side' => ['required','is:integer','enum:0,1,2,3,4'],
             'name' => ['required','except:'],
             'type' => ['required','except:0'],
-            'rarity' => ['required','enum:0,c,u,r,sr,s,ar,n'],
+            'rarity' => ['required','enum:0,n,c,u,r,sr,mr,s,ar'],
             'attribute' => ['required','is:array'],
 
             // Optional fields
@@ -125,7 +125,7 @@ class CardsController extends Controller
             'back-side' => ['required','is:integer','enum:0,1,2,3,4'],
             'name' => ['required','except:'],
             'type' => ['required','except:0'],
-            'rarity' => ['required','enum:0,c,u,r,sr,s,ar,n'],
+            'rarity' => ['required','enum:0,n,c,u,r,sr,mr,s,ar'],
             'attribute' => ['required','is:array'],
 
             // Optional fields
