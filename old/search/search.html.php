@@ -10,7 +10,7 @@
 // attribute_multi
 // attribute_selected
 // attribute[]
-// backside[]
+// layout[]
 // def
 // def-operator
 // divinity[]
@@ -41,7 +41,7 @@ $clusters = &$lookup['clusters']['list'];
 $attributes = &$lookup['attributes']['display'];
 $costs = &$lookup['costs'];
 $types = &$lookup['types']['display'];
-$backsides = &$lookup['backsides']['code2name'];
+$layouts = &$lookup['layouts']['code2name'];
 $divinities = &$lookup['divinities'];
 $rarities = &$lookup['rarities']['code2name'];
 
@@ -259,12 +259,12 @@ $emptyGif = asset('images/icons/blank.gif');
 										data-toggle="buttons"
 									>
                     <?php foreach ([
-											'basics',
-											'spoilers',
-											'alternates',
-                      'reprints',
-                      'memoriae',
-										] as $field):
+											'Basics' => 'basics',
+											'Spoilers' => 'spoilers',
+											'Alternative Arts' => 'alternate-arts',
+                      'Reprints' => 'reprints',
+                      'Memoriae' => 'memoriae',
+										] as $label => $value):
                       ( // Sticky values
 												isset($filters['exclude']) &&
 												in_array($field, $filters['exclude'])
@@ -276,10 +276,10 @@ $emptyGif = asset('images/icons/blank.gif');
 												<input
 													type="checkbox"
 													name="exclude[]"
-													value="<?=$field?>"
+													value="<?=$value?>"
 													<?=$checked?>
 												>
-                        <span class="pointer"><?=ucfirst($field)?></span>
+                        <span class="pointer"><?=$label?></span>
                       </label>
                     <?php endforeach; ?>
                   </div>
@@ -852,25 +852,23 @@ $emptyGif = asset('images/icons/blank.gif');
 
   					</div>
 
-            <!-- BACK SIDE ================================================ -->
+            <!-- LAYOUT =================================================== -->
             <div class="row filter">
-              <div class="col-xs-12 filter-header">Back Side</div>
+              <div class="col-xs-12 filter-header">Layout</div>
               <div class="col-xs-12">
                 <div class="btg-group" data-toggle="buttons">
-                  <?php foreach ($backsides as $code => $name):
+                  <?php foreach ($layouts as $code => $name):
                     (
-											isset($filters['backside']) &&
-											$filters['backside'] == $code
+											isset($filters['layout']) &&
+											$filters['layout'] == $code
                     )
                       ? [$active, $checked] = [' active', 'checked']
                       : [$active, $checked] = ['', ''];
                   ?>
-                    <label
-											class="btn btn-xs font-105 mv-10 fd-btn-default<?=$active?>"
-										>
+                    <label class="btn btn-xs font-105 mv-10 fd-btn-default<?=$active?>">
                       <input
                         type="checkbox"
-                        name="backside[]"
+                        name="layout[]"
                         value="<?=$code?>"<?=$checked?>
                       >
                       <span class="pointer"><?=$name?></span>

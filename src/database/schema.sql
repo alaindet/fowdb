@@ -8,7 +8,7 @@ SET NAMES utf8mb4;
 CREATE TABLE `cards` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `sorted_id` int(11) unsigned DEFAULT NULL,
-  `back_side` tinyint(1) NOT NULL DEFAULT '0',
+  `layout` tinyint(1) NOT NULL DEFAULT '0',
   `narp` tinyint(4) NOT NULL,
   `clusters_id` smallint(5) unsigned NOT NULL,
   `sets_id` smallint(5) unsigned NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE `card_attributes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-CREATE TABLE `card_back_sides` (
+CREATE TABLE `card_layouts` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `code` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,

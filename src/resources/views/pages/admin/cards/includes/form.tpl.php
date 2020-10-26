@@ -10,11 +10,12 @@
 // number
 // rarity
 // attribute
-// back-side
+// layout
 // type
 // attribute-cost
 // free-cost
 // divinity-cost
+// total-cost
 // atk
 // def
 // code
@@ -34,11 +35,11 @@ $narps = &$lookup['narps']['id2name'];
 $clusters = &$lookup['clusters']['list'];
 $setMap = &$lookup['sets']['id2code'];
 $rarities = &$lookup['rarities']['code2name'];
-$backsides = &$lookup['backsides']['id2name'];
+$layouts = &$lookup['layouts']['id2name'];
 $types = &$lookup['types']['name2bit'];
 
 // Further process
-$backsides = array_merge(['0' => '(Basic)'], $backsides);
+$layouts = array_merge(['0' => '(Basic)'], $layouts);
 $types = \App\Utils\Arrays::map($types, function ($bitpos) {
   return 1 << $bitpos;
 });
@@ -171,13 +172,26 @@ if ($isCard) {
         class="form-control"
         required
       >
-      <p>Prefix Memoria cards with a 9 (Ex.: 60 => <strong>9</strong>60)</p>
+
+      <!-- Help -->
+      <div class="row" style="margin-top: 1rem;">
+        <div class="col-xs-12">
+          <div class="well well-sm">
+            <ul class="fd-list">
+              <li>
+                Prefix Memoria cards with a 9 (Ex.: 60 => <strong>9</strong>60)
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
     </div>
   </div>
 
   <!-- Rarity ============================================================= -->
   <?php
-    $cardRarity = $isPrev ? $prev['rarity'] : $isCard ? $card['rarity'] : null;
+    $cardRarity = $isPrev ? $prev['rarity'] : ($isCard ? $card['rarity'] : null);
   ?>
   <div class="form-group">
     <label class="col-sm-2 control-label">Rarity</label>
@@ -242,30 +256,30 @@ if ($isCard) {
     </div>
   </div>
 
-  <!-- Back side ========================================================== -->
+  <!-- Layout ============================================================= -->
   <?php
-    if ($isPrev) $cardBackSide = intval($prev['back-side']);
-    elseif ($isCard) $cardBackSide = $card['back_side'];
-    else $cardBackSide = 0;
+    if ($isPrev) $cardLayout = intval($prev['layout']);
+    elseif ($isCard) $cardLayout = $card['layout'];
+    else $cardLayout = 0;
   ?>
   <div class="form-group">
-    <label class="col-sm-2 control-label">Back side</label>
+    <label class="col-sm-2 control-label">Layout</label>
     <div class="col-sm-10">
       <div class="btn-group" data-toggle="buttons">
-        <?php foreach ($backsides as $backsideId => $backsideName):
-          ($cardBackSide === $backsideId)
+        <?php foreach ($layouts as $layoutId => $layoutName):
+          ($cardLayout === $layoutId)
             ? [$checked, $active] = ['checked', ' active']
             : [$checked, $active] = ['', ''];
         ?>
           <label class="btn btn-default<?=$active?>">
             <input
               type="radio"
-              name="back-side"
-              value="<?=$backsideId?>"
+              name="layout"
+              value="<?=$layoutId?>"
               required
               <?=$checked?>
             >
-            <span class="pointer"><?=$backsideName?></span>
+            <span class="pointer"><?=$layoutName?></span>
           </label>
         <?php endforeach; ?>
       </div>
@@ -315,7 +329,7 @@ if ($isCard) {
       <div class="row">
 
         <!-- Attribute cost =============================================== -->
-        <div class="col-sm-6">
+        <div class="col-xs-12 col-sm-4">
           <span class="form-label">Attribute cost</span>
           <input 
             type="text"
@@ -331,7 +345,7 @@ if ($isCard) {
         </div>
 
         <!-- Free cost ==================================================== -->
-        <div class="col-sm-6">
+        <div class="col-xs-12 col-sm-4">
           <span class="form-label">
             Free cost
             <em class="font-90">(Also "x", "xx" etc.)</em>
@@ -349,7 +363,42 @@ if ($isCard) {
           >
         </div>
 
+        <!-- Total cost =================================================== -->
+        <div class="col-xs-12 col-sm-4">
+          <span class="form-label">Total cost</span>
+          <input
+            type="number"
+            name="total-cost"
+            value="<?php
+              if ($isPrev) echo $prev['total-cost'];
+              elseif ($isCard) echo $card['total_cost'];
+              else echo null;
+            ?>"
+            placeholder="Total cost..."
+            class="form-control"
+          >
+        </div>
+
       </div>
+
+      <!-- Help -->
+      <div class="row" style="margin-top: 1rem;">
+        <div class="col-xs-12">
+          <div class="well well-sm">
+            <ul class="fd-list">
+              <li>
+                Leave <em>Total cost</em> field <strong>empty</strong> for automatic
+                generation (recommended) or enter a custom total cost
+              </li>
+              <li>
+                Automatic total cost is calculated as the sum of attribute cost
+                and free cost
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -428,10 +477,12 @@ if ($isCard) {
         placeholder="Code (Read below)..."
         class="form-control"
       >
-      <div class="well well-sm">
+
+      <!-- Help -->
+      <div class="well well-sm" style="margin-top: 1rem;">
         <ul class="fd-list">
           <li>
-            Leave <strong>empty</strong> for automatic generation (recommended)
+            Leave <em>Code</em> field empty for automatic generation (recommended)
             or enter a custom code
           </li>
           <li>
@@ -441,6 +492,7 @@ if ($isCard) {
           </li>
         </ul>
       </div>
+
     </div>
   </div>
 
@@ -460,6 +512,19 @@ if ($isCard) {
         class="form-control"
         required
       >
+
+      <!-- Help -->
+      <div class="well well-sm" style="margin-top: 1rem;">
+        <ul class="fd-list">
+          <li>
+            To break uniqueness of names for cards with the same name, append a meaningful suffix encapsulated in square brackets
+          </li>
+          <li>
+            Ex.: "Valentina [J-ruler]", "Split Heaven and Earth [Alternative]"
+          </li>
+        </ul>
+      </div>
+
     </div>
   </div>
 

@@ -37,25 +37,28 @@ trait PostProcessingTrait
     }
 
     /**
-     * Checks if passed set/number combination already exists in the database
-     * Throws an exception if so
+     * Checks if passed set/number/layout combination already exists
+     * in the database and throws an exception if so
      *
      * @return void
      */
     public function checkExistingNumber(): void
     {
         $statement = statement('select')
-            ->select('id')
+            ->select([
+                'id',
+                'layout',
+            ])
             ->from('cards')
             ->where('sets_id = :set')
             ->where('num = :num')
-            ->where('back_side = :backside')
+            ->where('layout = :layout')
             ->limit(1);
 
         $bind = [
             ':set' => $this->state['set-id'],
             ':num' => $this->new['num'],
-            ':backside' => $this->new['back_side']
+            ':layout' => $this->new['layout'],
         ];
 
         if (!empty($this->old)) {
@@ -63,16 +66,23 @@ trait PostProcessingTrait
             $bind[':cardid'] = $this->old['id'];
         }
 
-        // Check for an existing card with this set/number combination
+        // Check for an existing card with this set/number/layout combination
         $existing = database()
             ->select($statement)
             ->bind($bind)
             ->get();
 
+        // Alternative cards make an exception as the two halves have the same
+        // set/number/layout combination
+        $layouts = array_flip(lookup('layouts.id2name'));
+
         // ERROR: Number already exists!
-        if (!empty($existing)) {
+        if (
+            !empty($existing) &&    
+            $existing[0]['layout'] !== (string) $layouts['Alternative']
+        ) {
             $num = &$this->state['number-padded'];
-            $set = &$this->state['set-code'];
+            $set = strtoupper($this->state['set-code']);
             throw new CrudException(
                 "Card with number <strong>{$num}</strong> from set ".
                 "<strong>{$set}</strong> already exists"
@@ -83,7 +93,7 @@ trait PostProcessingTrait
     /**
      * Checks if a card with the same name and NARP = 0 (base print)
      * already exists. Any card having the same name as a base print MUST
-     * be an alternate, promo or reprint as names are unique in Force of Will!
+     * be an alternate art, promo or reprint as names are unique in Force of Will!
      *
      * @return void
      */
@@ -128,6 +138,15 @@ trait PostProcessingTrait
     public function calculateTotalCost(): void
     {
         $totalCost = null;
+
+        // User entered a custom total cost that overrides any calculation
+        if (
+            isset($this->state['total-cost']) &&
+            $this->state['total-cost'] !== '-1'
+        ) {
+            $this->new['total_cost'] = intval($this->state['total-cost']);
+            return;
+        }
 
         if (isset($this->state['attribute-cost'])) {
             $totalCost += $this->state['attribute-cost'];
@@ -192,8 +211,8 @@ trait PostProcessingTrait
     private function calculateImagePaths(): void
     {
         // Calculate the suffix
-        ($this->new['back_side'] !== '0')
-            ? $suffix = lookup("backsides.id2code.{$this->new['back_side']}")
+        ($this->new['layout'] !== '0')
+            ? $suffix = lookup("layouts.id2code.{$this->new['layout']}")
             : $suffix = '';
 
         // Assemble the template for this card's image paths

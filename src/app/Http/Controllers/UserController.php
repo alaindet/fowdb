@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Base\Controller;
-use App\Http\Request\Request;
 use App\Views\Page;
 use App\Legacy\Authorization;
 

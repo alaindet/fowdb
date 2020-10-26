@@ -8,7 +8,7 @@ use App\Base\Model;
  * | Value | Abbrev | Desc          |
  * | ----- | ------ | ------------- |
  * | 0     | N      | Normal (base) |
- * | 1     | A      | Alternate art |
+ * | 1     | A      | Alternate Art |
  * | 2     | R      | Reprint       |
  * | 3     | P      | Promo         |
  * | 4     | M      | Memoria       |
@@ -24,7 +24,7 @@ class CardNarp extends Model
 
     public static $id2name = [
         'Base Print',
-        'Alternate art',
+        'Alternate Art',
         'Reprint',
         'Promo',
         'Memoria',

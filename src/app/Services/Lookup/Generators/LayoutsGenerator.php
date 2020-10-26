@@ -3,9 +3,9 @@
 namespace App\Services\Lookup\Generators;
 
 use App\Services\Lookup\Generatable;
-use App\Models\CardBackSide;
+use App\Models\CardLayout;
 
-class BackSidesGenerator implements Generatable
+class LayoutsGenerator implements Generatable
 {
     public function generate(): array
     {
@@ -16,7 +16,7 @@ class BackSidesGenerator implements Generatable
             'id2name' => [],
         ];
 
-        foreach ((new CardBackSide)->all() as $item) {
+        foreach ((new CardLayout)->all() as $item) {
             $results['code2id'][$item['code']] = $item['id'];
             $results['code2name'][$item['code']] = $item['name'];
             $results['id2code'][$item['id']] = $item['code'];

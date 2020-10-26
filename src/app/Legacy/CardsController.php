@@ -47,7 +47,7 @@ class CardsController extends Controller
                 'No results. Please try changing your searching criteria.',
                 'danger'
             );
-            redirect('cards/search');
+            redirect('cards/search', $filters);
         }
 
         // Alias the filters

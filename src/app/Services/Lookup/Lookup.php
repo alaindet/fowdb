@@ -7,7 +7,7 @@ use App\Exceptions\FileSystemException;
 use App\Exceptions\LookupException;
 use App\Services\FileSystem\FileSystem;
 use App\Services\Lookup\Generators\AttributesGenerator;
-use App\Services\Lookup\Generators\BackSidesGenerator;
+use App\Services\Lookup\Generators\LayoutsGenerator;
 use App\Services\Lookup\Generators\ClustersGenerator;
 use App\Services\Lookup\Generators\CostsGenerator;
 use App\Services\Lookup\Generators\DivinitiesGenerator;
@@ -48,7 +48,7 @@ class Lookup
      */
     private $generators = [
         "attributes" => AttributesGenerator::class,
-        "backsides"  => BackSidesGenerator::class,
+        "layouts"    => LayoutsGenerator::class,
         "clusters"   => ClustersGenerator::class,
         "costs"      => CostsGenerator::class,
         "divinities" => DivinitiesGenerator::class,

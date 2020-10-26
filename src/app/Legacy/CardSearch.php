@@ -38,7 +38,7 @@ class CardSearch
             'attribute_multi',
             'attribute_selected',
             'attribute',
-            'backside',
+            'layout',
             'def',
             'def-operator',
             'divinity',
@@ -419,8 +419,8 @@ class CardSearch
                         $_sql_f[] = 'NOT(narp = 0) ';
                         break;
 
-                    // Exclude alternates
-                    case 'alternates':
+                    // Exclude alternate arts
+                    case 'alternate-arts':
                         $_sql_f[] = 'NOT(narp = 1) ';
                         break;
                         
@@ -524,33 +524,34 @@ class CardSearch
             else {
                 $_filter = [];
                 foreach ($this->f['type'] as $type) {
-                    $bitmask = $map[$type];
+                    $bitmask = $map[$type] ?? 0;
                     $_filter[] = "type_bit & {$bitmask} = {$bitmask}";
                 }
                 $_sql_f[] = '('.implode(' OR ', $_filter).')';
             }
         }
 
-        // FILTER --- BACKSIDE ------------------------------------------------
-        if (isset($this->f['backside'])) {
+        // FILTER --- LAYOUT ------------------------------------------------
+        if (isset($this->f['layout'])) {
             
             $map = [
-                "no" => 0, // No backside
+                "no" => 0, // Normal layout
                 "j"  => 1, // J-ruler
                 "sh" => 2, // Shift
                 "jj" => 3, // Colossal J-ruler
-                "in" => 4  // Inverse
+                "in" => 4, // Inverse
+                "al" => 5, // Alternative (split)
             ];
 
             // Legacy single-value input
-            if (!is_array($this->f['backside'])) {
-                $this->f['backside'] = [$this->f['backside']];
+            if (!is_array($this->f['layout'])) {
+                $this->f['layout'] = [$this->f['layout']];
             }
 
-            $_sql_f[] = "(back_side = " . implode(" OR back_side = ", array_map(
+            $_sql_f[] = "(layout = " . implode(" OR layout = ", array_map(
                 function($i) use ($map) { return $map[$i]; },
                 array_filter(
-                    $this->f['backside'],
+                    $this->f['layout'],
                     function($i) use ($map) { return isset($map[$i]); }
                 )
             )).")";

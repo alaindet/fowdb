@@ -37,7 +37,7 @@ class Card
                 $_type[] = "<a href=\"{$link}\">{$typeLabel}</a>";
             }
             $type = implode(' / ', $_type);
-            if ($card['back_side'] === '2') $type .= ' (Shift)';
+            if ($card['layout'] === '2') $type .= ' (Shift)';
             
             // $freecost ------------------------------------------------------
             $freecost = '';
@@ -285,7 +285,7 @@ class Card
                 // Extra info
                 'id' => $card['id'],
                 'sorted_id' => $card['sorted_id'],
-                'back_side' => $card['back_side'],
+                'layout' => $card['layout'],
                 'narp' => $narp,
                 'image_path' => $card['image_path'],
                 'thumb_path' => $card['thumb_path'],

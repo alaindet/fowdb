@@ -6,5 +6,5 @@ SET
 ORDER BY
   clusters_id asc,sets_id ASC,
   num ASC,
-  back_side ASC,
+  layout ASC,
   narp ASC;

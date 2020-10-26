@@ -23,20 +23,20 @@ class CardsPathsCommand extends Command
         $ts = Time::timestamp();
         $sql = "/* {$ts} */\n\n";
 
-        $backSidesRaw = database()
+        $layoutsRaw = database()
             ->select(
                 statement("select")
-                    ->from("card_back_sides")
+                    ->from("card_layouts")
                     ->orderBy("id ASC")
             )
             ->get();
 
         $suffixes = "";
         $tabs = str_repeat(" ", 8);
-        foreach ($backSidesRaw as $row) {
+        foreach ($layoutsRaw as $row) {
             $suffixes .= (
                 $tabs.
-                "WHEN c.back_side = {$row['id']} THEN \"{$row['code']}\"\n"
+                "WHEN c.layout = {$row['id']} THEN \"{$row['code']}\"\n"
             );
         }
 

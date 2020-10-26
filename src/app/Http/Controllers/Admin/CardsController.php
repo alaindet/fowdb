@@ -31,7 +31,9 @@ class CardsController extends Controller
         return (new Page)
             ->template('pages/admin/cards/create')
             ->title('Cards,Create')
-            ->variables([ 'previous' => $request->input()->previous() ])
+            ->variables([
+                'previous' => $request->input()->previous(),
+            ])
             ->options([
                 'scripts' => ['admin/cards/form'],
                 'dependencies' => [
@@ -54,19 +56,20 @@ class CardsController extends Controller
             
             // Required fields
             'image' => ['required','is:file'],
-            'narp' => ['required','is:integer','enum:0,1,2,3,4'],
+            'narp' => ['required','is:integer'],
             'set' => ['required','except:0'],
             'number' => ['required','is:integer'],
-            'back-side' => ['required','is:integer','enum:0,1,2,3,4'],
+            'layout' => ['required','is:integer'],
             'name' => ['required','except:'],
             'type' => ['required','except:0'],
-            'rarity' => ['required','enum:0,n,c,u,r,sr,mr,s,ar'],
+            'rarity' => ['required'],
             'attribute' => ['required','is:array'],
 
             // Optional fields
             'code' => ['required:0',],
             'attribute-cost' => ['required:0'],
             'free-cost' => ['required:0'],
+            'total-cost' => ['required:0', 'is:integer'],
             'divinity-cost' => ['required:0','is:integer'],
             'atk' => ['required:0','is:integer'],
             'def' => ['required:0','is:integer'],
@@ -119,13 +122,13 @@ class CardsController extends Controller
         $request->validate('post', [
             
             // Required fields
-            'narp' => ['required','is:integer','enum:0,1,2,3,4'],
+            'narp' => ['required','is:integer'],
             'set' => ['required','except:0'],
             'number' => ['required','is:integer'],
-            'back-side' => ['required','is:integer','enum:0,1,2,3,4'],
+            'layout' => ['required','is:integer'],
             'name' => ['required','except:'],
             'type' => ['required','except:0'],
-            'rarity' => ['required','enum:0,n,c,u,r,sr,mr,s,ar'],
+            'rarity' => ['required'],
             'attribute' => ['required','is:array'],
 
             // Optional fields
@@ -133,6 +136,7 @@ class CardsController extends Controller
             'code' => ['required:0',],
             'attribute-cost' => ['required:0'],
             'free-cost' => ['required:0'],
+            'total-cost' => ['required:0', 'is:integer'],
             'divinity-cost' => ['required:0','is:integer'],
             'atk' => ['required:0','is:integer'],
             'def' => ['required:0','is:integer'],

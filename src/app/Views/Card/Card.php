@@ -2,7 +2,6 @@
 
 namespace App\Views\Card;
 
-use App\Legacy\Helpers;
 use App\Utils\Arrays;
 use App\Utils\Strings;
 use App\Models\Card as Model;
@@ -17,7 +16,7 @@ class Card
      */
     public static $excludeDisplay = [
         'id',
-        'back_side',
+        'layout',
         'narp',
         'image_path',
         'thumb_path',

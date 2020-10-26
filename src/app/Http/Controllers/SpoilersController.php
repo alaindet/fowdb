@@ -13,14 +13,16 @@ class SpoilersController extends Controller
     private function getSpoilerSets(): array
     {
         $items = [];
-        $map = lookup('sets.code2id');
+        $map = array_flip(lookup('layouts.id2name'));
+        $basicLayout = '0';
+        $alternativeLayout = (string) $map['Alternative'];
 
         foreach (lookup('spoilers.sets') as $spoiler) {
 
             $statement = statement('select')
                 ->select([
                     'id',
-                    'back_side',
+                    'layout',
                     'code',
                     'num',
                     'name',
@@ -32,22 +34,31 @@ class SpoilersController extends Controller
                 ->where('sets_id = :setid')
                 ->orderBy('id DESC');
 
-            $cards = database()
+            $cardsRaw = database()
                 ->select($statement)
                 ->bind([':setid' => $spoiler['id']])
                 ->get();
 
-            // Count just base faces
+            // Remove alternative duplicates
+            $faces = [];
             $counter = 0;
-            if (!empty($cards)) {
-                foreach ($cards as $card) {
-                    if ($card['back_side'] === '0') $counter++;
+            $alternatives = [];
+            foreach ($cardsRaw as $card) {
+                if (
+                    $card['layout'] !== $alternativeLayout || (
+                        $card['layout'] === $alternativeLayout &&
+                        !isset($alternatives[$card['code']])
+                    )
+                ) {
+                    $alternatives[$card['code']] = true;
+                    $counter++;
+                    $faces[] = $card;
                 }
             }
 
             // Add 'spoiled' and 'cards' elements to set
             $spoiler['spoiled'] = $counter;
-            $spoiler['cards'] = $cards;
+            $spoiler['cards'] = $faces;
 
             // Add this set to existing sets
             $items[] = $spoiler;

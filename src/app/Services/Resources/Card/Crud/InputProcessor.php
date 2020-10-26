@@ -3,7 +3,6 @@
 namespace App\Services\Resources\Card\Crud;
 
 use App\Base\InputProcessor as BaseInputProcessor;
-use App\Exceptions\CrudException;
 use App\Services\Resources\Card\Crud\PostProcessingTrait;
 use App\Utils\Bitmask;
 
@@ -20,7 +19,7 @@ class InputProcessor extends BaseInputProcessor
         'narp' => 'processNarpInput',
         'set' => 'processSetInput',
         'number' => 'processNumberInput',
-        'back-side' => 'processBackSideInput',
+        'layout' => 'processLayoutInput',
         'name' => 'processNameInput',
         'code' => 'processCodeInput',
         'rarity' => 'processRarityInput',
@@ -28,6 +27,7 @@ class InputProcessor extends BaseInputProcessor
         'type' => 'processTypeInput',
         'attribute-cost' => 'processAttributeCostInput',
         'free-cost' => 'processFreeCostInput',
+        'total-cost' => 'processTotalCostInput',
         'divinity-cost' => 'processDivinityCostInput',
         'atk' => 'processAtkInput',
         'def' => 'processDefInput',
@@ -94,9 +94,9 @@ class InputProcessor extends BaseInputProcessor
      * @param array $value
      * @return void
      */
-    public function processBackSideInput(string $value = null): void
+    public function processLayoutInput(string $value = null): void
     {
-        $this->new['back_side'] = $value ?? '0';
+        $this->new['layout'] = $value ?? '0';
     }
 
     /**
@@ -213,6 +213,17 @@ class InputProcessor extends BaseInputProcessor
             }
             
         }
+    }
+
+    /**
+     * Optional
+     *
+     * @param string $value
+     * @return void
+     */
+    public function processTotalCostInput(string $value = null): void
+    {
+        $this->state['total-cost'] = $value;
     }
 
     /**

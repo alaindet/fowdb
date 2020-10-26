@@ -10,13 +10,27 @@
         In the rare case of a <em>battling card</em> (J-Ruler or Resonator) with <strong>no ATK and DEF printed values</strong> (Ex.: <em>Refrain, Child of Convergence (TTW-063 R)</em>), just enter <code>-1</code> on both ATK and DEF inputs!
       </li>
       <li>
+        Rules for <strong>Alternative Cards</strong>
+        <ul class="fd-list">
+          <li>
+            For the top half, set <em>(Basic)</em> layout for the top half and <em>Alternative</em> layout for the bottom half
+          </li>
+          <li>
+            <em>Total cost</em> should be custom, the same for both halves and equal to the sum of the two total costs of the two halves
+          </li>
+          <li>
+            Append a suffix encapsulated in square brackets for the card names, ex.: <em>"Split Heaven and Earth [Alternative]"</em>, so you do not break the uniqueness of names
+          </li>
+        </ul>
+      </li>
+      <li>
         Required fields
         <ul class="fd-list">
           <li>Image</li>
           <li>NARP</li>
           <li>Set</li>
           <li>Number</li>
-          <li>Back side</li>
+          <li>Layout</li>
           <li>
             Code<strong class="font-110">*</strong>
             (Reset: <code>-1</code>)
@@ -36,9 +50,10 @@
               >
             )
           </li>
-          <li>Backside (Reset: <code>(Basic)</code>)</li>
+          <li>Layout (Reset: <code>(Basic)</code>)</li>
           <li>Attribute cost (Reset: <code>-1</code>)</li>
           <li>Free cost (Reset: <code>-1</code>)</li>
+          <li>Total cost (Reset: <code>-1</code>)</li>
           <li>Divinity cost (Reset: <code>-1</code>)</li>
           <li>ATK (Reset: <code>-1</code>)</li>
           <li>DEF (Reset: <code>-1</code>)</li>

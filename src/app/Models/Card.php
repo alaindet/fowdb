@@ -13,7 +13,7 @@ class Card extends Model
     public $numeric = [
         'id',
         'sorted_id',
-        'back_side',
+        'layout',
         'narp',
         'clusters_id',
         'sets_id',
@@ -25,6 +25,7 @@ class Card extends Model
         'def'
     ];
 
+    // Removable name => types[]
     private $removables = [
         'no-cost' => [
             'Ruler',
