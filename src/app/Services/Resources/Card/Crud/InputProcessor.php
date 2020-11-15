@@ -223,7 +223,9 @@ class InputProcessor extends BaseInputProcessor
      */
     public function processTotalCostInput(string $value = null): void
     {
-        $this->state['total-cost'] = $value;
+        if (isset($value)) {
+            $this->state['total-cost'] = $value;
+        }
     }
 
     /**

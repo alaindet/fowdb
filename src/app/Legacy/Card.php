@@ -64,7 +64,8 @@ class Card
             }
             
             // $cost ----------------------------------------------------------
-            $cost = empty($card['total_cost']) ? '0' : $attributecost . $freecost;
+            // $cost = empty($card['total_cost']) ? '0' : $attributecost . $freecost;
+            $cost = $attributecost . $freecost;
 
             // $totalCost -----------------------------------------------------
             $link = url('cards', ['total_cost' => [$card['total_cost']]]);
