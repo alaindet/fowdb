@@ -38,7 +38,17 @@ class Card
             }
             $type = implode(' / ', $_type);
             if ($card['layout'] === '2') $type .= ' (Shift)';
-            
+
+            // $attributecost -------------------------------------------------
+            $attributecost = '';
+            if (!empty($card['attribute_cost'])) {
+                $attributecost = array_reduce(
+                    str_split($card['attribute_cost']),
+                    function ($tot, $attr) { return $tot .= render('{'.$attr.'}'); },
+                    ''
+                );
+            }
+
             // $freecost ------------------------------------------------------
             $freecost = '';
             if (!empty($card['free_cost'])) {
@@ -51,16 +61,6 @@ class Card
                     }
                     $freecost = render($xCosts);
                 }
-            }
-
-            // $attributecost -------------------------------------------------
-            $attributecost = '';
-            if (!empty($card['attribute_cost'])) {
-                $attributecost = array_reduce(
-                    str_split($card['attribute_cost']),
-                    function ($tot, $attr) { return $tot .= render('{'.$attr.'}'); },
-                    ''
-                );
             }
             
             // $cost ----------------------------------------------------------

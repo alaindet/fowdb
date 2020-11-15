@@ -36,6 +36,7 @@ $clusters = &$lookup['clusters']['list'];
 $setMap = &$lookup['sets']['id2code'];
 $rarities = &$lookup['rarities']['code2name'];
 $layouts = &$lookup['layouts']['id2name'];
+
 $types = &$lookup['types']['name2bit'];
 
 // Further process
