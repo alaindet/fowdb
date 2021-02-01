@@ -181,8 +181,9 @@ class InputProcessor extends BaseInputProcessor
 
         elseif ($value !== null && $value !== '') {
             $this->new['attribute_cost'] = $value;
-            $this->state['attribute-cost'] = strlen($value);
         }
+
+        $this->state['attribute-cost'] = $value;
     }
 
     /**

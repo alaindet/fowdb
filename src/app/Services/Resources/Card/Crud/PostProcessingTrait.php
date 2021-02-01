@@ -149,11 +149,11 @@ trait PostProcessingTrait
         }
 
         if (isset($this->state['attribute-cost'])) {
-            $totalCost += $this->state['attribute-cost'];
+            $totalCost += strlen($this->state['attribute-cost']);
         }
 
         if (isset($this->state['free-cost'])) {
-            $totalCost += $this->state['free-cost'];
+            $totalCost += intval($this->state['free-cost']);
         }
 
         $this->new['total_cost'] = $totalCost;
