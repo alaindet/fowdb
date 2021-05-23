@@ -1,0 +1,7 @@
+# 3rd party
+node_modules/
+vendor/
+
+# Environment files
+.env*
+!.env.example

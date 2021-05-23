@@ -1,11 +1,28 @@
 {
-  "require": {
-    "intervention/image": "^2.4",
-    "symfony/routing": "^4.1"
+  "name": "fowdb/fowdb-outland",
+  "description": "FoWDB v6 Outland",
+  "homepage": "https://github.com/alaindet/fowdb",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Alain D'Ettorre",
+      "email": "alain.det@gmail.com",
+      "homepage": "https://github.com/alaindet"
+    }
+  ],
+  "scripts": {
+    "start": "php -S localhost:8080"
   },
   "autoload": {
     "psr-4": {
       "App\\": "app"
     }
+  },
+  "require": {
+    "firebase/php-jwt": "^5.2",
+    "intervention/image": "^2.4",
+    "slim/psr7": "^1.4",
+    "slim/slim": "4.*",
+    "vlucas/phpdotenv": "^5.3"
   }
 }

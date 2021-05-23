@@ -2,5 +2,12 @@
   - Generate sitemap
   - Generate robots.txt
   - Database maintenance
+  - Generate JWT keys in env files
+  - Init env files
+  - Optimize Composer autoloader
 
 - Add existing assets
+- Add validation
+- Set production optimization (compilation, caching etc)
+- CORS
+- Password reset
