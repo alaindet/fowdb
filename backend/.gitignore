@@ -1,7 +1,5 @@
-# 3rd party
-node_modules/
 vendor/
-
-# Environment files
+assets/
+!assets/.gitkeep
 .env*
 !.env.example

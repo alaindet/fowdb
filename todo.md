@@ -11,3 +11,4 @@
 - Set production optimization (compilation, caching etc)
 - CORS
 - Password reset
+- Database schema
