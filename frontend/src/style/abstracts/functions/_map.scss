@@ -1,0 +1,21 @@
+/// Reads values from a nested map via a query string
+@function app-map-get($map, $query)
+{
+  @if (str-index($query, '.') == null) {
+    @return map-get($map, $query);
+  }
+
+  $output: $map;
+
+  @each $key in app-str-split($query, '.') {
+    $output: map-get($output, $key);
+  }
+
+  @return $output;
+}
+
+/// Saves values into a map
+@function app-map-set($map, $key, $value)
+{
+  @return map-merge($map, ('#{$key}': $value));
+}
