@@ -11,7 +11,11 @@
     }
   ],
   "scripts": {
-    "start": "php -S localhost:8080"
+    "start": "php -S localhost:8080",
+    "env:init": "cp ./.env.example ./.env.dev && cp ./.env.example ./.env.prod",
+    "env:prod": "cp ./.env.prod ./.env",
+    "env:dev": "cp ./.env.dev ./.env",
+    "key:make": "php ./scripts/make-key.php"
   },
   "autoload": {
     "psr-4": {
