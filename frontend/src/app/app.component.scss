@@ -1,0 +1,11 @@
+@import 'abstracts';
+
+.g-container > div {
+  padding: 1rem;
+  margin: 1rem 0;
+  background-color: #eee;
+}
+
+.--full-width {
+  background-color: yellow !important;
+}

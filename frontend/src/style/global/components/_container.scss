@@ -1,85 +1,72 @@
-$container: (
-  'mobile': (
-    'gutter': 10px,
-    'breakpoint': pal-get('breakpoint.mobile')
-  ),
-  'tablet': (
-    'gutter': 20px,
-    'breakpoint': pal-get('breakpoint.tablet')
-  ),
-  'desktop': (
-    'gutter': 72px,
-    'breakpoint': pal-get('breakpoint.desktop')
-  )
-);
+@mixin app-component-container()
+{
+  $devices: (
+    'mobile': (
+      'gutter': 10px,
+    ),
+    'tablet': (
+      'gutter': 20px,
+      'breakpoint': pal-get('breakpoint.tablet')
+    ),
+    'desktop': (
+      'gutter': 72px,
+      'breakpoint': pal-get('breakpoint.desktop')
+    ),
+    'max': (
+      'gutter': 72px,
+      'breakpoint': pal-get('breakpoint.max')
+    ),
+  );
 
-$max-width: pal-get('breakpoint.max');
-$max-gutter: pal-map-get($container, 'desktop.gutter');
-$max-container: $max-width - 2 * $max-gutter;
+  .g-container {
+    $gutter: pal-map-get($devices, 'mobile.gutter');
+    @include app-horizontal-margins($gutter);
 
-@each $device, $device-data in $container {
-
-  $gutter: map-get($device-data, 'gutter');
-  $breakpoint: map-get($device-data, 'breakpoint');
-
-  @media screen and (min-width: $breakpoint) {
-    
-    .container {
-      $margin: $gutter;
-      margin-left: $margin;
-      margin-right: $margin;
+    $breakpoint: pal-map-get($devices, 'tablet.breakpoint');
+    $gutter: pal-map-get($devices, 'tablet.gutter');
+    @media screen and (min-width: $breakpoint) {
+      @include app-horizontal-margins($gutter);
     }
 
-    .full-width {
-      $margin: -1 * $gutter;
-      margin-left: $margin;
-      margin-right: $margin;
+    $breakpoint: pal-map-get($devices, 'desktop.breakpoint');
+    $gutter: pal-map-get($devices, 'desktop.gutter');
+    @media screen and (min-width: $breakpoint) {
+      @include app-horizontal-margins($gutter);
     }
-    
 
-    @each $nested-device, $nested-device-data in $container {
+    $breakpoint: pal-map-get($devices, 'max.breakpoint');
+    $gutter: pal-map-get($devices, 'max.gutter');
+    @media screen and (min-width: $breakpoint) {
+      max-width: $breakpoint - 2 * $gutter;
+      @include app-horizontal-margins(auto);
+    }
+  }
 
-      $nested-gutter: map-get($nested-device-data, 'gutter');
-      $nested-breakopint: map-get($nested-device-data, 'breakpoint');
-      
-      .container-#{$nested-device} {
-        @if ($nested-device == $device) {
-          $margin: $nested-gutter;
-          margin-left: $margin;
-          margin-right: $margin;
-        } @else {
-          $margin: 0;
-          margin-left: $margin;
-          margin-right: $margin;
-        }  
+  .g-container-item {
+    &.--full-width {
+      $gutter: pal-map-get($devices, 'mobile.gutter');
+      @include app-horizontal-margins(-1 * $gutter !important);
+
+      $breakpoint: pal-map-get($devices, 'tablet.breakpoint');
+      $gutter: pal-map-get($devices, 'tablet.gutter');
+      @media screen and (min-width: $breakpoint) {
+        @include app-horizontal-margins(-1 * $gutter !important);
       }
 
-      .full-width-#{$nested-device} {
-        @if ($nested-device == $device) {
-          $margin: -1 * $nested-gutter;
-          margin-left: $margin;
-          margin-right: $margin;
-        } @else {
-          $margin: 0;
-          margin-left: $margin;
-          margin-right: $margin;
-        }
+      $breakpoint: pal-map-get($devices, 'desktop.breakpoint');
+      $gutter: pal-map-get($devices, 'desktop.gutter');
+      @media screen and (min-width: $breakpoint) {
+        @include app-horizontal-margins(-1 * $gutter !important);
       }
-      
+
+      $breakpoint: pal-map-get($devices, 'max.breakpoint');
+      $gutter: pal-map-get($devices, 'max.gutter');
+      $max-width: $breakpoint - 2 * $gutter;
+      $half-max-width: $max-width / 2;
+      @media screen and (min-width: $breakpoint) {
+        $gutter: calc(-50vw + #{$half-max-width});
+        @include app-horizontal-margins($gutter !important);
+      }
     }
-
-  }
-}
-
-@media screen and (min-width: $max-width) {
-  .container,
-  .container-desktop {
-    margin-left: calc(50vw - #{$max-container} / 2);
-    margin-right: calc(50vw - #{$max-container} / 2);    
-  }
-  .full-width,
-  .full-width-desktop {
-    margin-left: calc(-50vw + #{$max-container} / 2);
-    margin-right: calc(-50vw + #{$max-container} / 2);    
   }
 }

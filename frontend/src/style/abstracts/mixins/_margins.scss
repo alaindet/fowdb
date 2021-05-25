@@ -1,0 +1,15 @@
+@mixin app-horizontal-margins($margin: null)
+{
+  @if ($margin != null) {
+    margin-left: $margin;
+    margin-right: $margin;
+  }
+}
+
+@mixin app-vertical-margins($margin: null)
+{
+  @if ($margin != null) {
+    margin-top: $margin;
+    margin-bottom: $margin;
+  }
+}
