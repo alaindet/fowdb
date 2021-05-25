@@ -1,0 +1,85 @@
+$container: (
+  'mobile': (
+    'gutter': 10px,
+    'breakpoint': pal-get('breakpoint.mobile')
+  ),
+  'tablet': (
+    'gutter': 20px,
+    'breakpoint': pal-get('breakpoint.tablet')
+  ),
+  'desktop': (
+    'gutter': 72px,
+    'breakpoint': pal-get('breakpoint.desktop')
+  )
+);
+
+$max-width: pal-get('breakpoint.max');
+$max-gutter: pal-map-get($container, 'desktop.gutter');
+$max-container: $max-width - 2 * $max-gutter;
+
+@each $device, $device-data in $container {
+
+  $gutter: map-get($device-data, 'gutter');
+  $breakpoint: map-get($device-data, 'breakpoint');
+
+  @media screen and (min-width: $breakpoint) {
+    
+    .container {
+      $margin: $gutter;
+      margin-left: $margin;
+      margin-right: $margin;
+    }
+
+    .full-width {
+      $margin: -1 * $gutter;
+      margin-left: $margin;
+      margin-right: $margin;
+    }
+    
+
+    @each $nested-device, $nested-device-data in $container {
+
+      $nested-gutter: map-get($nested-device-data, 'gutter');
+      $nested-breakopint: map-get($nested-device-data, 'breakpoint');
+      
+      .container-#{$nested-device} {
+        @if ($nested-device == $device) {
+          $margin: $nested-gutter;
+          margin-left: $margin;
+          margin-right: $margin;
+        } @else {
+          $margin: 0;
+          margin-left: $margin;
+          margin-right: $margin;
+        }  
+      }
+
+      .full-width-#{$nested-device} {
+        @if ($nested-device == $device) {
+          $margin: -1 * $nested-gutter;
+          margin-left: $margin;
+          margin-right: $margin;
+        } @else {
+          $margin: 0;
+          margin-left: $margin;
+          margin-right: $margin;
+        }
+      }
+      
+    }
+
+  }
+}
+
+@media screen and (min-width: $max-width) {
+  .container,
+  .container-desktop {
+    margin-left: calc(50vw - #{$max-container} / 2);
+    margin-right: calc(50vw - #{$max-container} / 2);    
+  }
+  .full-width,
+  .full-width-desktop {
+    margin-left: calc(-50vw + #{$max-container} / 2);
+    margin-right: calc(-50vw + #{$max-container} / 2);    
+  }
+}
