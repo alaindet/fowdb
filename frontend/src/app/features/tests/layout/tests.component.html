@@ -1,0 +1,35 @@
+<main>
+
+  <header>
+
+    <div class="left">
+      <button class="sidebar-toggle" (click)="onSidebarToggle()">
+        {{ isSidebarOpen ? 'Close' : 'Open' }}
+        Menu
+      </button>
+    </div>
+
+    <div class="right">
+      <small class="version">FoWDB Components</small>
+    </div>
+  </header>
+
+  <div class="pages">
+    <router-outlet></router-outlet>
+  </div>
+
+</main>
+
+<aside [class.collapsed]="!isSidebarOpen">
+
+  <div class="back">
+    &larr;
+    &nbsp;
+    Back
+  </div>
+
+  <nav>
+    <!-- TODO: Links -->
+  </nav>
+
+</aside>
