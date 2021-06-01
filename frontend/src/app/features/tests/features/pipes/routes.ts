@@ -1,8 +1,9 @@
+import { TestTruncateComponent } from './truncate/truncate.component';
+
 export const PIPES_ROUTES = [
-  // // Example
-  // {
-  //   path: 'my-pipe',
-  //   component: TestMyPipeComponent,
-  //   data: { label: 'My Pipe' },
-  // },
+  {
+    path: 'truncate',
+    component: TestTruncateComponent,
+    data: { label: 'Truncate' },
+  },
 ];

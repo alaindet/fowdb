@@ -1,8 +1,9 @@
+import { TestButtonComponent } from './button/button.component';
+
 export const COMPONENTS_ROUTES = [
-  // // Example
-  // {
-  //   path: 'button',
-  //   component: TestButtonComponent,
-  //   data: { label: 'Button' },
-  // },
+  {
+    path: 'button',
+    component: TestButtonComponent,
+    data: { label: 'Button' },
+  },
 ];

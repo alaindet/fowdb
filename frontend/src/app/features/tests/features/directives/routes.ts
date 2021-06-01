@@ -1,8 +1,9 @@
+import { TestIconComponent } from './icon/icon.component';
+
 export const DIRECTIVES_ROUTES = [
-  // // Example
-  // {
-  //   path: 'icon',
-  //   component: TestIconComponent,
-  //   data: { label: 'Icon' },
-  // },
+  {
+    path: 'icon',
+    component: TestIconComponent,
+    data: { label: 'Icon' },
+  },
 ];

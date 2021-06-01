@@ -29,7 +29,18 @@
   </div>
 
   <nav>
-    <!-- TODO: Links -->
+    <ul>
+      <li *ngFor="let firstLevel of TESTS_ROUTES">
+        <h3>{{ firstLevel.data.label }}</h3>
+        <ul>
+          <li *ngFor="let secondLevel of firstLevel.children">
+            <a [routerLink]="[firstLevel.path, secondLevel.path]">
+              {{ secondLevel.data.label }}
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </nav>
 
 </aside>
