@@ -1,7 +1,49 @@
 @import 'abstracts';
 
+$ratio: 2 * 1.6180339887;
+
 :host {
   letter-spacing: 1px;
   background-color: #ccc;
   border-radius: 100px;
+  border: 0;
+  font-weight: 500;
+  transition: 0.15s all ease-out;
+  cursor: pointer;
+
+  &.color {
+
+    &-primary {
+      background-color: pal-get('color.black');
+      color: pal-get('color.white');
+      &:hover {
+        background-color: pal-get('color.grey-light');
+        color: pal-get('color.black');
+      }
+    }
+
+    &-secondary {
+      background-color: pal-get('color.grey-mid-light');
+      color: pal-get('color.black');
+      &:hover {
+        background-color: pal-get('color.grey-light');
+      }
+    }
+  }
+
+  &.size {
+    &-small {
+      padding: 0.25rem 0.25rem * $ratio;
+      font-size: 0.85rem;
+    }
+    &-medium {
+      padding: 0.5rem 0.5rem * $ratio;
+      font-size: 0.95rem;
+    }
+    &-large {
+      padding: 0.75rem 0.75rem * $ratio;
+      font-size: 1.1rem;
+    }
+  }
+
 }

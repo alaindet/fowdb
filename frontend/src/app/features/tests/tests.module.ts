@@ -5,12 +5,26 @@ import { BackDirectiveModule } from 'src/app/shared/directives';
 import { TestsFeatureRoutingModule } from './tests-routing.module';
 import { TestsLayoutComponent } from './layout/tests.component';
 import { TestsWelcomeComponent } from './components/welcome/welcome.component';
-import { TestsComponentModule } from './features/components/components.module';
 import { TestsDirectivesModule } from './features/directives/directives.module';
 import { TestsPipesModule } from './features/pipes/pipes.module';
-import { TestButtonComponent } from './features/components/button/button.component';
-import { TestTruncateComponent } from './features/pipes/truncate/truncate.component';
+import { TestsComponentModule } from './features/components/components.module';
+
+// Test pages
+import { TestColorsComponent } from './features/common/colors/colors.component';
+import { TestLinksComponent } from './features/common/links/links.component';
+import { TestTypographyComponent } from './features/common/typography/typography.component';
+import { TestButtonComponent } from './features/components/button/button.component';;
 import { TestBackComponent } from './features/directives/back/back.component';
+import { TestTruncateComponent } from './features/pipes/truncate/truncate.component';
+
+const testPages = [
+  TestButtonComponent,
+  TestBackComponent,
+  TestTruncateComponent,
+  TestColorsComponent,
+  TestTypographyComponent,
+  TestLinksComponent,
+];
 
 @NgModule({
   imports: [
@@ -24,9 +38,7 @@ import { TestBackComponent } from './features/directives/back/back.component';
   declarations: [
     TestsLayoutComponent,
     TestsWelcomeComponent,
-    TestButtonComponent,
-    TestBackComponent,
-    TestTruncateComponent,
+    ...testPages,
   ],
 })
 export class TestsFeatureModule {}

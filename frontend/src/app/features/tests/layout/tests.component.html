@@ -26,11 +26,11 @@
     &larr;&nbsp;Back
   </div>
 
-  <nav>
+  <nav class="navigation">
     <ul>
-      <li *ngFor="let firstLevel of TESTS_ROUTES">
-        <h3>{{ firstLevel.data.label }}</h3>
-        <ul>
+      <li *ngFor="let firstLevel of TESTS_ROUTES" class="group">
+        <h3 class="group-name">{{ firstLevel.data.label }}</h3>
+        <ul class="group-links">
           <li *ngFor="let secondLevel of firstLevel.children">
             <a [routerLink]="[firstLevel.path, secondLevel.path]">
               {{ secondLevel.data.label }}
