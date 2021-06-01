@@ -1,9 +1,9 @@
-import { TestIconComponent } from './icon/icon.component';
+import { TestBackComponent } from './back/back.component';
 
 export const DIRECTIVES_ROUTES = [
   {
-    path: 'icon',
-    component: TestIconComponent,
-    data: { label: 'Icon' },
+    path: 'back',
+    component: TestBackComponent,
+    data: { label: 'Back' },
   },
 ];
