@@ -1,0 +1,11 @@
+{
+    "autoload": {
+        "psr-4": {
+            "App\\": "app"
+        }
+    },
+    "require": {
+        "intervention/image": "^2.4",
+        "symfony/routing": "^4.1"
+    }
+}

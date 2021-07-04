@@ -5,20 +5,17 @@ vendor/
 # App and development directories
 /.backup/
 /.dev/
-/_dev/
-/src/data/cache
-/src/data/resources
 /src/data/backup
+!/src/data/backup/.gitkeep
+/src/data/cache
+!/src/data/cache/.gitkeep
+/src/data/documents
+!/src/data/documents/.gitkeep
 
 # Public assets and files
-assets/
-images/
-*.pdf
-sitemap.xml
-sitemap.xml.gz
+sitemap.xml*
+/public/assets
 
 # Environment files
-.env
-.env.production
-.env.development
+*.env
 !.env.example
