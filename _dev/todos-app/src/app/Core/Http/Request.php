@@ -17,7 +17,7 @@ class Request
         // if (\strpos($contentType, 'application/x-www-form-urlencoded') !== false) {
         //     $this->body = parse_url(urldecode($input));
         // }
-        
+
         if (\strpos($contentType, 'multipart/form-data') !== false) {
             // TODO
             $this->body = null;
@@ -25,9 +25,8 @@ class Request
 
         elseif (\strpos($contentType, 'application/json') !== false) {
             $input = file_get_contents('php://input', 'r');
-            \App\Shared\Utils\Utils::dump('input', $input);
             $this->body = json_decode($input);
-        }   
+        }
 
         else {
             $this->body = null;

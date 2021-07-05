@@ -9,8 +9,8 @@ trait LoggingUtils
 {
     static public function log(string $message): void
     {
-        $stdout = fopen('php://stdout', 'wb');
-        fwrite($stdout, $message . "\n");
+        $stdout = fopen('php://stdout', 'a+');
+        fwrite($stdout, $message);
         fclose($stdout);
     }
 

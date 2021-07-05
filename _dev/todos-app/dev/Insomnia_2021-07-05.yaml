@@ -1,0 +1,172 @@
+_type: export
+__export_format: 4
+__export_date: 2021-07-05T06:06:04.470Z
+__export_source: insomnia.desktop.app:v2021.4.0
+resources:
+  - _id: req_87fcff5fdd8f45659fd05926e10e90ab
+    parentId: fld_ca6252579fef48ad91c2c4f2d11a4833
+    modified: 1625464846861
+    created: 1625464380996
+    url: localhost/?uri=todos/delete&id=1
+    name: Delete
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1625464380996
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_ca6252579fef48ad91c2c4f2d11a4833
+    parentId: wrk_32b2a80153f942c18df1d9579863b643
+    modified: 1625464358599
+    created: 1625464358599
+    name: Todos App
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1625464358599
+    _type: request_group
+  - _id: wrk_32b2a80153f942c18df1d9579863b643
+    parentId: null
+    modified: 1625464905279
+    created: 1624255775672
+    name: Todos app
+    description: ""
+    scope: collection
+    _type: workspace
+  - _id: req_ef3f18dd1e37475bbcf20f721df6cee2
+    parentId: fld_ca6252579fef48ad91c2c4f2d11a4833
+    modified: 1625464507723
+    created: 1625464376537
+    url: localhost/?uri=todos/update&id=1
+    name: Replace
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"title": "Updated todo",
+        	"is_done": 1
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_58b79687ecf94d6c85bee9d37f13fb41
+    authentication: {}
+    metaSortKey: -1625464376537
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_4fc9050d56a64c4288536cebf2e35818
+    parentId: fld_ca6252579fef48ad91c2c4f2d11a4833
+    modified: 1625464807184
+    created: 1625464371887
+    url: localhost/?uri=todos/create
+    name: Create
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"title": "Some other todo",
+        	"is_done": 0
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_90a884d7e63c460e917590cff708cfd3
+    authentication: {}
+    metaSortKey: -1625464371887
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_0567cffc929e43c5b4fb9233d489cbe7
+    parentId: fld_ca6252579fef48ad91c2c4f2d11a4833
+    modified: 1625464840263
+    created: 1625464368177
+    url: localhost/?uri=todos/single&id=1
+    name: Get one
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1625464368177
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_e472d3c4b3444ea79d792a11699157c0
+    parentId: fld_ca6252579fef48ad91c2c4f2d11a4833
+    modified: 1625464426993
+    created: 1625464363965
+    url: localhost/?uri=todos/all
+    name: Get all
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1625464363965
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_9e0c46507fe161a8f2b4c50a2798615f224266f0
+    parentId: wrk_32b2a80153f942c18df1d9579863b643
+    modified: 1624255775760
+    created: 1624255775760
+    name: Base Environment
+    data: {}
+    dataPropertyOrder: null
+    color: null
+    isPrivate: false
+    metaSortKey: 1624255775760
+    _type: environment
+  - _id: jar_9e0c46507fe161a8f2b4c50a2798615f224266f0
+    parentId: wrk_32b2a80153f942c18df1d9579863b643
+    modified: 1624255775764
+    created: 1624255775764
+    name: Default Jar
+    cookies: []
+    _type: cookie_jar
+  - _id: spc_f0f0d403b4a24449927a08025139b951
+    parentId: wrk_32b2a80153f942c18df1d9579863b643
+    modified: 1624255775677
+    created: 1624255775677
+    fileName: Insomnia
+    contents: ""
+    contentType: yaml
+    _type: api_spec

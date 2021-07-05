@@ -4,23 +4,24 @@ namespace App\Features\Todos\Controllers;
 
 use PDO;
 
-use App\Core\Controller;
+use App\Core\Http\Controller;
+use App\Core\Services\Configuration\Configuration;
 use App\Core\Services\Database\DatabaseConfiguration;
 use App\Core\Services\Database\DatabaseConnection;
-use App\Shared\Utils\Utils;
-use App\Features\Todos\Repositories\TodosRepository;
 use App\Features\Todos\Dtos\CreateTodoDto;
 use App\Features\Todos\Dtos\UpdateTodoDto;
+use App\Features\Todos\Repositories\TodosRepository;
+use App\Shared\Utils\Utils;
 
 class TodosController extends Controller
 {
     /** @var \App\Repositories\TodosRepository */
     private $todosRepo;
 
-    public function __construct()
+    public function __construct(Configuration $config)
     {
-        $db = $this->getDatabaseConnection();
-        $this->todosRepo = new TodosRepository($db);
+        parent::__construct($config);
+        $this->todosRepo = new TodosRepository($this->db);
     }
 
     public function create(\stdClass $body): string
@@ -32,7 +33,7 @@ class TodosController extends Controller
             $todo = $this->todosRepo->create($dto);
             return $this->render($todo);
         }
-        
+
         catch (\Exception $e) {
             return $this->render($e->getMessage());
         }
@@ -44,7 +45,7 @@ class TodosController extends Controller
             $todos = $this->todosRepo->getAll();
             return $this->render($todos);
         }
-        
+
         catch (\Exception $e) {
             return $this->render($e->getMessage());
         }
@@ -56,10 +57,10 @@ class TodosController extends Controller
             $todo = $this->todosRepo->getOne($id);
             return $this->render($todo);
         }
-        
+
         catch (\Exception $e) {
             return $this->render($e->getMessage());
-        } 
+        }
     }
 
     public function update(string $id, \stdClass $body): string
@@ -72,7 +73,7 @@ class TodosController extends Controller
             $todo = $this->todosRepo->update($dto);
             return $this->render($todo);
         }
-        
+
         catch (\Exception $e) {
             return $this->render($e->getMessage());
         }
@@ -84,9 +85,9 @@ class TodosController extends Controller
             $todo = $this->todosRepo->delete($id);
             return $this->render($todo);
         }
-        
+
         catch (\Exception $e) {
             return $this->render($e->getMessage());
-        } 
+        }
     }
 }

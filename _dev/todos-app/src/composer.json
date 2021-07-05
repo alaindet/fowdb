@@ -9,7 +9,6 @@
   },
   "require": {
     "intervention/image": "^2.4",
-    "symfony/routing": "^4.1",
-    "monolog/monolog": "^2.2"
+    "nikic/fast-route": "^1.3"
   }
 }
