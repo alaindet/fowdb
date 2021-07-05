@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+
+  php:
+    build:
+      context: ../
+      dockerfile: ./docker/php.dockerfile
+    environment:
+      CUTIE_CAT: "Yes I do"
+      LOTTA_LOVE: "Oh, I do!"
+    ports:
+      - 8080:80
+    volumes:
+      - ../src:/var/www/html
+      - /var/www/html/vendor

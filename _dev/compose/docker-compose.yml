@@ -1,0 +1,49 @@
+version: "3.8"
+services:
+
+    # memcached:
+    #   image: memcached:alpine
+
+    # redis:
+    #   image: redis:alpine
+
+    # mariadb:
+    #   image: mariadb:10.6
+    #   working_dir: /application
+    #   volumes:
+    #     - .:/application
+    #   environment:
+    #     - MYSQL_ROOT_PASSWORD=root
+    #     - MYSQL_DATABASE=myappdb
+    #     - MYSQL_USER=myappuser
+    #     - MYSQL_PASSWORD=myapppassword
+    #   ports:
+    #     - "8083:3306"
+
+    # postgres:
+    #   image: postgres:11.1-alpine
+    #   working_dir: /application
+    #   volumes:
+    #     - .:/application
+    #   environment:
+    #     - POSTGRES_USER=rootuser
+    #     - POSTGRES_PASSWORD=rootuser
+    #     - POSTGRES_DB=myapp
+    #   ports:
+    #     - "8084:5432"
+
+    webserver:
+      image: nginx:alpine
+      working_dir: /application
+      volumes:
+          - .:/application
+          - ./phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      ports:
+       - "8080:80"
+
+    php-fpm:
+      build: phpdocker/php-fpm
+      working_dir: /application
+      volumes:
+        - .:/application
+        - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
